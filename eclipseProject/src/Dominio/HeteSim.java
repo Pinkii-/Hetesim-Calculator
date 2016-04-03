@@ -26,25 +26,31 @@ public class HeteSim {
 	}
 	
 	private class Matrix<T> {
-		HashMap<String,Integer> pos;
+		HashMap<String,Integer> pos1;
+		HashMap<String,Integer> pos2;
 		ArrayList<ArrayList<T>> m;
 		
 		Matrix() {
-			pos = new HashMap<String,Integer>();
+			pos1 = new HashMap<String,Integer>();
+			pos2 = new HashMap<String,Integer>();
 			m = new ArrayList<ArrayList<T>>();
 		}
 		
 		void copySizes(Matrix m) {
-			this.pos = m.getPositions();
+			this.pos1 = m.getPosition1();
+			this.pos2 = m.getPosition2();
 			setSizes(m.getColSize(), m.getRowSize());
 		}
 		
-		private HashMap<String, Integer> getPositions() {
-			return pos;
+		private HashMap<String, Integer> getPosition1() {
+			return pos1;
+		}
+		
+		private HashMap<String, Integer> getPosition2() {
+			return pos2;
 		}
 
 		void setSizes(Integer numberOfRows, Integer numberOfCols) {
-			pos = new HashMap<String,Integer>();
 			this.m = new ArrayList<ArrayList<T>>(numberOfRows);
 			for (int i = 0; i < numberOfRows; ++i) {
 				this.m.add(new ArrayList<T>(numberOfCols));
@@ -56,27 +62,38 @@ public class HeteSim {
 		
 		void set(Node n1, Node n2, T value, T d) {
 			Integer i;
-			if (!pos.containsKey(n1.id)) {
+			if (!pos1.containsKey(n1.id)) {
 				i = m.size();
-				pos.put(n1.id, i);
+				pos1.put(n1.id, i);
 				m.add(new ArrayList<T>() );
 				for (int c = 0; c < m.get(0).size(); ++c) {
 					m.get(i).add(d);
 				}
 			}
-			else i = pos.get(n1.id);
+			else i = pos1.get(n1.id);
 			
 			
-			if (!pos.containsKey(n2.id)) {
-				pos.put(n2.id, m.get(0).size());
+			if (!pos2.containsKey(n2.id)) {
+				pos2.put(n2.id, m.get(0).size());
 				for(List<T> row : m) {
 					row.add(d);
 				}
 			}
 			
-			Integer j = pos.get(n2.id);
+			Integer j = pos2.get(n2.id);
 			m.get(i).set(j, value);
 			
+		}
+		
+		T get(Integer i, Integer j) {
+			return m.get(i).get(j);
+		}
+		
+		T get(Node n1, Node n2) {
+			if (!pos1.containsKey(n1.id) || !pos2.containsKey(n2.id)) {
+				/* Throw exception.*/
+			}
+			return get(pos1.get(n1.id),pos1.get(n2.id));
 		}
 		
 		int getColSize() {
@@ -98,8 +115,8 @@ public class HeteSim {
 		}
 		
 		ArrayList<T> getCol(Node n) {
-			if (!pos.containsKey(n.id)) { /* Throw Exception */ }
-			return getCol(pos.get(n.id));
+			if (!pos2.containsKey(n.id)) { /* Throw Exception */ }
+			return getCol(pos2.get(n.id));
 		}
 		
 		ArrayList<T> getRow(Integer i) {
@@ -108,13 +125,14 @@ public class HeteSim {
 		}
 		
 		ArrayList<T> getRow(Node n) {
-			if (!pos.containsKey(n.id)) { /* Throw Exception */ }
-			return getRow(pos.get(n.id));
+			if (!pos1.containsKey(n.id)) { /* Throw Exception */ }
+			return getRow(pos1.get(n.id));
 		}
 		
 		Matrix<T> transpose() {
 			Matrix<T> ret = new Matrix<T>();
-			ret.setPositions(pos);
+			ret.setPosition1(pos2);
+			ret.setPosition2(pos1);
 			ret.setSizes(getRowSize(), getColSize());
 			
 			for (Integer i = 0; i < getColSize(); ++i) {
@@ -125,12 +143,14 @@ public class HeteSim {
 			return ret;
 		}
 		
-		void setPositions(HashMap<String, Integer> pos2) {
-			this.pos = pos2;
+		void setPosition1(HashMap<String, Integer> pos) {
+			this.pos1 = pos;
 		}
 		
+		void setPosition2(HashMap<String, Integer> pos) {
+			this.pos2 = pos;
+		}
 		
-
 		void print() {
 			for (int i = 0; i < m.size(); ++i) {
 				System.out.println(m.get(i).toString());
@@ -140,7 +160,8 @@ public class HeteSim {
 	
 	
 	Matrix<Boolean> adyacent;
-	Matrix<Float> hetesims;
+	Matrix<Float> heteAtoB;
+	Matrix<Float> heteBtoA;
 	
 	Matrix<Boolean> adyacentLeft;
 	Matrix<Float> hetesimsLeft;
@@ -163,12 +184,14 @@ public class HeteSim {
 		Node e4 = new Node("e4");
 		Node e5 = new Node("e5");
 		Node e6 = new Node("e6");
+		Node e7 = new Node("e7");
 		adyacent.set(a1,b1,true,false);
 		adyacent.set(a1,b2,true,false);
 		adyacent.set(a2,b2,true,false);
 		adyacent.set(a2,b3,true,false);
 		adyacent.set(a2,b4,true,false);
 		adyacent.set(a3,b4,true,false);
+//		adyacent.set(a3,b2,true,false);
 		System.out.println("A-B");
 		adyacent.print();
 		
@@ -180,6 +203,7 @@ public class HeteSim {
 		adyacentLeft.set(a2,e4,true,false);
 		adyacentLeft.set(a2,e5,true,false);
 		adyacentLeft.set(a3,e6,true,false);
+//		adyacentLeft.set(a3,e7,true,false);
 		System.out.println("A-E");
 		adyacentLeft.print();
 		
@@ -191,54 +215,94 @@ public class HeteSim {
 		adyacentRight.set(e4,b3,true,false);
 		adyacentRight.set(e5,b4,true,false);
 		adyacentRight.set(e6,b4,true,false);
+//		adyacentRight.set(e7,b2,true,false);
 		System.out.println("E-B");
 		adyacentRight.print();
 		
 	}
 	
 	public void initHeteSims() {
-		hetesims = generateHeteSim(adyacent);
+		heteAtoB = generateHeteSim(adyacent);
 		hetesimsLeft = generateHeteSim(adyacentLeft);
 		hetesimsRight = generateHeteSim(adyacentRight);
-		System.out.println("Hetesim:");
+		heteBtoA = heteAtoB.transpose();
+		System.out.println("Hetesim Left:");
 		hetesimsLeft.print();
-		System.out.println("Hetesim:");
+		System.out.println("Hetesim Right:");
 		hetesimsRight.print();
 		System.out.println("Hetesim:");
-		hetesims.print();
+		heteAtoB.print();
+		System.out.println("Hetesim B-A:");
+		heteBtoA.print();
 		
 //		System.out.println("transpose");
-//		hetesims.transpose().print();
+//		heteAtoB.transpose().print();
 		
 		System.out.println("mult");
-		multiply(normaliceRows(hetesims),normaliceRows(hetesims).transpose()).print();
+		multiply(normaliceRows(heteAtoB),normaliceCols(heteBtoA)).print();
+//		
+//		System.out.println("Rand");
+//		normaliceRows(multiply(heteAtoB,heteAtoB.transpose())).print();
+//		System.out.println("Rand");
+//		normaliceRows(hetesimsRight).print();
+		System.out.println("not Equal to");
+		multiply(normaliceRows(hetesimsLeft), normaliceCols(hetesimsRight)).print();
 		
-		System.out.println("Rand");
-		normaliceRows(multiply(hetesims,hetesims.transpose())).print();
-		System.out.println("Rand");
-		normaliceRows(hetesimsRight).print();
+		Matrix<Float> hLnorm = normaliceRows(heteAtoB);
+		Matrix<Float> hRnorm = normaliceCols(heteBtoA);
+		
+
+		System.out.println("");
+		hLnorm.print();
+		System.out.println("");
+		hRnorm.print();
+		
+		System.out.println("");
+		
+		
+		Matrix<Float> PathLeftToMid = normaliceRows(hetesimsLeft);
+		Matrix<Float> PathRightToMidTransposed =  normaliceRows(hetesimsRight.transpose());//normaliceCols(heteBtoA).transpose();
+		normaliceHeteSim(PathLeftToMid,PathRightToMidTransposed).print();
+		
 	}
+	
+	
 	
 	Matrix<Float> generateHeteSim(Matrix<Boolean> b) {
 		Matrix<Float> ret = new Matrix<Float>();
 		ret.copySizes(b);
-		ArrayList<Float> rowsPrct = new ArrayList<Float>();
+//		ArrayList<Float> rowsPrct = new ArrayList<Float>();
+//		for (int i = 0; i < b.getColSize(); ++i) {
+//			rowsPrct.add(1.0f/countTrues(b.getRow(i)));
+//		}
+//		
+////		System.out.println(rowsPrct.toString());
+//
+//		ArrayList<Float> colsPrct = new ArrayList<Float>();
+//		for (int i = 0; i < b.getRowSize(); ++i) {
+//			colsPrct.add(1.0f/countTrues(b.getCol(i)));
+//		}
+//		
+////		System.out.println(colsPrct.toString());
+		
+//		for (Integer i = 0; i < ret.getColSize(); ++i) {
+//			for (Integer j = 0; j < ret.getRowSize(); ++j) {
+//				ret.getRow(i).set(j, rowsPrct.get(i)*colsPrct.get(j)*(b.getRow(i).get(j) ? 1 : 0));
+//			}
+//		}
+		
+		ArrayList<Integer> rowsCount = new ArrayList<Integer>(); // out S
 		for (int i = 0; i < b.getColSize(); ++i) {
-			rowsPrct.add(1.0f/countTrues(b.getRow(i)));
+			rowsCount.add(countTrues(b.getRow(i)));
 		}
-		
-		System.out.println(rowsPrct.toString());
-
-		ArrayList<Float> colsPrct = new ArrayList<Float>();
+		ArrayList<Integer> colsCount = new ArrayList<Integer>(); // in T
 		for (int i = 0; i < b.getRowSize(); ++i) {
-			colsPrct.add(1.0f/countTrues(b.getCol(i)));
+			colsCount.add(countTrues(b.getCol(i)));
 		}
-		
-		System.out.println(colsPrct.toString());
 		
 		for (Integer i = 0; i < ret.getColSize(); ++i) {
 			for (Integer j = 0; j < ret.getRowSize(); ++j) {
-				ret.getRow(i).set(j, rowsPrct.get(i)*colsPrct.get(j)*(b.getRow(i).get(j) ? 1 : 0));
+				ret.getRow(i).set(j, ((b.getRow(i).get(j) ? 1.0f : 0.0f)));
 			}
 		}
 		
@@ -275,28 +339,52 @@ public class HeteSim {
 		result.copySizes(m);
 		
 		for (Integer i = 0; i < m.getColSize(); ++i) {
-			Float total = 0.f;
+			Double total = 0.0;
 			for (Integer j = 0; j < m.getRowSize(); ++j) {
-				total += m.getRow(i).get(j);
+				total += Math.pow(m.getRow(i).get(j),2);
 			}
+			total = Math.sqrt(total);
 			for (Integer j = 0; j < m.getRowSize(); ++j) {
-				result.getRow(i).set(j,m.getRow(i).get(j)/total);
+				result.getRow(i).set(j,(float) (m.getRow(i).get(j)/total));
 			}
 		}
 		return result;
 	}
 	
-//	private Matrix<Float> normaliceHeteSim(Matrix<Float> m) {
-//		Matrix<Float> result = new Matrix<Float>();
-//		result.copySizes(m);
-//		
-//		for (Integer i = 0; i < m.getColSize(); ++i) {
-//			Float total = 0.f;
-//			for (Integer j = 0; j < m.getRowSize(); ++j) {
-//				total += m.getRow(i).get(j);
-//			}
-//		}
-//		
-//		return result;
-//	}
+	private Matrix<Float> normaliceCols(Matrix<Float> m) {
+		return normaliceRows(m.transpose()).transpose();
+	}
+	
+	private float norm(ArrayList<Float> v) {
+		Float total = 0.f;
+		for (Integer i = 0; i < v.size();++i) {
+			total += (float) Math.pow(v.get(i), 2);
+		}
+		
+		return (float) Math.sqrt(total);
+	}
+	
+	/**
+	 *  
+	 * @param left is the multiplications of the U matrix from S to M (PMpl)
+	 * @param right is the transpose of the multiplications of the U matrix from T to M (PMpr-1')
+	 * @return Matrix of Hetesims
+	 */
+	private Matrix<Float> normaliceHeteSim(Matrix<Float> left, Matrix<Float> right) {
+		Matrix<Float> result = new Matrix<Float>();
+		result.setSizes(left.getColSize(),right.getColSize());
+		result.setPosition1(left.getPosition1());
+		result.setPosition2(right.getPosition1());
+		
+		for (Integer i = 0; i < result.getColSize(); ++i) {
+			for (Integer j = 0; j < result.getRowSize(); ++j) {
+				double top = multiplyVectors(left.getRow(i),right.getRow(j));
+				double bot = Math.sqrt(norm(left.getRow(i))*norm(right.getRow(j)));
+				result.getRow(i).set(j,(float) (top/bot));
+				
+			}
+		}
+		
+		return result;
+	}
 }
