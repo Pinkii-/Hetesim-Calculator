@@ -36,9 +36,9 @@ public class HeteSim {
 			m = new ArrayList<ArrayList<T>>();
 		}
 		
-		void copySizes(Matrix m) {
-			this.pos1 = m.getPosition1();
-			this.pos2 = m.getPosition2();
+		void copySizes(final Matrix m) {
+			this.pos1 = (HashMap<String, Integer>) m.getPosition1().clone();
+			this.pos2 = (HashMap<String, Integer>) m.getPosition2().clone();
 			setSizes(m.getColSize(), m.getRowSize());
 		}
 		
@@ -60,7 +60,7 @@ public class HeteSim {
 			}
 		}
 		
-		void set(Node n1, Node n2, T value, T d) {
+		void set(final Node n1, final Node n2, T value, T d) {
 			Integer i;
 			if (!pos1.containsKey(n1.id)) {
 				i = m.size();
@@ -89,11 +89,12 @@ public class HeteSim {
 			return m.get(i).get(j);
 		}
 		
-		T get(Node n1, Node n2) {
+		T get(final Node n1, final Node n2) {
 			if (!pos1.containsKey(n1.id) || !pos2.containsKey(n2.id)) {
 				/* Throw exception.*/
+				System.out.println("Exception Paco");
 			}
-			return get(pos1.get(n1.id),pos1.get(n2.id));
+			return get(pos1.get(n1.id),pos2.get(n2.id));
 		}
 		
 		int getColSize() {
@@ -114,7 +115,7 @@ public class HeteSim {
 			return ret;
 		}
 		
-		ArrayList<T> getCol(Node n) {
+		ArrayList<T> getCol(final Node n) {
 			if (!pos2.containsKey(n.id)) { /* Throw Exception */ }
 			return getCol(pos2.get(n.id));
 		}
@@ -124,7 +125,7 @@ public class HeteSim {
 			return m.get(i);
 		}
 		
-		ArrayList<T> getRow(Node n) {
+		ArrayList<T> getRow(final Node n) {
 			if (!pos1.containsKey(n.id)) { /* Throw Exception */ }
 			return getRow(pos1.get(n.id));
 		}
@@ -143,11 +144,11 @@ public class HeteSim {
 			return ret;
 		}
 		
-		void setPosition1(HashMap<String, Integer> pos) {
+		void setPosition1(final HashMap<String, Integer> pos) {
 			this.pos1 = pos;
 		}
 		
-		void setPosition2(HashMap<String, Integer> pos) {
+		void setPosition2(final HashMap<String, Integer> pos) {
 			this.pos2 = pos;
 		}
 		
@@ -169,8 +170,13 @@ public class HeteSim {
 	Matrix<Float> hetesimsRight;
 	
 	public HeteSim() {
-		// Inicializar para probar el programa
 		adyacent = new Matrix<Boolean>();
+		adyacentLeft = new Matrix<Boolean>();
+		adyacentRight = new Matrix<Boolean>();
+	}
+	
+	public void initHeteSims() {
+		// Inicializar para probar el programa
 		NodePaper a1 = new NodePaper("a1");
 		NodePaper a2 = new NodePaper("a2");
 		NodePaper a3 = new NodePaper("a3");
@@ -195,7 +201,6 @@ public class HeteSim {
 		System.out.println("A-B");
 		adyacent.print();
 		
-		adyacentLeft = new Matrix<Boolean>();
 		
 		adyacentLeft.set(a1,e1,true,false);
 		adyacentLeft.set(a1,e2,true,false);
@@ -219,9 +224,7 @@ public class HeteSim {
 		System.out.println("E-B");
 		adyacentRight.print();
 		
-	}
-	
-	public void initHeteSims() {
+		
 		heteAtoB = generateHeteSim(adyacent);
 		hetesimsLeft = generateHeteSim(adyacentLeft);
 		hetesimsRight = generateHeteSim(adyacentRight);
@@ -234,6 +237,8 @@ public class HeteSim {
 		heteAtoB.print();
 		System.out.println("Hetesim B-A:");
 		heteBtoA.print();
+		
+		System.out.println("a1 b1 " +heteAtoB.get(a1, b1));
 		
 //		System.out.println("transpose");
 //		heteAtoB.transpose().print();
@@ -260,10 +265,10 @@ public class HeteSim {
 		System.out.println("");
 		
 		
-		Matrix<Float> PathLeftToMid = normaliceRows(hetesimsLeft);
-		Matrix<Float> PathRightToMidTransposed =  normaliceRows(hetesimsRight.transpose());//normaliceCols(heteBtoA).transpose();
+		Matrix<Float> PathLeftToMid = normaliceRows(multiply(heteBtoA,heteAtoB));
+		Matrix<Float> PathRightToMidTransposed =  normaliceRows(multiply(heteAtoB.transpose(),heteBtoA.transpose())); // La formua estaba maaaal.
 		normaliceHeteSim(PathLeftToMid,PathRightToMidTransposed).print();
-		
+		System.out.println("a1 a2 " +normaliceHeteSim(PathLeftToMid,PathRightToMidTransposed).get(b1, b1));
 	}
 	
 	
@@ -291,14 +296,14 @@ public class HeteSim {
 //			}
 //		}
 		
-		ArrayList<Integer> rowsCount = new ArrayList<Integer>(); // out S
-		for (int i = 0; i < b.getColSize(); ++i) {
-			rowsCount.add(countTrues(b.getRow(i)));
-		}
-		ArrayList<Integer> colsCount = new ArrayList<Integer>(); // in T
-		for (int i = 0; i < b.getRowSize(); ++i) {
-			colsCount.add(countTrues(b.getCol(i)));
-		}
+//		ArrayList<Integer> rowsCount = new ArrayList<Integer>(); // out S
+//		for (int i = 0; i < b.getColSize(); ++i) {
+//			rowsCount.add(countTrues(b.getRow(i)));
+//		}
+//		ArrayList<Integer> colsCount = new ArrayList<Integer>(); // in T
+//		for (int i = 0; i < b.getRowSize(); ++i) {
+//			colsCount.add(countTrues(b.getCol(i)));
+//		}
 		
 		for (Integer i = 0; i < ret.getColSize(); ++i) {
 			for (Integer j = 0; j < ret.getRowSize(); ++j) {
@@ -309,10 +314,11 @@ public class HeteSim {
 		return ret;
 	}
 	
-	private int countTrues(final List<Boolean> a) {
-		long ret = a.stream().filter(b -> b == true).count();
-		return (int) ret;
-	}
+//	private int countTrues(final List<Boolean> a) {
+//		long ret = a.stream().filter(b -> b == true).count();
+//		return (int) ret;
+//	}
+//
 	
 	private Matrix<Float> multiply(Matrix<Float> leftSide, Matrix<Float> rightSide) {
 		Matrix<Float> result = new Matrix<Float>();
