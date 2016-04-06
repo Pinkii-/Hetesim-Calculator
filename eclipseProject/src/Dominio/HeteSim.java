@@ -1,17 +1,15 @@
 package Dominio;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import Dominio.Node.Type;
+
 public class HeteSim {
 	
-	class Node {
-		public String id;
-		Node(String id) {
-			this.id = id;
-		}
-	}
+	
 	
 	class NodePaper extends Node {
 		NodePaper(String id){
@@ -85,11 +83,11 @@ public class HeteSim {
 			
 		}
 		
-		T get(Integer i, Integer j) {
+		T getValue(Integer i, Integer j) {
 			return m.get(i).get(j);
 		}
 		
-		T get(final Node n1, final Node n2) {
+		T getValue(Node n1,Node n2) {
 			if (!pos1.containsKey(n1.id) || !pos2.containsKey(n2.id)) {
 				/* Throw exception.*/
 				System.out.println("Exception Paco");
@@ -98,7 +96,7 @@ public class HeteSim {
 				System.out.println("");
 				
 			}
-			return get(pos1.get(n1.id),pos2.get(n2.id));
+			return getValue(pos1.get(n1.id),pos2.get(n2.id));
 		}
 		
 		int getColSize() {
@@ -163,6 +161,57 @@ public class HeteSim {
 				System.out.println(m.get(i).toString());
 			}
 		}
+
+		public Matrix<Float> trasposarMatriu() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+	}
+	
+	class Graph{
+
+		public Matrix<Float> getMatrixAuthor() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		public Matrix<Float> getMatrixConf() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		public Matrix<Float> getMatrixTerm() {
+			// TODO Auto-generated method stub
+			return null;
+		}}
+	
+	
+	private Boolean paperAuthor;
+	private Matrix paper2author;
+	private Matrix author2paper;
+	private Boolean paperConf;
+	private Matrix paper2conf;
+	private Matrix conf2paper;
+	private Boolean paperTerm;
+	private Matrix paper2term;
+	private Matrix term2paper;
+	private Boolean authorMid;
+	private Matrix author2mid;
+	private Matrix paper2authorMid;
+	private Boolean confMid;
+	private Matrix conf2mid;
+	private Matrix paper2confMid;
+	private Boolean termMid;
+	private Matrix term2mid;
+	private Matrix paper2termMid;
+	
+	private Graph graph;
+	
+	private enum PathTypes {
+		author2Paper, conf2Paper, term2Paper, 
+		author2Mid, Paper2MidAut,
+		conf2Mid, Paper2MidConf,
+		term2Mid, Paper2MidTerm
 	}
 	
 	
@@ -176,6 +225,8 @@ public class HeteSim {
 	Matrix<Float> hetesimsRight;
 	
 	public HeteSim() {
+		graph = null;
+		// Testhings
 		adyacent = new Matrix<Boolean>();
 		adyacentLeft = new Matrix<Boolean>();
 		adyacentRight = new Matrix<Boolean>();
@@ -244,8 +295,8 @@ public class HeteSim {
 		System.out.println("Hetesim B-A:");
 		heteBtoA.print();
 		
-		System.out.println("a1 b1 " +heteAtoB.get(a1, b2));
-		System.out.println("b1 a1 " +heteBtoA.get(b2, a1));
+		System.out.println("a1 b1 " +heteAtoB.getValue(a1, b2));
+		System.out.println("b1 a1 " +heteBtoA.getValue(b2, a1));
 		
 //		System.out.println("transpose");
 //		heteAtoB.transpose().print();
@@ -263,8 +314,8 @@ public class HeteSim {
 		Matrix<Float> hLnorm = normaliceRows(heteAtoB);
 		Matrix<Float> hRnorm = normaliceCols(heteBtoA);
 		
-		System.out.println("a1 b1 normaliced " +hLnorm.get(a1, b2));
-		System.out.println("b1 a1 normaliced" +hRnorm.get(b2, a1));
+		System.out.println("a1 b1 normaliced " +hLnorm.getValue(a1, b2));
+		System.out.println("b1 a1 normaliced" +hRnorm.getValue(b2, a1));
 
 		System.out.println("");
 		hLnorm.print();
@@ -274,11 +325,11 @@ public class HeteSim {
 		System.out.println("");
 		
 		
-		Matrix<Float> PathLeftToMid = normaliceRows(multiply(heteBtoA,heteAtoB));
-		System.out.println("b1 b1 multiplied " +PathLeftToMid.get(b2, b2));
-		Matrix<Float> PathRightToMidTransposed =  normaliceRows(multiply(heteAtoB.transpose(),heteBtoA.transpose())); // La formua estaba maaaal.
+		Matrix<Float> PathLeftToMid = normaliceRows(hetesimsLeft);
+//		System.out.println("b1 b1 multiplied " +PathLeftToMid.getValue(b2, b2));
+		Matrix<Float> PathRightToMidTransposed =  normaliceRows(hetesimsRight.transpose()); // La formua estaba maaaal.
 		normaliceHeteSim(PathLeftToMid,PathRightToMidTransposed).print();
-		System.out.println("b1 b1 " +normaliceHeteSim(PathLeftToMid,PathRightToMidTransposed).get(b1, b1));
+		System.out.println("a1 b1 " +normaliceHeteSim(PathLeftToMid,PathRightToMidTransposed).getValue(a1, b1));
 	}
 	
 	
@@ -405,4 +456,224 @@ public class HeteSim {
 		
 		return result;
 	}
+	
+	// PRE ESPECIALIZATION
+	
+	public void setGraph(Graph g) {
+		graph = g;
+		paperAuthor = paperConf = paperTerm = authorMid = confMid = termMid = false;
+	}
+	
+	public Matrix getHeteSim(Path p) {
+		ArrayList<Node.Type> left = null;
+		ArrayList<Node.Type> right = null;
+		p.getPath(left, right);
+		Collections.reverse(right);
+		return normaliceHeteSim(multiplyMatrixes(left,right),multiplyMatrixes(right,left));
+	}
+	
+	public ArrayList<Float> getHeteSim(Path p, Node n) {
+		ArrayList<Node.Type> left = null;
+		ArrayList<Node.Type> right = null;
+		p.getPath(left, right);
+		Collections.reverse(right);
+		return normaliceHeteSim(multiplyMatrixes(left,right),multiplyMatrixes(right,left)).getRow(n);
+	}
+	
+	public Float getHeteSim(Path p, Node n1, Node n2) {
+		ArrayList<Node.Type> left = null;
+		ArrayList<Node.Type> right = null;
+		p.getPath(left, right);
+		Collections.reverse(right);
+		return normaliceHeteSim(multiplyMatrixes(left,right),multiplyMatrixes(right,left)).getValue(n1,n2);
+	}
+	
+	// Private Metods
+	
+	class WhatMatrix {
+		public Boolean transposed;
+		public HeteSim.PathTypes pathType;
+		WhatMatrix(Boolean trans, HeteSim.PathTypes t) {
+			this.transposed = trans;
+			this.pathType = t;
+		}
+	}
+	
+	/**
+	 * 
+	 * @param path
+	 * @param aux If path finish with E and the Node.Type of before is Paper, we dont know what matrix chose. We need to know the full path
+	 * @return
+	 */
+	
+	private Matrix multiplyMatrixes(ArrayList<Node.Type> path,ArrayList<Node.Type> aux) {
+		ArrayList<Matrix> matrixesToMultiply = new ArrayList<Matrix>();
+		ArrayList<WhatMatrix> whatMatrixes = getPairs(path, aux);
+		for (Integer i = 0; i < whatMatrixes.size(); ++i) {
+			WhatMatrix w = whatMatrixes.get(i);
+			switch (w.pathType) {
+			case author2Paper:
+				if (!paperAuthor) { // init paper2Author
+					author2paper = normaliceRows(graph.getMatrixAuthor());
+					paper2author = normaliceRows(graph.getMatrixAuthor().trasposarMatriu());
+					paperAuthor = true;
+				}
+				if (w.transposed) matrixesToMultiply.add(paper2author);
+				else matrixesToMultiply.add(author2paper);
+				break;
+			case conf2Paper:
+				if (!paperConf) { // init paper2Author
+					conf2paper = normaliceRows(graph.getMatrixConf());
+					paper2conf = normaliceRows(graph.getMatrixConf().trasposarMatriu());
+					paperConf = true;
+				}
+				if (w.transposed) matrixesToMultiply.add(paper2conf);
+				else matrixesToMultiply.add(conf2paper);
+				break;
+			case term2Paper:
+				if (!paperTerm) { // init paper2Author
+					term2paper = normaliceRows(graph.getMatrixTerm());
+					paper2term = normaliceRows(graph.getMatrixTerm().trasposarMatriu());
+					paperTerm = true;
+				}
+				if (w.transposed) matrixesToMultiply.add(paper2term);
+				else matrixesToMultiply.add(term2paper);
+				break;
+			case author2Mid:
+			case Paper2MidAut:
+				if (!authorMid) {
+					Matrix autor2Mid = null, mid2Paper = null;
+					partiteMatrix(graph.getMatrixAuthor(),autor2Mid, mid2Paper);
+				}
+				
+				/// MORE THINGS TO COME HERE
+			}
+		}
+		return null;
+	}
+
+	private void partiteMatrix(Matrix matrix, Matrix thingA2Mid, Matrix mid2ThingB) {
+		thingA2Mid = new Matrix<Float>();
+		mid2ThingB = new Matrix<Float>();
+		Integer total = 0;
+		for (Integer i = 0; i < matrix.getColSize(); ++i) {
+			for (Integer j = 0; j < matrix.getRowSize(); ++j) {
+				total += Math.round((Float) matrix.getValue(i, j));	// Useless cast			
+			}
+		}
+		thingA2Mid.setSizes(matrix.getColSize(), total);
+		mid2ThingB.setSizes(total, matrix.getRowSize());
+		Integer index = 0;
+		for (Integer i = 0; i < matrix.getColSize(); ++i) {
+			for (Integer j = 0; j < matrix.getRowSize(); ++j) {
+				if ((float) matrix.getValue(i, j) == 1.f) { // Useless cast
+					thingA2Mid.getRow(i).set(index,1.f);
+					mid2ThingB.getRow(index).set(j, 1.f);
+					index += 1;
+				}
+			}
+		}
+		
+	}
+
+	private ArrayList<WhatMatrix> getPairs(ArrayList<Node.Type> path, ArrayList<Node.Type> aux) {
+		ArrayList<WhatMatrix> ret = new ArrayList<WhatMatrix>();
+		for (Integer i = 1; i < path.size(); ++i) {
+			Node.Type last = path.get(i-1);
+			Node.Type current = path.get(i);
+			if (current == Node.Type.MidElement) {
+				if (last == Node.Type.Paper) {
+					Node.Type nextToMid = aux.get(aux.size()-2);
+					switch (nextToMid) {
+						case Autor:
+							ret.add(new WhatMatrix(false,PathTypes.Paper2MidAut));
+							break;
+						case Conferencia:
+							ret.add(new WhatMatrix(false,PathTypes.Paper2MidConf));
+							break;
+						case Terme:
+							ret.add(new WhatMatrix(false,PathTypes.Paper2MidTerm));
+							break;
+						default:
+							/* Throw exception: The path is broken */
+							System.out.println("The path is broken. The Mid element is linking Paper with Paper or another MidElement :(");
+							System.out.println(path);
+							System.out.println(aux);
+							System.exit(-1);
+					}
+				}
+				else {
+					switch (last) {
+						case Autor:
+							ret.add(new WhatMatrix(false,PathTypes.author2Mid));
+							break;
+						case Conferencia:
+							ret.add(new WhatMatrix(false,PathTypes.conf2Mid));
+							break;
+						case Terme:
+							ret.add(new WhatMatrix(false,PathTypes.term2Mid));
+							break;
+						default:
+							/* Throw exception: The function is broken or the path is broken */
+							System.out.println("Maybe you dont know how to code, or maybe the path is broken. IoKze, no soi 100tifico :(");
+							System.out.println(path);
+							System.out.println(last);
+							System.exit(-1);
+					}
+				}
+			}
+			else {
+				boolean trans = false;
+				if (last == Node.Type.Paper) { //Swap
+					Node.Type ntAux = last;
+					last = current;
+					current = ntAux;
+					trans = true;
+				}
+				switch (last) {
+					case Autor:
+						ret.add(new WhatMatrix(trans,PathTypes.author2Paper));
+						break;
+					case Conferencia:
+						ret.add(new WhatMatrix(trans,PathTypes.Paper2MidConf));
+						break;
+					case Terme:
+						ret.add(new WhatMatrix(trans,PathTypes.Paper2MidTerm));
+						break;
+					default:
+						/* Throw exception: The function is broken or the path is broken */
+						System.out.println("Two papers together :(");
+						System.out.println(path);
+						System.out.println(current);
+						System.out.println(last);
+						System.exit(-1);
+				}
+			}
+		}
+
+		return ret;
+	}
+	
+}
+
+
+
+
+class Node {
+	public String id;
+	public Type type;
+	
+	public enum Type { 
+		Autor, Conferencia, Paper, Terme, MidElement
+	};
+	
+	Node(String id) {
+		this.id = id;
+	}
+}
+
+class Path {
+	private ArrayList<Node.Type> contingut;
+	public void getPath(ArrayList<Node.Type> begin, ArrayList<Node.Type> end) {}
+
 }
