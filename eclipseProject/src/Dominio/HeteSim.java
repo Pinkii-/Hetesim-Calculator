@@ -183,7 +183,17 @@ public class HeteSim {
 		public Matrix<Float> getMatrixTerm() {
 			// TODO Auto-generated method stub
 			return null;
-		}}
+		}
+	}
+	
+	class Partite { // Esta me la quedo
+		public Matrix leftToMid;
+		public Matrix midToRight;
+		Partite(Matrix f,Matrix s){
+			leftToMid = f;
+			midToRight = s;
+		}
+	}
 	
 	
 	private Boolean paperAuthor;
@@ -255,8 +265,6 @@ public class HeteSim {
 		adyacent.set(a2,b4,true,false);
 		adyacent.set(a3,b4,true,false);
 //		adyacent.set(a3,b2,true,false);
-		System.out.println("A-B");
-		adyacent.print();
 		
 		
 		adyacentLeft.set(a1,e1,true,false);
@@ -266,8 +274,6 @@ public class HeteSim {
 		adyacentLeft.set(a2,e5,true,false);
 		adyacentLeft.set(a3,e6,true,false);
 //		adyacentLeft.set(a3,e7,true,false);
-		System.out.println("A-E");
-		adyacentLeft.print();
 		
 		adyacentRight = new Matrix<Boolean>();
 		
@@ -278,58 +284,63 @@ public class HeteSim {
 		adyacentRight.set(e5,b4,true,false);
 		adyacentRight.set(e6,b4,true,false);
 //		adyacentRight.set(e7,b2,true,false);
-		System.out.println("E-B");
-		adyacentRight.print();
 		
 		
 		heteAtoB = generateHeteSim(adyacent);
 		hetesimsLeft = generateHeteSim(adyacentLeft);
 		hetesimsRight = generateHeteSim(adyacentRight);
 		heteBtoA = heteAtoB.transpose();
-		System.out.println("Hetesim Left:");
+		System.out.println("A-E");
 		hetesimsLeft.print();
-		System.out.println("Hetesim Right:");
+		System.out.println("E-B");
 		hetesimsRight.print();
-		System.out.println("Hetesim:");
+		System.out.println("A-B");
 		heteAtoB.print();
-		System.out.println("Hetesim B-A:");
+		System.out.println("B-A:");
 		heteBtoA.print();
 		
-		System.out.println("a1 b1 " +heteAtoB.getValue(a1, b2));
-		System.out.println("b1 a1 " +heteBtoA.getValue(b2, a1));
 		
-//		System.out.println("transpose");
-//		heteAtoB.transpose().print();
+		Partite p = partiteMatrix(heteAtoB);
+		System.out.println("A-E?:");
+		p.leftToMid.print();
+		System.out.println("E-B?:");
+		p.midToRight.print();
 		
-		System.out.println("mult");
-		multiply(normaliceRows(heteAtoB),normaliceCols(heteBtoA)).print();
+//		System.out.println("a1 b1 " +heteAtoB.getValue(a1, b2));
+//		System.out.println("b1 a1 " +heteBtoA.getValue(b2, a1));
 //		
-//		System.out.println("Rand");
-//		normaliceRows(multiply(heteAtoB,heteAtoB.transpose())).print();
-//		System.out.println("Rand");
-//		normaliceRows(hetesimsRight).print();
-		System.out.println("not Equal to");
-		multiply(normaliceRows(hetesimsLeft), normaliceCols(hetesimsRight)).print();
-		
-		Matrix<Float> hLnorm = normaliceRows(heteAtoB);
-		Matrix<Float> hRnorm = normaliceCols(heteBtoA);
-		
-		System.out.println("a1 b1 normaliced " +hLnorm.getValue(a1, b2));
-		System.out.println("b1 a1 normaliced" +hRnorm.getValue(b2, a1));
-
-		System.out.println("");
-		hLnorm.print();
-		System.out.println("");
-		hRnorm.print();
-		
-		System.out.println("");
-		
-		
-		Matrix<Float> PathLeftToMid = normaliceRows(hetesimsLeft);
-//		System.out.println("b1 b1 multiplied " +PathLeftToMid.getValue(b2, b2));
-		Matrix<Float> PathRightToMidTransposed =  normaliceRows(hetesimsRight.transpose()); // La formua estaba maaaal.
-		normaliceHeteSim(PathLeftToMid,PathRightToMidTransposed).print();
-		System.out.println("a1 b1 " +normaliceHeteSim(PathLeftToMid,PathRightToMidTransposed).getValue(a1, b1));
+////		System.out.println("transpose");
+////		heteAtoB.transpose().print();
+//		
+//		System.out.println("mult");
+//		multiply(normaliceRows(heteAtoB),normaliceCols(heteBtoA)).print();
+////		
+////		System.out.println("Rand");
+////		normaliceRows(multiply(heteAtoB,heteAtoB.transpose())).print();
+////		System.out.println("Rand");
+////		normaliceRows(hetesimsRight).print();
+//		System.out.println("not Equal to");
+//		multiply(normaliceRows(hetesimsLeft), normaliceCols(hetesimsRight)).print();
+//		
+//		Matrix<Float> hLnorm = normaliceRows(heteAtoB);
+//		Matrix<Float> hRnorm = normaliceCols(heteBtoA);
+//		
+//		System.out.println("a1 b1 normaliced " +hLnorm.getValue(a1, b2));
+//		System.out.println("b1 a1 normaliced" +hRnorm.getValue(b2, a1));
+//
+//		System.out.println("");
+//		hLnorm.print();
+//		System.out.println("");
+//		hRnorm.print();
+//		
+//		System.out.println("");
+//		
+//		
+//		Matrix<Float> PathLeftToMid = normaliceRows(hetesimsLeft);
+//////		System.out.println("b1 b1 multiplied " +PathLeftToMid.getValue(b2, b2));
+//		Matrix<Float> PathRightToMidTransposed =  normaliceRows(hetesimsRight.transpose()); // La formula estaba maaaal.
+//		normaliceHeteSim(PathLeftToMid,PathRightToMidTransposed).print();
+//		System.out.println("a1 b1 " +normaliceHeteSim(PathLeftToMid,PathRightToMidTransposed).getValue(a1, b1));
 	}
 	
 	
@@ -542,22 +553,52 @@ public class HeteSim {
 			case author2Mid:
 			case Paper2MidAut:
 				if (!authorMid) {
-					Matrix author2Mid = null, mid2Paper = null;
-					partiteMatrix(graph.getMatrixAuthor(),author2Mid, mid2Paper);
-					this.author2mid = normaliceRows(author2Mid);
-					this.paper2authorMid = normaliceRows(mid2Paper.transpose());
+					Partite p = partiteMatrix(graph.getMatrixAuthor());
+					this.author2mid = normaliceRows(p.leftToMid);
+					this.paper2authorMid = normaliceRows(p.midToRight.transpose());
+					authorMid = true;
 				}
-				
+				if (w.pathType == PathTypes.author2Mid) matrixesToMultiply.add(author2mid);
+				else matrixesToMultiply.add(paper2authorMid);
 				break;
-				/// MORE THINGS TO COME HERE
+			case conf2Mid:
+			case Paper2MidConf:
+				if (!confMid) {
+					Partite p = partiteMatrix(graph.getMatrixConf());
+					this.conf2mid = normaliceRows(p.leftToMid);
+					this.paper2confMid = normaliceRows(p.midToRight.transpose());
+					confMid = true;
+				}
+				if (w.pathType == PathTypes.conf2Mid) matrixesToMultiply.add(conf2mid);
+				else matrixesToMultiply.add(paper2confMid);
+				break;
+			case term2Mid:
+			case Paper2MidTerm:
+				if (!termMid) {
+					Partite p = partiteMatrix(graph.getMatrixTerm());
+					this.term2mid = normaliceRows(p.leftToMid);
+					this.paper2termMid = normaliceRows(p.midToRight.transpose());
+					termMid = true;
+				}
+				if (w.pathType == PathTypes.term2Mid) matrixesToMultiply.add(term2mid);
+				else matrixesToMultiply.add(paper2termMid);
+				break;
 			}
 		}
-		return null;
+		
+		if (matrixesToMultiply.size() < 1) {
+			// Throw Exception ("The path cant be this short dude, or maybe this whole shit is bugged. Dunno")
+		}
+		Matrix ret = matrixesToMultiply.get(0);
+		for (Integer i = 1; i < matrixesToMultiply.size(); ++i) {
+			ret = multiply(ret,matrixesToMultiply.get(i));
+		}
+		return ret;
 	}
 
-	private void partiteMatrix(Matrix matrix, Matrix thingA2Mid, Matrix mid2ThingB) {
-		thingA2Mid = new Matrix<Float>();
-		mid2ThingB = new Matrix<Float>();
+	private Partite partiteMatrix(Matrix matrix) {
+		Matrix thingA2Mid = new Matrix<Float>();
+		Matrix mid2ThingB = new Matrix<Float>();
 		Integer total = 0;
 		for (Integer i = 0; i < matrix.getColSize(); ++i) {
 			for (Integer j = 0; j < matrix.getRowSize(); ++j) {
@@ -576,7 +617,7 @@ public class HeteSim {
 				}
 			}
 		}
-		
+		return new Partite(thingA2Mid,mid2ThingB);
 	}
 
 	private ArrayList<WhatMatrix> getPairs(ArrayList<Node.Type> path, ArrayList<Node.Type> aux) {
@@ -680,3 +721,5 @@ class Path {
 	public void getPath(ArrayList<Node.Type> begin, ArrayList<Node.Type> end) {}
 
 }
+
+
