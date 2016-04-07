@@ -514,27 +514,27 @@ public class HeteSim {
 			switch (w.pathType) {
 			case author2Paper:
 				if (!paperAuthor) { // init paper2Author
-					author2paper = normaliceRows(graph.getMatrixAuthor());
-					paper2author = normaliceRows(graph.getMatrixAuthor().trasposarMatriu());
-					paperAuthor = true;
+					this.author2paper = normaliceRows(graph.getMatrixAuthor());
+					this.paper2author = normaliceRows(graph.getMatrixAuthor().trasposarMatriu());
+					this.paperAuthor = true;
 				}
 				if (w.transposed) matrixesToMultiply.add(paper2author);
 				else matrixesToMultiply.add(author2paper);
 				break;
 			case conf2Paper:
 				if (!paperConf) { // init paper2Author
-					conf2paper = normaliceRows(graph.getMatrixConf());
-					paper2conf = normaliceRows(graph.getMatrixConf().trasposarMatriu());
-					paperConf = true;
+					this.conf2paper = normaliceRows(graph.getMatrixConf());
+					this.paper2conf = normaliceRows(graph.getMatrixConf().trasposarMatriu());
+					this.paperConf = true;
 				}
 				if (w.transposed) matrixesToMultiply.add(paper2conf);
 				else matrixesToMultiply.add(conf2paper);
 				break;
 			case term2Paper:
 				if (!paperTerm) { // init paper2Author
-					term2paper = normaliceRows(graph.getMatrixTerm());
-					paper2term = normaliceRows(graph.getMatrixTerm().trasposarMatriu());
-					paperTerm = true;
+					this.term2paper = normaliceRows(graph.getMatrixTerm());
+					this.paper2term = normaliceRows(graph.getMatrixTerm().trasposarMatriu());
+					this.paperTerm = true;
 				}
 				if (w.transposed) matrixesToMultiply.add(paper2term);
 				else matrixesToMultiply.add(term2paper);
@@ -542,10 +542,13 @@ public class HeteSim {
 			case author2Mid:
 			case Paper2MidAut:
 				if (!authorMid) {
-					Matrix autor2Mid = null, mid2Paper = null;
-					partiteMatrix(graph.getMatrixAuthor(),autor2Mid, mid2Paper);
+					Matrix author2Mid = null, mid2Paper = null;
+					partiteMatrix(graph.getMatrixAuthor(),author2Mid, mid2Paper);
+					this.author2mid = normaliceRows(author2Mid);
+					this.paper2authorMid = normaliceRows(mid2Paper.transpose());
 				}
 				
+				break;
 				/// MORE THINGS TO COME HERE
 			}
 		}
