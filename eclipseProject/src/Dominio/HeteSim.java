@@ -436,7 +436,7 @@ public class HeteSim {
 	/**
 	 *  
 	 * @param left is the multiplications of the U matrix from S to M (PMpl)
-	 * @param right is the transpose of the multiplications of the U matrix from T to M (PMpr-1')
+	 * @param right is the transpose of the multiplications of the U matrix from T to M (PMpr-1') (actually, is not trasposed, because row*row instead row*col)
 	 * @return Matrix of Hetesims
 	 */
 	private Matrix<Float> normaliceHeteSim(Matrix<Float> left, Matrix<Float> right) {
