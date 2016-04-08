@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import Dominio.Node.Type;
 
@@ -483,12 +484,13 @@ public class HeteSim {
 		return normaliceHeteSim(multiplyMatrixes(left,right),multiplyMatrixes(right,left));
 	}
 	
-	public ArrayList<Float> getHeteSim(Path p, Node n) {
+	public ArrayList<Pair<Integer,Float>> getHeteSim(Path p, Node n) {
 		ArrayList<Node.Type> left = null;
 		ArrayList<Node.Type> right = null;
 		p.getPath(left, right);
 		Collections.reverse(right);
-		return normaliceHeteSim(multiplyMatrixes(left,right),multiplyMatrixes(right,left)).getRow(n);
+		ArrayList<Float> hete = normaliceHeteSim(multiplyMatrixes(left,right),multiplyMatrixes(right,left)).getRow(n);
+		ArrayList<Pair<Integer,Float>> ret = new ArrayList<Pair<Integer,Float>>();
 	}
 	
 	public Float getHeteSim(Path p, Node n1, Node n2) {
@@ -722,4 +724,12 @@ class Path {
 
 }
 
+class Pair<F,S> {
+	F first;
+	S second;
+	Pair(F f, S s) {
+		first = f;
+		second = s;
+	}
+}
 
