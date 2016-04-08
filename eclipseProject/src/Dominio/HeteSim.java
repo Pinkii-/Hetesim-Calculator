@@ -188,11 +188,20 @@ public class HeteSim {
 	}
 	
 	class Partite { // Esta me la quedo
-		public Matrix leftToMid;
-		public Matrix midToRight;
+		Matrix leftToMid;
+		Matrix midToRight;
 		Partite(Matrix f,Matrix s){
 			leftToMid = f;
 			midToRight = s;
+		}
+	}
+	
+	class WhatMatrix {
+		Boolean transposed;
+		HeteSim.PathTypes pathType;
+		WhatMatrix(Boolean trans, HeteSim.PathTypes t) {
+			this.transposed = trans;
+			this.pathType = t;
 		}
 	}
 	
@@ -219,10 +228,10 @@ public class HeteSim {
 	private Graph graph;
 	
 	private enum PathTypes {
-		author2Paper, conf2Paper, term2Paper, 
-		author2Mid, Paper2MidAut,
-		conf2Mid, Paper2MidConf,
-		term2Mid, Paper2MidTerm
+		Author2Paper, Conf2Paper, Term2Paper, 
+		Author2Mid, Paper2MidAut,
+		Conf2Mid, Paper2MidConf,
+		Term2Mid, Paper2MidTerm
 	}
 	
 	
@@ -432,10 +441,10 @@ public class HeteSim {
 		return result;
 	}
 	
-	private Matrix<Float> normaliceCols(Matrix<Float> m) {
-		return normaliceRows(m.transpose()).transpose();
-	}
-	
+//	private Matrix<Float> normaliceCols(Matrix<Float> m) {
+//		return normaliceRows(m.transpose()).transpose();
+//	}
+//	
 	private float norm(ArrayList<Float> v) {
 		Float total = 0.f;
 		for (Integer i = 0; i < v.size();++i) {
@@ -481,7 +490,7 @@ public class HeteSim {
 		ArrayList<Node.Type> right = null;
 		p.getPath(left, right);
 		Collections.reverse(right);
-		return normaliceHeteSim(multiplyMatrixes(left,right),multiplyMatrixes(right,left));
+		return normaliceHeteSim(mutiplyMatrixes(getMatrixesToMultiply(left,right)),mutiplyMatrixes(getMatrixesToMultiply(right,left)));
 	}
 	
 	public ArrayList<Pair<Integer,Float>> getHeteSim(Path p, Node n) {
@@ -489,8 +498,18 @@ public class HeteSim {
 		ArrayList<Node.Type> right = null;
 		p.getPath(left, right);
 		Collections.reverse(right);
-		ArrayList<Float> hete = normaliceHeteSim(multiplyMatrixes(left,right),multiplyMatrixes(right,left)).getRow(n);
+		Matrix hete = normaliceHeteSim(multiplyVectorMatrix(n,getMatrixesToMultiply(left,right)),mutiplyMatrixes(getMatrixesToMultiply(right,left)));
 		ArrayList<Pair<Integer,Float>> ret = new ArrayList<Pair<Integer,Float>>();
+		if (hete.getColSize() != 1) {
+			//throwEception Petó. Lern to Code Faget
+			System.out.println("getHeteSim(Path p, Node n), el resultado no tiene un solo arraylist. Baia");
+		}
+		for (Integer i = 0; i < hete.getRowSize(); ++i) {
+			if (hete.getRow(0).get(i).equals(0.0f)) {
+				ret.add(new Pair(i, hete.getRow(0).get(i)));
+			}
+		}
+		return ret;
 	}
 	
 	public Float getHeteSim(Path p, Node n1, Node n2) {
@@ -498,96 +517,32 @@ public class HeteSim {
 		ArrayList<Node.Type> right = null;
 		p.getPath(left, right);
 		Collections.reverse(right);
-		return normaliceHeteSim(multiplyMatrixes(left,right),multiplyMatrixes(right,left)).getValue(n1,n2);
+		return normaliceHeteSim(multiplyVectorMatrix(n1, getMatrixesToMultiply(left,right)),multiplyVectorMatrix(n2, getMatrixesToMultiply(right,left))).getValue(0,0);
 	}
 	
 	// Private Metods
 	
-	class WhatMatrix {
-		public Boolean transposed;
-		public HeteSim.PathTypes pathType;
-		WhatMatrix(Boolean trans, HeteSim.PathTypes t) {
-			this.transposed = trans;
-			this.pathType = t;
+	private Matrix arrayListToMatrix(ArrayList<Float> a) {
+		Matrix ret = new Matrix();
+		ret.setSizes(1, a.size());
+		for (Integer i = 0; i < a.size(); ++i) {
+			ret.getRow(0).set(i, a.get(i));
 		}
+		return ret;
 	}
 	
-	/**
-	 * 
-	 * @param path
-	 * @param aux If path finish with E and the Node.Type of before is Paper, we dont know what matrix chose. We need to know the full path
-	 * @return
-	 */
-	
-	private Matrix multiplyMatrixes(ArrayList<Node.Type> path,ArrayList<Node.Type> aux) {
-		ArrayList<Matrix> matrixesToMultiply = new ArrayList<Matrix>();
-		ArrayList<WhatMatrix> whatMatrixes = getPairs(path, aux);
-		for (Integer i = 0; i < whatMatrixes.size(); ++i) {
-			WhatMatrix w = whatMatrixes.get(i);
-			switch (w.pathType) {
-			case author2Paper:
-				if (!paperAuthor) { // init paper2Author
-					this.author2paper = normaliceRows(graph.getMatrixAuthor());
-					this.paper2author = normaliceRows(graph.getMatrixAuthor().trasposarMatriu());
-					this.paperAuthor = true;
-				}
-				if (w.transposed) matrixesToMultiply.add(paper2author);
-				else matrixesToMultiply.add(author2paper);
-				break;
-			case conf2Paper:
-				if (!paperConf) { // init paper2Author
-					this.conf2paper = normaliceRows(graph.getMatrixConf());
-					this.paper2conf = normaliceRows(graph.getMatrixConf().trasposarMatriu());
-					this.paperConf = true;
-				}
-				if (w.transposed) matrixesToMultiply.add(paper2conf);
-				else matrixesToMultiply.add(conf2paper);
-				break;
-			case term2Paper:
-				if (!paperTerm) { // init paper2Author
-					this.term2paper = normaliceRows(graph.getMatrixTerm());
-					this.paper2term = normaliceRows(graph.getMatrixTerm().trasposarMatriu());
-					this.paperTerm = true;
-				}
-				if (w.transposed) matrixesToMultiply.add(paper2term);
-				else matrixesToMultiply.add(term2paper);
-				break;
-			case author2Mid:
-			case Paper2MidAut:
-				if (!authorMid) {
-					Partite p = partiteMatrix(graph.getMatrixAuthor());
-					this.author2mid = normaliceRows(p.leftToMid);
-					this.paper2authorMid = normaliceRows(p.midToRight.transpose());
-					authorMid = true;
-				}
-				if (w.pathType == PathTypes.author2Mid) matrixesToMultiply.add(author2mid);
-				else matrixesToMultiply.add(paper2authorMid);
-				break;
-			case conf2Mid:
-			case Paper2MidConf:
-				if (!confMid) {
-					Partite p = partiteMatrix(graph.getMatrixConf());
-					this.conf2mid = normaliceRows(p.leftToMid);
-					this.paper2confMid = normaliceRows(p.midToRight.transpose());
-					confMid = true;
-				}
-				if (w.pathType == PathTypes.conf2Mid) matrixesToMultiply.add(conf2mid);
-				else matrixesToMultiply.add(paper2confMid);
-				break;
-			case term2Mid:
-			case Paper2MidTerm:
-				if (!termMid) {
-					Partite p = partiteMatrix(graph.getMatrixTerm());
-					this.term2mid = normaliceRows(p.leftToMid);
-					this.paper2termMid = normaliceRows(p.midToRight.transpose());
-					termMid = true;
-				}
-				if (w.pathType == PathTypes.term2Mid) matrixesToMultiply.add(term2mid);
-				else matrixesToMultiply.add(paper2termMid);
-				break;
-			}
+	private Matrix multiplyVectorMatrix(Node n, ArrayList<Matrix> matrixesToMultiply) {
+		if (matrixesToMultiply.size() < 1) {
+			// Throw Exception ("The path cant be this short dude, or maybe this whole shit is bugged. Dunno")
 		}
-		
+		Matrix ret = arrayListToMatrix(matrixesToMultiply.get(0).getRow(n)); // n.id
+		for (Integer i = 1; i < matrixesToMultiply.size(); ++i) {
+			ret = multiply(ret,matrixesToMultiply.get(i));
+		}
+		return ret;
+	}
+	
+	private Matrix mutiplyMatrixes(ArrayList<Matrix> matrixesToMultiply) {
 		if (matrixesToMultiply.size() < 1) {
 			// Throw Exception ("The path cant be this short dude, or maybe this whole shit is bugged. Dunno")
 		}
@@ -596,6 +551,86 @@ public class HeteSim {
 			ret = multiply(ret,matrixesToMultiply.get(i));
 		}
 		return ret;
+	}
+	
+
+	
+	/**
+	 * 
+	 * @param path
+	 * @param aux If path finish with E and the Node.Type of before is Paper, we dont know what matrix chose. We need to know the full path
+	 * @return
+	 */
+	
+	private ArrayList<Matrix> getMatrixesToMultiply(ArrayList<Node.Type> path,ArrayList<Node.Type> aux) {
+		ArrayList<Matrix> matrixesToMultiply = new ArrayList<Matrix>();
+		ArrayList<WhatMatrix> whatMatrixes = getPairs(path, aux);
+		for (Integer i = 0; i < whatMatrixes.size(); ++i) {
+			WhatMatrix w = whatMatrixes.get(i);
+			switch (w.pathType) {
+			case Author2Paper:
+				if (!paperAuthor) { // init paper2Author
+					this.author2paper = normaliceRows(graph.getMatrixAuthor());
+					this.paper2author = normaliceRows(graph.getMatrixAuthor().trasposarMatriu());
+					this.paperAuthor = true;
+				}
+				if (w.transposed) matrixesToMultiply.add(paper2author);
+				else matrixesToMultiply.add(author2paper);
+				break;
+			case Conf2Paper:
+				if (!paperConf) { // init paper2Author
+					this.conf2paper = normaliceRows(graph.getMatrixConf());
+					this.paper2conf = normaliceRows(graph.getMatrixConf().trasposarMatriu());
+					this.paperConf = true;
+				}
+				if (w.transposed) matrixesToMultiply.add(paper2conf);
+				else matrixesToMultiply.add(conf2paper);
+				break;
+			case Term2Paper:
+				if (!paperTerm) { // init paper2Author
+					this.term2paper = normaliceRows(graph.getMatrixTerm());
+					this.paper2term = normaliceRows(graph.getMatrixTerm().trasposarMatriu());
+					this.paperTerm = true;
+				}
+				if (w.transposed) matrixesToMultiply.add(paper2term);
+				else matrixesToMultiply.add(term2paper);
+				break;
+			case Author2Mid:
+			case Paper2MidAut:
+				if (!authorMid) {
+					Partite p = partiteMatrix(graph.getMatrixAuthor());
+					this.author2mid = normaliceRows(p.leftToMid);
+					this.paper2authorMid = normaliceRows(p.midToRight.transpose());
+					authorMid = true;
+				}
+				if (w.pathType == PathTypes.Author2Mid) matrixesToMultiply.add(author2mid);
+				else matrixesToMultiply.add(paper2authorMid);
+				break;
+			case Conf2Mid:
+			case Paper2MidConf:
+				if (!confMid) {
+					Partite p = partiteMatrix(graph.getMatrixConf());
+					this.conf2mid = normaliceRows(p.leftToMid);
+					this.paper2confMid = normaliceRows(p.midToRight.transpose());
+					confMid = true;
+				}
+				if (w.pathType == PathTypes.Conf2Mid) matrixesToMultiply.add(conf2mid);
+				else matrixesToMultiply.add(paper2confMid);
+				break;
+			case Term2Mid:
+			case Paper2MidTerm:
+				if (!termMid) {
+					Partite p = partiteMatrix(graph.getMatrixTerm());
+					this.term2mid = normaliceRows(p.leftToMid);
+					this.paper2termMid = normaliceRows(p.midToRight.transpose());
+					termMid = true;
+				}
+				if (w.pathType == PathTypes.Term2Mid) matrixesToMultiply.add(term2mid);
+				else matrixesToMultiply.add(paper2termMid);
+				break;
+			}
+		}
+		return matrixesToMultiply;
 	}
 
 	private Partite partiteMatrix(Matrix matrix) {
@@ -651,13 +686,13 @@ public class HeteSim {
 				else {
 					switch (last) {
 						case Autor:
-							ret.add(new WhatMatrix(false,PathTypes.author2Mid));
+							ret.add(new WhatMatrix(false,PathTypes.Author2Mid));
 							break;
 						case Conferencia:
-							ret.add(new WhatMatrix(false,PathTypes.conf2Mid));
+							ret.add(new WhatMatrix(false,PathTypes.Conf2Mid));
 							break;
 						case Terme:
-							ret.add(new WhatMatrix(false,PathTypes.term2Mid));
+							ret.add(new WhatMatrix(false,PathTypes.Term2Mid));
 							break;
 						default:
 							/* Throw exception: The function is broken or the path is broken */
@@ -678,7 +713,7 @@ public class HeteSim {
 				}
 				switch (last) {
 					case Autor:
-						ret.add(new WhatMatrix(trans,PathTypes.author2Paper));
+						ret.add(new WhatMatrix(trans,PathTypes.Author2Paper));
 						break;
 					case Conferencia:
 						ret.add(new WhatMatrix(trans,PathTypes.Paper2MidConf));
