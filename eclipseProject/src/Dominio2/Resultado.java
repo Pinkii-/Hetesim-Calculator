@@ -78,9 +78,9 @@ public class Resultado {
 		return retResult;
 	}
 	
-	@SuppressWarnings("null")  //No deberia ser necesario, vamos a tener al menos un resultado cuando se llama a esto. 
+	// (Quitar este comentario) Estas haciendo adds a un ArrayList que es un null(no está inicializado) Te va a saltar un nullpointerexception
 	public ArrayList<NodePair> getResultado(float threshold){
-		ArrayList<NodePair> retResult = null;
+		ArrayList<NodePair> retResult = new ArrayList<NodePair>();
 		Integer i = 0;
 		while (listaResultado.get(i).hetesimVal>threshold){
 			retResult.add(listaResultado.get(i));
@@ -110,7 +110,7 @@ class HeteSim{ /*TEMPORAL para que no me salten 278364579263428 errores*/
 	public ArrayList<Pair<Integer,Float>> getHeteSim(Path p, Node n1){
 		return null;
 	}
-	public float getHeteSim(Path p, Node n1, Node n2){
+	public Float getHeteSim(Path p, Node n1, Node n2){
 		return 0.f;
 	}
 	
@@ -234,7 +234,7 @@ class NodePair{
 	public float hetesimVal;
 	
 	NodePair(Node n1, Node n2, float hetesimVal) {
-		pairN = Pair(n1,n2); //??? wut
+		pairN = new Pair(n1,n2); //??? wut (Hacia falta el new)
 		if (hetesimVal < 0 || hetesimVal > 1) { /*Throw exception*/ }
 		this.hetesimVal = hetesimVal;
 	}
