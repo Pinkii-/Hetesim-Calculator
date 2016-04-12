@@ -2,14 +2,9 @@ package Dominio;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import Dominio.Node.Type;
 
 public class HeteSim {	
-	class Partite { // Esta me la quedo
+	class Partite {
 		Matrix leftToMid;
 		Matrix midToRight;
 		Partite(Matrix f,Matrix s){
@@ -26,7 +21,6 @@ public class HeteSim {
 			this.pathType = t;
 		}
 	}
-	
 	
 	private Boolean paperAuthor;
 	private Matrix paper2author;
@@ -68,161 +62,7 @@ public class HeteSim {
 	
 	public HeteSim() {
 		graph = null;
-		// Testhings
-		adyacent = new Matrix();
-		adyacentLeft = new Matrix();
-		adyacentRight = new Matrix();
 	}
-	
-//	public void initHeteSims() {
-		// Inicializar para probar el programa
-//		NodePaper a1 = new NodePaper("a1");
-//		NodePaper a2 = new NodePaper("a2");
-//		NodePaper a3 = new NodePaper("a3");
-//		NodeAuthor b1 = new NodeAuthor("b1");
-//		NodeAuthor b2 = new NodeAuthor("b2");
-//		NodeAuthor b3 = new NodeAuthor("b3");
-//		NodeAuthor b4 = new NodeAuthor("b4");
-//		Node e1 = new Node("e1");
-//		Node e2 = new Node("e2");
-//		Node e3 = new Node("e3");
-//		Node e4 = new Node("e4");
-//		Node e5 = new Node("e5");
-//		Node e6 = new Node("e6");
-//		Node e7 = new Node("e7");
-//		adyacent.set(a1,b1,1,false);
-//		adyacent.set(a1,b2,1,false);
-//		adyacent.set(a2,b2,true,false);
-//		adyacent.set(a2,b3,true,false);
-//		adyacent.set(a2,b4,true,false);
-//		adyacent.set(a3,b4,true,false);
-////		adyacent.set(a3,b2,true,false);
-//		
-//		
-//		adyacentLeft.set(a1,e1,true,false);
-//		adyacentLeft.set(a1,e2,true,false);
-//		adyacentLeft.set(a2,e3,true,false);
-//		adyacentLeft.set(a2,e4,true,false);
-//		adyacentLeft.set(a2,e5,true,false);
-//		adyacentLeft.set(a3,e6,true,false);
-////		adyacentLeft.set(a3,e7,true,false);
-//		
-//		adyacentRight = new Matrix();
-//		
-//		adyacentRight.set(e1,b1,true,false);
-//		adyacentRight.set(e2,b2,true,false);
-//		adyacentRight.set(e3,b2,true,false);
-//		adyacentRight.set(e4,b3,true,false);
-//		adyacentRight.set(e5,b4,true,false);
-//		adyacentRight.set(e6,b4,true,false);
-////		adyacentRight.set(e7,b2,true,false);
-//		
-//		
-//		heteAtoB = adyacent;
-//		hetesimsLeft = adyacentLeft;
-//		hetesimsRight = adyacentRight;
-//		heteBtoA = heteAtoB.trasposarMatriu();
-//		System.out.println("A-E");
-//		hetesimsLeft.print();
-//		System.out.println("E-B");
-//		hetesimsRight.print();
-//		System.out.println("A-B");
-//		heteAtoB.print();
-//		System.out.println("B-A:");
-//		heteBtoA.print();
-//		
-//		
-//		Partite p = partiteMatrix(heteAtoB);
-//		System.out.println("A-E?:");
-//		p.leftToMid.print();
-//		System.out.println("E-B?:");
-//		p.midToRight.print();
-		
-//		System.out.println("a1 b1 " +heteAtoB.getValue(a1, b2));
-//		System.out.println("b1 a1 " +heteBtoA.getValue(b2, a1));
-//		
-////		System.out.println("trasposarMatriu");
-////		heteAtoB.trasposarMatriu().print();
-//		
-//		System.out.println("mult");
-//		multiply(normaliceRows(heteAtoB),normaliceCols(heteBtoA)).print();
-////		
-////		System.out.println("Rand");
-////		normaliceRows(multiply(heteAtoB,heteAtoB.trasposarMatriu())).print();
-////		System.out.println("Rand");
-////		normaliceRows(hetesimsRight).print();
-//		System.out.println("not Equal to");
-//		multiply(normaliceRows(hetesimsLeft), normaliceCols(hetesimsRight)).print();
-//		
-//		Matrix<Float> hLnorm = normaliceRows(heteAtoB);
-//		Matrix<Float> hRnorm = normaliceCols(heteBtoA);
-//		
-//		System.out.println("a1 b1 normaliced " +hLnorm.getValue(a1, b2));
-//		System.out.println("b1 a1 normaliced" +hRnorm.getValue(b2, a1));
-//
-//		System.out.println("");
-//		hLnorm.print();
-//		System.out.println("");
-//		hRnorm.print();
-//		
-//		System.out.println("");
-//		
-//		
-//		Matrix<Float> PathLeftToMid = normaliceRows(hetesimsLeft);
-//////		System.out.println("b1 b1 multiplied " +PathLeftToMid.getValue(b2, b2));
-//		Matrix<Float> PathRightToMidtrasposarMatriud =  normaliceRows(hetesimsRight.trasposarMatriu()); // La formula estaba maaaal.
-//		normaliceHeteSim(PathLeftToMid,PathRightToMidtrasposarMatriud).print();
-//		System.out.println("a1 b1 " +normaliceHeteSim(PathLeftToMid,PathRightToMidtrasposarMatriud).getValue(a1, b1));
-//	}
-	
-	
-	
-//	Matrix generateHeteSim(Matrix<Boolean> b) {
-//		Matrix<Float> ret = new Matrix<Float>();
-//		ret.copySizes(b);
-////		ArrayList<Float> rowsPrct = new ArrayList<Float>();
-////		for (int i = 0; i < b.getNRows(); ++i) {
-////			rowsPrct.add(1.0f/countTrues(b.getRow(i)));
-////		}
-////		
-//////		System.out.println(rowsPrct.toString());
-////
-////		ArrayList<Float> colsPrct = new ArrayList<Float>();
-////		for (int i = 0; i < b.getNCols(); ++i) {
-////			colsPrct.add(1.0f/countTrues(b.getCol(i)));
-////		}
-////		
-//////		System.out.println(colsPrct.toString());
-//		
-////		for (Integer i = 0; i < ret.getNRows(); ++i) {
-////			for (Integer j = 0; j < ret.getNCols(); ++j) {
-////				ret.getRow(i).set(j, rowsPrct.get(i)*colsPrct.get(j)*(b.getRow(i).get(j) ? 1 : 0));
-////			}
-////		}
-//		
-////		ArrayList<Integer> rowsCount = new ArrayList<Integer>(); // out S
-////		for (int i = 0; i < b.getNRows(); ++i) {
-////			rowsCount.add(countTrues(b.getRow(i)));
-////		}
-////		ArrayList<Integer> colsCount = new ArrayList<Integer>(); // in T
-////		for (int i = 0; i < b.getNCols(); ++i) {
-////			colsCount.add(countTrues(b.getCol(i)));
-////		}
-//		
-//		for (Integer i = 0; i < ret.getNRows(); ++i) {
-//			for (Integer j = 0; j < ret.getNCols(); ++j) {
-//				ret.getRow(i).set(j, ((b.getRow(i).get(j) ? 1.0f : 0.0f)));
-//			}
-//		}
-//		
-//		return ret;
-//	}
-	
-//	private int countTrues(final List<Boolean> a) {
-//		long ret = a.stream().filter(b -> b == true).count();
-//		return (int) ret;
-//	}
-
 	
 	private Matrix multiply(Matrix leftSide, Matrix rightSide) {
 		Matrix result = new Matrix();
@@ -261,10 +101,6 @@ public class HeteSim {
 		return result;
 	}
 	
-//	private Matrix<Float> normaliceCols(Matrix<Float> m) {
-//		return normaliceRows(m.trasposarMatriu()).trasposarMatriu();
-//	}
-//	
 	private float norm(ArrayList<Float> v) {
 		Float total = 0.f;
 		for (Integer i = 0; i < v.size();++i) {
@@ -296,7 +132,7 @@ public class HeteSim {
 		return result;
 	}
 	
-	// PRE ESPECIALIZATION
+	// POST ESPECIALIZATION
 	
 	public void setGraph(Graf g) {
 		graph = g;
@@ -559,15 +395,6 @@ public class HeteSim {
 		return ret;
 	}
 	
-}
-
-class Pair<F,S> {
-	F first;
-	S second;
-	Pair(F f, S s) {
-		first = f;
-		second = s;
-	}
 }
 
 class SparseMatrix {
