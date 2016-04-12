@@ -22,6 +22,13 @@ public class HeteSim {
 		}
 	}
 	
+	// Maybe is faster with this (?) 
+	class SparseMatrix {
+		SparseMatrix(Matrix m) {
+			
+		}
+	}
+	
 	private Boolean paperAuthor;
 	private Matrix paper2author;
 	private Matrix author2paper;
@@ -394,9 +401,5 @@ public class HeteSim {
 
 		return ret;
 	}
-	
-}
-
-class SparseMatrix {
 	
 }
