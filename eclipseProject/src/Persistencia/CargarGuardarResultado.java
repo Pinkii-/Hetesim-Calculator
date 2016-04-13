@@ -1,3 +1,4 @@
+
 package Persistencia;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -27,6 +28,7 @@ public class CargarGuardarResultado implements Serializable{
 		return fileDirectory.toString();
 	}
 	public void setFileDirectory(String fileDirectory) {
+		/*Chequiar si existe*/
 		this.fileDirectory = Paths.get(fileDirectory);
 	}
 	
@@ -35,7 +37,7 @@ public class CargarGuardarResultado implements Serializable{
 			FileOutputStream FileOutput = new FileOutputStream(fileDirectory.resolve(r.getIdResultado()+".ser").toString());
 			ObjectOutputStream ObjectOutput = new ObjectOutputStream(FileOutput);
 			Resultado res = new Resultado();
-			res = r.clone(); //Resultado tiene que poder hacer clone() (?)
+			res = r.deepClone(); 
 			ObjectOutput.writeObject(res);
 			ObjectOutput.close();
 			System.out.println("Path absoluto fichero:"+fileDirectory.resolve(r.getIdResultado()+".ser").toString());
@@ -45,10 +47,12 @@ public class CargarGuardarResultado implements Serializable{
 		//No existe el Resultado: lo guarda.
 		//El Resultado r ya ha sido guardado: Sobreescribe.
 		catch(FileNotFoundException fnfe){
-			if (Files.notExists(fileDirectory)) {
+			/*if (Files.notExists(fileDirectory)) {
 				System.out.println(fileDirectory.toString());
 				System.out.println("El Directorio no existe");
 			}
+			Mirar en el constructor/setter.
+			*/
 		}
 		
 	}
@@ -64,11 +68,13 @@ public class CargarGuardarResultado implements Serializable{
 		//No existe el directorio: ...
 		//No existe el Resultado: Error.
 		catch(FileNotFoundException fnfe){
+			/*
 			if (Files.notExists(fileDirectory)) {
 				System.out.println(fileDirectory.toString());
 				System.out.println("El Directorio no existe");
 			}
-			else if (Files.notExists(fileDirectory.resolve(idResultado+".ser"))) {
+			Mirar en el constructor/setter*/
+			if (Files.notExists(fileDirectory.resolve(idResultado+".ser"))) {
 				System.out.println(fileDirectory.resolve(idResultado+".ser").toString());
 				System.out.println("El Resultado no existe o algo pasa con los permisos ekisde");
 			}
