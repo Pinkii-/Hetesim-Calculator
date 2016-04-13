@@ -170,8 +170,8 @@ public class HeteSim {
 			System.out.println("getHeteSim(Path p, Node n), el resultado no tiene un solo arraylist. Baia");
 		}
 		for (Integer i = 0; i < hete.getNCols(); ++i) {
-			if (hete.getRow(0).get(i).equals(0.0f)) {
-				ret.add(new Pair(i, hete.getRow(0).get(i)));
+			if (!hete.getRow(0).get(i).equals(0.0f)) {
+				ret.add(new Pair<Integer, Float>(i, hete.getRow(0).get(i)));
 			}
 		}
 		return ret;
