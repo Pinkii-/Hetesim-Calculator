@@ -31,7 +31,7 @@ public class CtrlHetesim {
 	}
 	
 	public Result searchPathNodeNode(final Graf g, final Path p, final Node n1, final Node n2){
-		return searchPathNodeThreshhold(g,0.f,p,n1,n2);	
+		return searchPathNodeNodeThreshhold(g,0.f,p,n1,n2);	
 	}
 	
 	
