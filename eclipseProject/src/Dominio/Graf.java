@@ -61,7 +61,7 @@ public class Graf {
 
 	//Pre:la id del node existeix es menor que el size de el arrayList corresponent a type.
 	//Post:Retorna el node amb idNode == id i type == type.
-	private Node getNode(Integer id, Node.Type type) {
+	public Node getNode(Integer id, Node.Type type) {
 		return null;
 	}
 
