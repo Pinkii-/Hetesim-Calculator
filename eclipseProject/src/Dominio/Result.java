@@ -37,7 +37,7 @@ public class Result {
 	}
 	
 	
-	public Result(final Graf g, final Float threshold, final ArrayList<Pair<Integer,Float>> resultHete, final Node n1, final Path p) {
+	public Result(final Graf g, final Float threshold, final ArrayList<Pair<Integer,Float>> resultHete, final Path p, final Node n1) {
 		if (p.getContingut().get(0) != n1.getTipus()) {/*Throw exception*/}
 		firstN = n1;
 		usedP = p;
@@ -54,7 +54,7 @@ public class Result {
 	}
 	
 	
-	public Result(final Graf g, final float threshold, final Float resultHete, final Node n1, final Node n2, final Path p){
+	public Result(final Graf g, final float threshold, final Float resultHete, final Path p, final Node n1, final Node n2){
 		if (p.getContingut().get(0) != n1.getTipus() || p.getContingut().get(p.getLength()-1) != n2.getTipus()) {/*Throw exception*/}
 		firstN = n1;
 		lastN = n2;
@@ -74,24 +74,16 @@ public class Result {
 	
 	
 	
-	public ArrayList<NodePair> getResult(){ //Get the whole result list, or with a default threshold
+	public ArrayList<NodePair> getResult(){ //Get the result list
 		ArrayList<NodePair> retResult = resultList;
-		//while (listaResultado.get(i).hetesimVal>myThreshold)
-		//    retResult.add(listaResultado.get(i));
-		//    ++i;
-		//}
-		return retResult;
-	}
-	
-	public ArrayList<NodePair> getResult(float threshold){
-		ArrayList<NodePair> retResult = new ArrayList<NodePair>();
-		Integer i = 0;
+		int i = 0;
 		while (resultList.get(i).hetesimVal>threshold){
-			retResult.add(resultList.get(i));
-			++i;
+		    retResult.add(resultList.get(i));
+		    ++i;
 		}
 		return retResult;
 	}
+
 	
 	
 	
