@@ -1,4 +1,3 @@
-
 package Persistencia;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -32,11 +31,11 @@ public class CargarGuardarResultado implements Serializable{
 		this.fileDirectory = Paths.get(fileDirectory);
 	}
 	
-	public void guardaResultado(Resultado r) throws FileNotFoundException, CloneNotSupportedException, IOException {
+	public void guardaResultado(Result r) throws FileNotFoundException, CloneNotSupportedException, IOException {
 		try {
 			FileOutputStream FileOutput = new FileOutputStream(fileDirectory.resolve(r.getIdResultado()+".ser").toString());
 			ObjectOutputStream ObjectOutput = new ObjectOutputStream(FileOutput);
-			Resultado res = new Resultado();
+			Result res = new Result();
 			res = r.deepClone(); 
 			ObjectOutput.writeObject(res);
 			ObjectOutput.close();

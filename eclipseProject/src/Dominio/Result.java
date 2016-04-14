@@ -1,11 +1,25 @@
-//package Dominio;
 package Dominio;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-public class Result {
+
+@SuppressWarnings("serial")
+/*
+ * If you're actually using serialization, it only matters if you plan on storing and retrieving objects using serialization directly.
+ * The serialVersionUID represents your class version, and you should increment it if the current version of your class is not backwards
+ * compatible with its previous version.
+ * 
+ */
+public class Result implements Cloneable, Serializable{
 	private Node firstN; //Search origin node
 	private Node lastN; //Search destination node
 	private Path usedP; //Search Path
@@ -36,7 +50,6 @@ public class Result {
 		sortResult(); //Sort result list
 	}
 	
-	
 	public Result(final Graf g, final Float threshold, final ArrayList<Pair<Integer,Float>> resultHete, final Path p, final Node n1) {
 		if (p.getContingut().get(0) != n1.getTipus()) {/*Throw exception*/}
 		firstN = n1;
@@ -53,7 +66,6 @@ public class Result {
 		sortResult(); //Sort result list
 	}
 	
-	
 	public Result(final Graf g, final float threshold, final Float resultHete, final Path p, final Node n1, final Node n2){
 		if (p.getContingut().get(0) != n1.getTipus() || p.getContingut().get(p.getLength()-1) != n2.getTipus()) {/*Throw exception*/}
 		firstN = n1;
@@ -66,11 +78,19 @@ public class Result {
 	
 	
 	
-	//TODO: Add listaResultados
 	public String toString(){
-		return ("Resultado " + idResult + "\n -Path: " + usedP.toString() + "\n - N1: " + firstN.toString() + "\n - N2:" + lastN.toString()); 
+		String retStr = new String();
+		retStr = ("Resultado: " + idResult + "\n");
+		retStr = retStr + ("    Path: " + usedP.toString() + "\n");
+		retStr = retStr + ("    N1: " + firstN.toString() + "\n");
+		retStr = retStr + ("    N2: " + lastN.toString() + "\n");
+		retStr = retStr + ("\n");
+		int i = 0;
+		for (i = 0; i < resultList.size(); ++i){
+			retStr = retStr + "    " + resultList.get(i).toString() + "\n";
+		}
+		return retStr; 
 	}
-	
 	
 	
 	
@@ -83,8 +103,36 @@ public class Result {
 		}
 		return retResult;
 	}
-
 	
+	
+	
+	public Result deepClone() {
+		try {
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			ObjectOutputStream oos = new ObjectOutputStream(baos);
+			oos.writeObject(this);
+
+			ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+			ObjectInputStream ois = new ObjectInputStream(bais);
+			return (Result) ois.readObject();
+		} catch (IOException e) {
+			return null;
+		} catch (ClassNotFoundException e) {
+			return null;
+		}
+	}
+	
+	
+	
+	public String getIdResult(){
+		String retStr = new String(idResult);
+		return retStr;
+	}
+	
+	public void setIdResult(String idResult){
+		this.idResult = idResult;
+	}
+
 	
 	
 	public void modifLine(Integer i, Float hetesimVal){
@@ -95,8 +143,6 @@ public class Result {
 	public void deleteLine(Integer i){
 		resultList.remove(i);
 	}
-	
-	
 	
 	
 	
@@ -123,6 +169,10 @@ class NodePair{
 	
 	public float compareTo(NodePair np){
 		return (this.hetesimVal - np.hetesimVal);
+	}
+	
+	public String toString(){
+		return ("First Node: " + pairN.first.toString() + " Second Node: " + pairN.second.toString() + " Hetesim: " + hetesimVal);
 	}
 	
 }
