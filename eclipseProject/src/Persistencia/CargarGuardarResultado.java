@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import Dominio.Result;
 
 //Clase CargarGuardarResultado:
 
@@ -33,13 +34,13 @@ public class CargarGuardarResultado implements Serializable{
 	
 	public void guardaResultado(Result r) throws FileNotFoundException, CloneNotSupportedException, IOException {
 		try {
-			FileOutputStream FileOutput = new FileOutputStream(fileDirectory.resolve(r.getIdResultado()+".ser").toString());
+			FileOutputStream FileOutput = new FileOutputStream(fileDirectory.resolve(r.getIdResult()+".ser").toString());
 			ObjectOutputStream ObjectOutput = new ObjectOutputStream(FileOutput);
-			Result res = new Result();
+			Result res = new Result(null, null, null, null);
 			res = r.deepClone(); 
 			ObjectOutput.writeObject(res);
 			ObjectOutput.close();
-			System.out.println("Path absoluto fichero:"+fileDirectory.resolve(r.getIdResultado()+".ser").toString());
+			System.out.println("Path absoluto fichero:"+fileDirectory.resolve(r.getIdResult()+".ser").toString());
 
 		}
 		//No existe el directorio: ...
@@ -56,13 +57,13 @@ public class CargarGuardarResultado implements Serializable{
 		
 	}
 	
-	public Resultado cargaResultado(String idResultado) throws FileNotFoundException, IOException, ClassNotFoundException {
+	public Result cargaResultado(String idResultado) throws FileNotFoundException, IOException, ClassNotFoundException {
 		try {
 			FileInputStream FileInput = new FileInputStream(fileDirectory.resolve(idResultado+".ser").toString());
 			ObjectInputStream ObjectInput = new ObjectInputStream(FileInput);
 			Object aux = ObjectInput.readObject();
 			ObjectInput.close();
-			return (Resultado)aux;
+			return (Result)aux;
 		}
 		//No existe el directorio: ...
 		//No existe el Resultado: Error.
