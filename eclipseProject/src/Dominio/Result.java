@@ -24,8 +24,13 @@ public class Result implements Cloneable, Serializable{
 	private Node firstN; //Search origin node
 	private Node lastN; //Search destination node
 	private Path usedP; //Search Path
-	private String idResult;
+
 	private Float threshold;
+	
+	private String idResult;
+	private String idGraph;
+	private Boolean modified;
+	
 	
 	private ArrayList<NodePair> resultList; //Hetesim results, structured in NodePairs and (hopefully) sorted by Hetesim values
 	
@@ -34,6 +39,8 @@ public class Result implements Cloneable, Serializable{
 	public Result(final Graf g, final Float threshold, final Matrix resultHete, final Path p){
 		usedP = p;
 		idResult = new String(g.getNom() + " " + p.toString());
+		idGraph = new String(g.id.toString());
+		modified = false;
 		this.threshold = threshold;
 		
 		for (Integer i = 0; i < resultHete.getNCols(); ++i){
@@ -55,6 +62,7 @@ public class Result implements Cloneable, Serializable{
 		if (p.getContingut().get(0) != n1.getTipus()) {/*Throw exception*/}
 		firstN = n1;
 		usedP = p;
+		modified = false;
 		this.threshold = threshold;
 		
 		
@@ -72,6 +80,7 @@ public class Result implements Cloneable, Serializable{
 		firstN = n1;
 		lastN = n2;
 		usedP = p;
+		modified = false;
 		this.threshold = threshold;
 		
 		resultList.add(new NodePair(n1,n2,resultHete)); //Create NodePair and add to list. We only need to get the float value from Hetesim
@@ -81,18 +90,33 @@ public class Result implements Cloneable, Serializable{
 	
 	public String toString(){
 		String retStr = new String();
-		retStr = ("Resultado: " + idResult + "\n");
-		retStr = retStr + ("    Path: " + usedP.toString() + "\n");
-		retStr = retStr + ("    N1: " + firstN.toString() + "\n");
-		retStr = retStr + ("    N2: " + lastN.toString() + "\n");
-		retStr = retStr + ("\n");
+		retStr = ("Resultado: " + idResult + "\n");                          //Resultado: idresult
+		retStr = retStr + ("    Path: " + usedP.toString() + "\n");          //Path: path
+		retStr = retStr + ("    N1: " + firstN.toString() + "\n");           //N1: <Node to string>    <<<<Igual solo con el nombre basta?
+		retStr = retStr + ("    N2: " + lastN.toString() + "\n");            //N2: <Node to string>    <<<<Igual solo con el nombre basta?
+		retStr = retStr + ("    Threshold: " + threshold + "\n");            //Threshold: threshold
+		retStr = retStr + ("\n");                                            //
 		int i = 0;
 		for (i = 0; i < resultList.size(); ++i){
-			retStr = retStr + "    " + resultList.get(i).toString() + "\n";
+			retStr = retStr + "    " + resultList.get(i).toString() + "\n"; //First node: <Node to string> Last node: <Node to string> Hetesim: valorHetesim
 		}
 		return retStr; 
 	}
 	
+	/* Comprueba coherencia con el grafo g cargado en dominio. Si no coinciden los IDs,
+	 * se añade la linea "No coherente" al principio del toString.
+	 * La vista se encargará de poner el triangulito rojo de warning.
+	*/
+	public String toString(Graf g){
+		String retStr = new String();
+		if (g.id.toString() != idGraph || modified) retStr = retStr + "No coherente\n";
+		retStr = retStr + toString();
+		return retStr;
+	}
+	
+	public void setModified(){
+		modified = true;
+	}
 	
 	
 	public ArrayList<NodePair> getResult(){ //Get the result list
