@@ -1,9 +1,9 @@
 package Dominio;
 
-public class CtrlHetesim {
+public class CtrlSearch {
 	
-	Graf g;
-	HeteSim het;
+	Graf g = null;
+	HeteSim het = null;
 	
 	void setGraph(Graf g) {
 		this.g = g;
