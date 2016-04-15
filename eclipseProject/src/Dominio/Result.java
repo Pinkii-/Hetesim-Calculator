@@ -1,3 +1,4 @@
+//Autor: Xavier Peñalosa
 package Dominio;
 
 import java.io.ByteArrayInputStream;
