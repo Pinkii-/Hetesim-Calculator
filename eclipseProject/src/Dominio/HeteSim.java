@@ -2,6 +2,7 @@ package Dominio;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 
 public class HeteSim {	
 	class Partite {
@@ -24,6 +25,7 @@ public class HeteSim {
 	
 	// Maybe is faster with this (?) 
 	class SparseMatrix {
+		ArrayList<HashMap<Integer, Integer>> matrix;
 		SparseMatrix(Matrix m) {
 			
 		}
@@ -202,7 +204,7 @@ public class HeteSim {
 		if (matrixesToMultiply.size() < 1) {
 			// Throw Exception ("The path cant be this short dude, or maybe this whole shit is bugged. Dunno")
 		}
-		Matrix ret = arrayListToMatrix(matrixesToMultiply.get(0).getRow(n)); // n.id
+		Matrix ret = arrayListToMatrix(matrixesToMultiply.get(0).getRow(n.id));
 		for (Integer i = 1; i < matrixesToMultiply.size(); ++i) {
 			ret = multiply(ret,matrixesToMultiply.get(i));
 		}

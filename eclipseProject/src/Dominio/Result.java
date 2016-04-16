@@ -39,7 +39,7 @@ public class Result implements Cloneable, Serializable{
 	public Result(final Graf g, final Float threshold, final Matrix resultHete, final Path p){
 		usedP = p;
 		idResult = new String(g.getNom() + " " + p.toString());
-		idGraph = new String(g.id.toString());
+		idGraph = String.valueOf(g.id);
 		modified = false;
 		this.threshold = threshold;
 		
@@ -109,7 +109,7 @@ public class Result implements Cloneable, Serializable{
 	*/
 	public String toString(Graf g){
 		String retStr = new String();
-		if (g.id.toString() != idGraph || modified) retStr = retStr + "No coherente\n";
+		if (String.valueOf(g.id) != idGraph || modified) retStr = retStr + "No coherente\n";
 		retStr = retStr + toString();
 		return retStr;
 	}
