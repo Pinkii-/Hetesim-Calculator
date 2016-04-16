@@ -6,30 +6,30 @@ import java.util.Collections;
 public class FastHetesim {
 
 	class WhatMatrix {
-		Boolean transposeMatrix;
+		boolean transposeMatrix;
 		PathTypes pathType;
-		WhatMatrix(Boolean trans, PathTypes t) {
+		WhatMatrix(boolean trans, PathTypes t) {
 			this.transposeMatrix = trans;
 			this.pathType = t;
 		}
 	}
 	
-	private Boolean paperAuthor;
+	private boolean paperAuthor;
 	private SparseMatrix paper2author;
 	private SparseMatrix author2paper;
-	private Boolean paperConf;
+	private boolean paperConf;
 	private SparseMatrix paper2conf;
 	private SparseMatrix conf2paper;
-	private Boolean paperTerm;
+	private boolean paperTerm;
 	private SparseMatrix paper2term;
 	private SparseMatrix term2paper;
-	private Boolean authorMid;
+	private boolean authorMid;
 	private SparseMatrix author2mid;
 	private SparseMatrix paper2authorMid;
-	private Boolean confMid;
+	private boolean confMid;
 	private SparseMatrix conf2mid;
 	private SparseMatrix paper2confMid;
-	private Boolean termMid;
+	private boolean termMid;
 	private SparseMatrix term2mid;
 	private SparseMatrix paper2termMid;
 	
@@ -55,8 +55,8 @@ public class FastHetesim {
 	private SparseMatrix normaliceHeteSim(SparseMatrix left, SparseMatrix right) {
 		SparseMatrix result = new SparseMatrix(left.getNRows(),right.getNRows());
 		
-		for (Integer i = 0; i < result.getNRows(); ++i) {
-			for (Integer j = 0; j < result.getNCols(); ++j) {
+		for (int i = 0; i < result.getNRows(); ++i) {
+			for (int j = 0; j < result.getNCols(); ++j) {
 				double top = SparseVector.multiply(left.getRow(i),right.getRow(j));
 				double bot = Math.sqrt(left.getRow(i).norm()*right.getRow(j).norm());
 				result.insert(i, j, (float) (top/bot));
@@ -97,7 +97,7 @@ public class FastHetesim {
 			//throwEception Petó. Lern to Code Faget
 			System.out.println("getHeteSim(Path p, Node n), el resultado no tiene un solo arraylist. Baia");
 		}
-		for (Integer i : hete.getRow(0).keySet()) {
+		for (int i : hete.getRow(0).keySet()) {
 			ret.add(new Pair<Integer, Float>(i, hete.getRow(0).get(i)));
 		}
 		return ret;
@@ -117,7 +117,7 @@ public class FastHetesim {
 	
 	private SparseMatrix arrayListToMatrix(SparseVector sparseVector) {
 		SparseMatrix ret = new SparseMatrix(1, sparseVector.size());
-		for (Integer i : sparseVector.keySet()) {
+		for (int i : sparseVector.keySet()) {
 			ret.insert(0,i,sparseVector.get(i));
 		}
 		return ret;
@@ -128,7 +128,7 @@ public class FastHetesim {
 			// Throw Exception ("The path cant be this short dude, or maybe this whole shit is bugged. Dunno")
 		}
 		SparseMatrix ret = arrayListToMatrix(matrixesToMultiply.get(0).getRow(n.id));
-		for (Integer i = 1; i < matrixesToMultiply.size(); ++i) {
+		for (int i = 1; i < matrixesToMultiply.size(); ++i) {
 			ret = SparseMatrix.multiply(ret,matrixesToMultiply.get(i));
 		}
 		return ret;
@@ -139,7 +139,7 @@ public class FastHetesim {
 			// Throw Exception ("The path cant be this short dude, or maybe this whole shit is bugged. Dunno")
 		}
 		SparseMatrix ret = matrixesToMultiply.get(0);
-		for (Integer i = 1; i < matrixesToMultiply.size(); ++i) {
+		for (int i = 1; i < matrixesToMultiply.size(); ++i) {
 			ret = SparseMatrix.multiply(ret,matrixesToMultiply.get(i));
 		}
 		return ret;
@@ -157,7 +157,7 @@ public class FastHetesim {
 	private ArrayList<SparseMatrix> getMatrixesToMultiply(ArrayList<Node.Type> path,ArrayList<Node.Type> aux) {
 		ArrayList<SparseMatrix> matrixesToMultiply = new ArrayList<SparseMatrix>();
 		ArrayList<WhatMatrix> whatMatrixes = getPairs(path, aux);
-		for (Integer i = 0; i < whatMatrixes.size(); ++i) {
+		for (int i = 0; i < whatMatrixes.size(); ++i) {
 			WhatMatrix w = whatMatrixes.get(i);
 			switch (w.pathType) {
 			case Author2Paper:

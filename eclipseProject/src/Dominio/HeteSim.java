@@ -14,9 +14,9 @@ class HeteSim {
 	}
 	
 	class WhatMatrix {
-		Boolean transposeMatrix;
+		boolean transposeMatrix;
 		HeteSim.PathTypes pathType;
-		WhatMatrix(Boolean trans, HeteSim.PathTypes t) {
+		WhatMatrix(boolean trans, HeteSim.PathTypes t) {
 			this.transposeMatrix = trans;
 			this.pathType = t;
 		}
@@ -24,22 +24,22 @@ class HeteSim {
 	
 	
 	
-	private Boolean paperAuthor;
+	private boolean paperAuthor;
 	private Matrix paper2author;
 	private Matrix author2paper;
-	private Boolean paperConf;
+	private boolean paperConf;
 	private Matrix paper2conf;
 	private Matrix conf2paper;
-	private Boolean paperTerm;
+	private boolean paperTerm;
 	private Matrix paper2term;
 	private Matrix term2paper;
-	private Boolean authorMid;
+	private boolean authorMid;
 	private Matrix author2mid;
 	private Matrix paper2authorMid;
-	private Boolean confMid;
+	private boolean confMid;
 	private Matrix conf2mid;
 	private Matrix paper2confMid;
-	private Boolean termMid;
+	private boolean termMid;
 	private Matrix term2mid;
 	private Matrix paper2termMid;
 	
@@ -59,8 +59,8 @@ class HeteSim {
 	private Matrix multiply(Matrix leftSide, Matrix rightSide) {
 		Matrix result = new Matrix();
 		result.setTamany(leftSide.getNRows(), rightSide.getNCols());
-		for (Integer i = 0; i < leftSide.getNRows(); ++i) {
-			for (Integer j = 0; j < rightSide.getNCols(); ++j) {
+		for (int i = 0; i < leftSide.getNRows(); ++i) {
+			for (int j = 0; j < rightSide.getNCols(); ++j) {
 				result.getRow(i).set(j,multiplyVectors(leftSide.getRow(i),rightSide.getCol(j)));
 			}
 		}
@@ -70,7 +70,7 @@ class HeteSim {
 	private Float multiplyVectors(ArrayList<Float> v1, ArrayList<Float> v2) {
 		if (v1.size() != v2.size()) { return -1000.f; /*Throw exception*/}
 		Float total = 0.f;
-		for (Integer i = 0; i < v1.size();++i) {
+		for (int i = 0; i < v1.size();++i) {
 			total += v1.get(i) * v2.get(i);
 		}
 		return total;
@@ -80,13 +80,13 @@ class HeteSim {
 		Matrix result = new Matrix();
 		result.copiaTamany(m);
 		
-		for (Integer i = 0; i < m.getNRows(); ++i) {
+		for (int i = 0; i < m.getNRows(); ++i) {
 			Double total = 0.0;
-			for (Integer j = 0; j < m.getNCols(); ++j) {
+			for (int j = 0; j < m.getNCols(); ++j) {
 				total += Math.pow(m.getRow(i).get(j),2);
 			}
 			total = Math.sqrt(total);
-			for (Integer j = 0; j < m.getNCols(); ++j) {
+			for (int j = 0; j < m.getNCols(); ++j) {
 				result.getRow(i).set(j,(float) (m.getRow(i).get(j)/total));
 			}
 		}
@@ -95,7 +95,7 @@ class HeteSim {
 	
 	private float norm(ArrayList<Float> v) {
 		Float total = 0.f;
-		for (Integer i = 0; i < v.size();++i) {
+		for (int i = 0; i < v.size();++i) {
 			total += (float) Math.pow(v.get(i), 2);
 		}
 		
@@ -112,8 +112,8 @@ class HeteSim {
 		Matrix result = new Matrix();
 		result.setTamany(left.getNRows(),right.getNRows());
 		
-		for (Integer i = 0; i < result.getNRows(); ++i) {
-			for (Integer j = 0; j < result.getNCols(); ++j) {
+		for (int i = 0; i < result.getNRows(); ++i) {
+			for (int j = 0; j < result.getNCols(); ++j) {
 				double top = multiplyVectors(left.getRow(i),right.getRow(j));
 				double bot = Math.sqrt(norm(left.getRow(i))*norm(right.getRow(j)));
 				result.getRow(i).set(j,(float) (top/bot));
@@ -154,7 +154,7 @@ class HeteSim {
 			//throwEception Petó. Lern to Code Faget
 			System.out.println("getHeteSim(Path p, Node n), el resultado no tiene un solo arraylist. Baia");
 		}
-		for (Integer i = 0; i < hete.getNCols(); ++i) {
+		for (int i = 0; i < hete.getNCols(); ++i) {
 			if (!hete.getRow(0).get(i).equals(0.0f)) {
 				ret.add(new Pair<Integer, Float>(i, hete.getRow(0).get(i)));
 			}
@@ -177,7 +177,7 @@ class HeteSim {
 	private Matrix arrayListToMatrix(ArrayList<Float> a) {
 		Matrix ret = new Matrix();
 		ret.setTamany(1, a.size());
-		for (Integer i = 0; i < a.size(); ++i) {
+		for (int i = 0; i < a.size(); ++i) {
 			ret.getRow(0).set(i, a.get(i));
 		}
 		return ret;
@@ -188,7 +188,7 @@ class HeteSim {
 			// Throw Exception ("The path cant be this short dude, or maybe this whole shit is bugged. Dunno")
 		}
 		Matrix ret = arrayListToMatrix(matrixesToMultiply.get(0).getRow(n.id));
-		for (Integer i = 1; i < matrixesToMultiply.size(); ++i) {
+		for (int i = 1; i < matrixesToMultiply.size(); ++i) {
 			ret = multiply(ret,matrixesToMultiply.get(i));
 		}
 		return ret;
@@ -199,7 +199,7 @@ class HeteSim {
 			// Throw Exception ("The path cant be this short dude, or maybe this whole shit is bugged. Dunno")
 		}
 		Matrix ret = matrixesToMultiply.get(0);
-		for (Integer i = 1; i < matrixesToMultiply.size(); ++i) {
+		for (int i = 1; i < matrixesToMultiply.size(); ++i) {
 			ret = multiply(ret,matrixesToMultiply.get(i));
 		}
 		return ret;
@@ -217,7 +217,7 @@ class HeteSim {
 	private ArrayList<Matrix> getMatrixesToMultiply(ArrayList<Node.Type> path,ArrayList<Node.Type> aux) {
 		ArrayList<Matrix> matrixesToMultiply = new ArrayList<Matrix>();
 		ArrayList<WhatMatrix> whatMatrixes = getPairs(path, aux);
-		for (Integer i = 0; i < whatMatrixes.size(); ++i) {
+		for (int i = 0; i < whatMatrixes.size(); ++i) {
 			WhatMatrix w = whatMatrixes.get(i);
 			switch (w.pathType) {
 			case Author2Paper:
@@ -288,17 +288,17 @@ class HeteSim {
 	private Partite partiteMatrix(Matrix matrix) {
 		Matrix thingA2Mid = new Matrix();
 		Matrix mid2ThingB = new Matrix();
-		Integer total = 0;
-		for (Integer i = 0; i < matrix.getNRows(); ++i) {
-			for (Integer j = 0; j < matrix.getNCols(); ++j) {
+		int total = 0;
+		for (int i = 0; i < matrix.getNRows(); ++i) {
+			for (int j = 0; j < matrix.getNCols(); ++j) {
 				total += Math.round((Float) matrix.getValue(i, j));	// Useless cast			
 			}
 		}
 		thingA2Mid.setTamany(matrix.getNRows(), total);
 		mid2ThingB.setTamany(total, matrix.getNCols());
-		Integer index = 0;
-		for (Integer i = 0; i < matrix.getNRows(); ++i) {
-			for (Integer j = 0; j < matrix.getNCols(); ++j) {
+		int index = 0;
+		for (int i = 0; i < matrix.getNRows(); ++i) {
+			for (int j = 0; j < matrix.getNCols(); ++j) {
 				if ((float) matrix.getValue(i, j) == 1.f) { // Useless cast
 					thingA2Mid.getRow(i).set(index,1.f);
 					mid2ThingB.getRow(index).set(j, 1.f);
@@ -311,7 +311,7 @@ class HeteSim {
 
 	private ArrayList<WhatMatrix> getPairs(ArrayList<Node.Type> path, ArrayList<Node.Type> aux) {
 		ArrayList<WhatMatrix> ret = new ArrayList<WhatMatrix>();
-		for (Integer i = 1; i < path.size(); ++i) {
+		for (int i = 1; i < path.size(); ++i) {
 			Node.Type last = path.get(i-1);
 			Node.Type current = path.get(i);
 			if (current == Node.Type.MidElement) {
