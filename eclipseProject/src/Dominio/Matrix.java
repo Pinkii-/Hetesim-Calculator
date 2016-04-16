@@ -150,7 +150,7 @@ public class Matrix {
 	
 	public void addNodeRow() {
 	rows += 1;
-	ArrayList f = new ArrayList<Float>(cols);
+	ArrayList<Float> f = new ArrayList<Float>(cols);
 	    for (int i = 0; i < cols; i++) f.add(valDefault);
 	    m.add(f);
 	}
@@ -184,15 +184,15 @@ public class Matrix {
 	    if (i <= m.size()) {
 	        return m.get(i);
 	    }
-	    ArrayList<Float> n = new ArrayList<Float>();
-	    return n;
+	    return null;
 	}
 	
 	
 	public ArrayList<Float> getCol(int j){
-	    ArrayList resultado = new ArrayList<Float>();
+		if (m.size() > 0 && j >= m.get(0).size()) return null;
+	    ArrayList<Float> resultado = new ArrayList<Float>();
 	    for (int i = 0; i < m.size(); i++) {
-	        resultado.add(m.get(j));
+	        resultado.add(m.get(i).get(j));
 	    }
 	    return resultado;
 	}
