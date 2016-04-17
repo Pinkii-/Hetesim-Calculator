@@ -22,8 +22,13 @@ class SparseVector extends HashMap<Integer,Float> {
 		Float ret = 0.f;
 		Set<Integer> aux = new HashSet<Integer>(sv1.keySet());
 		
-		for (Integer k : aux) ret += sv1.get(k) * sv2.get(k);
-		
+		try {
+			for (Integer k : aux) ret += sv1.get(k) * sv2.get(k);
+		}
+		catch (IndexOutOfBoundsException e) {
+			System.out.println("The vector cant be smaller than the sparseVector");
+			throw e;
+		}
 		return ret;
 	}
 	
