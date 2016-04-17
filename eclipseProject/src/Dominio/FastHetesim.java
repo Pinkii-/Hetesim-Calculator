@@ -59,7 +59,7 @@ public class FastHetesim {
 			for (int j = 0; j < result.getNCols(); ++j) {
 				double top = SparseVector.multiply(left.getRow(i),right.getRow(j));
 				double bot = Math.sqrt(left.getRow(i).norm()*right.getRow(j).norm());
-				result.insert(i, j, (float) (top/bot));
+				result.set(i, j, (float) (top/bot));
 				
 			}
 		}
@@ -118,7 +118,7 @@ public class FastHetesim {
 	private SparseMatrix arrayListToMatrix(SparseVector sparseVector) {
 		SparseMatrix ret = new SparseMatrix(1, sparseVector.size());
 		for (int i : sparseVector.keySet()) {
-			ret.insert(0,i,sparseVector.get(i));
+			ret.set(0,i,sparseVector.get(i));
 		}
 		return ret;
 	}

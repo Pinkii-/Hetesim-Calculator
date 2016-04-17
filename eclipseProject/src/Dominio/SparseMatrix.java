@@ -1,6 +1,7 @@
 package Dominio;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 class SparseMatrix {
 	ArrayList<SparseVector> rows = new ArrayList<SparseVector>();
@@ -17,7 +18,7 @@ class SparseMatrix {
 		}
 		for (int i = 0; i < nRows; ++i) {
 			for (int j = 0; j < nCols; ++j) {
-				insert(i,j,matrix.getValue(i, j));
+				set(i,j,matrix.getValue(i, j));
 			}
 		}
 	}
@@ -50,10 +51,28 @@ class SparseMatrix {
 		return rows;
 	}
 	
-	void insert(int row, int col, Float value) {
-		if (value == 0.f) return;
-		rows.get(row).put(col, value);
-		cols.get(col).put(row, value);
+	void set(int row, int col, Float value) {
+		if (value == 0.f) {
+			try {
+				if (rows.get(row).containsKey(col)) {
+					rows.get(row).remove(col);
+					cols.get(col).remove(row);
+				}
+			}
+			catch (IndexOutOfBoundsException e) {
+				System.out.println("Trying to set a position of the matrix that is outside the matrix");
+				throw e;
+			}
+			return;
+		}
+		try {
+			rows.get(row).put(col, value);
+			cols.get(col).put(row, value);
+		}
+		catch (IndexOutOfBoundsException e) {
+			System.out.println("Trying to set a position of the matrix that is outside the matrix");
+			throw e;
+		}
 	}
 	
 	int getNRows() {
@@ -73,7 +92,7 @@ class SparseMatrix {
 	}
 	
 	Float getValue(int i, int j) {
-		if (rows.size() < i && rows.get(i).containsKey(j)) return rows.get(i).get(j);
+		if (i < rows.size() && rows.get(i).containsKey(j)) return rows.get(i).get(j);
 		else return 0.f;
 	}
 	
@@ -87,19 +106,20 @@ class SparseMatrix {
 		SparseMatrix ret = new SparseMatrix(m1.getNRows(), m2.getNCols());
 		for (int i = 0; i < ret.getNRows(); ++i) {
 			SparseVector v1 = m1.getRow(i);
-			for (int j = 0; j < ret.getNCols(); ++i) {
-				ret.insert(i, j, SparseVector.multiply(v1, m2.getCol(j)));
+			for (int j = 0; j < ret.getNCols(); ++j) {
+				ret.set(i, j, SparseVector.multiply(v1, m2.getCol(j)));
 			}
 		}
 		return ret;
 	}
 	
 	static SparseMatrix multiply(Matrix m1, SparseMatrix m2) {
+		if (m1.getNCols() != m2.getNRows()) throw new RuntimeException("Dimension 'm1' cols and 'm2' rows disagree");
 		SparseMatrix ret = new SparseMatrix(m1.getNRows(), m2.getNCols());
 		for (int i = 0; i < ret.getNRows(); ++i) {
 			ArrayList<Float> v1 = m1.getRow(i);
-			for (int j = 0; j < ret.getNCols(); ++i) {
-				ret.insert(i, j, SparseVector.multiply(v1, m2.getCol(j)));
+			for (int j = 0; j < ret.getNCols(); ++j) {
+				ret.set(i, j, SparseVector.multiply(v1, m2.getCol(j)));
 			}
 		}
 		return ret;
@@ -109,8 +129,8 @@ class SparseMatrix {
 		SparseMatrix ret = new SparseMatrix(m1.getNRows(), m2.getNCols());
 		for (int i = 0; i < ret.getNRows(); ++i) {
 			SparseVector v1 = m1.getRow(i);
-			for (int j = 0; j < ret.getNCols(); ++i) {
-				ret.insert(i, j, SparseVector.multiply(v1, m2.getCol(j)));
+			for (int j = 0; j < ret.getNCols(); ++j) {
+				ret.set(i, j, SparseVector.multiply(v1, m2.getCol(j)));
 			}
 		}
 		return ret;
@@ -137,5 +157,16 @@ class SparseMatrix {
 		}
 		
 		return total;
+	}
+
+	public Matrix toMatrix() {
+		Matrix ret = new Matrix();
+		ret.setTamany(getNRows(), getNCols());
+		for (int i = 0; i < getNRows(); ++i) {
+			for (Integer k : rows.get(i).keySet()){
+				ret.getRow(i).set(k, rows.get(i).get(k)); // bypassing the things and modifiying directly the 'm'
+			}
+		}
+		return ret;
 	}
 }

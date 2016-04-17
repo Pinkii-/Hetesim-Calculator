@@ -21,8 +21,8 @@ public class Partite {
 			SparseVector sv = matrix.getRow(i);
 			Set<Integer> aux = new HashSet<Integer>(sv.keySet());
 			for (Integer j : aux) {
-				leftToMid.insert(i,index,1.f);
-				midToRight.insert(index, j, 1.f);
+				leftToMid.set(i,index,1.f);
+				midToRight.set(index, j, 1.f);
 				index += 1;
 			}
 		}

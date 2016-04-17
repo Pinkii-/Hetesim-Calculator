@@ -1,6 +1,6 @@
 package Dominio;
 
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
@@ -19,20 +19,20 @@ public class SparseVectorTest {
 		sv2.put(0, 2.f);
 		sv2.put(1, 1.f);
 		float result = SparseVector.multiply(sv1, sv2);
-		assert(4.f == result);
+		assertEquals(4.f,result,0.f);
 		
 		sv1 = new SparseVector(); // {}
 		result = SparseVector.multiply(sv1, sv2);
-		assert(0.f == result);
+		assertEquals(0.f,result,0.f);
 		
 		sv1 = sv2;
 		sv2 = new SparseVector(); // {}
 		result = SparseVector.multiply(sv1, sv2);
-		assert(0.f == result);
+		assertEquals(0.f,result,0.f);
 		
 		sv1 = new SparseVector();
 		result = SparseVector.multiply(sv1, sv2);
-		assert(0.f == result);
+		assertEquals(0.f,result,0.f);
 		
 		sv1 = new SparseVector(); // {2, 0, 1}
 		sv2 = new SparseVector(); // {2, 1, 0}
@@ -46,7 +46,7 @@ public class SparseVectorTest {
 		sv2.put(2, 6.f);
 		
 		result = SparseVector.multiply(sv1, sv2);
-		assert(24.f == result);
+		assertEquals(32.f,result,0.f);
 	}
 
 	@Test
@@ -61,16 +61,16 @@ public class SparseVectorTest {
 		v1.add(0.f);
 		v1.add(1.f);
 		float result = SparseVector.multiply(v1, sv2);
-		assert(5.f == result);
+		assertEquals(6.f,result,0.f);
 		
 		sv2 = new SparseVector(); // {}
 		result = SparseVector.multiply(v1, sv2);
-		assert(0.f == result);
+		assertEquals(0.f,result,0.f);
 		
 		
 		sv2 = new SparseVector();
 		result = SparseVector.multiply(v1, sv2);
-		assert(0.f == result);
+		assertEquals(0.f,result,0.f);
 		
 		sv2 = new SparseVector(); // {2, 0, 1}
 		v1 = new ArrayList<Float>(); // {2, 1, 0}
@@ -84,7 +84,7 @@ public class SparseVectorTest {
 		v1.add(6.f);
 		
 		result = SparseVector.multiply(v1, sv2);
-		assert(24.f == result);
+		assertEquals(32.f,result,0.f);
 	}
 
 	@Test
@@ -99,16 +99,16 @@ public class SparseVectorTest {
 		v2.add(0.f);
 		v2.add(1.f);
 		float result = SparseVector.multiply(sv1, v2);
-		assert(5.f == result);
+		assertEquals(6.f,result,0.f);
 		
 		sv1 = new SparseVector(); // {}
 		result = SparseVector.multiply(sv1, v2);
-		assert(0.f == result);
+		assertEquals(0.f,result,0.f);
 		
 		
 		sv1 = new SparseVector();
 		result = SparseVector.multiply(sv1, v2);
-		assert(0.f == result);
+		assertEquals(0.f,result,0.f);
 		
 		sv1 = new SparseVector(); // {2, 0, 1}
 		v2 = new ArrayList<Float>(); // {2, 1, 0}
@@ -122,7 +122,7 @@ public class SparseVectorTest {
 		v2.add(6.f);
 		
 		result = SparseVector.multiply(sv1, v2);
-		assert(24.f == result);
+		assertEquals(32.f,result,0.f);
 	}
 
 	@Test
@@ -134,10 +134,10 @@ public class SparseVectorTest {
 		sv.put(150, 4.f);
 		
 		float result = sv.norm();
-		assert(result == (float) Math.sqrt(1 + 4 + 9 + 16));
+		assertEquals((float) Math.sqrt(1 + 4 + 9 + 16),result,0.f);
 		
 		sv = new SparseVector();
-		assert(sv.norm() == 0);
+		assertEquals(0.f,sv.norm(),0.f);
 	}
 
 }

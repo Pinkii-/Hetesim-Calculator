@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @SuppressWarnings("serial")
-class SparseVector extends HashMap<Integer,Float> {
+public class SparseVector extends HashMap<Integer,Float> {
 	
 	static Float multiply(SparseVector sv1, SparseVector sv2) {
 		Float ret = 0.f;
