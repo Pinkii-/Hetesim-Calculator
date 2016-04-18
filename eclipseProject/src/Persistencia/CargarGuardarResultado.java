@@ -11,8 +11,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import Dominio.Result;
 
-//Clase CargarGuardarResultado:
-
+/**
+*
+* @author Albert
+*/
 
 @SuppressWarnings("serial")
 public class CargarGuardarResultado implements Serializable{
@@ -32,13 +34,13 @@ public class CargarGuardarResultado implements Serializable{
 		this.fileDirectory = Paths.get(fileDirectory);
 	}
 	
-	public void guardaResultado(Result r) throws FileNotFoundException, CloneNotSupportedException, IOException {
+	public void guardaResultado(Result r) throws FileNotFoundException, IOException {
 		try {
 			FileOutputStream FileOutput = new FileOutputStream(fileDirectory.resolve(r.getIdResult()+".ser").toString());
 			ObjectOutputStream ObjectOutput = new ObjectOutputStream(FileOutput);
-			Result res = new Result(null, null, null, null);
-			res = r.deepClone(); 
-			ObjectOutput.writeObject(res);
+			//Result res = new Result(null, null, null, null);
+			//res = r.deepClone(); 
+			ObjectOutput.writeObject(r);
 			ObjectOutput.close();
 			System.out.println("Path absoluto fichero:"+fileDirectory.resolve(r.getIdResult()+".ser").toString());
 

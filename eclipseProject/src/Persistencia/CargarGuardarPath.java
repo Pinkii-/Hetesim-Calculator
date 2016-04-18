@@ -10,10 +10,10 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import Dominio.*;
 
-//Clase CargarGuardarPath:
-/*
- * Se necesitaría deepCopy en Path, o otra manera de hacer una copia bien hecha desde este clase.
- */
+/**
+*
+* @author Albert
+*/
 
 @SuppressWarnings("serial")
 public class CargarGuardarPath implements Serializable{
@@ -33,13 +33,13 @@ public class CargarGuardarPath implements Serializable{
 		this.PathsDirectory = Paths.get(PathsDirectory);
 	}
 
-	public void guardaPath(Path p) throws FileNotFoundException, CloneNotSupportedException, IOException {
+	public void guardaPath(Path p) throws FileNotFoundException, IOException {
 		try {
 			FileOutputStream FileOutput = new FileOutputStream(PathsDirectory.resolve(p.getNom()+".ser").toString());
 			ObjectOutputStream ObjectOutput = new ObjectOutputStream(FileOutput);
-			Path path = new Path();
-			path = (Path) p.deepClone();
-			ObjectOutput.writeObject(path);
+//			Path path = new Path();
+//			path = (Path) p.deepClone();
+			ObjectOutput.writeObject(p);
 			ObjectOutput.close();
 			System.out.println("Path absoluto del path:"+PathsDirectory.resolve(p.getNom()+".ser").toString());
 
