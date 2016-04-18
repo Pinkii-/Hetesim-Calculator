@@ -10,7 +10,6 @@ import java.io.Serializable;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 
 
 @SuppressWarnings("serial")
@@ -114,7 +113,7 @@ public class Result implements Cloneable, Serializable{
 		return retStr;
 	}
 	
-	public void setModified(){
+	public void setModified(){ //Si el 
 		modified = true;
 	}
 	
@@ -122,7 +121,7 @@ public class Result implements Cloneable, Serializable{
 	public ArrayList<NodePair> getResult(){ //Get the result list
 		ArrayList<NodePair> retResult = resultList;
 		int i = 0;
-		while (resultList.get(i).hetesimVal>threshold){
+		while (resultList.get(i).getHetesim()>threshold){
 		    retResult.add(resultList.get(i));
 		    ++i;
 		}
@@ -161,12 +160,14 @@ public class Result implements Cloneable, Serializable{
 	
 	
 	public void modifLine(Integer i, Float hetesimVal){
-		resultList.get(i).hetesimVal = hetesimVal;
+		resultList.get(i).setHetesim(hetesimVal);
+		modified = true;
 		sortResult();
 	}
 	
 	public void deleteLine(Integer i){
 		resultList.remove(i);
+		modified = true;
 	}
 	
 	
@@ -182,31 +183,8 @@ public class Result implements Cloneable, Serializable{
  * Clases propias de Resultado.java  *
  * 								     *
  * * * * * * * * * * * * * * * * * * */
-class NodePair{
-	public Pair<Node,Node> pairN;
-	public float hetesimVal;
-	
-	NodePair(Node n1, Node n2, float hetesimVal) {
-		pairN = new Pair<Node, Node>(n1,n2);
-		if (hetesimVal < 0 || hetesimVal > 1) { /*Throw exception*/ }
-		this.hetesimVal = hetesimVal;
-	}
-	
-	public float compareTo(NodePair np){
-		return (this.hetesimVal - np.hetesimVal);
-	}
-	
-	public String toString(){
-		return ("First Node: " + pairN.first.toString() + " Second Node: " + pairN.second.toString() + " Hetesim: " + hetesimVal);
-	}
-	
-}
+
 //Magic! Para poder sortear listas a partir del valor del hetesim en un NodePair
-class NodePairComparator implements Comparator<NodePair>{
-	public int compare(NodePair n1, NodePair n2){
-		return ((int)n1.hetesimVal - (int)n2.hetesimVal);
-	}
-}
 
 
 
