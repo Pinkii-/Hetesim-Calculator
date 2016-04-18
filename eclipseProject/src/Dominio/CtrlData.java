@@ -73,7 +73,7 @@ public class CtrlData {
 				AllPaths.add(CGP.cargaPath(path.getFileName().toString()));
 			}
 		}
-		catch(IOException ex) {}
+		catch(IOException exe) {}
 	}
 
 	public  Pair<Graf,ArrayList<Result>> loadGraphAndResults(String idGraf) throws ClassNotFoundException {
