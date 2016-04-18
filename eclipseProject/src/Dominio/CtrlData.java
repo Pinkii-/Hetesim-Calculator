@@ -56,7 +56,7 @@ public class CtrlData {
             	if (path.getFileName().toString() != idGraf) 
             		GraphAndResults.second.add(CGR.cargaResultado(path.getFileName().toString()));
             }
-        } catch (IOException ex) {/*ayy ayy lemao lemao*/}
+        } catch (IOException ex) {}
 	}
 	
 	private void pathsWalkin() throws IOException, ClassNotFoundException {
@@ -65,6 +65,7 @@ public class CtrlData {
 				AllPaths.add(CGP.cargaPath(path.getFileName().toString()));
 			}
 		}
+		catch(IOException ex) {}
 	}
 
 	public  Pair<Graf,ArrayList<Result>> loadGraphAndResults(String idGraf) throws ClassNotFoundException {
