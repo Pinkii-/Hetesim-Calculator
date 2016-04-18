@@ -3,45 +3,35 @@ package Dominio;
 import java.util.ArrayList;
 import java.util.Collections;
 
-class HeteSim {	
-	class Partite {
-		Matrix leftToMid;
-		Matrix midToRight;
-		Partite(Matrix f,Matrix s){
-			leftToMid = f;
-			midToRight = s;
-		}
-	}
-	
+public class FastHetesim {
+
 	class WhatMatrix {
 		boolean transposeMatrix;
-		HeteSim.PathTypes pathType;
-		WhatMatrix(boolean trans, HeteSim.PathTypes t) {
+		PathTypes pathType;
+		WhatMatrix(boolean trans, PathTypes t) {
 			this.transposeMatrix = trans;
 			this.pathType = t;
 		}
 	}
 	
-	
-	
 	private boolean paperAuthor;
-	private Matrix paper2author;
-	private Matrix author2paper;
+	private SparseMatrix paper2author;
+	private SparseMatrix author2paper;
 	private boolean paperConf;
-	private Matrix paper2conf;
-	private Matrix conf2paper;
+	private SparseMatrix paper2conf;
+	private SparseMatrix conf2paper;
 	private boolean paperTerm;
-	private Matrix paper2term;
-	private Matrix term2paper;
+	private SparseMatrix paper2term;
+	private SparseMatrix term2paper;
 	private boolean authorMid;
-	private Matrix author2mid;
-	private Matrix paper2authorMid;
+	private SparseMatrix author2mid;
+	private SparseMatrix paper2authorMid;
 	private boolean confMid;
-	private Matrix conf2mid;
-	private Matrix paper2confMid;
+	private SparseMatrix conf2mid;
+	private SparseMatrix paper2confMid;
 	private boolean termMid;
-	private Matrix term2mid;
-	private Matrix paper2termMid;
+	private SparseMatrix term2mid;
+	private SparseMatrix paper2termMid;
 	
 	private Graf graph;
 	
@@ -52,54 +42,8 @@ class HeteSim {
 		Term2Mid, Paper2MidTerm
 	}
 	
-	public HeteSim() {
+	public FastHetesim() {
 		graph = null;
-	}
-	
-	private Matrix multiply(Matrix leftSide, Matrix rightSide) {
-		Matrix result = new Matrix();
-		result.setTamany(leftSide.getNRows(), rightSide.getNCols());
-		for (int i = 0; i < leftSide.getNRows(); ++i) {
-			for (int j = 0; j < rightSide.getNCols(); ++j) {
-				result.getRow(i).set(j,multiplyVectors(leftSide.getRow(i),rightSide.getCol(j)));
-			}
-		}
-		return result;
-	}
-	
-	private Float multiplyVectors(ArrayList<Float> v1, ArrayList<Float> v2) {
-		if (v1.size() != v2.size()) { return -1000.f; /*Throw exception*/}
-		Float total = 0.f;
-		for (int i = 0; i < v1.size();++i) {
-			total += v1.get(i) * v2.get(i);
-		}
-		return total;
-	}
-	
-	private Matrix normaliceRows(Matrix m) {
-		Matrix result = new Matrix();
-		result.copiaTamany(m);
-		
-		for (int i = 0; i < m.getNRows(); ++i) {
-			Double total = 0.0;
-			for (int j = 0; j < m.getNCols(); ++j) {
-				total += Math.pow(m.getRow(i).get(j),2);
-			}
-			total = Math.sqrt(total);
-			for (int j = 0; j < m.getNCols(); ++j) {
-				result.getRow(i).set(j,(float) (m.getRow(i).get(j)/total));
-			}
-		}
-		return result;
-	}
-	
-	private float norm(ArrayList<Float> v) {
-		Float total = 0.f;
-		for (int i = 0; i < v.size();++i) {
-			total += (float) Math.pow(v.get(i), 2);
-		}
-		
-		return (float) Math.sqrt(total);
 	}
 	
 	/**
@@ -108,15 +52,14 @@ class HeteSim {
 	 * @param right is the trasposarMatriu of the multiplications of the U matrix from T to M (PMpr-1') (actually, is not trasposed, because row*row instead row*col)
 	 * @return Matrix of Hetesims
 	 */
-	private Matrix normaliceHeteSim(Matrix left, Matrix right) {
-		Matrix result = new Matrix();
-		result.setTamany(left.getNRows(),right.getNRows());
+	private SparseMatrix normaliceHeteSim(SparseMatrix left, SparseMatrix right) {
+		SparseMatrix result = new SparseMatrix(left.getNRows(),right.getNRows());
 		
 		for (int i = 0; i < result.getNRows(); ++i) {
 			for (int j = 0; j < result.getNCols(); ++j) {
-				double top = multiplyVectors(left.getRow(i),right.getRow(j));
-				double bot = Math.sqrt(norm(left.getRow(i))*norm(right.getRow(j)));
-				result.getRow(i).set(j,(float) (top/bot));
+				double top = SparseVector.multiply(left.getRow(i),right.getRow(j));
+				double bot = Math.sqrt(left.getRow(i).norm()*right.getRow(j).norm());
+				result.set(i, j, (float) (top/bot));
 				
 			}
 		}
@@ -131,7 +74,7 @@ class HeteSim {
 		paperAuthor = paperConf = paperTerm = authorMid = confMid = termMid = false;
 	}
 	
-	public Matrix getHeteSim(Path p) {
+	public SparseMatrix getHeteSim(Path p) {
 		ArrayList<Node.Type> left = null;
 		ArrayList<Node.Type> right = null;
 		Pair<ArrayList<Node.Type>, ArrayList<Node.Type>> aux = p.getPath();
@@ -148,16 +91,14 @@ class HeteSim {
 		left = aux.first;
 		right = aux.second;
 		Collections.reverse(right);
-		Matrix hete = normaliceHeteSim(multiplyVectorMatrix(n,getMatrixesToMultiply(left,right)),mutiplyMatrixes(getMatrixesToMultiply(right,left)));
+		SparseMatrix hete = normaliceHeteSim(multiplyVectorMatrix(n,getMatrixesToMultiply(left,right)),mutiplyMatrixes(getMatrixesToMultiply(right,left)));
 		ArrayList<Pair<Integer,Float>> ret = new ArrayList<Pair<Integer,Float>>();
 		if (hete.getNRows() != 1) {
 			//throwEception Petó. Lern to Code Faget
 			System.out.println("getHeteSim(Path p, Node n), el resultado no tiene un solo arraylist. Baia");
 		}
-		for (int i = 0; i < hete.getNCols(); ++i) {
-			if (!hete.getRow(0).get(i).equals(0.0f)) {
-				ret.add(new Pair<Integer, Float>(i, hete.getRow(0).get(i)));
-			}
+		for (int i : hete.getRow(0).keySet()) {
+			ret.add(new Pair<Integer, Float>(i, hete.getRow(0).get(i)));
 		}
 		return ret;
 	}
@@ -174,33 +115,32 @@ class HeteSim {
 	
 	// Private Metods
 	
-	private Matrix arrayListToMatrix(ArrayList<Float> a) {
-		Matrix ret = new Matrix();
-		ret.setTamany(1, a.size());
-		for (int i = 0; i < a.size(); ++i) {
-			ret.getRow(0).set(i, a.get(i));
+	private SparseMatrix arrayListToMatrix(SparseVector sparseVector) {
+		SparseMatrix ret = new SparseMatrix(1, sparseVector.size());
+		for (int i : sparseVector.keySet()) {
+			ret.set(0,i,sparseVector.get(i));
 		}
 		return ret;
 	}
 	
-	private Matrix multiplyVectorMatrix(Node n, ArrayList<Matrix> matrixesToMultiply) {
+	private SparseMatrix multiplyVectorMatrix(Node n, ArrayList<SparseMatrix> matrixesToMultiply) {
 		if (matrixesToMultiply.size() < 1) {
 			// Throw Exception ("The path cant be this short dude, or maybe this whole shit is bugged. Dunno")
 		}
-		Matrix ret = arrayListToMatrix(matrixesToMultiply.get(0).getRow(n.id));
+		SparseMatrix ret = arrayListToMatrix(matrixesToMultiply.get(0).getRow(n.id));
 		for (int i = 1; i < matrixesToMultiply.size(); ++i) {
-			ret = multiply(ret,matrixesToMultiply.get(i));
+			ret = SparseMatrix.multiply(ret,matrixesToMultiply.get(i));
 		}
 		return ret;
 	}
 	
-	private Matrix mutiplyMatrixes(ArrayList<Matrix> matrixesToMultiply) {
+	private SparseMatrix mutiplyMatrixes(ArrayList<SparseMatrix> matrixesToMultiply) {
 		if (matrixesToMultiply.size() < 1) {
 			// Throw Exception ("The path cant be this short dude, or maybe this whole shit is bugged. Dunno")
 		}
-		Matrix ret = matrixesToMultiply.get(0);
+		SparseMatrix ret = matrixesToMultiply.get(0);
 		for (int i = 1; i < matrixesToMultiply.size(); ++i) {
-			ret = multiply(ret,matrixesToMultiply.get(i));
+			ret = SparseMatrix.multiply(ret,matrixesToMultiply.get(i));
 		}
 		return ret;
 	}
@@ -214,16 +154,21 @@ class HeteSim {
 	 * @return
 	 */
 	
-	private ArrayList<Matrix> getMatrixesToMultiply(ArrayList<Node.Type> path,ArrayList<Node.Type> aux) {
-		ArrayList<Matrix> matrixesToMultiply = new ArrayList<Matrix>();
+	private ArrayList<SparseMatrix> getMatrixesToMultiply(ArrayList<Node.Type> path,ArrayList<Node.Type> aux) {
+		ArrayList<SparseMatrix> matrixesToMultiply = new ArrayList<SparseMatrix>();
 		ArrayList<WhatMatrix> whatMatrixes = getPairs(path, aux);
 		for (int i = 0; i < whatMatrixes.size(); ++i) {
 			WhatMatrix w = whatMatrixes.get(i);
 			switch (w.pathType) {
 			case Author2Paper:
 				if (!paperAuthor) { // init paper2Author
-					this.author2paper = normaliceRows(graph.getMatrixAuthor());
-					this.paper2author = normaliceRows(graph.getMatrixAuthor().trasposarMatriu());
+					this.author2paper = new SparseMatrix(graph.getMatrixAuthor());
+					this.author2paper.normaliceRows();
+					
+					this.paper2author = new SparseMatrix(this.author2paper);
+					this.paper2author.transpose();
+					this.paper2author.normaliceRows();
+					
 					this.paperAuthor = true;
 				}
 				if (w.transposeMatrix) matrixesToMultiply.add(paper2author);
@@ -231,8 +176,13 @@ class HeteSim {
 				break;
 			case Conf2Paper:
 				if (!paperConf) { // init paper2Author
-					this.conf2paper = normaliceRows(graph.getMatrixConf());
-					this.paper2conf = normaliceRows(graph.getMatrixConf().trasposarMatriu());
+					this.conf2paper = new SparseMatrix(graph.getMatrixConf());
+					this.conf2paper.normaliceRows();
+					
+					this.paper2conf = new SparseMatrix(this.conf2paper);
+					this.paper2conf.transpose();
+					this.paper2conf.normaliceRows();
+					
 					this.paperConf = true;
 				}
 				if (w.transposeMatrix) matrixesToMultiply.add(paper2conf);
@@ -240,8 +190,13 @@ class HeteSim {
 				break;
 			case Term2Paper:
 				if (!paperTerm) { // init paper2Author
-					this.term2paper = normaliceRows(graph.getMatrixTerm());
-					this.paper2term = normaliceRows(graph.getMatrixTerm().trasposarMatriu());
+					this.term2paper = new SparseMatrix(graph.getMatrixTerm());
+					this.term2paper.normaliceRows();
+					
+					this.paper2term = new SparseMatrix(term2paper);
+					this.paper2term.transpose();
+					this.paper2term.normaliceRows();
+					
 					this.paperTerm = true;
 				}
 				if (w.transposeMatrix) matrixesToMultiply.add(paper2term);
@@ -250,9 +205,14 @@ class HeteSim {
 			case Author2Mid:
 			case Paper2MidAut:
 				if (!authorMid) {
-					Partite p = partiteMatrix(graph.getMatrixAuthor());
-					this.author2mid = normaliceRows(p.leftToMid);
-					this.paper2authorMid = normaliceRows(p.midToRight.trasposarMatriu());
+					Partite p = new Partite(new SparseMatrix(graph.getMatrixAuthor())); // new SparseMatrix hace una traduccion innecesaria(si el grafo tuviera sparse matrix) x3
+					this.author2mid = p.leftToMid;
+					this.author2mid.normaliceRows();
+					
+					this.paper2authorMid = p.midToRight;
+					this.paper2authorMid.transpose();
+					this.paper2authorMid.normaliceRows();
+					
 					authorMid = true;
 				}
 				if (w.pathType == PathTypes.Author2Mid) matrixesToMultiply.add(author2mid);
@@ -261,9 +221,14 @@ class HeteSim {
 			case Conf2Mid:
 			case Paper2MidConf:
 				if (!confMid) {
-					Partite p = partiteMatrix(graph.getMatrixConf());
-					this.conf2mid = normaliceRows(p.leftToMid);
-					this.paper2confMid = normaliceRows(p.midToRight.trasposarMatriu());
+					Partite p =  new Partite(new SparseMatrix(graph.getMatrixConf()));
+					this.conf2mid = p.leftToMid;
+					this.conf2mid.normaliceRows();
+					
+					this.paper2confMid = p.midToRight;
+					this.paper2confMid.transpose();
+					this.paper2confMid.normaliceRows();
+					
 					confMid = true;
 				}
 				if (w.pathType == PathTypes.Conf2Mid) matrixesToMultiply.add(conf2mid);
@@ -272,9 +237,13 @@ class HeteSim {
 			case Term2Mid:
 			case Paper2MidTerm:
 				if (!termMid) {
-					Partite p = partiteMatrix(graph.getMatrixTerm());
-					this.term2mid = normaliceRows(p.leftToMid);
-					this.paper2termMid = normaliceRows(p.midToRight.trasposarMatriu());
+					Partite p = new Partite(new SparseMatrix(graph.getMatrixTerm()));
+					this.term2mid = p.leftToMid;
+					this.term2mid.normaliceRows();
+					
+					this.paper2termMid = p.midToRight;
+					this.paper2termMid.transpose();
+					this.paper2termMid.normaliceRows();
 					termMid = true;
 				}
 				if (w.pathType == PathTypes.Term2Mid) matrixesToMultiply.add(term2mid);
@@ -283,30 +252,6 @@ class HeteSim {
 			}
 		}
 		return matrixesToMultiply;
-	}
-
-	private Partite partiteMatrix(Matrix matrix) {
-		Matrix thingA2Mid = new Matrix();
-		Matrix mid2ThingB = new Matrix();
-		int total = 0;
-		for (int i = 0; i < matrix.getNRows(); ++i) {
-			for (int j = 0; j < matrix.getNCols(); ++j) {
-				total += Math.round((Float) matrix.getValue(i, j));	// Useless cast			
-			}
-		}
-		thingA2Mid.setTamany(matrix.getNRows(), total);
-		mid2ThingB.setTamany(total, matrix.getNCols());
-		int index = 0;
-		for (int i = 0; i < matrix.getNRows(); ++i) {
-			for (int j = 0; j < matrix.getNCols(); ++j) {
-				if ((float) matrix.getValue(i, j) == 1.f) { // Useless cast
-					thingA2Mid.getRow(i).set(index,1.f);
-					mid2ThingB.getRow(index).set(j, 1.f);
-					index += 1;
-				}
-			}
-		}
-		return new Partite(thingA2Mid,mid2ThingB);
 	}
 
 	private ArrayList<WhatMatrix> getPairs(ArrayList<Node.Type> path, ArrayList<Node.Type> aux) {
@@ -386,5 +331,4 @@ class HeteSim {
 
 		return ret;
 	}
-	
 }

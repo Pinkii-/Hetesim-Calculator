@@ -9,7 +9,7 @@ import java.nio.file.Path;
 
 public class CrtlData {
 	
-	CrtlDataGraph CtrlGraph;
+//	CrtlDataGraph CtrlGraph;
 	CargarGuardarResultado CGR;
 	CargarGuardarPath CGP;
 	
