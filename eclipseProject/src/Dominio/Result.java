@@ -113,16 +113,17 @@ public class Result implements Cloneable, Serializable{
 	*/
 	public String toString(Graf g){
 		String retStr = new String();
-		if (String.valueOf(g.id) != idGraph || modified) retStr = retStr + "Not consistent!";
+		if (String.valueOf(g.id) != idGraph || modified) retStr = retStr + "Not consistent!\n";
+		retStr = retStr + toString();
 		return retStr;
 	}
 	
 	
-	
-	public ArrayList<NodePair> getResult(){ //Get the result list
+	//Get the result list
+	public ArrayList<NodePair> getResult(){ 
 		ArrayList<NodePair> retResult = resultList;
 		int i = 0;
-		while (resultList.get(i).getHetesim()>threshold){
+		while (i < resultList.size() && resultList.get(i).getHetesim() > threshold){
 		    retResult.add(resultList.get(i));
 		    ++i;
 		}
@@ -130,7 +131,7 @@ public class Result implements Cloneable, Serializable{
 	}
 	
 	
-	
+	//Clone all the information, not just the main object
 	public Result deepClone() {
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();

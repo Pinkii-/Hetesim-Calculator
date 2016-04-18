@@ -25,7 +25,7 @@ public class NodePair {
 	}
 	
 	public String toString(){
-		return ("First Node: " + pairN.first.toString() + " Second Node: " + pairN.second.toString() + " Hetesim: " + hetesimVal);
+		return ("First Node: " + pairN.first.getNom() + " - Second Node: " + pairN.second.getNom() + " - Hetesim: " + hetesimVal);
 	}
 	
 }
