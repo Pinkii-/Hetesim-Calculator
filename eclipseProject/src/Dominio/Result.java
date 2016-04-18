@@ -24,17 +24,17 @@ public class Result implements Cloneable, Serializable{
 	private Node lastN; //Search destination node
 	private Path usedP; //Search Path
 
-	private Float threshold;
+	private Float threshold; //Lowest heteSim value which will be displayed on screen 
 	
-	private String idResult;
-	private String idGraph;
-	private Boolean modified;
+	private String idResult; //Unique result id
+	private String idGraph;	//Id of the graph associated to this result
+	private Boolean modified; //When true: The result or the graph have been manually edited and they will probably not be coherent
 	
 	
 	private ArrayList<NodePair> resultList; //Hetesim results, structured in NodePairs and (hopefully) sorted by Hetesim values
 	
 	
-	
+	//Only one path
 	public Result(final Graf g, final Float threshold, final Matrix resultHete, final Path p){
 		usedP = p;
 		idResult = new String(g.getNom() + " " + p.toString());
@@ -56,9 +56,10 @@ public class Result implements Cloneable, Serializable{
 		
 		sortResult(); //Sort result list
 	}
-	
+	//One node, one path
 	public Result(final Graf g, final Float threshold, final ArrayList<Pair<Integer,Float>> resultHete, final Path p, final Node n1) {
-		if (p.getContingut().get(0) != n1.getTipus()) {/*Throw exception*/}
+		assert (p.getContingut().get(0) == n1.getTipus());
+		
 		firstN = n1;
 		usedP = p;
 		modified = false;
@@ -73,9 +74,11 @@ public class Result implements Cloneable, Serializable{
 		
 		sortResult(); //Sort result list
 	}
-	
+	//Two nodes, one path
 	public Result(final Graf g, final float threshold, final Float resultHete, final Path p, final Node n1, final Node n2){
-		if (p.getContingut().get(0) != n1.getTipus() || p.getContingut().get(p.getLength()-1) != n2.getTipus()) {/*Throw exception*/}
+		//Assert that the path starts with the node type N1 and ends with the node type N2
+		assert (p.getContingut().get(0) == n1.getTipus() && p.getContingut().get(p.getLength()-1) == n2.getTipus());
+		
 		firstN = n1;
 		lastN = n2;
 		usedP = p;
@@ -89,7 +92,7 @@ public class Result implements Cloneable, Serializable{
 	
 	public String toString(){
 		String retStr = new String();
-		retStr = ("Resultado: " + idResult + "\n");                          //Resultado: idresult
+		retStr = ("Resultado: " + idResult + "\n");                          //Result: idresult
 		retStr = retStr + ("    Path: " + usedP.toString() + "\n");          //Path: path
 		retStr = retStr + ("    N1: " + firstN.toString() + "\n");           //N1: <Node to string>    <<<<Igual solo con el nombre basta?
 		retStr = retStr + ("    N2: " + lastN.toString() + "\n");            //N2: <Node to string>    <<<<Igual solo con el nombre basta?
@@ -101,21 +104,19 @@ public class Result implements Cloneable, Serializable{
 		}
 		return retStr; 
 	}
-	
-	/* Comprueba coherencia con el grafo g cargado en dominio. Si no coinciden los IDs,
-	 * se añade la linea "No coherente" al principio del toString.
-	 * La vista se encargará de poner el triangulito rojo de warning.
+
+	/* 
+	 * Checks consistency with the loaded graph. If the ids don't match,
+	 * the return value of toString will have an extra line with "Not consistent"
+	 * at the beggining.
+	 * 
 	*/
 	public String toString(Graf g){
 		String retStr = new String();
-		if (String.valueOf(g.id) != idGraph || modified) retStr = retStr + "No coherente\n";
-		retStr = retStr + toString();
+		if (String.valueOf(g.id) != idGraph || modified) retStr = retStr + "Not consistent!";
 		return retStr;
 	}
 	
-	public void setModified(){ //Si el 
-		modified = true;
-	}
 	
 	
 	public ArrayList<NodePair> getResult(){ //Get the result list
@@ -159,14 +160,25 @@ public class Result implements Cloneable, Serializable{
 
 	
 	
+	//Modify the value of the heteSim for the line i
 	public void modifLine(Integer i, Float hetesimVal){
+		assert (i < resultList.size());
+		
 		resultList.get(i).setHetesim(hetesimVal);
 		modified = true;
 		sortResult();
 	}
 	
+	//Delete the line i
 	public void deleteLine(Integer i){
+		assert (i < resultList.size());
+		
 		resultList.remove(i);
+		modified = true;
+	}
+	
+	//If either the result or the graph have been modified, the information is not consistent and toString() will issue a warning
+	public void setModified(){ 
 		modified = true;
 	}
 	
@@ -184,7 +196,7 @@ public class Result implements Cloneable, Serializable{
  * 								     *
  * * * * * * * * * * * * * * * * * * */
 
-//Magic! Para poder sortear listas a partir del valor del hetesim en un NodePair
+
 
 
 

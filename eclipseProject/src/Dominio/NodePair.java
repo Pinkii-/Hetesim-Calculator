@@ -2,23 +2,24 @@
 package Dominio;
 
 
-//Cada una de las lineas de un Result es un NodePair, compuesto por dos nodos (origen-destino) y su valor de Hetesim.
-public class NodePair{
+/*
+ * Each row of the Result is a NodePair, which has a pair of nodes (first/last node) and its Hetesim value;
+ */
+public class NodePair {
 	public Pair<Node,Node> pairN;
 	private float hetesimVal;
 	
 	NodePair(Node n1, Node n2, float hetesimVal) {
 		pairN = new Pair<Node, Node>(n1,n2);
-		if (hetesimVal < 0 || hetesimVal > 1) { /*Throw exception*/ }
-		this.hetesimVal = hetesimVal;
+		setHetesim(hetesimVal);
 	}
 	
-	/*public float compareTo(NodePair np){
-		return (this.hetesimVal - np.hetesimVal);
-	}*/
+	//Modify the Hetesim value
 	public void setHetesim(float hetesimVal){
+		assert (hetesimVal>0 && hetesimVal<=1);
 		this.hetesimVal = hetesimVal;
 	}
+	//Get the Hetesim value
 	public float getHetesim(){
 		return hetesimVal;
 	}
