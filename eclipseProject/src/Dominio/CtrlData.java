@@ -51,12 +51,20 @@ public class CtrlData {
 	}
 
 	private void grafAndResultsWalkin (Path dir, String idGraf) throws ClassNotFoundException {
+
         try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(dir)) {
             for (Path path : directoryStream) {
             	if (path.getFileName().toString() != idGraf) 
             		GraphAndResults.second.add(CGR.cargaResultado(path.getFileName().toString()));
             }
         } catch (IOException ex) {}
+        
+		 try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(dir)) {
+            		for (Path path : directoryStream) {
+            			if (path.getFileName().toString() != idGraf) 
+            			GraphAndResults.second.add(CGR.cargaResultado(path.getFileName().toString()));
+            		}
+        	} catch (IOException ex) {/*ayy ayy lemao lemao*/}
 	}
 	
 	private void pathsWalkin() throws IOException, ClassNotFoundException {
