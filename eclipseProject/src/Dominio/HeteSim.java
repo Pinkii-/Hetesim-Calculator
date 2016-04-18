@@ -68,7 +68,7 @@ class HeteSim {
 	}
 	
 	private Float multiplyVectors(ArrayList<Float> v1, ArrayList<Float> v2) {
-		if (v1.size() != v2.size()) { return -1000.f; /*Throw exception*/}
+		if (v1.size() != v2.size()) { throw new RuntimeException("The vectors size are mismatched");}
 		Float total = 0.f;
 		for (int i = 0; i < v1.size();++i) {
 			total += v1.get(i) * v2.get(i);
@@ -131,22 +131,24 @@ class HeteSim {
 		paperAuthor = paperConf = paperTerm = authorMid = confMid = termMid = false;
 	}
 	
-	public Matrix getHeteSim(Path p) {
+	public Matrix getHeteSim(Path p) throws PathException {
 		ArrayList<Node.Type> left = null;
 		ArrayList<Node.Type> right = null;
 		Pair<ArrayList<Node.Type>, ArrayList<Node.Type>> aux = p.getPath();
 		left = aux.first;
 		right = aux.second;
+		if (left.size() < 2 || right.size() < 2) throw new PathException("The path is too short");
 		Collections.reverse(right);
 		return normaliceHeteSim(mutiplyMatrixes(getMatrixesToMultiply(left,right)),mutiplyMatrixes(getMatrixesToMultiply(right,left)));
 	}
 	
-	public ArrayList<Pair<Integer,Float>> getHeteSim(Path p, Node n) {
+	public ArrayList<Pair<Integer,Float>> getHeteSim(Path p, Node n) throws PathException {
 		ArrayList<Node.Type> left = null;
 		ArrayList<Node.Type> right = null;
 		Pair<ArrayList<Node.Type>, ArrayList<Node.Type>> aux = p.getPath();
 		left = aux.first;
 		right = aux.second;
+		if (left.size() < 2 || right.size() < 2) throw new PathException("The path is too short");
 		Collections.reverse(right);
 		Matrix hete = normaliceHeteSim(multiplyVectorMatrix(n,getMatrixesToMultiply(left,right)),mutiplyMatrixes(getMatrixesToMultiply(right,left)));
 		ArrayList<Pair<Integer,Float>> ret = new ArrayList<Pair<Integer,Float>>();
@@ -162,12 +164,13 @@ class HeteSim {
 		return ret;
 	}
 	
-	public Float getHeteSim(Path p, Node n1, Node n2) {
+	public Float getHeteSim(Path p, Node n1, Node n2) throws PathException {
 		ArrayList<Node.Type> left = null;
 		ArrayList<Node.Type> right = null;
 		Pair<ArrayList<Node.Type>, ArrayList<Node.Type>> aux = p.getPath();
 		left = aux.first;
 		right = aux.second;
+		if (left.size() < 2 || right.size() < 2) throw new PathException("The path is too short");
 		Collections.reverse(right);
 		return normaliceHeteSim(multiplyVectorMatrix(n1, getMatrixesToMultiply(left,right)),multiplyVectorMatrix(n2, getMatrixesToMultiply(right,left))).getValue(0,0);
 	}
@@ -184,9 +187,6 @@ class HeteSim {
 	}
 	
 	private Matrix multiplyVectorMatrix(Node n, ArrayList<Matrix> matrixesToMultiply) {
-		if (matrixesToMultiply.size() < 1) {
-			// Throw Exception ("The path cant be this short dude, or maybe this whole shit is bugged. Dunno")
-		}
 		Matrix ret = arrayListToMatrix(matrixesToMultiply.get(0).getRow(n.id));
 		for (int i = 1; i < matrixesToMultiply.size(); ++i) {
 			ret = multiply(ret,matrixesToMultiply.get(i));
@@ -195,9 +195,6 @@ class HeteSim {
 	}
 	
 	private Matrix mutiplyMatrixes(ArrayList<Matrix> matrixesToMultiply) {
-		if (matrixesToMultiply.size() < 1) {
-			// Throw Exception ("The path cant be this short dude, or maybe this whole shit is bugged. Dunno")
-		}
 		Matrix ret = matrixesToMultiply.get(0);
 		for (int i = 1; i < matrixesToMultiply.size(); ++i) {
 			ret = multiply(ret,matrixesToMultiply.get(i));
