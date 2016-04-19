@@ -58,13 +58,6 @@ public class CtrlData {
             		GraphAndResults.second.add(CGR.cargaResultado(path.getFileName().toString()));
             }
         } catch (IOException ex) {}
-        
-		 try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(dir)) {
-            		for (Path path : directoryStream) {
-            			if (path.getFileName().toString() != idGraf) 
-            			GraphAndResults.second.add(CGR.cargaResultado(path.getFileName().toString()));
-            		}
-        	} catch (IOException ex) {/*ayy ayy lemao lemao*/}
 	}
 	
 	private void pathsWalkin() throws IOException, ClassNotFoundException {
@@ -73,7 +66,7 @@ public class CtrlData {
 				AllPaths.add(CGP.cargaPath(path.getFileName().toString()));
 			}
 		}
-		catch(IOException ex) {}
+		catch(IOException exe) {}
 	}
 
 	public  Pair<Graf,ArrayList<Result>> loadGraphAndResults(String idGraf) throws ClassNotFoundException {
