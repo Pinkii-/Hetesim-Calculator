@@ -79,6 +79,14 @@ public class SparseMatrixTest {
 				assertEquals(sm1.getValue(i, j),sm2.getValue(i, j));
 			}
 		}
+		
+		sm1.set(0, 0, sm2.getValue(0, 0)+1);
+		
+		assertEquals(sm1.getValue(0, 0),(Float)(sm2.getValue(0, 0)+1));
+		
+		sm2.set(0, 0, sm1.getValue(0, 0)+1);
+		
+		assertEquals(sm2.getValue(0, 0),(Float)(sm1.getValue(0, 0)+1));
 	}
 
 	@Test
@@ -268,6 +276,31 @@ public class SparseMatrixTest {
 		assertEquals(new Float(0.f),result.getValue(1, 1));
 		assertEquals(new Float(3.5f),result.getValue(2, 0));
 		assertEquals(new Float(4.5f),result.getValue(2, 1));
+		
+		sm1 = new SparseMatrix(3,4);
+		sm2 = new SparseMatrix(4,3);
+		
+		sm1.set(0, 0, 0.70710677f);
+		sm1.set(0, 1, 0.70710677f);
+		sm1.set(1, 1, 0.57735026f);
+		sm1.set(1, 2, 0.57735026f);
+		sm1.set(1, 3, 0.57735026f);
+		sm1.set(2, 3, 1.f);
+		
+		sm2.set(0, 0, 1.f);
+		sm2.set(1, 0, 0.70710677f);
+		sm2.set(1, 1, 0.70710677f);
+		sm2.set(2, 1, 1.f);
+		sm2.set(3, 1, 0.70710677f);
+		sm2.set(3, 2, 0.70710677f);
+		
+		SparseMatrix sm3 = new SparseMatrix(sm1);
+		
+		result = SparseMatrix.multiply(sm3, sm2);
+		
+		assertEquals(1.2071067541798329f, result.getValue(0, 0), 0.000001);
+		assertEquals(0.4999999841798329f, result.getValue(0, 1), 0.000001);
+		
 	}
 
 	@Test
@@ -369,6 +402,9 @@ public class SparseMatrixTest {
 		sm.set(1, 0, 3.f);
 		sm.set(1, 1, 4.f);
 		assertEquals(4, sm.numberOfNotZeros());
+		
+		sm.set(0, 0, 0.f);
+		assertEquals(3, sm.numberOfNotZeros());
 	}
 
 	@Test

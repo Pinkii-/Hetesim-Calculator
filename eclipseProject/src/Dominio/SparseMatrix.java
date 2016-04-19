@@ -108,6 +108,11 @@ class SparseMatrix {
 			SparseVector v1 = m1.getRow(i);
 			for (int j = 0; j < ret.getNCols(); ++j) {
 				ret.set(i, j, SparseVector.multiply(v1, m2.getCol(j)));
+//				System.out.println("m1.row: " + v1);
+//				System.out.println("m2.col: " + m2.getRow(j));
+//				System.out.println("M1\n" + m1);
+//				System.out.println("M2\n" + m2);
+//				System.out.println("ret\n" + ret);
 			}
 		}
 		return ret;
@@ -140,11 +145,13 @@ class SparseMatrix {
 		for (int i = 0; i < getNRows(); ++i) {
 			Double total = 0.0;
 			for (Integer j : rows.get(i).keySet()) {
-				total += Math.pow(rows.get(i).get(j),2);
+				total += Math.pow(getValue(i,j),2);
 			}
 			total = Math.sqrt(total);
 			for (Integer j : rows.get(i).keySet()) {
-				rows.get(i).put(j,(float) (rows.get(i).get(j)/total));
+				set(i,j,(float) (getValue(i,j)/total));
+//				rows.get(i).put(j,(float) (rows.get(i).get(j)/total));
+				
 			}
 		}
 	}
@@ -164,9 +171,20 @@ class SparseMatrix {
 		ret.setTamany(getNRows(), getNCols());
 		for (int i = 0; i < getNRows(); ++i) {
 			for (Integer k : rows.get(i).keySet()){
-				ret.getRow(i).set(k, rows.get(i).get(k)); // bypassing the things and modifiying directly the 'm'
+				ret.getRow(i).set(k, getValue(i,k)); // bypassing the things and modifiying directly the 'm'
 			}
 		}
 		return ret;
+	}
+	
+	public String toString() {
+		String s = new String();
+		for (int i = 0; i < getNRows(); ++i) {
+			for (int j = 0; j < getNCols(); ++j) {
+				s+=getValue(i, j) + " ";
+			}
+			s+= '\n';
+		} 
+		return s;
 	}
 }

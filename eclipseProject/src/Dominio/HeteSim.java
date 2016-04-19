@@ -153,8 +153,7 @@ class HeteSim {
 		Matrix hete = normaliceHeteSim(multiplyVectorMatrix(n,getMatrixesToMultiply(left,right)),mutiplyMatrixes(getMatrixesToMultiply(right,left)));
 		ArrayList<Pair<Integer,Float>> ret = new ArrayList<Pair<Integer,Float>>();
 		if (hete.getNRows() != 1) {
-			//throwEception Petó. Lern to Code Faget
-			System.out.println("getHeteSim(Path p, Node n), el resultado no tiene un solo arraylist. Baia");
+			throw new RuntimeException("getHeteSim(Path p, Node n), el resultado no tiene un solo arraylist. Baia");
 		}
 		for (int i = 0; i < hete.getNCols(); ++i) {
 			if (!hete.getRow(0).get(i).equals(0.0f)) {
@@ -209,9 +208,10 @@ class HeteSim {
 	 * @param path
 	 * @param aux If path finish with E and the Node.Type of before is Paper, we dont know what matrix chose. We need to know the full path
 	 * @return
+	 * @throws PathException 
 	 */
 	
-	private ArrayList<Matrix> getMatrixesToMultiply(ArrayList<Node.Type> path,ArrayList<Node.Type> aux) {
+	private ArrayList<Matrix> getMatrixesToMultiply(ArrayList<Node.Type> path,ArrayList<Node.Type> aux) throws PathException {
 		ArrayList<Matrix> matrixesToMultiply = new ArrayList<Matrix>();
 		ArrayList<WhatMatrix> whatMatrixes = getPairs(path, aux);
 		for (int i = 0; i < whatMatrixes.size(); ++i) {
@@ -306,7 +306,7 @@ class HeteSim {
 		return new Partite(thingA2Mid,mid2ThingB);
 	}
 
-	private ArrayList<WhatMatrix> getPairs(ArrayList<Node.Type> path, ArrayList<Node.Type> aux) {
+	private ArrayList<WhatMatrix> getPairs(ArrayList<Node.Type> path, ArrayList<Node.Type> aux) throws PathException {
 		ArrayList<WhatMatrix> ret = new ArrayList<WhatMatrix>();
 		for (int i = 1; i < path.size(); ++i) {
 			Node.Type last = path.get(i-1);
@@ -325,11 +325,11 @@ class HeteSim {
 							ret.add(new WhatMatrix(false,PathTypes.Paper2MidTerm));
 							break;
 						default:
-							/* Throw exception: The path is broken */
 							System.out.println("The path is broken. The Mid element is linking Paper with Paper or another MidElement :(");
 							System.out.println(path);
 							System.out.println(aux);
-							System.exit(-1);
+							throw new PathException("The path have a midElement linked to two papers or to another midElement");
+//							System.exit(-1);
 					}
 				}
 				else {
@@ -348,7 +348,8 @@ class HeteSim {
 							System.out.println("Maybe you dont know how to code, or maybe the path is broken. IoKze, no soi 100tifico :(");
 							System.out.println(path);
 							System.out.println(last);
-							System.exit(-1);
+							throw new PathException("The path have a midElement linked to another midElement");
+//							System.exit(-1);
 					}
 				}
 			}
@@ -360,6 +361,7 @@ class HeteSim {
 					current = ntAux;
 					trans = true;
 				}
+				if (current != Node.Type.Paper) throw new PathException("The path cant navigate for the graph (need to go to paper)");
 				switch (last) {
 					case Autor:
 						ret.add(new WhatMatrix(trans,PathTypes.Author2Paper));
@@ -376,7 +378,8 @@ class HeteSim {
 						System.out.println(path);
 						System.out.println(current);
 						System.out.println(last);
-						System.exit(-1);
+						throw new PathException("The path have two papers together");
+//						System.exit(-1);
 				}
 			}
 		}

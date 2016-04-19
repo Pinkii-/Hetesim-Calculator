@@ -11,5 +11,9 @@ public class Pair<T,S> {
 		first = f;
 		second = s;
 	}
+	
+	public String toString() {
+		return first + " " + second;
+	}
 
 }

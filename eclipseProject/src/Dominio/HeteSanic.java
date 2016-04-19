@@ -3,7 +3,7 @@ package Dominio;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class FastHetesim {
+public class HeteSanic {
 
 	class WhatMatrix {
 		boolean transposeMatrix;
@@ -11,6 +11,9 @@ public class FastHetesim {
 		WhatMatrix(boolean trans, PathTypes t) {
 			this.transposeMatrix = trans;
 			this.pathType = t;
+		}
+		public String toString() {
+			return pathType + " " + (transposeMatrix ? "Transpuesta" : "");
 		}
 	}
 	
@@ -42,8 +45,9 @@ public class FastHetesim {
 		Term2Mid, Paper2MidTerm
 	}
 	
-	public FastHetesim() {
+	public HeteSanic() {
 		graph = null;
+		paperAuthor = paperConf = paperTerm = authorMid = confMid = termMid = false;
 	}
 	
 	/**
@@ -59,7 +63,12 @@ public class FastHetesim {
 			for (int j = 0; j < result.getNCols(); ++j) {
 				double top = SparseVector.multiply(left.getRow(i),right.getRow(j));
 				double bot = Math.sqrt(left.getRow(i).norm()*right.getRow(j).norm());
+				
+//				System.out.println(top + " " + bot + " " + top/bot);
+				
 				result.set(i, j, (float) (top/bot));
+				
+//				System.out.println(result.getValue(i, j));
 				
 			}
 		}
@@ -74,14 +83,14 @@ public class FastHetesim {
 		paperAuthor = paperConf = paperTerm = authorMid = confMid = termMid = false;
 	}
 	
-	public SparseMatrix getHeteSim(Path p) {
+	public Matrix getHeteSim(Path p) {
 		ArrayList<Node.Type> left = null;
 		ArrayList<Node.Type> right = null;
 		Pair<ArrayList<Node.Type>, ArrayList<Node.Type>> aux = p.getPath();
 		left = aux.first;
 		right = aux.second;
 		Collections.reverse(right);
-		return normaliceHeteSim(mutiplyMatrixes(getMatrixesToMultiply(left,right)),mutiplyMatrixes(getMatrixesToMultiply(right,left)));
+		return normaliceHeteSim(mutiplyMatrixes(getMatrixesToMultiply(left,right)),mutiplyMatrixes(getMatrixesToMultiply(right,left))).toMatrix();
 	}
 	
 	public ArrayList<Pair<Integer,Float>> getHeteSim(Path p, Node n) {
@@ -136,12 +145,16 @@ public class FastHetesim {
 	
 	private SparseMatrix mutiplyMatrixes(ArrayList<SparseMatrix> matrixesToMultiply) {
 		if (matrixesToMultiply.size() < 1) {
-			// Throw Exception ("The path cant be this short dude, or maybe this whole shit is bugged. Dunno")
+			System.out.println("BROKEN");// Throw Exception ("The path cant be this short dude, or maybe this whole shit is bugged. Dunno")
 		}
 		SparseMatrix ret = matrixesToMultiply.get(0);
 		for (int i = 1; i < matrixesToMultiply.size(); ++i) {
+//			System.out.println("Multiplying\n" + ret + "\n" + matrixesToMultiply.get(i));
 			ret = SparseMatrix.multiply(ret,matrixesToMultiply.get(i));
+//			System.out.println("Multiplying2\n" + ret + "\n" + matrixesToMultiply.get(i));
 		}
+//		System.out.println("La multiplicacion es:\n"+ret);
+		ret.normaliceRows();
 		return ret;
 	}
 	
@@ -155,19 +168,21 @@ public class FastHetesim {
 	 */
 	
 	private ArrayList<SparseMatrix> getMatrixesToMultiply(ArrayList<Node.Type> path,ArrayList<Node.Type> aux) {
+//		System.out.println("Getting matrixes to multiply");
 		ArrayList<SparseMatrix> matrixesToMultiply = new ArrayList<SparseMatrix>();
 		ArrayList<WhatMatrix> whatMatrixes = getPairs(path, aux);
+//		System.out.println(whatMatrixes);
 		for (int i = 0; i < whatMatrixes.size(); ++i) {
 			WhatMatrix w = whatMatrixes.get(i);
 			switch (w.pathType) {
 			case Author2Paper:
 				if (!paperAuthor) { // init paper2Author
 					this.author2paper = new SparseMatrix(graph.getMatrixAuthor());
-					this.author2paper.normaliceRows();
-					
 					this.paper2author = new SparseMatrix(this.author2paper);
+					
+//					this.author2paper.normaliceRows();
 					this.paper2author.transpose();
-					this.paper2author.normaliceRows();
+//					this.paper2author.normaliceRows();
 					
 					this.paperAuthor = true;
 				}
@@ -177,9 +192,9 @@ public class FastHetesim {
 			case Conf2Paper:
 				if (!paperConf) { // init paper2Author
 					this.conf2paper = new SparseMatrix(graph.getMatrixConf());
-					this.conf2paper.normaliceRows();
-					
 					this.paper2conf = new SparseMatrix(this.conf2paper);
+					
+					this.conf2paper.normaliceRows();
 					this.paper2conf.transpose();
 					this.paper2conf.normaliceRows();
 					
@@ -191,9 +206,9 @@ public class FastHetesim {
 			case Term2Paper:
 				if (!paperTerm) { // init paper2Author
 					this.term2paper = new SparseMatrix(graph.getMatrixTerm());
-					this.term2paper.normaliceRows();
-					
 					this.paper2term = new SparseMatrix(term2paper);
+					
+					this.term2paper.normaliceRows();
 					this.paper2term.transpose();
 					this.paper2term.normaliceRows();
 					
@@ -251,6 +266,7 @@ public class FastHetesim {
 				break;
 			}
 		}
+//		System.out.println(matrixesToMultiply);
 		return matrixesToMultiply;
 	}
 

@@ -1,120 +1,4 @@
 package Dominio;
-
-//import java.util.ArrayList;
-//
-//public class Graf {
-//	String nom;
-//	Integer id;
-//	private Matrix autorPaper;
-//	private Matrix temaPaper;
-//	private Matrix confPaper;
-//	private ArrayList<Node> autors;
-//	private ArrayList<Node> conferencies;
-//	private ArrayList<Node> papers;
-//	private ArrayList<Node> terms;
-//
-//	//Pre: Cert.
-//	//Post: Es crea un graf buit amb nom "nom".
-//	public Graf(String nom, Integer id){
-//		
-//	}
-//
-//	//Pre: Cert.
-//	//Post:  Es crea un graf buit sense nom
-//	public Graf() {
-//		
-//	}
-//
-//	//Pre: El graf ha de tenir nom.
-//	//Post: Retorna el nom del graf.
-//	public String getNom() {
-//		return null;
-//	}
-//
-//	//Pre: Cert.
-//	//Post: El nom del graf passa a ser s.		
-//	public void setNom(String s) {
-//		
-//	}
-//
-//	//Pre: Existeix el graf i el node a afegir no existeix.
-//	//Post: Es crea un node amb id "id" i nom "nom" i tipus "tipus". S'afegeix el node a la Matrix i al ArrayList pertanyent. Es retorna la posició del node al ArrayList.
-//	public Integer addNode(Node.Type tipus, Integer id, String nom) {
-//		return null;
-//	}
-//	//Pre: L'index està comprés entre els valors 0 i ArrayList.size() - 1 del arraylist corresponent.
-//	//Post: S'afegeix el label al node que es troba a la posició "index" del ArrayList corresponent al tipus "tipus"
-//	public void addLabel(Integer index, Node.Label label, Node.Type tipus) {
-//		
-//	}
-//	//Pre:Cert.
-//	//Post:Retorna un booleà que indica si existeix el node "n".
-//	private Boolean existsNode(Node n) {
-//		return null;
-//	}
-//
-//	//Pre:Cert.
-//	//Post:Retorna un booleà que indica si existeix el node amb idNode == id i type == type.
-//	private Boolean existsNode(Integer id, Node.Type type) {
-//		return null;
-//	}
-//
-//	//Pre:la id del node existeix es menor que el size de el arrayList corresponent a type.
-//	//Post:Retorna el node amb idNode == id i type == type.
-//	public Node getNode(Integer id, Node.Type type) {
-//		return null;
-//	}
-//
-//	//Pre: Existeixen els nodes "a" i "b".
-//	//Post: Retorna un booleà que indica si existeix la relació entre "a" i "b".
-//	private Boolean existsArc(Node a, Node b) {
-//		return null;
-//	}
-//
-//	//Pre:El node ha d'existir.
-//	//Post:El node ha estat esborrat. Es mantindrà la consistència de les dades.
-//	public void deleteNode(Node a) {
-//		
-//	}
-//
-//	//Pre:L'arc ha d'existir.
-//	//Post:L'arc ha estat esborrat. Es mantindrà la consistència de les dades.
-//	public void deleteArc(Node a, Node b) {
-//		
-//	}
-//
-//
-//	//Pre: La id del node “a” existeix al ArrayList corresponent al tipus a.tipus.
-//	//Post: Si existeix un node amb el mateix identificador el sobreescriu.
-//	public void setNode(Node a) {
-//		
-//	}
-//	//Pre: El Node a y el Node b existeixen en una de les Matrix.
-//	//Post: Es crea un arc entre el paper "idpaper" i el node tipus "t" amb id "id2" si no existeix, si ja existeix el sobreescriu .
-//	public void setArc(Integer idpaper, Integer id2, Node.Type t){
-//		
-//	}
-//	//Pre: Res.
-//	//Post: Retorna autorPaper
-//	public Matrix getMatrixAuthor(){
-//		return null;
-//	}
-//	//Pre: Res.
-//	//Post: Retorna temaPaper
-//	public Matrix getMatrixTerm(){
-//		return null;
-//	}
-//	//Pre: Res.
-//	//Post: Retorna confPaper
-//	public Matrix getMatrixConf() {
-//		return null;
-//	}
-//
-//}
-//
-
-///////// Clase compartida
-
 import java.util.ArrayList;
 
 /*
@@ -136,10 +20,10 @@ public class Graf {
     private Matrix autorPaper;
     private Matrix temaPaper;
     private Matrix confPaper;
-    public ArrayList<Node> autors;
-    public ArrayList<Node> conferencies;
-    public ArrayList<Node> papers;
-    public ArrayList<Node> termes;
+    private ArrayList<Node> autors;
+    private ArrayList<Node> conferencies;
+    private ArrayList<Node> papers;
+    private ArrayList<Node> termes;
     
     //Metodos
     
@@ -209,7 +93,7 @@ public class Graf {
     public void addLabel(int index, Node.Label label, Node.Type tipus) {
         switch(tipus) {
             case Autor: autors.get(index).setLabel(label);
-                break;
+                break; 
             case Conferencia: conferencies.get(index).setLabel(label);
                 break;
             case Paper: papers.get(index).setLabel(label);
@@ -218,28 +102,27 @@ public class Graf {
         }
     }
     
-    private boolean existsNode(Node n) {
+    public boolean existsNode(Node n) {
         switch(n.getTipus()) {
             case Autor: if(autors.contains(n)) return true;
             case Conferencia: if(conferencies.contains(n)) return true;
             case Paper: if(papers.contains(n)) return true;
             case Terme: if (termes.contains(n)) return true;
+            default: return false;
         }
-        return false;
     }
     
-    Node getNode(int id, Node.Type tipus) {
+    public Node getNode(int index, Node.Type tipus) {
         switch(tipus) {
-            case Autor: return autors.get(id);
-            case Conferencia: return conferencies.get(id);
-            case Paper: return papers.get(id);
-            case Terme: return termes.get(id);
-            default: break;
+            case Autor: return autors.get(index);
+            case Conferencia: return conferencies.get(index);
+            case Paper: return papers.get(index);
+            case Terme: return termes.get(index);
+            default: return null;
         }
-        return null;
     }
     
-    private boolean existsArc(Node a, Node b) {
+    public boolean existsArc(Node a, Node b) {
         int i, j;
         j = papers.indexOf(b);
         switch(a.getTipus()) {
@@ -249,9 +132,8 @@ public class Graf {
                 return confPaper.existeixArc(i,j);
             case Terme: i = termes.indexOf(a);
                 return temaPaper.existeixArc(i,j);
-            default: break;
+            default: return false;
         }
-        return false;
     }
     
     public void deleteNode(Node a) {
@@ -263,7 +145,8 @@ public class Graf {
             case Paper: if(papers.contains(a)) papers.remove(a);
                 break;
             case Terme: if (termes.contains(a)) termes.remove(a);
-                break; 
+                break;
+            default: break;
         }
     }
     
@@ -305,13 +188,13 @@ public class Graf {
         }
     }
     
-    public void setArc(Integer idpaper, Integer id2, Node.Type t) {
+    public void setArc(int indexpaper, int index2, Node.Type t) {
         switch(t) {
-            case Autor: autorPaper.afegirArc(id2, idpaper);
+            case Autor: autorPaper.afegirArc(index2, indexpaper);
                 break;
-            case Conferencia: confPaper.afegirArc(id2, idpaper); 
+            case Conferencia: confPaper.afegirArc(index2, indexpaper); 
                 break;
-            case Terme: temaPaper.afegirArc(id2, idpaper);
+            case Terme: temaPaper.afegirArc(index2, indexpaper);
                 break;
             default: break;
         }
@@ -329,8 +212,5 @@ public class Graf {
         return confPaper;
     }
 }
- 
-
-
 
 

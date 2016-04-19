@@ -13,8 +13,8 @@ public class Partite {
 	
 	Partite(SparseMatrix matrix) {
 		int total = matrix.numberOfNotZeros();
-		SparseMatrix leftToMid = new SparseMatrix(matrix.getNRows(), total);
-		SparseMatrix midToRight = new SparseMatrix(total, matrix.getNCols());
+		leftToMid = new SparseMatrix(matrix.getNRows(), total);
+		midToRight = new SparseMatrix(total, matrix.getNCols());
 
 		int index = 0;
 		for (int i = 0; i < matrix.getNRows(); ++i) {
@@ -27,6 +27,10 @@ public class Partite {
 			}
 		}
 		
+	}
+
+	public String toString() {
+		return leftToMid + "\n" +midToRight;
 	}
 	
 }
