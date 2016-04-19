@@ -32,7 +32,12 @@ public class HeteSanicTest {
 		Path p =  new Path();
 		p.setContingut("APAP");
 		
-		Matrix m = h.getHeteSim(p);
+		try {
+			Matrix m = h.getHeteSim(p);
+		} catch (PathException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Test
@@ -118,9 +123,12 @@ public class HeteSanicTest {
 		HeteSanic h2 = new HeteSanic();
 		h2.setGraph(g);
 		
-		m = h2.getHeteSim(p);
-		
-		System.out.println("FINAAAAAAAAAAAAAAAAAAL\n\n");
+		try {
+			m = h2.getHeteSim(p);
+		} catch (PathException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		for (int i = 0; i < m.getNRows(); ++i) {
 			for (int j = 0; j < m.getNCols(); ++j) {
