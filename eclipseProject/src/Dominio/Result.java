@@ -42,6 +42,7 @@ public class Result implements Cloneable, Serializable{
 		modified = false;
 		this.threshold = threshold;
 		
+		resultList = new ArrayList<NodePair>();
 		for (Integer i = 0; i < resultHete.getNCols(); ++i){
 			for (Integer j = 0; j < resultHete.getNRows(); ++j){
 				if (resultHete.getValue(i,j) != 0.f){
@@ -65,7 +66,7 @@ public class Result implements Cloneable, Serializable{
 		modified = false;
 		this.threshold = threshold;
 		
-		
+		resultList = new ArrayList<NodePair>();
 		for(Integer i = 0; i < resultHete.size(); ++i){
 			Node n2 = g.getNode(resultHete.get(i).first, p.getContingut().get(p.getLength()-1)); //Get second node (we already have the first)
 			float hetesimVal = resultHete.get(i).second; //Get hetesim value
@@ -85,6 +86,7 @@ public class Result implements Cloneable, Serializable{
 		modified = false;
 		this.threshold = threshold;
 		
+		resultList = new ArrayList<NodePair>();
 		resultList.add(new NodePair(n1,n2,resultHete)); //Create NodePair and add to list. We only need to get the float value from Hetesim
 	}
 	
@@ -94,8 +96,8 @@ public class Result implements Cloneable, Serializable{
 		String retStr = new String();
 		retStr = ("Resultado: " + idResult + "\n");                          //Result: idresult
 		retStr = retStr + ("    Path: " + usedP.toString() + "\n");          //Path: path
-		retStr = retStr + ("    N1: " + firstN.toString() + "\n");           //N1: <Node to string>    <<<<Igual solo con el nombre basta?
-		retStr = retStr + ("    N2: " + lastN.toString() + "\n");            //N2: <Node to string>    <<<<Igual solo con el nombre basta?
+		if (firstN != null) retStr = retStr + ("    N1: " + firstN.toString() + "\n");           //N1: <Node to string>    <<<<Igual solo con el nombre basta?
+		if (lastN != null) retStr = retStr + ("    N2: " + lastN.toString() + "\n");            //N2: <Node to string>    <<<<Igual solo con el nombre basta?
 		retStr = retStr + ("    Threshold: " + threshold + "\n");            //Threshold: threshold
 		retStr = retStr + ("\n");                                            //
 		int i = 0;
