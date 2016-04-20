@@ -94,16 +94,19 @@ public class Result implements Cloneable, Serializable{
 	
 	public String toString(){
 		String retStr = new String();
-		retStr = ("Resultado: " + idResult + "\n");                          //Result: idresult
-		retStr = retStr + ("    Path: " + usedP.toString() + "\n");          //Path: path
-		if (firstN != null) retStr = retStr + ("    N1: " + firstN.toString() + "\n");           //N1: <Node to string>    <<<<Igual solo con el nombre basta?
-		if (lastN != null) retStr = retStr + ("    N2: " + lastN.toString() + "\n");            //N2: <Node to string>    <<<<Igual solo con el nombre basta?
-		retStr = retStr + ("    Threshold: " + threshold + "\n");            //Threshold: threshold
-		retStr = retStr + ("\n");                                            //
+		
+		retStr = ("Resultado: " + idResult + "\n");                                            //Result: idresult
+		retStr = retStr + ("    Path: " + usedP.toString() + "\n");                            //Path: path
+		if (firstN != null) retStr = retStr + ("    N1: " + firstN.getNom() + "\n");           //N1: <Node to string>    <<<<Igual solo con el nombre basta?
+		if (lastN != null) retStr = retStr + ("    N2: " + lastN.getNom() + "\n");             //N2: <Node to string>    <<<<Igual solo con el nombre basta?
+		retStr = retStr + ("    Threshold: " + threshold + "\n");                              //Threshold: threshold
+		retStr = retStr + ("\n");                                                              //
 		int i = 0;
+		System.out.println(resultList.size());
 		for (i = 0; i < resultList.size(); ++i){
-			retStr = retStr + "    " + resultList.get(i).toString() + "\n"; //First node: <Node to string> Last node: <Node to string> Hetesim: valorHetesim
+			retStr = retStr + "    " + resultList.get(i).toString() + "\n";                    //First node: <Node to string> Last node: <Node to string> Hetesim: valorHetesim
 		}
+		
 		return retStr; 
 	}
 
