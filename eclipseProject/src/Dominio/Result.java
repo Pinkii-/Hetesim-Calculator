@@ -164,7 +164,13 @@ public class Result implements Cloneable, Serializable{
 		this.idResult = idResult;
 	}
 
+	public String getIdGraf(){
+		return idGraph;
+	}
 	
+	public void setIdGraf(String idGraph){
+		this.idGraph = idGraph;
+	}
 	
 	//Modify the value of the heteSim for the line i
 	public void modifLine(Integer i, Float hetesimVal){
