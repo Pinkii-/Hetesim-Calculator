@@ -85,6 +85,7 @@ public class LoadStoreResult implements Serializable{
 	            }
 	            return Results;
 	        } catch (IOException ex) {
+	        	System.out.println("No se puede iterar por los Results");
 	        	return null;
 	        }
 	}
