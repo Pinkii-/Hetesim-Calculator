@@ -83,7 +83,7 @@ public class HeteSanic {
 		paperAuthor = paperConf = paperTerm = authorMid = confMid = termMid = false;
 	}
 	
-	public Matrix getHeteSim(Path p) throws PathException {
+	public SparseMatrix getHeteSim(Path p) throws PathException {
 		ArrayList<Node.Type> left = null;
 		ArrayList<Node.Type> right = null;
 		Pair<ArrayList<Node.Type>, ArrayList<Node.Type>> aux = p.getPath();
@@ -91,7 +91,7 @@ public class HeteSanic {
 		right = aux.second;
 		if (left.size() < 2 || right.size() < 2) throw new PathException("The path is too short");
 		Collections.reverse(right);
-		return normaliceHeteSim(mutiplyMatrixes(getMatrixesToMultiply(left,right)),mutiplyMatrixes(getMatrixesToMultiply(right,left))).toMatrix();
+		return normaliceHeteSim(mutiplyMatrixes(getMatrixesToMultiply(left,right)),mutiplyMatrixes(getMatrixesToMultiply(right,left)));
 	}
 	
 	public ArrayList<Pair<Integer,Float>> getHeteSim(Path p, Node n) throws PathException {
@@ -121,12 +121,17 @@ public class HeteSanic {
 		right = aux.second;
 		if (left.size() < 2 || right.size() < 2) throw new PathException("The path is too short");
 		Collections.reverse(right);
-		return normaliceHeteSim(multiplyVectorMatrix(n1, getMatrixesToMultiply(left,right)),multiplyVectorMatrix(n2, getMatrixesToMultiply(right,left))).getValue(0,0);
+		System.out.println("Starting left");
+		SparseMatrix mleft = multiplyVectorMatrix(n1, getMatrixesToMultiply(left,right));
+		System.out.println("left done. Starting right");
+		SparseMatrix mright = multiplyVectorMatrix(n2, getMatrixesToMultiply(right,left));
+		return normaliceHeteSim(mleft,mright).getValue(0,0);
 	}
 	
 	// Private Metods
 	
 	private SparseMatrix arrayListToMatrix(SparseVector sparseVector) {
+		System.out.println("SparseVector to matrix \n" + sparseVector + "\n");
 		SparseMatrix ret = new SparseMatrix(1, sparseVector.size());
 		for (int i : sparseVector.keySet()) {
 			ret.set(0,i,sparseVector.get(i));
@@ -135,10 +140,12 @@ public class HeteSanic {
 	}
 	
 	private SparseMatrix multiplyVectorMatrix(Node n, ArrayList<SparseMatrix> matrixesToMultiply) {
+		System.out.println("multiplying matrixes");
 		if (matrixesToMultiply.size() < 1) {
-			// Throw Exception ("The path cant be this short dude, or maybe this whole shit is bugged. Dunno")
+			System.out.println("BROKEN");// Throw Exception ("The path cant be this short dude, or maybe this whole shit is bugged. Dunno")
 		}
 		SparseMatrix ret = arrayListToMatrix(matrixesToMultiply.get(0).getRow(n.id));
+		System.out.println(ret);
 		for (int i = 1; i < matrixesToMultiply.size(); ++i) {
 			ret = SparseMatrix.multiply(ret,matrixesToMultiply.get(i));
 		}
@@ -179,7 +186,7 @@ public class HeteSanic {
 			case Author2Paper:
 				if (!paperAuthor) { // init paper2Author
 					System.out.println("init paperAuthor");
-					this.author2paper = new SparseMatrix(graph.getMatrixAuthor());
+					this.author2paper = graph.getMatrixAuthor();
 					this.paper2author = new SparseMatrix(this.author2paper);
 
 					System.out.println("finished paperAuthor");
@@ -195,7 +202,7 @@ public class HeteSanic {
 				break;
 			case Conf2Paper:
 				if (!paperConf) { // init paper2Author
-					this.conf2paper = new SparseMatrix(graph.getMatrixConf());
+					this.conf2paper = graph.getMatrixConf();
 					this.paper2conf = new SparseMatrix(this.conf2paper);
 					
 //					this.conf2paper.normaliceRows();
@@ -209,8 +216,8 @@ public class HeteSanic {
 				break;
 			case Term2Paper:
 				if (!paperTerm) { // init paper2Author
-					this.term2paper = new SparseMatrix(graph.getMatrixTerm());
-					this.paper2term = new SparseMatrix(term2paper);
+					this.term2paper = graph.getMatrixTerm();
+					this.paper2term = new SparseMatrix(this.term2paper);
 					
 //					this.term2paper.normaliceRows();
 					this.paper2term.transpose();
@@ -224,7 +231,7 @@ public class HeteSanic {
 			case Author2Mid:
 			case Paper2MidAut:
 				if (!authorMid) {
-					Partite p = new Partite(new SparseMatrix(graph.getMatrixAuthor())); // new SparseMatrix hace una traduccion innecesaria(si el grafo tuviera sparse matrix) x3
+					Partite p = new Partite(graph.getMatrixAuthor()); // new SparseMatrix hace una traduccion innecesaria(si el grafo tuviera sparse matrix) x3
 					this.author2mid = p.leftToMid;
 //					this.author2mid.normaliceRows();
 					
@@ -240,7 +247,7 @@ public class HeteSanic {
 			case Conf2Mid:
 			case Paper2MidConf:
 				if (!confMid) {
-					Partite p =  new Partite(new SparseMatrix(graph.getMatrixConf()));
+					Partite p =  new Partite(graph.getMatrixConf());
 					this.conf2mid = p.leftToMid;
 //					this.conf2mid.normaliceRows();
 					
@@ -256,7 +263,7 @@ public class HeteSanic {
 			case Term2Mid:
 			case Paper2MidTerm:
 				if (!termMid) {
-					Partite p = new Partite(new SparseMatrix(graph.getMatrixTerm()));
+					Partite p = new Partite(graph.getMatrixTerm());
 					this.term2mid = p.leftToMid;
 //					this.term2mid.normaliceRows();
 					
@@ -333,10 +340,10 @@ public class HeteSanic {
 						ret.add(new WhatMatrix(trans,PathTypes.Author2Paper));
 						break;
 					case Conferencia:
-						ret.add(new WhatMatrix(trans,PathTypes.Paper2MidConf));
+						ret.add(new WhatMatrix(trans,PathTypes.Conf2Paper));
 						break;
 					case Terme:
-						ret.add(new WhatMatrix(trans,PathTypes.Paper2MidTerm));
+						ret.add(new WhatMatrix(trans,PathTypes.Term2Paper));
 						break;
 					default:
 						/* Throw exception: The function is broken or the path is broken */
