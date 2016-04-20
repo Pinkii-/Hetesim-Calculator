@@ -6,38 +6,41 @@ import java.util.Random;
 
 import org.junit.Test;
 
+import Persistencia.GraphImporter;
+
 public class HeteSanicTest {
 
 	@Test
 	public void testGetHeteSimPath() {
-		Graf g = new Graf();
-		Random rand = new Random();
-		for (int i = 0; i < 1000; ++i) {
-			g.addNode(Node.Type.Paper, i, "");
-		}
-		for (int i = 0; i < 1000; ++i) {
-			g.addNode(Node.Type.Autor, i, "");
-		}
+		Graf g = GraphImporter.leMagicGoesOn("/home/pinkii/Documents/PROP/DBLP_four_area/");
+//		Random rand = new Random();
+//		for (int i = 0; i < 1000; ++i) {
+//			g.addNode(Node.Type.Paper, i, "");
+//		}
+//		for (int i = 0; i < 1000; ++i) {
+//			g.addNode(Node.Type.Autor, i, "");
+//		}
+//		
+//		for (int i = 0; i < 1000; ++i) {
+//			for (int j = 0; j < 1000; ++j) {
+//				if (rand.nextInt()%100 == 0) {
+//					g.setArc(j, i, Node.Type.Autor);
+//				}
+//			}
+//		}
 		
-		for (int i = 0; i < 1000; ++i) {
-			for (int j = 0; j < 1000; ++j) {
-				if (rand.nextInt()%100 == 0) {
-					g.setArc(j, i, Node.Type.Autor);
-				}
-			}
-		}
-		HeteSanic h = new HeteSanic();
-		h.setGraph(g);
-		
-		Path p =  new Path();
-		p.setContingut("APAP");
-		
-		try {
-			Matrix m = h.getHeteSim(p);
-		} catch (PathException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		HeteSanic h = new HeteSanic();
+//		h.setGraph(g);
+//		
+//		Path p =  new Path();
+//		p.setContingut("APAP");
+//		
+//		try {
+//			Matrix m = h.getHeteSim(p);
+//		} catch (PathException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 
 	@Test
