@@ -70,8 +70,13 @@ public class SparseMatrix {
 			cols.get(col).put(row, value);
 		}
 		catch (IndexOutOfBoundsException e) {
-			System.out.println("Trying to set a position of the matrix that is outside the matrix");
-			throw e;
+			while (row >= rows.size()) rows.add(new SparseVector());
+			while (col >= cols.size()) cols.add(new SparseVector());
+			
+			rows.get(row).put(col, value);
+			cols.get(col).put(row, value);
+//			System.out.println("Trying to set a position of the matrix that is outside the matrix");
+//			throw e;
 		}
 	}
 	
@@ -83,20 +88,20 @@ public class SparseMatrix {
 		return cols.size();
 	}
 	
-	SparseVector getRow(int i) {
+	public SparseVector getRow(int i) {
 		return rows.get(i);
 	}
 	
-	SparseVector getCol(int j) {
+	public SparseVector getCol(int j) {
 		return cols.get(j);
 	}
 	
-	Float getValue(int i, int j) {
+	public Float getValue(int i, int j) {
 		if (i < rows.size() && rows.get(i).containsKey(j)) return rows.get(i).get(j);
 		else return 0.f;
 	}
 	
-	void transpose() {
+	public void transpose() {
 		ArrayList<SparseVector> aux = rows;
 		rows = cols;
 		cols = aux;
@@ -181,12 +186,28 @@ public class SparseMatrix {
 	
 	public String toString() {
 		String s = new String();
+//		for (int i = 0; i < getNRows(); ++i) {
+//			for (int j = 0; j < getNCols(); ++j) {
+//				s+=getValue(i, j) + " ";
+//			}
+//			s+= '\n';
+//		} 
+		
 		for (int i = 0; i < getNRows(); ++i) {
-			for (int j = 0; j < getNCols(); ++j) {
-				s+=getValue(i, j) + " ";
-			}
-			s+= '\n';
-		} 
+			System.out.println(i + " " + rows.get(i));
+		}
+		System.out.print("Cols " + cols.size());
 		return s;
+	}
+	
+	
+	SparseMatrix(){}
+	
+	void addRow() {
+		rows.add(new SparseVector());
+	}
+	
+	void addCol() {
+		cols.add(new SparseVector());
 	}
 }
