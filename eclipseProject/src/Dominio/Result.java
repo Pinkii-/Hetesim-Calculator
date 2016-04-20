@@ -103,8 +103,9 @@ public class Result implements Cloneable, Serializable{
 		retStr = retStr + ("\n");                                                              //
 		int i = 0;
 		System.out.println(resultList.size());
-		for (i = 0; i < resultList.size(); ++i){
+		while (i < resultList.size() && resultList.get(i).getHetesim() > threshold){
 			retStr = retStr + "    " + resultList.get(i).toString() + "\n";                    //First node: <Node to string> Last node: <Node to string> Hetesim: valorHetesim
+			++i;
 		}
 		
 		return retStr; 
