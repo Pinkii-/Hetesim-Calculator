@@ -125,6 +125,11 @@ public class Result implements Cloneable, Serializable{
 	}
 	
 	
+	//Set new threshold. When calling toString(), only the NodePairs with Hetesim value over this threshold will be displayed.
+	public void setThreshold(float threshold){
+		this.threshold = threshold;
+	}
+	
 	//Get the result list
 	public ArrayList<NodePair> getResult(){ 
 		ArrayList<NodePair> retResult = resultList;
