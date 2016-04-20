@@ -3,9 +3,9 @@ package Dominio;
 public class CtrlSearch {
 	
 	Graf g = null;
-	HeteSim het = null;
+	HeteSanic het = new HeteSanic();
 	
-	void setGraph(Graf g) {
+	public void setGraph(Graf g) {
 		this.g = g;
 		het.setGraph(g);
 	}
