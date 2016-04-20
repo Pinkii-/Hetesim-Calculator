@@ -178,8 +178,11 @@ public class HeteSanic {
 			switch (w.pathType) {
 			case Author2Paper:
 				if (!paperAuthor) { // init paper2Author
+					System.out.println("init paperAuthor");
 					this.author2paper = new SparseMatrix(graph.getMatrixAuthor());
 					this.paper2author = new SparseMatrix(this.author2paper);
+
+					System.out.println("finished paperAuthor");
 					
 //					this.author2paper.normaliceRows();
 					this.paper2author.transpose();

@@ -3,11 +3,11 @@ package Dominio;
 import java.util.ArrayList;
 import java.util.Set;
 
-class SparseMatrix {
+public class SparseMatrix {
 	ArrayList<SparseVector> rows = new ArrayList<SparseVector>();
 	ArrayList<SparseVector> cols = new ArrayList<SparseVector>();
 
-	SparseMatrix(Matrix matrix) {
+	public SparseMatrix(Matrix matrix) {
 		int nCols = matrix.getNCols();
 		int nRows = matrix.getNRows();
 		for (int i = 0; i < nRows; ++i) {
@@ -167,6 +167,7 @@ class SparseMatrix {
 	}
 
 	public Matrix toMatrix() {
+		System.out.println("Starting to parseTo matrix");
 		Matrix ret = new Matrix();
 		ret.setTamany(getNRows(), getNCols());
 		for (int i = 0; i < getNRows(); ++i) {
@@ -174,6 +175,7 @@ class SparseMatrix {
 				ret.getRow(i).set(k, getValue(i,k)); // bypassing the things and modifiying directly the 'm'
 			}
 		}
+		System.out.println("Done parseToMatrix");
 		return ret;
 	}
 	
