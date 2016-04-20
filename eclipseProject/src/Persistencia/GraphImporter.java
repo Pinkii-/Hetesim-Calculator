@@ -41,22 +41,22 @@ public class GraphImporter {
 		importRelations("paper_author.txt",authors,Node.Type.Autor);
 		System.out.println("relaciones autor Done");
 		
-		authors = new HashMap <Integer,Integer>();
+		authors = null;
 		
-//		importElements("conf.txt",confs,Node.Type.Conferencia);
-//		System.out.println("Conferencias Done");
-//		importRelations("paper_conf.txt",confs,Node.Type.Conferencia);
-//		System.out.println("relaciones conf Done");
-//		
-//		confs = new HashMap <Integer,Integer>();
-//		
-//		importElements("term.txt",terms,Node.Type.Terme);
-//		System.out.println("Terme Done");
-//		importRelations("paper_term.txt",terms,Node.Type.Terme);
-//		System.out.println("relaciones term Done");
-//		
-//		terms = new HashMap <Integer,Integer>();
-//		papers = new HashMap <Integer,Integer>();
+		importElements("conf.txt",confs,Node.Type.Conferencia);
+		System.out.println("Conferencias Done");
+		importRelations("paper_conf.txt",confs,Node.Type.Conferencia);
+		System.out.println("relaciones conf Done");
+		
+		confs = null;
+		
+		importElements("term.txt",terms,Node.Type.Terme);
+		System.out.println("Terme Done");
+		importRelations("paper_term.txt",terms,Node.Type.Terme);
+		System.out.println("relaciones term Done");
+		
+		terms = null;
+		papers = null;
 		
 		return g;
 	}
@@ -67,6 +67,7 @@ public class GraphImporter {
 				String[] sings = line.split("\\s+");
 				Integer paper = Integer.parseInt(sings[0]);
 				Integer other = Integer.parseInt(sings[1]);
+//				System.out.println(paper + " " + papers.get(paper) + " " + other + " " + map.get(other));
 				g.setArc(papers.get(paper), map.get(other), type);
 			}
 		} catch (IOException e) {
