@@ -3,18 +3,16 @@
 package Dominio;
 
 import java.util.ArrayList;
-import Persistencia.CargarGuardarPath;
-import Persistencia.CargarGuardarResultado;
+import Persistencia.LoadStorePath;
+import Persistencia.LoadStoreResult;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.nio.file.DirectoryStream;
-import java.nio.file.Files;
+import java.nio.file.NotDirectoryException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -26,14 +24,19 @@ import java.nio.file.Paths;
 public class CtrlData {
 	
 	private CtrlDataGraph CG;
-	private CargarGuardarResultado CGR;
-	private CargarGuardarPath CGP;
+	private LoadStoreResult LSR;
+	private LoadStorePath LSP;
 	
 	private final Path PathToGrafsAndResults = Paths.get(""); //Path del directorio donde siempre se guardan las carpetas: (nombregrafo/grafo y sus resultados)
 	private final Path PathToPaths = Paths.get("");			  //Path del directorio donde siempre guardamos los Paths.
 	private Pair<Graf,ArrayList<Result>> GraphAndResults;
 	private ArrayList<Dominio.Path> AllPaths;
 	
+	
+	public CtrlData() {
+		//Inicializar directorios (crearlos si no existen)
+		
+	}
 	private static Object deepCopy(Object o) {
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -50,67 +53,66 @@ public class CtrlData {
 		}
 	}
 
-	private void grafAndResultsWalkin (Path dir, String idGraf) throws ClassNotFoundException {
 
-        try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(dir)) {
-            for (Path path : directoryStream) {
-            	if (path.getFileName().toString() != idGraf) 
-            		GraphAndResults.second.add(CGR.cargaResultado(path.getFileName().toString()));
-            }
-        } catch (IOException ex) {}
-	}
-	
-	private void pathsWalkin() throws IOException, ClassNotFoundException {
-		try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(PathToPaths)) {
-			for (Path path : directoryStream) {
-				AllPaths.add(CGP.cargaPath(path.getFileName().toString()));
-			}
-		}
-		catch(IOException exe) {}
-	}
-
-	public  Pair<Graf,ArrayList<Result>> loadGraphAndResults(String idGraf) throws ClassNotFoundException {
+	public  Pair<Graf,ArrayList<Result>> loadGraphAndResults(String idGraf) throws ClassNotFoundException, NotDirectoryException {
 		Path p = Paths.get(PathToGrafsAndResults.toString());
-		p = p.resolve(idGraf); //p ahora tendria que ser el directorio idGraf que contiene su graf y sus results.
+		p = p.resolve(idGraf); //p ahora tendria que ser el directorio nomgraf que contiene su graf y sus results.
 		
 		CG = new CtrlDataGraph(p.toString());
-		CGR = new CargarGuardarResultado(p.toString());
+		LSR = new LoadStoreResult(p.toString());
 		
 		Graf g = new Graf();
 		ArrayList<Result> results = new ArrayList<Result>();
 		GraphAndResults = new Pair<Graf,ArrayList<Result>>(g, results);
 		
-		grafAndResultsWalkin(p,idGraf);
+		GraphAndResults.second = LSR.LoadAllResults();
 		GraphAndResults.first = CG.loadGraph(idGraf);
 		return GraphAndResults;
 	}
 	
 	public ArrayList<Dominio.Path> loadAllPaths() throws ClassNotFoundException, IOException {
 		AllPaths = new ArrayList<Dominio.Path>();
-		pathsWalkin();
+		LSP = new LoadStorePath(PathToPaths.toString());
+		AllPaths = LSP.loadAllPaths();
 		return AllPaths;
 	}
 	
 	public void storeResult(Result r) throws FileNotFoundException, CloneNotSupportedException, IOException{
 		Path p = Paths.get(PathToGrafsAndResults.toString());
-		p = p.resolve(r.getIdGraph());
+		p = p.resolve(r.getIdGraf());
 		Result res = new Result(null, null, null, null); //??????????????
 		res = (Result)CtrlData.deepCopy(r);
-		CGR = new CargarGuardarResultado(p.toString());
-		CGR.guardaResultado(res);
+		LSR = new LoadStoreResult(p.toString());
+		LSR.storeResult(res);
 	}
 	
 	public void storePath(Dominio.Path p) throws FileNotFoundException, CloneNotSupportedException, IOException {
 		Dominio.Path pa = new Dominio.Path();
 		pa = (Dominio.Path) CtrlData.deepCopy(p);
-		CGP.guardaPath(pa);
+		LSP = new LoadStorePath(PathToPaths.toString());
+		LSP.storePath(pa);
 	}
 	
-	public Result loadResult(String idResultado) {
-		return null;
+	public void storeGraf(Graf g) {
+		Path p = Paths.get(PathToGrafsAndResults.toString());
+		p = p.resolve(String.valueOf(g.id));
+		CG = new CtrlDataGraph(p.toString());
+		CG.saveGraph(g, g.nom);
 	}
 	
-	public Path loadPath(String nomPath) {
-		return null;
+	public Result loadResult(String idResult, Graf g) throws FileNotFoundException, ClassNotFoundException, IOException {
+		Result r = new Result(null, null, null, null);
+		Path p = Paths.get(PathToGrafsAndResults.toString());
+		p = p.resolve(String.valueOf(g.id));
+		LSR = new LoadStoreResult(p.toString());
+		r = LSR.loadResult(idResult);
+		return r;
+	}
+	
+	public Dominio.Path loadPath(String nomPath) throws FileNotFoundException, ClassNotFoundException, IOException {
+		Dominio.Path p = new Dominio.Path();
+		LSP = new LoadStorePath(PathToPaths.toString());
+		p = LSP.loadPath(nomPath);
+		return p;
 	}
 }
