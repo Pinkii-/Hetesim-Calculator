@@ -22,30 +22,30 @@ import java.util.ArrayList;
 @SuppressWarnings("serial")
 public class LoadStorePath implements Serializable{
 
-	private Path PathsDirectory; 
+	private Path pathsDirectory; 
 
-	public LoadStorePath(String PathsDirectory) throws NotDirectoryException {
-		this.setPathsDirectory(PathsDirectory);
+	public LoadStorePath(String pathsDirectory) throws NotDirectoryException {
+		this.setpathsDirectory(pathsDirectory);
 	}
-	public String getPathsDirectory() {
-		return PathsDirectory.toString();
+	public String getpathsDirectory() {
+		return pathsDirectory.toString();
 	}
-	public void setPathsDirectory(String PathsDirectory) throws NotDirectoryException {
-		Path p = Paths.get(PathsDirectory);
+	public void setpathsDirectory(String pathsDirectory) throws NotDirectoryException {
+		Path p = Paths.get(pathsDirectory);
 		if (Files.exists(p))
-				this.PathsDirectory = Paths.get(PathsDirectory);
+				this.pathsDirectory = Paths.get(pathsDirectory);
 		else throw new NotDirectoryException("No existe el directorio");
 	}
 	
 	public void storePath(Dominio.Path p) throws FileNotFoundException, IOException {
 		try {
-			FileOutputStream FileOutput = new FileOutputStream(PathsDirectory.resolve(p.getNom()+".ser").toString());
+			FileOutputStream FileOutput = new FileOutputStream(pathsDirectory.resolve(p.getNom()+".ser").toString());
 			ObjectOutputStream ObjectOutput = new ObjectOutputStream(FileOutput);
 			ObjectOutput.writeObject(p);
 			ObjectOutput.close();
 		}
 		catch(FileNotFoundException fnfe){
-			System.out.println("Path absoluto del path:"+PathsDirectory.resolve(p.getNom()+".ser").toString());
+			System.out.println("Path absoluto del path:"+pathsDirectory.resolve(p.getNom()+".ser").toString());
 			System.out.println("No se puede guardar el Path");
 		}
 
@@ -54,7 +54,7 @@ public class LoadStorePath implements Serializable{
 	public void deletePath(String nomPath) throws ClassNotFoundException, IOException {
 		/*Dominio.Path p = new Dominio.Path();
 		p = loadPath(nomPath);*/
-		File file = new File(PathsDirectory.resolve(nomPath+".ser").toString());
+		File file = new File(pathsDirectory.resolve(nomPath+".ser").toString());
 		if(!file.delete())
 			System.out.println("No se ha podido borrar el Path");
 		//...
@@ -62,15 +62,15 @@ public class LoadStorePath implements Serializable{
 
 	public Dominio.Path loadPath(String nomPath) throws FileNotFoundException, IOException, ClassNotFoundException {
 		try {
-			FileInputStream FileInput = new FileInputStream(PathsDirectory.resolve(nomPath+".ser").toString());
+			FileInputStream FileInput = new FileInputStream(pathsDirectory.resolve(nomPath+".ser").toString());
 			ObjectInputStream ObjectInput = new ObjectInputStream(FileInput);
 			Object aux = ObjectInput.readObject();
 			ObjectInput.close();
 			return (Dominio.Path)aux;
 		}
 		catch(FileNotFoundException fnfe){
-			if (Files.notExists(PathsDirectory.resolve(nomPath+".ser"))) {
-				System.out.println(PathsDirectory.resolve(nomPath+".ser").toString());
+			if (Files.notExists(pathsDirectory.resolve(nomPath+".ser"))) {
+				System.out.println(pathsDirectory.resolve(nomPath+".ser").toString());
 				System.out.println("No se ha podido cargar el Path");
 			}
 			return null;
@@ -80,7 +80,7 @@ public class LoadStorePath implements Serializable{
 	
 	public ArrayList<Dominio.Path> loadAllPaths () throws ClassNotFoundException {
 		ArrayList<Dominio.Path> Paths = new ArrayList<Dominio.Path>();   
-		try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(PathsDirectory)) {
+		try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(pathsDirectory)) {
 	            for (Path path : directoryStream) {
 	            		Paths.add(loadPath(path.toString()));
 	            	}
