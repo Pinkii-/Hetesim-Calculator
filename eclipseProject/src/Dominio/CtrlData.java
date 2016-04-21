@@ -8,10 +8,12 @@ import Persistencia.LoadStoreResult;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.file.Files;
 import java.nio.file.NotDirectoryException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -27,16 +29,39 @@ public class CtrlData {
 	private LoadStoreResult LSR;
 	private LoadStorePath LSP;
 	
-	private final Path PathToGrafsAndResults = Paths.get(""); //Path del directorio donde siempre se guardan las carpetas: (nombregrafo/grafo y sus resultados)
-	private final Path PathToPaths = Paths.get("");			  //Path del directorio donde siempre guardamos los Paths.
+	private Path PathToGrafsAndResults; //Path del directorio donde siempre se guardan las carpetas: (nombregrafo/grafo y sus resultados)
+	private Path PathToPaths;		  //Path del directorio donde siempre guardamos los Paths.
 	private Pair<Graf,ArrayList<Result>> GraphAndResults;
 	private ArrayList<Dominio.Path> AllPaths;
 	
-	
+	//No se si tendria que hacer esto o por parámetro. 
 	public CtrlData() {
-		//Inicializar directorios (crearlos si no existen)
-		
-	}
+		//generar directorio GrafsAndResults
+		//generar directorio Paths
+		Path cwd = Paths.get(System.getProperty("user.dir"));
+		Path Paths = cwd.resolve("Paths");
+		File Pathsf = new File(Paths.toString());
+		Path GrafsAndResults = cwd.resolve("GrafsAndResults");
+		File GrafsAndResultsf = new File(GrafsAndResults.toString());
+		if (!Pathsf.exists()) {
+			try {
+				Pathsf.mkdirs();
+			}
+			catch(SecurityException se) {
+				System.out.println("No se puede crear el directorio con los Paths");
+			}
+		}
+		if (!GrafsAndResultsf.exists()) {
+			try {
+				GrafsAndResultsf.mkdirs();
+			}
+			catch(SecurityException se) {
+				System.out.println("No se puede crear el directorio GrafAndResults");
+			}
+		}
+		this.PathToGrafsAndResults = GrafsAndResults;
+		this.PathToPaths = Paths;		
+}
 	private static Object deepCopy(Object o) {
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -80,14 +105,14 @@ public class CtrlData {
 	public void storeResult(Result r) throws FileNotFoundException, CloneNotSupportedException, IOException{
 		Path p = Paths.get(PathToGrafsAndResults.toString());
 		p = p.resolve(r.getIdGraf());
-		Result res = new Result(null, null, null, null); //??????????????
+		Result res; 
 		res = (Result)CtrlData.deepCopy(r);
 		LSR = new LoadStoreResult(p.toString());
 		LSR.storeResult(res);
 	}
 	
 	public void storePath(Dominio.Path p) throws FileNotFoundException, CloneNotSupportedException, IOException {
-		Dominio.Path pa = new Dominio.Path();
+		Dominio.Path pa;
 		pa = (Dominio.Path) CtrlData.deepCopy(p);
 		LSP = new LoadStorePath(PathToPaths.toString());
 		LSP.storePath(pa);
@@ -95,17 +120,17 @@ public class CtrlData {
 	
 	public void storeGraf(Graf g) {
 		Path p = Paths.get(PathToGrafsAndResults.toString());
+		Graf gc = (Graf) CtrlData.deepCopy(g);
 		p = p.resolve(String.valueOf(g.id));
 		CG = new CtrlDataGraph(p.toString());
-		CG.saveGraph(g, g.nom);
+		CG.saveGraph(gc, gc.nom);
 	}
 	
-	public Result loadResult(String idResult, Graf g) throws FileNotFoundException, ClassNotFoundException, IOException {
-		Result r = new Result(null, null, null, null);
+	public Result loadResult(String idResult, Integer idGraf) throws FileNotFoundException, ClassNotFoundException, IOException {
 		Path p = Paths.get(PathToGrafsAndResults.toString());
-		p = p.resolve(String.valueOf(g.id));
+		p = p.resolve(String.valueOf(idGraf));
 		LSR = new LoadStoreResult(p.toString());
-		r = LSR.loadResult(idResult);
+		Result r = LSR.loadResult(idResult);
 		return r;
 	}
 	
@@ -114,5 +139,17 @@ public class CtrlData {
 		LSP = new LoadStorePath(PathToPaths.toString());
 		p = LSP.loadPath(nomPath);
 		return p;
+	}
+	
+	public void deletePath(String nomPath) throws ClassNotFoundException, IOException {
+		LSP = new LoadStorePath(PathToPaths.toString());
+		LSP.deletePath(nomPath);
+	}
+	
+	public void deleteResult(String idResult, Integer idGraf) throws FileNotFoundException, ClassNotFoundException, IOException {
+		Path p = Paths.get(PathToGrafsAndResults.toString());
+		p = p.resolve(String.valueOf(idGraf));
+		LSR = new LoadStoreResult(p.toString());
+		LSR.deleteResult(idResult);
 	}
 }

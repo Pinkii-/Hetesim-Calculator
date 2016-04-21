@@ -1,4 +1,5 @@
 package Persistencia;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -47,11 +48,9 @@ public class LoadStoreResult implements Serializable{
 			ObjectOutput.writeObject(r);
 			ObjectOutput.close();
 		}
-		//No existe el directorio: ...
-		//No existe el Resultado: lo guarda.
-		//El Resultado r ya ha sido guardado: Sobreescribe.
 		catch(FileNotFoundException fnfe){
 			System.out.println("Path absoluto fichero:"+fileDirectory.resolve(r.getIdResult()+".Result").toString());
+			System.out.println("No se puede guardar el Resultado");
 		}
 		
 	}
@@ -68,11 +67,18 @@ public class LoadStoreResult implements Serializable{
 		catch(FileNotFoundException fnfe){
 			if (Files.notExists(fileDirectory.resolve(idResult+".Result"))) {
 				System.out.println(fileDirectory.resolve(idResult+".Result").toString());
+				System.out.println("No se puede cargar el Resultado");
 			}
 			return null;
 		}
 		
 	}
+	
+	public void deleteResult(String idResult) throws FileNotFoundException, ClassNotFoundException, IOException {
+		File file = new File(fileDirectory.resolve(idResult+".Result").toString());
+		if (!file.delete()) System.out.println("No se ha podido guardar el Resultado");
+	}
+	
 	public ArrayList<Result> LoadAllResults () throws ClassNotFoundException {
 		ArrayList<Result> Results = new ArrayList<Result>();   
 		try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(fileDirectory)) {

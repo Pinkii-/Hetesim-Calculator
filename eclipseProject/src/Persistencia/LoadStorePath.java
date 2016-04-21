@@ -1,4 +1,5 @@
 package Persistencia;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -21,9 +22,7 @@ import java.util.ArrayList;
 @SuppressWarnings("serial")
 public class LoadStorePath implements Serializable{
 
-	private Path PathsDirectory; //Carpeta donde estan todos los paths.
-
-	public LoadStorePath() {}
+	private Path PathsDirectory; 
 
 	public LoadStorePath(String PathsDirectory) throws NotDirectoryException {
 		this.setPathsDirectory(PathsDirectory);
@@ -37,21 +36,28 @@ public class LoadStorePath implements Serializable{
 				this.PathsDirectory = Paths.get(PathsDirectory);
 		else throw new NotDirectoryException("No existe el directorio");
 	}
-
+	
 	public void storePath(Dominio.Path p) throws FileNotFoundException, IOException {
 		try {
 			FileOutputStream FileOutput = new FileOutputStream(PathsDirectory.resolve(p.getNom()+".ser").toString());
 			ObjectOutputStream ObjectOutput = new ObjectOutputStream(FileOutput);
 			ObjectOutput.writeObject(p);
 			ObjectOutput.close();
-			System.out.println("Path absoluto del path:"+PathsDirectory.resolve(p.getNom()+".ser").toString());
-
 		}
-		//No existe el Path: lo guarda.
-		//El Path r ya ha sido guardado: Sobreescribe.
 		catch(FileNotFoundException fnfe){
+			System.out.println("Path absoluto del path:"+PathsDirectory.resolve(p.getNom()+".ser").toString());
+			System.out.println("No se puede guardar el Path");
 		}
 
+	}
+	
+	public void deletePath(String nomPath) throws ClassNotFoundException, IOException {
+		/*Dominio.Path p = new Dominio.Path();
+		p = loadPath(nomPath);*/
+		File file = new File(PathsDirectory.resolve(nomPath+".ser").toString());
+		if(!file.delete())
+			System.out.println("No se ha podido borrar el Path");
+		//...
 	}
 
 	public Dominio.Path loadPath(String nomPath) throws FileNotFoundException, IOException, ClassNotFoundException {
@@ -62,12 +68,10 @@ public class LoadStorePath implements Serializable{
 			ObjectInput.close();
 			return (Dominio.Path)aux;
 		}
-		//No existe el directorio: ...
-		//No existe el Resultado: Error.
 		catch(FileNotFoundException fnfe){
 			if (Files.notExists(PathsDirectory.resolve(nomPath+".ser"))) {
 				System.out.println(PathsDirectory.resolve(nomPath+".ser").toString());
-				System.out.println("El Path no existe o algo pasa con los permisos ekisde");
+				System.out.println("No se ha podido cargar el Path");
 			}
 			return null;
 		}
