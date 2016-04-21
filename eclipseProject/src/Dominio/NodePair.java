@@ -1,6 +1,10 @@
-//Autor: Xavier Peñalosa
 package Dominio;
 
+/**
+ * 
+ * @author Xavier
+ *
+ */
 
 /*
  * Each row of the Result is a NodePair, which has a pair of nodes (first/last node) and its Hetesim value;

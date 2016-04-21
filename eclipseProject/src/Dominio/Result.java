@@ -1,4 +1,3 @@
-//Autor: Xavier Peñalosa
 package Dominio;
 
 import java.io.ByteArrayInputStream;
@@ -11,6 +10,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 
+
+/**
+ * 
+ * @author Xavier
+ * 
+ */
 
 @SuppressWarnings("serial")
 /*
@@ -36,6 +41,8 @@ public class Result implements Cloneable, Serializable{
 	
 	//Only one path
 	public Result(final Graf g, final Float threshold, final Matrix resultHete, final Path p){
+		assert (resultHete != null);
+		
 		usedP = p;
 		idResult = new String(g.getNom() + " " + p.toString());
 		idGraph = String.valueOf(g.id);
@@ -60,6 +67,7 @@ public class Result implements Cloneable, Serializable{
 	//One node, one path
 	public Result(final Graf g, final Float threshold, final ArrayList<Pair<Integer,Float>> resultHete, final Path p, final Node n1) {
 		assert (p.getContingut().get(0) == n1.getTipus());
+		assert (resultHete != null);
 		
 		firstN = n1;
 		usedP = p;
@@ -78,7 +86,9 @@ public class Result implements Cloneable, Serializable{
 	//Two nodes, one path
 	public Result(final Graf g, final float threshold, final Float resultHete, final Path p, final Node n1, final Node n2){
 		//Assert that the path starts with the node type N1 and ends with the node type N2
-		assert (p.getContingut().get(0) == n1.getTipus() && p.getContingut().get(p.getLength()-1) == n2.getTipus());
+		assert (p.getContingut().get(0) == n1.getTipus());
+		assert (p.getContingut().get(p.getLength()-1) == n2.getTipus());
+		assert (resultHete != null);
 		
 		firstN = n1;
 		lastN = n2;
