@@ -62,7 +62,7 @@ public class Matrix implements Serializable {
 
 	public void addNodeRow() {
 		rows += 1;
-		ArrayList f = new ArrayList<Float>(cols);
+		ArrayList<Float> f = new ArrayList<Float>(cols);
 		for (int i = 0; i < cols; i++) f.add(valDefault);
 		m.add(f);
 	}
@@ -115,7 +115,7 @@ public class Matrix implements Serializable {
 				Logger.getLogger(Matrix.class.getName()).log(Level.SEVERE, null, ex);
 			}
 		}
-		ArrayList resultado = new ArrayList<Float>();
+		ArrayList<Float> resultado = new ArrayList<Float>();
 		for (int i = 0; i < m.size(); i++) {
 			resultado.add(m.get(i).get(j));
 		}

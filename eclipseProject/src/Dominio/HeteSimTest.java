@@ -1,11 +1,11 @@
 package Dominio;
 
-import static org.junit.Assert.assertEquals;
+
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.regex.Pattern;
+import java.util.ArrayList;
 
 import Persistencia.GraphImporter;
 
@@ -16,10 +16,10 @@ public class HeteSimTest {
 	static Path path;
 	
 	public static void main(String[] args) throws IOException {
-//		if (args.length < 2) {
-//			System.out.println("Necesitas pasarle el path de la carpeta de donde va a cargar los juegos de prueba");
-//			System.exit(-1);
-//		}
+		if (args.length < 1) {
+			System.out.println("Necesitas pasarle el path de la carpeta de donde va a cargar los juegos de prueba");
+			System.exit(-1);
+		}
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		while (true) {
 			System.out.println("Que numero de instruccion quieres ejecutar?");
@@ -38,7 +38,7 @@ public class HeteSimTest {
 			}
 			switch (index) {
 			case 0:
-				graph = GraphImporter.leMagicGoesOn(args[1]);
+				graph = GraphImporter.leMagicGoesOn(args[0]);
 				System.out.println("    Cargado correctamente :D");
 				break;
 			
@@ -50,7 +50,7 @@ public class HeteSimTest {
 			case 2:{
 				System.out.println("Que path quieres utilizar? 'A' autor, 'T' term, 'P' paper, 'C' conf ");
 				System.out.println("APA autor -> paper -> autor, TPCPA term->paper->conf->...");
-				String contenidoPath = br.readLine();
+				String contenidoPath = br.readLine().toUpperCase();
 				if (contenidoPath.matches("[APTC]*")){
 					path = new Path();
 					path.setContingut(contenidoPath);
@@ -73,13 +73,15 @@ public class HeteSimTest {
 			case 3:{
 				System.out.println("Que path quieres utilizar? 'A' autor, 'T' term, 'P' paper, 'C' conf ");
 				System.out.println("APA autor -> paper -> autor, TPCPA term->paper->conf->...");
-				String contenidoPath = br.readLine();
+				String contenidoPath = br.readLine().toUpperCase();
 				if (contenidoPath.matches("[APTC]*")){
 					path = new Path();
 					path.setContingut(contenidoPath);
 					
 					System.out.println("Que nodo quieres poner como principio de busqueda?");
-					
+					for (Node n : getNodes(contenidoPath.charAt(0))) {
+						System.out.println(n.id + " -> " + n.nom);
+					}
 					
 					try {
 						Matrix m = hetesim.getHeteSim(path);
@@ -100,5 +102,36 @@ public class HeteSimTest {
 			
 			}
 		}
+	}
+
+	private static ArrayList<Node> getNodes(char charAt) {
+		ArrayList<Node> ret = new ArrayList<Node>();
+		int size;
+		Node.Type type;
+		switch (charAt) {
+		case 'P':
+			size = graph.getMatrixTerm().getNCols();
+			type = Node.Type.Paper;
+			break;
+		case 'T':
+			size = graph.getMatrixTerm().getNRows();
+			type = Node.Type.Terme;
+			break;
+		case 'A':
+			size = graph.getMatrixAuthor().getNRows();
+			type = Node.Type.Autor;
+			break;
+		case 'C':
+			size = graph.getMatrixConf().getNRows();
+			type = Node.Type.Conferencia;
+		default:
+			return null;
+		}
+		
+		for (int i = 0; i < size; ++i) {
+			ret.add(graph.getNode(i, type));
+		}
+		
+		return ret;
 	}
 }
