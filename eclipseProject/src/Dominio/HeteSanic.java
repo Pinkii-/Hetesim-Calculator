@@ -177,7 +177,7 @@ public class HeteSanic {
 			case Author2Paper:
 				if (!paperAuthor) { // init paper2Author
 					System.out.println("init paperAuthor");
-					this.author2paper = graph.getMatrixAuthor();
+					this.author2paper = new SparseMatrix(graph.getMatrixAuthor());
 					this.paper2author = new SparseMatrix(this.author2paper);
 
 					System.out.println("finished paperAuthor");
@@ -193,7 +193,7 @@ public class HeteSanic {
 				break;
 			case Conf2Paper:
 				if (!paperConf) { // init paper2Author
-					this.conf2paper = graph.getMatrixConf();
+					this.conf2paper = new SparseMatrix(graph.getMatrixConf());
 					this.paper2conf = new SparseMatrix(this.conf2paper);
 					
 					this.conf2paper.normaliceRows();
@@ -207,7 +207,7 @@ public class HeteSanic {
 				break;
 			case Term2Paper:
 				if (!paperTerm) { // init paper2Author
-					this.term2paper = graph.getMatrixTerm();
+					this.term2paper = new SparseMatrix(graph.getMatrixTerm());
 					this.paper2term = new SparseMatrix(this.term2paper);
 					
 					this.term2paper.normaliceRows();
@@ -222,7 +222,7 @@ public class HeteSanic {
 			case Author2Mid:
 			case Paper2MidAut:
 				if (!authorMid) {
-					Partite p = new Partite(graph.getMatrixAuthor()); // new SparseMatrix hace una traduccion innecesaria(si el grafo tuviera sparse matrix) x3
+					Partite p = new Partite(new SparseMatrix(graph.getMatrixAuthor())); // new SparseMatrix hace una traduccion innecesaria(si el grafo tuviera sparse matrix) x3
 					this.author2mid = p.leftToMid;
 					this.author2mid.normaliceRows();
 					
@@ -238,7 +238,7 @@ public class HeteSanic {
 			case Conf2Mid:
 			case Paper2MidConf:
 				if (!confMid) {
-					Partite p =  new Partite(graph.getMatrixConf());
+					Partite p =  new Partite(new SparseMatrix(graph.getMatrixConf()));
 					this.conf2mid = p.leftToMid;
 					this.conf2mid.normaliceRows();
 					
@@ -254,7 +254,7 @@ public class HeteSanic {
 			case Term2Mid:
 			case Paper2MidTerm:
 				if (!termMid) {
-					Partite p = new Partite(graph.getMatrixTerm());
+					Partite p = new Partite(new SparseMatrix(graph.getMatrixTerm()));
 					this.term2mid = p.leftToMid;
 					this.term2mid.normaliceRows();
 					

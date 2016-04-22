@@ -360,7 +360,7 @@ class HeteSim {
 					current = ntAux;
 					trans = true;
 				}
-				if (current != Node.Type.Paper) throw new PathException("The path cant navigate for the graph (need to go to paper)");
+				if (current != Node.Type.Paper) throw new PathException("The path cant navigate throgh the graph (need to go to paper)");
 				switch (last) {
 					case Autor:
 						ret.add(new WhatMatrix(trans,PathTypes.Author2Paper));
