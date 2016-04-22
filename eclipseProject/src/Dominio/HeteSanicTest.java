@@ -107,7 +107,7 @@ public class HeteSanicTest {
 		h.setGraph(g);
 		
 		Path p =  new Path();
-		p.setContingut("APA");
+		p.setContingut("APAPAPAPA");
 	
 		
 		try {
@@ -123,22 +123,22 @@ public class HeteSanicTest {
 			System.out.println();
 		}
 		
-		HeteSanic h2 = new HeteSanic();
-		h2.setGraph(g);
-		
-		try {
-			m = h2.getHeteSim(p);
-		} catch (PathException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		for (int i = 0; i < m.getNRows(); ++i) {
-			for (int j = 0; j < m.getNCols(); ++j) {
-				System.out.print(m.getValue(i, j) + " ");
-			}
-			System.out.println();
-		}
+//		HeteSanic h2 = new HeteSanic();
+//		h2.setGraph(g);
+//		
+//		try {
+//			m = h2.getHeteSim(p);
+//		} catch (PathException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+//		for (int i = 0; i < m.getNRows(); ++i) {
+//			for (int j = 0; j < m.getNCols(); ++j) {
+//				System.out.print(m.getValue(i, j) + " ");
+//			}
+//			System.out.println();
+//		}
 		
 	}
 
