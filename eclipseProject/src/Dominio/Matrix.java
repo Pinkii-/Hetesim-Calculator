@@ -1,4 +1,5 @@
 package Dominio;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,7 +14,7 @@ import java.util.logging.Logger;
  *
  * @author Alejandro Ibáñez
  */
-public class Matrix {
+public class Matrix implements Serializable {
 
 	private ArrayList<ArrayList<Float>>  m;
 	private final float valDefault;

@@ -1,13 +1,18 @@
 package Dominio;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  *
  * @author Eduard Maestro
  */
-public class Path {
-    private ArrayList<Node.Type> contingut;
+public class Path implements Serializable{
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private ArrayList<Node.Type> contingut;
     private String descripcioPath;
     private String nomPath;
     

@@ -3,6 +3,7 @@
 package Dominio;
 
 import java.util.ArrayList;
+
 import Persistencia.LoadStorePath;
 import Persistencia.LoadStoreResult;
 
@@ -11,6 +12,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.nio.file.NotDirectoryException;
@@ -32,7 +34,7 @@ public class CtrlData {
 	private Path pathToPaths;		  //Path del directorio donde siempre guardamos los Paths.
 	private Pair<Graf,ArrayList<Result>> graphAndResults;
 	private ArrayList<Dominio.Path> allPaths;
-	
+	public CtrlData(String s) {}
 	//No se si tendria que hacer esto o por parámetro. 
 	public CtrlData() {
 		//generar directorio GrafsAndResults
@@ -58,8 +60,12 @@ public class CtrlData {
 				System.out.println("No se puede crear el directorio GrafAndResults");
 			}
 		}
+		
 		this.pathToGrafsAndResults = GrafsAndResults;
-		this.pathToPaths = Paths;		
+		this.pathToPaths = Paths;	
+		System.out.println(this.pathToGrafsAndResults.toString());
+		System.out.println(this.pathToPaths.toString());
+
 	}
 	private static Object deepCopy(Object o) {
 		try {
@@ -70,11 +76,14 @@ public class CtrlData {
 			ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
 			ObjectInputStream ois = new ObjectInputStream(bais);
 			return ois.readObject();
+		}catch (NotSerializableException theProblem) {
+			System.out.println("El objeto no es serializable");
+			return null;
 		} catch (IOException e) {
 			return null;
 		} catch (ClassNotFoundException e) {
 			return null;
-		}
+		} 
 	}
 
 
@@ -114,6 +123,7 @@ public class CtrlData {
 		Dominio.Path pa;
 		pa = (Dominio.Path) CtrlData.deepCopy(p);
 		lsp = new LoadStorePath(pathToPaths.toString());
+		if (pa == null) System.out.println("subnulo");
 		lsp.storePath(pa);
 	}
 	
