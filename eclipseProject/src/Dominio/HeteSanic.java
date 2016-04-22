@@ -84,8 +84,7 @@ public class HeteSanic {
 	}
 	
 	public SparseMatrix getHeteSim(Path p) throws PathException {
-		ArrayList<Node.Type> left = null;
-		ArrayList<Node.Type> right = null;
+		ArrayList<Node.Type> left, right;
 		Pair<ArrayList<Node.Type>, ArrayList<Node.Type>> aux = p.getPath();
 		left = aux.first;
 		right = aux.second;
@@ -95,8 +94,7 @@ public class HeteSanic {
 	}
 	
 	public ArrayList<Pair<Integer,Float>> getHeteSim(Path p, Node n) throws PathException {
-		ArrayList<Node.Type> left = null;
-		ArrayList<Node.Type> right = null;
+		ArrayList<Node.Type> left, right;
 		Pair<ArrayList<Node.Type>, ArrayList<Node.Type>> aux = p.getPath();
 		left = aux.first;
 		right = aux.second;
@@ -114,18 +112,13 @@ public class HeteSanic {
 	}
 	
 	public Float getHeteSim(Path p, Node n1, Node n2) throws PathException {
-		ArrayList<Node.Type> left = null;
-		ArrayList<Node.Type> right = null;
+		ArrayList<Node.Type> left, right;
 		Pair<ArrayList<Node.Type>, ArrayList<Node.Type>> aux = p.getPath();
 		left = aux.first;
 		right = aux.second;
 		if (left.size() < 2 || right.size() < 2) throw new PathException("The path is too short");
 		Collections.reverse(right);
-		System.out.println("Starting left");
-		SparseMatrix mleft = multiplyVectorMatrix(n1, getMatrixesToMultiply(left,right));
-		System.out.println("left done. Starting right");
-		SparseMatrix mright = multiplyVectorMatrix(n2, getMatrixesToMultiply(right,left));
-		return normaliceHeteSim(mleft,mright).getValue(0,0);
+		return normaliceHeteSim(multiplyVectorMatrix(n1, getMatrixesToMultiply(left,right)),multiplyVectorMatrix(n2, getMatrixesToMultiply(right,left))).getValue(0,0);
 	}
 	
 	// Private Metods

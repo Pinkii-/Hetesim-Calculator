@@ -38,7 +38,7 @@ public class Propject {
 		
 		cs.setGraph(g);
 		
-		System.out.println("hetesim " + cs.searchPathNodeThreshhold(g, 0.05f, p, g.getNode(7695, Node.Type.Autor)));
+		System.out.println("hetesim " + cs.searchPathNodeThreshhold(g, 0.1f, p, g.getNode(7695, Node.Type.Autor)));
 		
 		br.readLine();
 		

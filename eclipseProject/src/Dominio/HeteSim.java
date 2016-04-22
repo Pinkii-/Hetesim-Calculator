@@ -164,8 +164,7 @@ class HeteSim {
 	}
 	
 	public Float getHeteSim(Path p, Node n1, Node n2) throws PathException {
-		ArrayList<Node.Type> left = null;
-		ArrayList<Node.Type> right = null;
+		ArrayList<Node.Type> left, right;
 		Pair<ArrayList<Node.Type>, ArrayList<Node.Type>> aux = p.getPath();
 		left = aux.first;
 		right = aux.second;
@@ -367,10 +366,10 @@ class HeteSim {
 						ret.add(new WhatMatrix(trans,PathTypes.Author2Paper));
 						break;
 					case Conferencia:
-						ret.add(new WhatMatrix(trans,PathTypes.Paper2MidConf));
+						ret.add(new WhatMatrix(trans,PathTypes.Conf2Paper));
 						break;
 					case Terme:
-						ret.add(new WhatMatrix(trans,PathTypes.Paper2MidTerm));
+						ret.add(new WhatMatrix(trans,PathTypes.Term2Paper));
 						break;
 					default:
 						/* Throw exception: The function is broken or the path is broken */
