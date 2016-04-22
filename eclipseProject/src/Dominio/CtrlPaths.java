@@ -1,46 +1,103 @@
+/**
+ * @author Victor Alcazar Lopez
+**/
+
 package Dominio;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 public class CtrlPaths {
-	Map<String, Path> paths;
+	private Map<String, Path> paths;
+	private Map<String, Boolean> modifiedPaths;
+
+	public CtrlPaths() {
+		paths = new HashMap<String, Path>();
+		modifiedPaths = new HashMap<String, Boolean>();
+	}
 
 	public CtrlPaths(ArrayList<Path> pathArray) {
+		paths = new HashMap<String, Path>();
+		modifiedPaths = new HashMap<String, Boolean>();
 		for (Path p : pathArray) {
 			paths.put(p.getNom(), p);
+			modifiedPaths.put(p.getNom(), false);
 		}
 	}
 
 	public Path getPath(String pathName) {
-		return paths.get(pathName);
+		if (paths.containsKey(pathName))
+			return paths.get(pathName);
+		else
+			System.out.println("Path not found");
+		return new Path();
 	}
 
 	public void setPath(String pathName, Path path) {
-		if (paths.containsKey(pathName))
+		if (paths.containsKey(pathName)) {
 			paths.replace(pathName, path);
+			modifiedPaths.replace(pathName, true);
+		}
+
+		else {
+			System.out.println("Path not found");
+		}
 	}
 
-	public void modifyPath(String name, String newPathContent) {
-
-		Path oldPath = paths.get(name);
-		Path modifiedPath = new Path();
-		modifiedPath.setContingut(newPathContent);
-		modifiedPath.setDescripcio(oldPath.getDescripcio());
-		modifiedPath.setNom(oldPath.getNom());
-		paths.replace(name, modifiedPath);
+	public void modifyPath(String pathName, String newPathContent) {
+		if (paths.containsKey(pathName)) {
+			Path oldPath = paths.get(pathName);
+			Path modifiedPath = new Path();
+			modifiedPath.setContingut(newPathContent);
+			modifiedPath.setDescripcio(oldPath.getDescripcio());
+			modifiedPath.setNom(oldPath.getNom());
+			paths.replace(pathName, modifiedPath);
+			modifiedPaths.replace(pathName, true);
+		} else {
+			System.out.println("Path not found");
+		}
 	}
 
-	public void addPath(String newPath, String name, String description) {
-		Path p = new Path();
-		p.setContingut(newPath);
-		p.setNom(name);
-		p.setDescripcio(description);
-		paths.put(name, p);
+	public void addPath(String newPath, String pathName, String description) {
+		if (paths.containsKey(pathName)) {
+			Path p = new Path();
+			p.setContingut(newPath);
+			p.setNom(pathName);
+			p.setDescripcio(description);
+			paths.put(pathName, p);
+			modifiedPaths.put(pathName, true);
+		} else {
+			System.out.println("Path not found");
+		}
 	}
 
-	public void erasePath() {
-		// TODO
+	public void erasePath(String pathName) {
+		if (paths.containsKey(pathName)) {
+			// TODO this'll probably fuck something up
+			paths.replace(pathName, null);
+			modifiedPaths.replace(pathName, true);
+		} else {
+			System.out.println("Path not found");
+		}
+	}
+
+	public String toString() {
+		String ret = new String();
+		for (Map.Entry<String, Path> entry : paths.entrySet()) {
+			ret += entry.getValue().toString();
+		}
+		return ret;
+	}
+
+	public ArrayList<Path> getModifiedPaths() {
+		ArrayList<Path> ret = new ArrayList<Path>();
+		for (Map.Entry<String, Boolean> entry : modifiedPaths.entrySet()) {
+			if (entry.getValue()) {
+				ret.add(paths.get(entry.getKey()));
+			}
+		}
+		return ret;
 	}
 
 }
