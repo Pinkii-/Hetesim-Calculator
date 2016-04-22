@@ -21,7 +21,7 @@ import java.nio.file.Paths;
 
 /**
 *
-* @author Albert
+* @author Albert Lopez Alcacer
 */
 
 public class CtrlData {
@@ -63,11 +63,9 @@ public class CtrlData {
 		
 		this.pathToGrafsAndResults = GrafsAndResults;
 		this.pathToPaths = Paths;	
-		System.out.println(this.pathToGrafsAndResults.toString());
-		System.out.println(this.pathToPaths.toString());
 
 	}
-	private static Object deepCopy(Object o) {
+	static Object deepCopy(Object o) {
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			ObjectOutputStream oos = new ObjectOutputStream(baos);
