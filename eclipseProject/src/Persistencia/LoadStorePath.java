@@ -10,9 +10,10 @@ import java.io.Serializable;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.NotDirectoryException;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+
+import Dominio.Path;
 
 /**
 *
@@ -22,7 +23,7 @@ import java.util.ArrayList;
 @SuppressWarnings("serial")
 public class LoadStorePath implements Serializable{
 
-	private Path pathsDirectory; 
+	private java.nio.file.Path pathsDirectory; 
 
 	public LoadStorePath(String pathsDirectory) throws NotDirectoryException {
 		this.setpathsDirectory(pathsDirectory);
@@ -31,14 +32,15 @@ public class LoadStorePath implements Serializable{
 		return pathsDirectory.toString();
 	}
 	public void setpathsDirectory(String pathsDirectory) throws NotDirectoryException {
-		Path p = Paths.get(pathsDirectory);
+		java.nio.file.Path p = Paths.get(pathsDirectory);
 		if (Files.exists(p))
 				this.pathsDirectory = Paths.get(pathsDirectory);
 		else throw new NotDirectoryException("No existe el directorio");
 	}
 	
-	public void storePath(Dominio.Path p) throws FileNotFoundException, IOException {
+	public void storePath(Path p) throws FileNotFoundException, IOException {
 		try {
+			if (p == null)System.out.println("adios");
 			FileOutputStream FileOutput = new FileOutputStream(pathsDirectory.resolve(p.getNom()+".ser").toString());
 			ObjectOutputStream ObjectOutput = new ObjectOutputStream(FileOutput);
 			ObjectOutput.writeObject(p);
@@ -80,8 +82,8 @@ public class LoadStorePath implements Serializable{
 	
 	public ArrayList<Dominio.Path> loadAllPaths () throws ClassNotFoundException {
 		ArrayList<Dominio.Path> Paths = new ArrayList<Dominio.Path>();   
-		try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(pathsDirectory)) {
-	            for (Path path : directoryStream) {
+		try (DirectoryStream<java.nio.file.Path> directoryStream = Files.newDirectoryStream(pathsDirectory)) {
+	            for (java.nio.file.Path path : directoryStream) {
 	            		Paths.add(loadPath(path.toString()));
 	            	}
 	            return Paths;
