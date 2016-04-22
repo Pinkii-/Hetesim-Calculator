@@ -62,7 +62,7 @@ public class HeteSanic {
 		for (int i = 0; i < result.getNRows(); ++i) {
 			for (int j = 0; j < result.getNCols(); ++j) {
 				double top = SparseVector.multiply(left.getRow(i),right.getRow(j));
-				double bot = Math.sqrt(left.getRow(i).norm()*right.getRow(j).norm());
+				double bot = left.getRow(i).norm()*right.getRow(j).norm();
 				
 //				System.out.println(top + " " + bot + " " + top/bot);
 				
@@ -142,7 +142,6 @@ public class HeteSanic {
 		for (int i = 1; i < matrixesToMultiply.size(); ++i) {
 			ret = SparseMatrix.multiply(ret,matrixesToMultiply.get(i));
 		}
-		ret.normaliceRows();
 		return ret;
 	}
 	
@@ -154,7 +153,6 @@ public class HeteSanic {
 		for (int i = 1; i < matrixesToMultiply.size(); ++i) {
 			ret = SparseMatrix.multiply(ret,matrixesToMultiply.get(i));
 		}
-		ret.normaliceRows();
 		return ret;
 	}
 	
@@ -184,9 +182,9 @@ public class HeteSanic {
 
 					System.out.println("finished paperAuthor");
 					
-//					this.author2paper.normaliceRows();
+					this.author2paper.normaliceRows();
 					this.paper2author.transpose();
-//					this.paper2author.normaliceRows();
+					this.paper2author.normaliceRows();
 					
 					this.paperAuthor = true;
 				}
@@ -198,9 +196,9 @@ public class HeteSanic {
 					this.conf2paper = graph.getMatrixConf();
 					this.paper2conf = new SparseMatrix(this.conf2paper);
 					
-//					this.conf2paper.normaliceRows();
+					this.conf2paper.normaliceRows();
 					this.paper2conf.transpose();
-//					this.paper2conf.normaliceRows();
+					this.paper2conf.normaliceRows();
 					
 					this.paperConf = true;
 				}
@@ -212,9 +210,9 @@ public class HeteSanic {
 					this.term2paper = graph.getMatrixTerm();
 					this.paper2term = new SparseMatrix(this.term2paper);
 					
-//					this.term2paper.normaliceRows();
+					this.term2paper.normaliceRows();
 					this.paper2term.transpose();
-//					this.paper2term.normaliceRows();
+					this.paper2term.normaliceRows();
 					
 					this.paperTerm = true;
 				}
@@ -226,11 +224,11 @@ public class HeteSanic {
 				if (!authorMid) {
 					Partite p = new Partite(graph.getMatrixAuthor()); // new SparseMatrix hace una traduccion innecesaria(si el grafo tuviera sparse matrix) x3
 					this.author2mid = p.leftToMid;
-//					this.author2mid.normaliceRows();
+					this.author2mid.normaliceRows();
 					
 					this.paper2authorMid = p.midToRight;
 					this.paper2authorMid.transpose();
-//					this.paper2authorMid.normaliceRows();
+					this.paper2authorMid.normaliceRows();
 					
 					authorMid = true;
 				}
@@ -242,11 +240,11 @@ public class HeteSanic {
 				if (!confMid) {
 					Partite p =  new Partite(graph.getMatrixConf());
 					this.conf2mid = p.leftToMid;
-//					this.conf2mid.normaliceRows();
+					this.conf2mid.normaliceRows();
 					
 					this.paper2confMid = p.midToRight;
 					this.paper2confMid.transpose();
-//					this.paper2confMid.normaliceRows();
+					this.paper2confMid.normaliceRows();
 					
 					confMid = true;
 				}
@@ -258,11 +256,11 @@ public class HeteSanic {
 				if (!termMid) {
 					Partite p = new Partite(graph.getMatrixTerm());
 					this.term2mid = p.leftToMid;
-//					this.term2mid.normaliceRows();
+					this.term2mid.normaliceRows();
 					
 					this.paper2termMid = p.midToRight;
 					this.paper2termMid.transpose();
-//					this.paper2termMid.normaliceRows();
+					this.paper2termMid.normaliceRows();
 					termMid = true;
 				}
 				if (w.pathType == PathTypes.Term2Mid) matrixesToMultiply.add(term2mid);

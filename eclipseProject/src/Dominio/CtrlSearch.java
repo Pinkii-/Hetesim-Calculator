@@ -3,7 +3,7 @@ package Dominio;
 public class CtrlSearch {
 	
 	Graf g = null;
-	HeteSanic het = new HeteSanic();
+	HeteSim het = new HeteSim();
 	
 	public void setGraph(Graf g) {
 		this.g = g;

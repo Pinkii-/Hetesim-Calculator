@@ -1,5 +1,7 @@
 package Dominio;
 
+import java.io.Serializable;
+
 //public class Node {
 //	Type tipus;
 //	Integer id;
@@ -96,7 +98,7 @@ package Dominio;
  *
  * @author Alejandro Ibáñez
  */
-public class Node {
+public class Node implements Serializable{
 	Type tipus;
 	
 	Integer id;

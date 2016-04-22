@@ -115,7 +115,7 @@ class HeteSim {
 		for (int i = 0; i < result.getNRows(); ++i) {
 			for (int j = 0; j < result.getNCols(); ++j) {
 				double top = multiplyVectors(left.getRow(i),right.getRow(j));
-				double bot = Math.sqrt(norm(left.getRow(i))*norm(right.getRow(j)));
+				double bot = norm(left.getRow(i))*norm(right.getRow(j));
 				result.getRow(i).set(j,(float) (top/bot));
 				
 			}
@@ -189,7 +189,7 @@ class HeteSim {
 		for (int i = 1; i < matrixesToMultiply.size(); ++i) {
 			ret = multiply(ret,matrixesToMultiply.get(i));
 		}
-		return normaliceRows(ret);
+		return ret;
 	}
 	
 	private Matrix mutiplyMatrixes(ArrayList<Matrix> matrixesToMultiply) {
@@ -197,7 +197,7 @@ class HeteSim {
 		for (int i = 1; i < matrixesToMultiply.size(); ++i) {
 			ret = multiply(ret,matrixesToMultiply.get(i));
 		}
-		return normaliceRows(ret);
+		return ret;
 	}
 	
 
@@ -218,8 +218,8 @@ class HeteSim {
 			switch (w.pathType) {
 			case Author2Paper:
 				if (!paperAuthor) { // init paper2Author
-					this.author2paper = /*normaliceRows*/(graph.getMatrixAuthor());
-					this.paper2author = /*normaliceRows*/(graph.getMatrixAuthor().trasposarMatriu());
+					this.author2paper = normaliceRows(graph.getMatrixAuthor());
+					this.paper2author = normaliceRows(graph.getMatrixAuthor().trasposarMatriu());
 					this.paperAuthor = true;
 				}
 				if (w.transposeMatrix) matrixesToMultiply.add(paper2author);
@@ -227,8 +227,8 @@ class HeteSim {
 				break;
 			case Conf2Paper:
 				if (!paperConf) { // init paper2Author
-					this.conf2paper = /*normaliceRows*/(graph.getMatrixConf());
-					this.paper2conf = /*normaliceRows*/(graph.getMatrixConf().trasposarMatriu());
+					this.conf2paper = normaliceRows(graph.getMatrixConf());
+					this.paper2conf = normaliceRows(graph.getMatrixConf().trasposarMatriu());
 					this.paperConf = true;
 				}
 				if (w.transposeMatrix) matrixesToMultiply.add(paper2conf);
@@ -236,8 +236,8 @@ class HeteSim {
 				break;
 			case Term2Paper:
 				if (!paperTerm) { // init paper2Author
-					this.term2paper = /*normaliceRows*/(graph.getMatrixTerm());
-					this.paper2term = /*normaliceRows*/(graph.getMatrixTerm().trasposarMatriu());
+					this.term2paper = normaliceRows(graph.getMatrixTerm());
+					this.paper2term = normaliceRows(graph.getMatrixTerm().trasposarMatriu());
 					this.paperTerm = true;
 				}
 				if (w.transposeMatrix) matrixesToMultiply.add(paper2term);
@@ -247,8 +247,8 @@ class HeteSim {
 			case Paper2MidAut:
 				if (!authorMid) {
 					Partite p = partiteMatrix(graph.getMatrixAuthor());
-					this.author2mid = /*normaliceRows*/(p.leftToMid);
-					this.paper2authorMid = /*normaliceRows*/(p.midToRight.trasposarMatriu());
+					this.author2mid = normaliceRows(p.leftToMid);
+					this.paper2authorMid = normaliceRows(p.midToRight.trasposarMatriu());
 					authorMid = true;
 				}
 				if (w.pathType == PathTypes.Author2Mid) matrixesToMultiply.add(author2mid);
@@ -258,8 +258,8 @@ class HeteSim {
 			case Paper2MidConf:
 				if (!confMid) {
 					Partite p = partiteMatrix(graph.getMatrixConf());
-					this.conf2mid = /*normaliceRows*/(p.leftToMid);
-					this.paper2confMid = /*normaliceRows*/(p.midToRight.trasposarMatriu());
+					this.conf2mid = normaliceRows(p.leftToMid);
+					this.paper2confMid = normaliceRows(p.midToRight.trasposarMatriu());
 					confMid = true;
 				}
 				if (w.pathType == PathTypes.Conf2Mid) matrixesToMultiply.add(conf2mid);
@@ -269,8 +269,8 @@ class HeteSim {
 			case Paper2MidTerm:
 				if (!termMid) {
 					Partite p = partiteMatrix(graph.getMatrixTerm());
-					this.term2mid = /*normaliceRows*/(p.leftToMid);
-					this.paper2termMid = /*normaliceRows*/(p.midToRight.trasposarMatriu());
+					this.term2mid = normaliceRows(p.leftToMid);
+					this.paper2termMid = normaliceRows(p.midToRight.trasposarMatriu());
 					termMid = true;
 				}
 				if (w.pathType == PathTypes.Term2Mid) matrixesToMultiply.add(term2mid);
