@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package PersistenceLayer;
+package Persistencia;
 
-import DomainLayer.Pair;
+import Dominio.Pair;
 import java.util.List;
 import java.util.ArrayList;
 

@@ -3,14 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package PersistenceLayer;
+package Persistencia;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
-import DomainLayer.Graph;
+import Dominio.Graf;
 import java.io.File;
 import java.io.FileNotFoundException;
 
@@ -45,7 +45,7 @@ public class CtrlDataGraph {
      * @throws FileNotFoundException
      * @throws IOException
      */
-    public void saveGraph(Graph g, String filePath) throws FileNotFoundException, IOException {
+    public void saveGraph(Graf g, String filePath) throws FileNotFoundException, IOException {
 
         File file = new File(filePath);
         String name = file.getName();
@@ -63,13 +63,13 @@ public class CtrlDataGraph {
      * @throws FileNotFoundException
      * @throws IOException
      */
-    public Graph loadGraph(String filePath) throws FileNotFoundException, IOException {
+    public Graf loadGraph(String filePath) throws FileNotFoundException, IOException {
 
-        Graph g = null;
+        Graf g = null;
         try {
             FileInputStream fileInputStream = new FileInputStream(filePath + ".ser");
             ObjectInputStream in = new ObjectInputStream(fileInputStream);
-            g = (Graph) in.readObject();
+            g = (Graf) in.readObject();
             in.close();
             fileInputStream.close();
         } catch (ClassNotFoundException c) {

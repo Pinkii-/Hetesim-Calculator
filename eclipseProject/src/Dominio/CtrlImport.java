@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package DomainLayer;
+package Dominio;
 
-import PersistenceLayer.CtrlDataFiles;
+import Persistencia.CtrlDataFiles;
 import java.io.File;
 import java.io.FileNotFoundException;
 

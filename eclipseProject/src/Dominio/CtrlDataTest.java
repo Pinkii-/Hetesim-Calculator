@@ -13,7 +13,7 @@ import org.junit.Test;
 public class CtrlDataTest {
 	@Test
 	
-	private bool compareNode() {}
+	private boolean compareNode() {return true;}
 	
 	//asumo que matrix funciona
 	private Matrix generateRandomMatrix() {
