@@ -13,7 +13,7 @@ public class Pair <F,S> {
     public F first;
     public S second;
     
-    //Pre: -
+    //Pre: 
     //Post: first = f, second = s
     public Pair(F first, S second){
         this.first = first;
