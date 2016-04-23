@@ -2,7 +2,7 @@
  * @author Victor Alcazar Lopez
 **/
 
-package Dominio.Controladores;
+package Dominio;
 
 import java.util.ArrayList;
 

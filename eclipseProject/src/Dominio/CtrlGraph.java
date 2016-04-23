@@ -2,11 +2,7 @@
  * @author Victor Alcazar Lopez
 **/
 
-package Dominio.Controladores;
-
-import Dominio.Graf;
-import Dominio.Node;
-import Dominio.Utils;
+package Dominio;
 
 public class CtrlGraph {
 	private Graf graph;
