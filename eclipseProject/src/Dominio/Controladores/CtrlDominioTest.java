@@ -6,6 +6,7 @@ package Dominio.Controladores;
 
 import java.util.ArrayList;
 
+
 public class CtrlDominioTest {
 	static CtrlDominio ctrlDominio;
 	static CtrlGraph ctrlGraph;
@@ -16,8 +17,10 @@ public class CtrlDominioTest {
 
 	public static void main(String[] args){
 		initControllers();
-		ctrlDominio.importGraph("C:/Users/Usuari/Desktop/PROP/GraphForTesting");
-		pathNames = ctrlDominio.loadPaths();
+		ctrlDominio.importGraph("C:\\Users\\Usuari\\Desktop\\PROP\\GraphForTesting");
+		ctrlPaths.addPath("APA", "Related authors", "Description left empty");
+		pathNames = ctrlPaths.getPathNames();
+		
 		ctrlDominio.searchPath(pathNames.get(0));
 		ctrlDominio.saveLastSearchResult();
 		System.out.println(ctrlResults.toString());		

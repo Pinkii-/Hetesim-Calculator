@@ -24,7 +24,7 @@ public class CtrlGraph {
 		return graph;
 	}
 
-	public void setGraf(Graf graph) {
+	public void setGraph(Graf graph) {
 		isModified = true;
 		this.graph = graph;
 	}

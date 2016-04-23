@@ -61,16 +61,16 @@ public class CtrlPaths {
 		}
 	}
 
-	public void addPath(String newPath, String pathName, String description) {
-		if (paths.containsKey(pathName)) {
+	public void addPath(String pathContent, String pathName, String description) {
+		if (!paths.containsKey(pathName)) {
 			Path p = new Path();
-			p.setContingut(newPath);
+			p.setContingut(pathContent);
 			p.setNom(pathName);
 			p.setDescripcio(description);
 			paths.put(pathName, p);
 			modifiedPaths.put(pathName, true);
 		} else {
-			System.out.println("Path not found");
+			System.out.println("Path already exists");
 		}
 	}
 
@@ -82,6 +82,14 @@ public class CtrlPaths {
 		} else {
 			System.out.println("Path not found");
 		}
+	}
+	
+	public ArrayList<String> getPathNames(){
+		ArrayList<String> pathNames = new ArrayList<String>();
+		for (Map.Entry<String, Path> entry : paths.entrySet()) {
+			pathNames.add(entry.getKey());
+		}
+		return pathNames;
 	}
 
 	public String toString() {

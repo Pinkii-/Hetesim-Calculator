@@ -4,7 +4,8 @@
 
 package Dominio.Controladores;
 
-import java.io.FileNotFoundException;
+//import java.io.FileNotFoundException;
+
 import java.io.IOException;
 import java.nio.file.NotDirectoryException;
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import Dominio.Path;
 import Dominio.PathException;
 import Dominio.Result;
 import Dominio.Utils;
+import Persistencia.GraphImporter;
 
 public class CtrlDominio {
 
@@ -38,25 +40,19 @@ public class CtrlDominio {
 		ctrlGraph = new CtrlGraph();
 		ctrlPaths = new CtrlPaths();
 		ctrlResults = new CtrlResults();
+	}	
+
+	public void importGraph(String filePath){
+		ctrlGraph.setGraph(GraphImporter.leMagicGoesOn(filePath));
+		ctrlSearch.setGraph(ctrlGraph.getGraph());
 	}
 	
-	public void importGraph(String filePath){
-		ctrlImport = new CtrlImport(filePath);
-		try {
-			ctrlImport.loadGraphInfo();
-			ctrlGraph.setGraf(ctrlImport.getGraph());
-		} catch (FileNotFoundException e) {
-			System.out.println("Error importing Graph");
-			e.printStackTrace();
-		}
-	}
-
 	public void createGraph() {
-		ctrlGraph.setGraf(new Graf());
+		ctrlGraph.setGraph(new Graf());
 		ctrlSearch.setGraph(ctrlGraph.getGraph());
 	}
 
-	public ArrayList<String> loadPaths() {
+	public ArrayList<String> loadStoredPaths() {
 		ArrayList<Path> pathArray = new ArrayList<Path>();
 		ArrayList<String> pathNames = new ArrayList<String>();
 		try {
@@ -114,6 +110,7 @@ public class CtrlDominio {
 	}
 
 	public String searchPath(String pathName) {
+		System.out.println(ctrlPaths.getPath(pathName).getContingut());
 		Graf graf = ctrlGraph.getGraph();
 		if (ctrlGraph.isModified)
 			ctrlSearch.setGraph(ctrlGraph.getGraph());
@@ -122,6 +119,7 @@ public class CtrlDominio {
 			ctrlResults.setLastResult(r);
 			return r.toString();
 		} catch (PathException e) {
+			System.out.println("Path exception generated");
 			e.printStackTrace();
 			return null;
 		}
@@ -236,5 +234,22 @@ public class CtrlDominio {
 			ctrlData.storeGraf(ctrlGraph.getGraph());
 		}
 	}
+	
+	//THE RECYCLING BIN
+	
+	/*	
+	TODO Aprovechar esta clase?¿?¿
+	public void importGraph(String filePath){
+		ctrlImport = new CtrlImport(filePath);
+		try {
+			ctrlImport.loadGraphInfo();
+			ctrlGraph.setGraph(ctrlImport.getGraph());
+			ctrlSearch.setGraph(ctrlGraph.getGraph());
+		} catch (FileNotFoundException e) {
+			System.out.println("Error importing Graph");
+			e.printStackTrace();
+		}
+	}
+	*/
 
 }
