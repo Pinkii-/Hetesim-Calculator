@@ -1,5 +1,6 @@
 package Dominio;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -72,7 +73,9 @@ public class HeteSanic {
 				
 //				System.out.println(top + " " + bot + " " + top/bot);
 				
-				result.set(i, j, (float) (top/bot));
+				Float res = (float) (top/bot);
+				DecimalFormat df = new DecimalFormat("#.#####");
+				result.set(i,j,Float.valueOf(df.format(res)));
 				
 //				System.out.println(result.getValue(i, j));
 				
