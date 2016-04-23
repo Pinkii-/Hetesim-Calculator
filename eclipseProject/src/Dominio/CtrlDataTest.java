@@ -206,7 +206,6 @@ public class CtrlDataTest {
 		System.out.println("LEL");
 		printMatrix(mconf);
 		return g;
-		
 	}
 	
 	

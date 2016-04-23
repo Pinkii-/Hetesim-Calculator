@@ -4,6 +4,12 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * 
+ * @author Gonzalo Diez
+ * 
+ */
+
 public class MatrixChainMultiplication {
 	static private List<List<Long>> m;
 	static private List<List<Integer>> s;

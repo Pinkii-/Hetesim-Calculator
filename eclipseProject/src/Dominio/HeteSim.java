@@ -3,6 +3,12 @@ package Dominio;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * 
+ * @author Gonzalo Diez
+ * 
+ */
+
 class HeteSim {	
 	class Partite {
 		Matrix leftToMid;
@@ -360,7 +366,7 @@ class HeteSim {
 					current = ntAux;
 					trans = true;
 				}
-				if (current != Node.Type.Paper) throw new PathException("The path cant navigate throgh the graph (need to go to paper)");
+				if (current != Node.Type.Paper) throw new PathException("The path cant navigate throgh the graph (need to go throgh paper)");
 				switch (last) {
 					case Autor:
 						ret.add(new WhatMatrix(trans,PathTypes.Author2Paper));

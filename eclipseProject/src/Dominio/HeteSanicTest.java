@@ -1,145 +1,192 @@
 package Dominio;
 
-import static org.junit.Assert.*;
 
-import java.util.Random;
 
-import org.junit.Test;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 import Persistencia.GraphImporter;
 
+/**
+ * 
+ * @author Gonzalo Diez
+ * 
+ */
+
 public class HeteSanicTest {
 
-	@Test
-	public void testGetHeteSimPath() {
-		Graf g = GraphImporter.leMagicGoesOn("/home/pinkii/Documents/PROP/DBLP_four_area/");
-//		Random rand = new Random();
-//		for (int i = 0; i < 1000; ++i) {
-//			g.addNode(Node.Type.Paper, i, "");
-//		}
-//		for (int i = 0; i < 1000; ++i) {
-//			g.addNode(Node.Type.Autor, i, "");
-//		}
-//		
-//		for (int i = 0; i < 1000; ++i) {
-//			for (int j = 0; j < 1000; ++j) {
-//				if (rand.nextInt()%100 == 0) {
-//					g.setArc(j, i, Node.Type.Autor);
-//				}
-//			}
-//		}
-		
-//		HeteSanic h = new HeteSanic();
-//		h.setGraph(g);
-//		
-//		Path p =  new Path();
-//		p.setContingut("APAP");
-//		
-//		try {
-//			Matrix m = h.getHeteSim(p);
-//		} catch (PathException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-	}
-
-	@Test
-	public void testGetHeteSimPathNode() {
-		Graf g = new Graf();
-		Random rand = new Random();
-		for (int i = 0; i < 1000; ++i) {
-			g.addNode(Node.Type.Paper, i, "");
-		}
-		for (int i = 0; i < 1000; ++i) {
-			g.addNode(Node.Type.Autor, i, "");
-		}
-		
-		for (int i = 0; i < 1000; ++i) {
-			for (int j = 0; j < 1000; ++j) {
-				if (rand.nextInt()%100 == 0) {
-					g.setArc(j, i, Node.Type.Autor);
-				}
-			}
-		}
-		HeteSim h = new HeteSim();
-		h.setGraph(g);
-		
-		Path p =  new Path();
-		p.setContingut("APAP");
-		
-		try {
-			Matrix m = h.getHeteSim(p);
-		} catch (PathException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	@Test
-	public void testGetHeteSimPathNodeNode() {
-		Graf g = new Graf();
-		
-		g.addNode(Node.Type.Autor, 0, "a1");
-		g.addNode(Node.Type.Autor, 1, "a2");
-		g.addNode(Node.Type.Autor, 2, "a3");
-		
-		g.addNode(Node.Type.Paper, 0, "b1");
-		g.addNode(Node.Type.Paper, 1, "b2");
-		g.addNode(Node.Type.Paper, 2, "b3");
-		g.addNode(Node.Type.Paper, 3, "b4");
-		
-		g.setArc(0, 0, Node.Type.Autor);
-		g.setArc(1, 0, Node.Type.Autor);
-		g.setArc(1, 1, Node.Type.Autor);
-		g.setArc(2, 1, Node.Type.Autor);
-		g.setArc(3, 1, Node.Type.Autor);
-		g.setArc(3, 2, Node.Type.Autor);
-		
-		Matrix m = g.getMatrixAuthor();
-		for (int i = 0; i < m.getNRows(); ++i) {
-			for (int j = 0; j < m.getNCols(); ++j) {
-				System.out.print(m.getValue(i, j) + " ");
-			}
-			System.out.println();
-		}
-		
-		HeteSim h = new HeteSim();
-		h.setGraph(g);
-		
-		Path p =  new Path();
-		p.setContingut("APAPAPAPA");
+	static HeteSanic hetesanic = new HeteSanic();
+	static Graf graph;
+	static Path path;
 	
-		
-		try {
-			m = h.getHeteSim(p);
-		} catch (PathException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	public static void main(String[] args) throws IOException {
+		if (args.length < 1) {
+			System.out.println("Necesitas pasarle como argumento el path de la carpeta de donde va a cargar los juegos de prueba");
+			System.exit(-1);
 		}
-		for (int i = 0; i < m.getNRows(); ++i) {
-			for (int j = 0; j < m.getNCols(); ++j) {
-				System.out.print(m.getValue(i, j) + " ");
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		while (true) {
+			System.out.println("Que numero de instruccion quieres ejecutar?");
+			System.out.println("0 - Cargar el grafo a traves del path recibido.");
+			System.out.println("1 - Setear el grafo nuevo en el hetesim (Cada vez que hay un grafo nuevo, se tiene que setear en el hetesim).");
+			System.out.println("2 - Busqueda que te devuelve la matriz de hetesims para cierto path.");
+			System.out.println("3 - Busqueda que te devuelve para cierto path, para cierto nodo, el hetesim de ese nodo a todos los nodos de final del path, desordenadamente.");
+			System.out.println("4 - Busqueda que te devuelve el valor hetesim entre los dos nodos.");
+			System.out.println("5 - Salir del progrma.");
+			System.out.print("> ");
+			Integer index;
+			try {
+				index = Integer.parseInt(br.readLine());
 			}
-			System.out.println();
+			catch (NumberFormatException e) {
+				continue;
+			}
+			switch (index) {
+			case 0:
+				graph = GraphImporter.leMagicGoesOn(args[0]);
+				System.out.println("    Cargado correctamente :D");
+				break;
+			
+			case 1:
+				hetesanic.setGraph(graph);
+				System.out.println("    Seteado correctamente :D");
+				break;
+			
+			case 2:{
+				System.out.println("Que path quieres utilizar? 'A' autor, 'T' term, 'P' paper, 'C' conf ");
+				System.out.println("APA autor -> paper -> autor, TPCPA term->paper->conf->...");
+				System.out.print("> ");
+				String contenidoPath = br.readLine().toUpperCase();
+				if (contenidoPath.matches("[APTC]*")){
+					path = new Path();
+					path.setContingut(contenidoPath);
+					try {
+						SparseMatrix m = hetesanic.getHeteSim(path);
+						for (int i = 0; i < m.getNRows(); ++i) {
+							for (int j = 0; j < m.getNCols(); ++j) {
+								System.out.printf("%.2f ",m.getValue(i, j));
+							}
+							System.out.println();
+						}
+					} catch (PathException e) {
+						System.out.println("El path era incorrecto: " + e.getMessage());
+					}					
+				}
+				else {
+					System.out.println("El path es incorrecto :(");
+				}
+				break;}
+			case 3:{
+				System.out.println("Que path quieres utilizar? 'A' autor, 'T' term, 'P' paper, 'C' conf ");
+				System.out.println("APA autor -> paper -> autor, TPCPA term->paper->conf->...");
+				System.out.print("> ");
+				String contenidoPath = br.readLine().toUpperCase();
+				if (contenidoPath.matches("[APTC]*")){
+					path = new Path();
+					path.setContingut(contenidoPath);
+					
+					System.out.println("Que nodo quieres poner como principio de busqueda?");
+					ArrayList<Node> nodesIni = getNodes(contenidoPath.charAt(0));
+					for (Node n : nodesIni) {
+						System.out.println(n.id + " -> " + n.nom);
+					}
+					System.out.print("> ");
+					
+					try {
+						Integer nodo = Integer.parseInt(br.readLine());
+						if (nodo >= nodesIni.size()) throw new NumberFormatException();
+						ArrayList<Node> nodesEnd = getNodes(contenidoPath.charAt(contenidoPath.length()-1));
+						ArrayList<Pair<Integer, Float>> m = hetesanic.getHeteSim(path,nodesIni.get(nodo));
+						for (int i = 0; i < m.size(); ++i) {
+							System.out.println(nodesIni.get(nodo).nom + " " + m.get(i).second + " " + nodesEnd.get(m.get(i).first).nom);;
+						}
+					} catch (PathException e) {
+						System.out.println("El path era incorrecto: " + e.getMessage());
+					} catch (NumberFormatException e) {
+						System.out.println("No has introducido un numero o está fuera de rango.");
+					}
+				}
+				else {
+					System.out.println("El path es incorrecto :(");
+				}
+				break;}
+			case 4:{
+				System.out.println("Que path quieres utilizar? 'A' autor, 'T' term, 'P' paper, 'C' conf ");
+				System.out.println("APA autor -> paper -> autor, TPCPA term->paper->conf->...");
+				System.out.print("> ");
+				String contenidoPath = br.readLine().toUpperCase();
+				if (contenidoPath.matches("[APTC]*")){
+					path = new Path();
+					path.setContingut(contenidoPath);
+					
+					System.out.println("Que nodo quieres poner como principio de busqueda?");
+					ArrayList<Node> nodesIni = getNodes(contenidoPath.charAt(0));
+					for (Node n : nodesIni) {
+						System.out.println(n.id + " -> " + n.nom);
+					}
+					System.out.print("> ");
+					
+					try {
+						Integer nodo = Integer.parseInt(br.readLine());
+						if (nodo >= nodesIni.size()) throw new NumberFormatException();
+						ArrayList<Node> nodesEnd = getNodes(contenidoPath.charAt(contenidoPath.length()-1));
+						for (Node n : nodesEnd) {
+							System.out.println(n.id + " -> " + n.nom);
+						}
+						System.out.print("> ");
+						Integer nodo2 = Integer.parseInt(br.readLine());
+						if (nodo2 >= nodesEnd.size()) throw new NumberFormatException();
+						Float m = hetesanic.getHeteSim(path,nodesIni.get(nodo),nodesEnd.get(nodo2));
+						
+						System.out.println(nodesIni.get(nodo).nom + " " + m + " " + nodesEnd.get(nodo2).nom);;
+						
+					} catch (PathException e) {
+						System.out.println("El path era incorrecto: " + e.getMessage());
+					} catch (NumberFormatException e) {
+						System.out.println("No has introducido un numero o está fuera de rango.");
+					}
+				}
+				else {
+					System.out.println("El path es incorrecto :(");
+				}
+				break;}
+			case 5:
+				System.exit(0);
+			
+			}
 		}
-		
-//		HeteSanic h2 = new HeteSanic();
-//		h2.setGraph(g);
-//		
-//		try {
-//			m = h2.getHeteSim(p);
-//		} catch (PathException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		
-//		for (int i = 0; i < m.getNRows(); ++i) {
-//			for (int j = 0; j < m.getNCols(); ++j) {
-//				System.out.print(m.getValue(i, j) + " ");
-//			}
-//			System.out.println();
-//		}
-		
 	}
 
+	private static ArrayList<Node> getNodes(char charAt) {
+		ArrayList<Node> ret = new ArrayList<Node>();
+		int size;
+		Node.Type type;
+		switch (charAt) {
+		case 'P':
+			size = graph.getMatrixTerm().getNCols();
+			type = Node.Type.Paper;
+			break;
+		case 'T':
+			size = graph.getMatrixTerm().getNRows();
+			type = Node.Type.Terme;
+			break;
+		case 'A':
+			size = graph.getMatrixAuthor().getNRows();
+			type = Node.Type.Autor;
+			break;
+		case 'C':
+			size = graph.getMatrixConf().getNRows();
+			type = Node.Type.Conferencia;
+		default:
+			return null;
+		}
+		
+		for (int i = 0; i < size; ++i) {
+			ret.add(graph.getNode(i, type));
+		}
+		
+		return ret;
+	}
 }
