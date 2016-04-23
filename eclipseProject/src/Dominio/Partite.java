@@ -3,6 +3,12 @@ package Dominio;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * 
+ * @author Gonzalo Diez
+ * 
+ */
+
 public class Partite {
 	SparseMatrix leftToMid;
 	SparseMatrix midToRight;

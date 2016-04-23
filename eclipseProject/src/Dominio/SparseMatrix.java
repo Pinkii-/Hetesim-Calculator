@@ -3,6 +3,12 @@ package Dominio;
 import java.util.ArrayList;
 import java.util.Set;
 
+/**
+ * 
+ * @author Gonzalo Diez
+ * 
+ */
+
 public class SparseMatrix {
 	ArrayList<SparseVector> rows = new ArrayList<SparseVector>();
 	ArrayList<SparseVector> cols = new ArrayList<SparseVector>();

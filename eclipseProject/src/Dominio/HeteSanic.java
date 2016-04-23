@@ -3,6 +3,12 @@ package Dominio;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * 
+ * @author Gonzalo Diez
+ * 
+ */
+
 public class HeteSanic {
 
 	class WhatMatrix {

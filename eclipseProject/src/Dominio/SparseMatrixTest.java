@@ -7,6 +7,12 @@ import java.util.Random;
 
 import org.junit.Test;
 
+/**
+ * 
+ * @author Gonzalo Diez
+ * 
+ */
+
 public class SparseMatrixTest {
 
 	@Test

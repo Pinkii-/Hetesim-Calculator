@@ -6,6 +6,12 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 
+/**
+ * 
+ * @author Gonzalo Diez
+ * 
+ */
+
 public class SparseVectorTest {
 
 	@Test
