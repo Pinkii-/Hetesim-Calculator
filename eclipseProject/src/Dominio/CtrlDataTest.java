@@ -104,7 +104,9 @@ public class CtrlDataTest {
 		System.out.println("Id grafo: ");
 		int id = Integer.parseInt(scanner.nextLine());
 		Graf g = new Graf();
-		
+		//TODO es pa que compile ekis de
+		//KWALITY CONTENT
+		return null;
 	}
 	
 	private static ResultStub generateResultAndPrint() {

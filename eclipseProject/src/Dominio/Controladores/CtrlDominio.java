@@ -2,20 +2,35 @@
  * @author Victor Alcazar Lopez
 **/
 
-package Dominio;
+package Dominio.Controladores;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.NotDirectoryException;
 import java.util.ArrayList;
 
+import Dominio.CtrlData;
+import Dominio.CtrlImport;
+import Dominio.CtrlSearch;
+import Dominio.Graf;
+import Dominio.Pair;
+import Dominio.Path;
+import Dominio.PathException;
+import Dominio.Result;
+import Dominio.Utils;
+
 public class CtrlDominio {
 
-	// Class references
-	CtrlSearch ctrlSearch;
+	//I/O Controllers
 	CtrlData ctrlData;
+	CtrlImport ctrlImport;
+	//Data structures Controllers
 	CtrlGraph ctrlGraph;
 	CtrlPaths ctrlPaths;
 	CtrlResults ctrlResults;
+	//Method controllers
+	CtrlSearch ctrlSearch;
+
 
 	public CtrlDominio() {
 		ctrlData = new CtrlData();
@@ -24,20 +39,36 @@ public class CtrlDominio {
 		ctrlPaths = new CtrlPaths();
 		ctrlResults = new CtrlResults();
 	}
+	
+	public void importGraph(String filePath){
+		ctrlImport = new CtrlImport(filePath);
+		try {
+			ctrlImport.loadGraphInfo();
+			ctrlGraph.setGraf(ctrlImport.getGraph());
+		} catch (FileNotFoundException e) {
+			System.out.println("Error importing Graph");
+			e.printStackTrace();
+		}
+	}
 
 	public void createGraph() {
 		ctrlGraph.setGraf(new Graf());
 		ctrlSearch.setGraph(ctrlGraph.getGraph());
 	}
 
-	public void loadPaths() {
-		ArrayList<Path> pathArray;
+	public ArrayList<String> loadPaths() {
+		ArrayList<Path> pathArray = new ArrayList<Path>();
+		ArrayList<String> pathNames = new ArrayList<String>();
 		try {
 			pathArray = ctrlData.loadallPaths();
 			ctrlPaths = new CtrlPaths(pathArray);
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
 		}
+		for(Path p: pathArray){
+			pathNames.add(p.getNom());
+		}
+		return pathNames;
 	}
 
 	public void loadGraph(String idGraph) {
@@ -169,6 +200,18 @@ public class CtrlDominio {
 	}
 
 	// OTHER FUNCTIONS
+	
+	public CtrlGraph getCtrlGraph(){
+		return ctrlGraph;
+	}
+	
+	public CtrlPaths getCtrlPaths(){
+		return ctrlPaths;
+	}
+	
+	public CtrlResults getCtrlResults(){
+		return ctrlResults;
+	}	
 
 	public void saveAllModifiedEntities() {
 		ArrayList<Path> modifiedPaths = ctrlPaths.getModifiedPaths();

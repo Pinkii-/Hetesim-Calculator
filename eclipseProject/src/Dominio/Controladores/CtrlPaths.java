@@ -2,11 +2,13 @@
  * @author Victor Alcazar Lopez
 **/
 
-package Dominio;
+package Dominio.Controladores;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import Dominio.Path;
 
 public class CtrlPaths {
 	private Map<String, Path> paths;
