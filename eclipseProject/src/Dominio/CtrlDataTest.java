@@ -110,6 +110,7 @@ public class CtrlDataTest {
 		String nom = (scanner.nextLine());
 		System.out.println("Id grafo (Entero): ");
 		int id = Integer.parseInt(scanner.nextLine());
+
 		Graf g = new Graf(nom,id);
 		System.out.println("Primero vamos a añadir unos cuantos nodos de tipo Paper al grafo");
 		System.out.println("-Introduce el número de nodos de tipo Paper a añadir:");
