@@ -5,11 +5,13 @@
  */
 package Dominio;
 
+import java.io.Serializable;
+
 /**
  *
  * @author jferrer91
  */
-public class Pair <F,S> {
+public class Pair <F,S> implements Serializable{
     public F first;
     public S second;
     

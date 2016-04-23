@@ -1,10 +1,11 @@
 package Dominio;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 //Stub class used to check if CtrlData successfully Deep copies Results
 //So it only contains methods which allow you to construct a full Result 
-public class ResultStub {
+public class ResultStub implements Serializable {
 	
 	private Node firstN; //Search origin node
 	private Node lastN; //Search destination node
@@ -46,17 +47,18 @@ public class ResultStub {
 	}
 	
 	public String toString(){
-		@Deprecated
 		String retStr = new String();
-		
 		retStr = ("Resultado: " + idResult + "\n"); 
 		retStr = retStr + ("    Path: " + usedP.toString() + "\n");
 		if (firstN != null) {
-			retStr = retStr + ("    N1) nom: " + firstN.getNom() + "Type: "+firstN.getTipus().toString() + "Label: "+ firstN.getLabel().toString()+"\n");
+			retStr = retStr + ("    N1) nom: " + firstN.getNom() +" Id: "+firstN.getId()+ "  Type: "+firstN.getTipus().toString() + "  Label: "+ firstN.getLabel().toString()+"\n");
 		}
+		else retStr = retStr + ("    N1) nom: " + "NULL" + "  Type: "+"NULL" + "  Label: "+"NULL"+"\n");
 		if (lastN != null) {
-			retStr = retStr + ("    N2) nom: " + lastN.getNom() + "Type: "+lastN.getTipus().toString() + "Label: "+ lastN.getLabel().toString()+"\n");
+			retStr = retStr + ("    N2) nom: " + lastN.getNom() +" Id: "+lastN.getId()+ "  Type: "+lastN.getTipus().toString() + "  Label: "+ lastN.getLabel().toString()+"\n");
 		}
+		else retStr = retStr + ("    N2) nom: " + "NULL" + "  Type: "+"NULL" + "  Label: "+"NULL"+"\n");
+		
 		retStr = retStr + ("    Threshold: " + threshold + "\n");
 		retStr = retStr + ("\n");
 		int i = 0;
