@@ -101,39 +101,59 @@ public class CtrlDataTest {
 		System.out.println("Error introduciendo el tipo");
 		return null;
 	}
-	
+	/*
+	private static Node generateNode() {
+		Scanner scanner = new Scanner(System.in);
+		Node n1 = new Node();		
+		System.out.println("Introducir nombre Nodo");
+		String nom = scanner.nextLine();
+		System.out.println("Introducir id Nodo (Entero)");
+		String id = scanner.nextLine();
+		System.out.println("Introducir tipo Nodo (Autor, Conferencia, Paper, Terme, MidElement)");
+		Node.Type t = switchType(scanner.nextLine());
+		System.out.println("Introducir label Nodo (Database, DataMining, AI, InformationRetrieval)");
+		Node.Label l = switchLabel(scanner.nextLine());
+		n1.initialize(t,Integer.parseInt(id), nom);
+		n1.setLabel(l);
+		return n1;
+	}*/
 
-	private static Graf generateGraff(int numNodesA, int numNodesT, int numNodesC, int numNodesP) {
+	private static ArrayList<Integer> enterDataGraf(Graf g) {
+		ArrayList<Integer> numNodes = new ArrayList<Integer>();
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("------------------------------------------------");
-		System.out.println("Nombre del grafo: ");
-		String nom = (scanner.nextLine());
-		System.out.println("Id grafo (Entero): ");
-		int id = Integer.parseInt(scanner.nextLine());
-		Graf g = new Graf(nom,id);
 		System.out.println("Primero vamos a añadir unos cuantos nodos de tipo Paper al grafo");
+		System.out.println("Introduce un nombre para los nodos de tipo Paper");
+		String name = scanner.nextLine();
 		System.out.println("-Introduce el número de nodos de tipo Paper a añadir:");
-		numNodesP = Integer.parseInt(scanner.nextLine());
-		for (int i = 0; i < numNodesP; ++i) {
-			g.addNode(Node.Type.Paper, i, "");
+		numNodes.add(Integer.parseInt(scanner.nextLine()));
+		for (int i = 0; i < numNodes.get(0); ++i) {
+			g.addNode(Node.Type.Paper, i, name);
 		}
 		System.out.println("Vamos a añadir unos cuantos nodos de tipo Autor al grafo");
+		System.out.println("Introduce un nombre para los nodos de tipo Autor");
+		name = scanner.nextLine();
 		System.out.println("-Introduce el número de nodos de tipo Autor a añadir:");
-		numNodesA = Integer.parseInt(scanner.nextLine());
-		for (int i = 0; i < numNodesA; ++i) {
-			g.addNode(Node.Type.Autor, i, "");
+		numNodes.add(Integer.parseInt(scanner.nextLine()));
+		
+		for (int i = 0; i < numNodes.get(1); ++i) {
+			g.addNode(Node.Type.Autor, i, name);
 		}
 		System.out.println("Vamos a añadir unos cuantos nodos de tipo Terme al grafo");
+		System.out.println("Introduce un nombre para los nodos de tipo Terme");
+		name = scanner.nextLine();
 		System.out.println("-Introduce el número de nodos de tipo Terne a añadir:");
-		numNodesT = Integer.parseInt(scanner.nextLine());
-		for (int i = 0; i < numNodesT; ++i) {
-			g.addNode(Node.Type.Terme, i, "");
+		numNodes.add(Integer.parseInt(scanner.nextLine()));
+		for (int i = 0; i < numNodes.get(2); ++i) {
+			g.addNode(Node.Type.Terme, i, name);
 		}
 		System.out.println("Vamos a añadir unos cuantos nodos de tipo Conferencia al grafo");
+		System.out.println("Introduce un nombre para los nodos de tipo Conferencia");
+		name = scanner.nextLine();;
 		System.out.println("-Introduce el número de nodos de tipo Conferencia a añadir:");
-		numNodesC = Integer.parseInt(scanner.nextLine());
-		for (int i = 0; i < numNodesC; ++i) {
-			g.addNode(Node.Type.Conferencia, i, "");
+		numNodes.add(Integer.parseInt(scanner.nextLine()));
+		for (int i = 0; i < numNodes.get(3); ++i) {
+			g.addNode(Node.Type.Conferencia, i, name);
 		}
 		
 		
@@ -149,27 +169,77 @@ public class CtrlDataTest {
             default: break;
         }
     }*/
-		for (int i = 0; i < numNodesA; ++i) {
-			for (int j = 0; j < numNodesP; ++j) {
+		for (int i = 0; i < numNodes.get(1); ++i) {
+			for (int j = 0; j < numNodes.get(0); ++j) {
 					g.setArc(j, i, Node.Type.Autor);
 			}
 		}
-		for (int i = 0; i < numNodesT; ++i) {
-			for (int j = 0; j < numNodesP; ++j) {
+		for (int i = 0; i < numNodes.get(2); ++i) {
+			for (int j = 0; j < numNodes.get(0); ++j) {
 					g.setArc(j, i, Node.Type.Terme);
 			}
 		}
-		for (int i = 0; i < numNodesC; ++i) {
-			for (int j = 0; j < numNodesP; ++j) {
+		for (int i = 0; i < numNodes.get(3); ++i) {
+			for (int j = 0; j < numNodes.get(0); ++j) {
 					g.setArc(j, i, Node.Type.Conferencia);
 			}
 		}
-		return g;
+		return numNodes;
 		
 	}
-	
-	private static void printGraf(Graf g, int numNodesA, int numNodesT, int numNodesC, int numNodesP) {
+	private static void clearGraf(Graf g) {
+		ArrayList<Node> nodesAutor = new ArrayList<Node>();
+		for (int i = 0; i < g.getMatrixAuthor().getNRows(); ++i) {
+			nodesAutor.add(g.getNode(i, Node.Type.Autor));
+		}
+		ArrayList<Node> nodesTerme = new ArrayList<Node>();
+		for (int i = 0; i < g.getMatrixTerm().getNRows(); ++i) {
+			nodesTerme.add(g.getNode(i, Node.Type.Terme));
+		}
+		ArrayList<Node> nodesConferencia = new ArrayList<Node>();
+		for (int i = 0; i < g.getMatrixConf().getNRows(); ++i) {
+			nodesConferencia.add(g.getNode(i, Node.Type.Conferencia));
+		}
+		ArrayList<Node> nodesPaper = new ArrayList<Node>();
+		for (int i = 0; i < g.getMatrixAuthor().getNCols(); ++i) {
+			nodesPaper.add(g.getNode(i, Node.Type.Paper));
+		}
+		
+		
+		for (int i = 0; i < g.getMatrixAuthor().getNRows(); ++i) {
+			for (int j = 0; j < g.getMatrixAuthor().getNCols(); ++j) {
+					g.deleteArc(nodesAutor.get(i),nodesPaper.get(j));
+			}
+		}
+		for (int i = 0; i < g.getMatrixTerm().getNRows(); ++i) {
+			for (int j = 0; j < g.getMatrixAuthor().getNCols(); ++j) {
+					g.deleteArc(nodesTerme.get(i),nodesPaper.get(j));
+			}
+		}
+		for (int i = 0; i < g.getMatrixConf().getNRows(); ++i) {
+			for (int j = 0; j < g.getMatrixAuthor().getNCols(); ++j) {
+					g.deleteArc(nodesConferencia.get(i),nodesPaper.get(j));
+			}
+		}
+		for (int i = 0; i < g.getMatrixAuthor().getNRows(); ++i) {
+			g.deleteNode(nodesAutor.get(i));
+		}
+		for (int i = 0; i < g.getMatrixTerm().getNRows(); ++i) {
+			g.deleteNode(nodesTerme.get(i));
+		}
+		for (int i = 0; i < g.getMatrixConf().getNRows(); ++i) {
+			g.deleteNode(nodesConferencia.get(i));
+		}
+		for (int i = 0; i < g.getMatrixAuthor().getNCols(); ++i) {
+			g.deleteNode(nodesPaper.get(i));
+		}
+		g.getMatrixAuthor().setTamany(0, 0);
+		g.getMatrixConf().setTamany(0, 0);
+		g.getMatrixTerm().setTamany(0, 0);
+	}
+	private static void printGraf(Graf g) {
 		System.out.println("------------------------------------------------");
+		System.out.println("-Nom Graf: " + g.getNom());
 		Matrix mauthor = g.getMatrixAuthor();
 		Matrix mterme = g.getMatrixTerm();
 		Matrix mconf = g.getMatrixConf();
@@ -180,19 +250,19 @@ public class CtrlDataTest {
 		System.out.println("|||Matriz Adyaciencia ConferenciaPaper|||");
 		printMatrix(mconf);
 		System.out.println("|||Nodos Autor|||:");
-		for (int i = 0; i < numNodesA; ++i) {
+		for (int i = 0; i < mauthor.getNRows(); ++i) {
 			printNode(g.getNode(i, Node.Type.Autor));
 		}
 		System.out.println("|||Nodos Terme|||");
-		for (int i = 0; i < numNodesT; ++i) {
+		for (int i = 0; i < mterme.getNRows(); ++i) {
 			printNode(g.getNode(i, Node.Type.Terme));
 		}
 		System.out.println("|||Nodos Conferencia|||");
-		for (int i = 0; i < numNodesC; ++i) {
+		for (int i = 0; i < mconf.getNRows(); ++i) {
 			printNode(g.getNode(i, Node.Type.Conferencia));
 		}
 		System.out.println("|||Nodos Paper|||");
-		for (int i = 0; i < numNodesC; ++i) {
+		for (int i = 0; i < mauthor.getNCols(); ++i) {
 			printNode(g.getNode(i, Node.Type.Paper));
 		}
 		
@@ -212,18 +282,23 @@ public class CtrlDataTest {
 	
 	private static void printNode(Node n) {
 		String retStr = "";
-		retStr += "    N1) nom: " + n.getNom() +" Id: "+n.getId();
-		retStr += "  Type: "+n.getTipus().toString() + "  Label: "+ n.getLabel().toString();
+		retStr += "nom: " + n.getNom() +" Id: "+n.getId();
+		retStr += "  Type: "+n.getTipus().toString();
 		System.out.println("[ "+retStr+" ]");
 	}
 	
-	private static void enterDataResultAndPrint(ResultStub rs) {
+	private static void enterDataResultAndPrint(ResultStub rs, boolean modification) {
 		Scanner scanner = new Scanner(System.in);
 		Path p = new Path();
 		rs.setPathUsed(p);
-		
-		Node n1 = new Node();
-		Node n2 = new Node();		
+		Node n1;
+		if (!modification)
+			n1 = new Node();
+		else n1 = rs.getFirstN();
+		Node n2;
+		if (!modification)
+			n2 = new Node();
+		else n2 = rs.getLastN();
 		
 		System.out.println("Introducir nombre Nodo origen");
 		String nom = scanner.nextLine();
@@ -252,11 +327,14 @@ public class CtrlDataTest {
 		System.out.println("Introducir Threshold del Result (Real)");
 		Float f = Float.parseFloat(scanner.nextLine());
 		rs.setThreshold(f);
+		ArrayList<NodePair> res;
 		
-		ArrayList<NodePair> res = new ArrayList<NodePair>();
-		//Generamos el array de NodePair que contiene los diversos resultados de Hetesim.
-		//Para no hacer el testeo muy pesado usaremos la información de los nodos origen y destino para cada NodePair.
-		//Posteriormente modificaremos el array.
+		if (!modification)res = new ArrayList<NodePair>();
+		else {
+			res = rs.getresultList();
+			res.clear();
+		}
+		
 		System.out.println("Introducir tantos valores de Hetesim como resultados se quieran añadir");
 		System.out.println("Introducir 'end' para finalizar");
 		String c = scanner.nextLine();
@@ -343,7 +421,7 @@ public class CtrlDataTest {
 		System.out.println("------------------------------------------------");
 		System.out.println("Introducir id Resultado");
 		ResultStub rs = new ResultStub(scanner.nextLine());
-		enterDataResultAndPrint(rs);
+		enterDataResultAndPrint(rs,false);
 		System.out.println("-Resultado original:");
 		printResult(rs);
 		
@@ -352,7 +430,7 @@ public class CtrlDataTest {
 		System.out.println("@@@Modificamos el Resultado original@@@");
 		System.out.println("------------------------------------------------");
 		System.out.println("Usamos el mismo id para el Resultado");
-		enterDataResultAndPrint(rs);
+		enterDataResultAndPrint(rs,true);
 		System.out.println("-Resultado modificado:");
 		printResult(rs);
 		
@@ -362,12 +440,29 @@ public class CtrlDataTest {
 	}	
 	
 	private static void testGrafDeepCopy() {
+		Scanner scanner = new Scanner(System.in);
 		System.out.println("@@@Vamos a generar un grafo@@@");
 		System.out.println("@@@Por simplicidad relacionaremos todas las entidades posibles@@@");
 		System.out.println("@@@Así mismo, repetiremos los datos de los nodos de cada tipo@@@");
-		int numNodesA = 0,numNodesT = 0,numNodesC = 0,numNodesP = 0;
-		Graf g = generateGraff(numNodesA,numNodesT,numNodesC,numNodesP);
-		printGraf(g, numNodesA, numNodesT, numNodesC, numNodesP);
+		System.out.println("Nombre del grafo: ");
+		String nom = (scanner.nextLine());
+		System.out.println("Id grafo (Entero): ");
+		int id = Integer.parseInt(scanner.nextLine());
+		Graf g = new Graf(nom,id);
+		enterDataGraf(g);
+		printGraf(g);
+		Graf gcopy = (Graf) CtrlData.deepCopy(g);
+		System.out.println("GRAFO COPIADO");
+		System.out.println("@@@Modificaremos el grafo original(Añadir el mismo número de nodos de cada tipo)@@@");
+		System.out.println("------------------------------------------------");
+		clearGraf(g);
+		enterDataGraf(g);
+		System.out.println("-Grafo modificado: ");
+		printGraf(g);
+		System.out.println("-Copia del grafo: ");
+		printGraf(gcopy);
+		
+		
 	}
 
 }
