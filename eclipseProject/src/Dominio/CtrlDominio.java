@@ -2,7 +2,7 @@
  * @author Victor Alcazar Lopez
 **/
 
-package Dominio.Controladores;
+package Dominio;
 
 //import java.io.FileNotFoundException;
 
@@ -10,15 +10,6 @@ import java.io.IOException;
 import java.nio.file.NotDirectoryException;
 import java.util.ArrayList;
 
-import Dominio.CtrlData;
-import Dominio.CtrlImport;
-import Dominio.CtrlSearch;
-import Dominio.Graf;
-import Dominio.Pair;
-import Dominio.Path;
-import Dominio.PathException;
-import Dominio.Result;
-import Dominio.Utils;
 import Persistencia.GraphImporter;
 
 public class CtrlDominio {

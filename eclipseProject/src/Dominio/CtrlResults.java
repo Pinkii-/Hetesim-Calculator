@@ -2,13 +2,11 @@
  * @author Victor Alcazar Lopez
 **/
 
-package Dominio.Controladores;
+package Dominio;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
-import Dominio.Result;
 
 public class CtrlResults {
 	private Map<String, Result> results;
