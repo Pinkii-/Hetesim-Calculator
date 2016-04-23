@@ -76,7 +76,7 @@ public class LoadStoreResult implements Serializable{
 	
 	public void deleteResult(String idResult) throws FileNotFoundException, ClassNotFoundException, IOException {
 		File file = new File(fileDirectory.resolve(idResult+".Result").toString());
-		if (!file.delete()) System.out.println("No se ha podido guardar el Resultado");
+		if (!file.delete()) System.out.println("No se ha podido eliminar el Resultado");
 	}
 	
 	public ArrayList<Result> LoadAllResults () throws ClassNotFoundException {

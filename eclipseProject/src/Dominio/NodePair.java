@@ -1,5 +1,7 @@
 package Dominio;
 
+import java.io.Serializable;
+
 /**
  * 
  * @author Xavier

@@ -34,11 +34,8 @@ public class CtrlData {
 	private Path pathToPaths;		  //Path del directorio donde siempre guardamos los Paths.
 	private Pair<Graf,ArrayList<Result>> graphAndResults;
 	private ArrayList<Dominio.Path> allPaths;
-	public CtrlData(String s) {}
-	//No se si tendria que hacer esto o por parámetro. 
+
 	public CtrlData() {
-		//generar directorio GrafsAndResults
-		//generar directorio Paths
 		Path cwd = Paths.get(System.getProperty("user.dir"));
 		Path Paths = cwd.resolve("Paths");
 		File Pathsf = new File(Paths.toString());
@@ -78,8 +75,10 @@ public class CtrlData {
 			System.out.println("El objeto no es serializable");
 			return null;
 		} catch (IOException e) {
+			System.out.println("Se ha producido un problema con la opeación de E/S");
 			return null;
 		} catch (ClassNotFoundException e) {
+			System.out.println("No hay definición para la clase especificada");
 			return null;
 		} 
 	}
@@ -121,7 +120,6 @@ public class CtrlData {
 		Dominio.Path pa;
 		pa = (Dominio.Path) CtrlData.deepCopy(p);
 		lsp = new LoadStorePath(pathToPaths.toString());
-		if (pa == null) System.out.println("subnulo");
 		lsp.storePath(pa);
 	}
 	

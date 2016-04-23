@@ -40,7 +40,6 @@ public class LoadStorePath implements Serializable{
 	
 	public void storePath(Path p) throws FileNotFoundException, IOException {
 		try {
-			if (p == null)System.out.println("adios");
 			FileOutputStream FileOutput = new FileOutputStream(pathsDirectory.resolve(p.getNom()+".ser").toString());
 			ObjectOutputStream ObjectOutput = new ObjectOutputStream(FileOutput);
 			ObjectOutput.writeObject(p);
