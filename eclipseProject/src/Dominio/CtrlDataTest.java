@@ -78,7 +78,7 @@ public class CtrlDataTest {
 		default:
 			break;
 		}
-		System.out.println("ei");
+		System.out.println("Error introduciendo el Label");
 
 		return null;
 	}
@@ -98,47 +98,14 @@ public class CtrlDataTest {
 		default:
 			break;
 		}
-		System.out.println("ei");
+		System.out.println("Error introduciendo el tipo");
 		return null;
 	}
-	private static void printMatrix(Matrix m) {
-		for (int i = 0; i < m.getNRows(); ++i) {
-			ArrayList<Float> fila = new ArrayList<Float>();
-			fila = m.getRow(i);
-			String conc = "";
-			for (int j = 0; j < m.getNCols(); ++j) {
-				conc += Float.toString(fila.get(j))+" ";
-			}
-			System.out.println(conc);
-		}
-	}
-	private static Graf generateGraf() {
-		Random rand = new Random();
-		Graf g = new Graf();
-		for (int i = 0; i < 10; ++i) {
-			g.addNode(Node.Type.Paper, i, "");
-		}
-		for (int i = 0; i < 10; ++i) {
-			g.addNode(Node.Type.Autor, i, "");
-		}
-		
-		for (int i = 0; i < 10; ++i) {
-			for (int j = 0; j < 10; ++j) {
-				if (rand.nextInt()%100 == 0) {
-					g.setArc(j, i, Node.Type.Autor);
-				}
-			}
-		}
-		Matrix mauthor = g.getMatrixAuthor();
-		Matrix mterm = g.getMatrixTerm();
-		Matrix mconf = g.getMatrixConf();
-		
-		printMatrix(mauthor);
-		return g;
-	}
-	private static Graf generateGraff() {
+	
+
+	private static Graf generateGraff(int numNodesA, int numNodesT, int numNodesC, int numNodesP) {
 		Scanner scanner = new Scanner(System.in);
-		System.out.println("------------------------------------");
+		System.out.println("------------------------------------------------");
 		System.out.println("Nombre del grafo: ");
 		String nom = (scanner.nextLine());
 		System.out.println("Id grafo (Entero): ");
@@ -146,25 +113,25 @@ public class CtrlDataTest {
 		Graf g = new Graf(nom,id);
 		System.out.println("Primero vamos a añadir unos cuantos nodos de tipo Paper al grafo");
 		System.out.println("-Introduce el número de nodos de tipo Paper a añadir:");
-		int numNodesP = Integer.parseInt(scanner.nextLine());
+		numNodesP = Integer.parseInt(scanner.nextLine());
 		for (int i = 0; i < numNodesP; ++i) {
 			g.addNode(Node.Type.Paper, i, "");
 		}
 		System.out.println("Vamos a añadir unos cuantos nodos de tipo Autor al grafo");
 		System.out.println("-Introduce el número de nodos de tipo Autor a añadir:");
-		int numNodesA = Integer.parseInt(scanner.nextLine());
+		numNodesA = Integer.parseInt(scanner.nextLine());
 		for (int i = 0; i < numNodesA; ++i) {
 			g.addNode(Node.Type.Autor, i, "");
 		}
 		System.out.println("Vamos a añadir unos cuantos nodos de tipo Terme al grafo");
 		System.out.println("-Introduce el número de nodos de tipo Terne a añadir:");
-		int numNodesT = Integer.parseInt(scanner.nextLine());
+		numNodesT = Integer.parseInt(scanner.nextLine());
 		for (int i = 0; i < numNodesT; ++i) {
 			g.addNode(Node.Type.Terme, i, "");
 		}
 		System.out.println("Vamos a añadir unos cuantos nodos de tipo Conferencia al grafo");
 		System.out.println("-Introduce el número de nodos de tipo Conferencia a añadir:");
-		int numNodesC = Integer.parseInt(scanner.nextLine());
+		numNodesC = Integer.parseInt(scanner.nextLine());
 		for (int i = 0; i < numNodesC; ++i) {
 			g.addNode(Node.Type.Conferencia, i, "");
 		}
@@ -197,24 +164,61 @@ public class CtrlDataTest {
 					g.setArc(j, i, Node.Type.Conferencia);
 			}
 		}
+		return g;
+		
+	}
+	
+	private static void printGraf(Graf g, int numNodesA, int numNodesT, int numNodesC, int numNodesP) {
+		System.out.println("------------------------------------------------");
 		Matrix mauthor = g.getMatrixAuthor();
 		Matrix mterme = g.getMatrixTerm();
 		Matrix mconf = g.getMatrixConf();
+		System.out.println("|||Matriz Adyaciencia AutorPaper|||");
 		printMatrix(mauthor);
-		System.out.println("LEL");
+		System.out.println("|||Matriz Adyaciencia TemaPaper|||");
 		printMatrix(mterme);
-		System.out.println("LEL");
+		System.out.println("|||Matriz Adyaciencia ConferenciaPaper|||");
 		printMatrix(mconf);
-		return g;
+		System.out.println("|||Nodos Autor|||:");
+		for (int i = 0; i < numNodesA; ++i) {
+			printNode(g.getNode(i, Node.Type.Autor));
+		}
+		System.out.println("|||Nodos Terme|||");
+		for (int i = 0; i < numNodesT; ++i) {
+			printNode(g.getNode(i, Node.Type.Terme));
+		}
+		System.out.println("|||Nodos Conferencia|||");
+		for (int i = 0; i < numNodesC; ++i) {
+			printNode(g.getNode(i, Node.Type.Conferencia));
+		}
+		System.out.println("|||Nodos Paper|||");
+		for (int i = 0; i < numNodesC; ++i) {
+			printNode(g.getNode(i, Node.Type.Paper));
+		}
+		
 	}
 	
+	private static void printMatrix(Matrix m) {
+		for (int i = 0; i < m.getNRows(); ++i) {
+			ArrayList<Float> fila = new ArrayList<Float>();
+			fila = m.getRow(i);
+			String conc = "";
+			for (int j = 0; j < m.getNCols(); ++j) {
+				conc += Float.toString(fila.get(j))+" ";
+			}
+			System.out.println(conc);
+		}
+	}
 	
-	private static ResultStub generateResultAndPrint() {
+	private static void printNode(Node n) {
+		String retStr = "";
+		retStr += "    N1) nom: " + n.getNom() +" Id: "+n.getId();
+		retStr += "  Type: "+n.getTipus().toString() + "  Label: "+ n.getLabel().toString();
+		System.out.println("[ "+retStr+" ]");
+	}
+	
+	private static void enterDataResultAndPrint(ResultStub rs) {
 		Scanner scanner = new Scanner(System.in);
-		System.out.println("------------------------------------");
-		System.out.println("Introducir id del Resultado (idResult)");
-		String scan = (scanner.nextLine());
-		ResultStub rs = new ResultStub(scan);
 		Path p = new Path();
 		rs.setPathUsed(p);
 		
@@ -269,83 +273,19 @@ public class CtrlDataTest {
 		rs.setModified(false);
 		rs.setresultList(res);
 		rs.setidGraph("id");
-		System.out.println("Resultado generado: ");
-		System.out.println(rs.toString());
-		return rs;
 	}
 	
-	private static void modifyResultAndPrint(ResultStub rs) {
-		Scanner scanner = new Scanner(System.in);
-		System.out.println("------------------------------------");
-		System.out.println("Usamos el mismo nombre para el Resultado");
-		
-		Path p = new Path();
-		rs.setPathUsed(p);
-		
-		Node n1 = new Node();
-		Node n2 = new Node();
-		
-		System.out.println("Modificar nombre Nodo origen");
-		String nom = scanner.nextLine();
-		System.out.println("Modificar id Nodo origen (Entero)");
-		String id = scanner.nextLine();
-		System.out.println("Modificar tipo Nodo origen (Autor, Conferencia, Paper, Terme, MidElement)");
-		Node.Type t = switchType(scanner.nextLine());
-		System.out.println("Modificar label Nodo origen (Database, DataMining, AI, InformationRetrieval)");
-		Node.Label l = switchLabel(scanner.nextLine());
-		
-		n1.initialize(t,Integer.parseInt(id), nom);
-		n1.setLabel(l);
-		
-		System.out.println("Modificar nombre Nodo destino");
-		String nomd = scanner.nextLine();
-		System.out.println("Modificar id Nodo destino (Entero)");
-		String idd = scanner.nextLine();
-		System.out.println("Modificar tipo Nodo destino(Autor, Conferencia, Paper, Terme, MidElement)");
-		Node.Type td = switchType(scanner.nextLine());
-		System.out.println("Modificar label Nodo destino(Database, DataMining, AI, InformationRetrieval)");
-		Node.Label ld = switchLabel(scanner.nextLine());
-		
-		n2.initialize(td, Integer.parseInt(idd), nomd);
-		n2.setLabel(ld);
-		
-		System.out.println("Modificar Threshold del Result (Real)");
-		Float f = Float.parseFloat(scanner.nextLine());
-		rs.setThreshold(f);
-		
-		ArrayList<NodePair> res = new ArrayList<NodePair>();
-		//Generamos el array de NodePair que contiene los diversos resultados de Hetesim.
-		//Para no hacer el testeo muy pesado usaremos la información de los nodos origen y destino para cada NodePair.
-		System.out.println("Modifiquemos ahora los valores de Hetesim asociados al result");
-		System.out.println("Introducir tantos valores de Hetesim como resultados se quieran añadir");
-		System.out.println("Introducir 'end' para finalizar");
-		String c = scanner.nextLine();
-		while(!c.equals("end")) {
-			Node np1 = (Node) CtrlData.deepCopy(n1);
-			Node np2 = (Node) CtrlData.deepCopy(n2);
-			f = Float.parseFloat(c);
-			NodePair np = new NodePair(np1,np2,f);
-			res.add(np);
-			c = scanner.nextLine();
-			
-		}
-		rs.setOriginDest(n1, n2);
-		rs.setModified(true);
-		rs.setresultList(res);
-		System.out.println("Restultado modificado: ");
-		System.out.println(rs.toString());
-	}
-	
+
 	private static void printResult(ResultStub rs) {
-		System.out.println("Resultado original: ");
+		System.out.println("------------------------------------------------");
+		System.out.println("Resultado: ");
 		System.out.println(rs.toString());
 	}
 	//Genera un path que será usado para luego copiarlo y modificarlo
 	//Tambien imprime por pantalla los datos de los que se compone el Path generado
-	private static Path generatePathAndPrint() {
+	private static void enterDataPathAndPrint(Path p) {
 		Scanner scanner = new Scanner(System.in);
-		Path p = new Path();
-		System.out.println("------------------------------------");
+		System.out.println("------------------------------------------------");
 		System.out.println("Nombre del Path: ");
 		String scan = (scanner.nextLine());
 		p.setNom(scan);
@@ -355,70 +295,39 @@ public class CtrlDataTest {
 		System.out.println("Contenido del Path: ");
 		scan = (scanner.nextLine());
 		p.setContingut(scan);
-		ArrayList<Node.Type> contingutOriginal = p.getContingut();
-		System.out.println("Nom original path:"+p.getNom());
-		System.out.println("Descripció original path: "+p.getDescripcio());
-		String print = "[ ";
-		for (int i = 0; i < contingutOriginal.size()-1; ++i) {
-			print += contingutOriginal.get(i).toString()+", ";
-		}
-		print+= contingutOriginal.get(contingutOriginal.size()-1).toString()+" ]";
-		System.out.println("Contingut Original: "+ print);
-		System.out.println("------------------------------------");
-		return p;
-	}
-	//Modifica el Path pasado por parámetro de manera que luego se puede chequear que no cam
-	//bia la copia
-	private static void modifyPathAndPrint(Path p) {
-		Scanner scanner = new Scanner(System.in);
-		System.out.println("Nou nom: ");
-		String scan = (scanner.nextLine());
-		p.setNom(scan);
-		System.out.println("Nova descripció");
-		scan = (scanner.nextLine());
-		p.setDescripcio(scan);
-		System.out.println("Nou contingut");
-		scan = (scanner.nextLine());
-		p.setContingut(scan);
-		ArrayList<Node.Type> contingutModificat = p.getContingut();
-		System.out.println("------------------------------------------------");
-		System.out.println("Nom path modificat: "+p.getNom());
-		System.out.println("Descripció path modificat: "+p.getDescripcio());
-		String print = "[ ";
-		for (int i = 0; i < contingutModificat.size()-1; ++i) {
-			print += contingutModificat.get(i).toString()+", ";
-		}
-		print+= contingutModificat.get(contingutModificat.size()-1).toString()+" ]";
-		System.out.println("Contingut Path modificat: "+print);
-		System.out.println("------------------------------------------------");
+		
 	}
 
 	private static void printPath(Path p) {
-		ArrayList<Node.Type> contingutCopia = p.getContingut();
+		ArrayList<Node.Type> contingut = p.getContingut();
 		System.out.println("------------------------------------------------");
-		System.out.println("Nom path copia: "+p.getNom());
-		System.out.println("Descripció path copia: "+p.getDescripcio());
+		System.out.println("Nom path: "+p.getNom());
+		System.out.println("Descripció path: "+p.getDescripcio());
 		String print = "";
 		print = "[ ";
-		for (int i = 0; i < contingutCopia.size()-1; ++i) {
-			print += contingutCopia.get(i).toString()+", ";
+		for (int i = 0; i < contingut.size()-1; ++i) {
+			print += contingut.get(i).toString()+", ";
 		}
-		print+= contingutCopia.get(contingutCopia.size()-1).toString()+" ]";
-		System.out.println("Contingut Path copia: " + print);
+		print+= contingut.get(contingut.size()-1).toString()+" ]";
+		System.out.println("Contingut Path: " + print);
 		System.out.println("------------------------------------------------");
 		
 	}
 	private static void testPathDeepCopy() throws FileNotFoundException, ClassNotFoundException, IOException, CloneNotSupportedException {
 		System.out.println("@@@Vamos a generar un Path@@@");
-		Path p = generatePathAndPrint();
-		
+		Path p = new Path();
+		enterDataPathAndPrint(p);
+		System.out.println("-Path original:");
+		printPath(p);
 		
 		Path copy = (Path) CtrlData.deepCopy(p);
-		
+		System.out.println("PATH COPIADO");
 		System.out.println("@@@Modificamos el Path original@@@");
-		modifyPathAndPrint(p);
+		enterDataPathAndPrint(p);
+		System.out.println("-Path modificado:");
+		printPath(p);
 		
-		System.out.println("@@@Copia del Path (tendria que tener los valores del path original)@@@");
+		System.out.println("-Copia del Path (tendria que tener los valores del path original)@@@");
 		printPath(copy); //Han de sortir els valors originals
 		
 		System.out.println("Identificadores:\nPath original:"+ p.toString()+"\nCopiaPath: "+copy.toString());
@@ -429,23 +338,36 @@ public class CtrlDataTest {
 		//Se supone que Nodo funciona
 		//Se supone que NodePair funciona
 		//Se quiere comprobar el funcionamiento de CtrlData.deepCopy con Resultados.
+		Scanner scanner = new Scanner(System.in);
 		System.out.println("@@@Vamos a generar un resultado@@@");
-		ResultStub rs = generateResultAndPrint();
+		System.out.println("------------------------------------------------");
+		System.out.println("Introducir id Resultado");
+		ResultStub rs = new ResultStub(scanner.nextLine());
+		enterDataResultAndPrint(rs);
+		System.out.println("-Resultado original:");
+		printResult(rs);
 		
 		ResultStub rscopy = (ResultStub) CtrlData.deepCopy(rs);
-		
+		System.out.println("RESULT COPIADO");
 		System.out.println("@@@Modificamos el Resultado original@@@");
-		modifyResultAndPrint(rs);
+		System.out.println("------------------------------------------------");
+		System.out.println("Usamos el mismo id para el Resultado");
+		enterDataResultAndPrint(rs);
+		System.out.println("-Resultado modificado:");
+		printResult(rs);
 		
-		System.out.println("@@@Copia del Resultado (tendria que tener los valores del path original)@@@");
-		printResult(rscopy); //Han de sortir els valors originals
+		System.out.println("-Copia del Resultado (tendria que tener los valores del path original)@@@");
+		printResult(rscopy);
 		
 	}	
 	
 	private static void testGrafDeepCopy() {
 		System.out.println("@@@Vamos a generar un grafo@@@");
-		System.out.println("@@@Por simplicidad solo añadiremos nodos de 2 tipos@@@");
-		Graf g = generateGraff();
+		System.out.println("@@@Por simplicidad relacionaremos todas las entidades posibles@@@");
+		System.out.println("@@@Así mismo, repetiremos los datos de los nodos de cada tipo@@@");
+		int numNodesA = 0,numNodesT = 0,numNodesC = 0,numNodesP = 0;
+		Graf g = generateGraff(numNodesA,numNodesT,numNodesC,numNodesP);
+		printGraf(g, numNodesA, numNodesT, numNodesC, numNodesP);
 	}
 
 }
