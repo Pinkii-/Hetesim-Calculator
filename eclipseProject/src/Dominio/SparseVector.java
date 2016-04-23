@@ -5,6 +5,12 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * 
+ * @author Gonzalo Diez
+ * 
+ */
+
 @SuppressWarnings("serial")
 public class SparseVector extends HashMap<Integer,Float> {
 	

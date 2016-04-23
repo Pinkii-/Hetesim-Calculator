@@ -1,15 +1,16 @@
 package Dominio;
 
+import java.io.Serializable;
+
 /**
- * 
  * @author Xavier
  *
+ * Each row of the Result is a NodePair, which has a pair of nodes (first/last node) and its Hetesim value.
+ * 
  */
 
-/*
- * Each row of the Result is a NodePair, which has a pair of nodes (first/last node) and its Hetesim value;
- */
-public class NodePair {
+@SuppressWarnings("serial")
+public class NodePair implements Serializable{
 	public Pair<Node,Node> pairN;
 	private float hetesimVal;
 	
@@ -18,12 +19,16 @@ public class NodePair {
 		setHetesim(hetesimVal);
 	}
 	
-	//Modify the Hetesim value
+	/**
+	 * Modify the HeteSim value.
+	 * 
+	 * @param hetesimVal > The new modified value for the NodePair.
+	 */
 	public void setHetesim(float hetesimVal){
-		assert (hetesimVal>0 && hetesimVal<=1);
+		if (hetesimVal<0 || hetesimVal > 1) throw new RuntimeException("Hetesim has an invalid value");
 		this.hetesimVal = hetesimVal;
 	}
-	//Get the Hetesim value
+
 	public float getHetesim(){
 		return hetesimVal;
 	}

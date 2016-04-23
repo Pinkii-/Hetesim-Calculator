@@ -1,5 +1,11 @@
 package Dominio;
 
+/**
+ * 
+ * @author Gonzalo Diez
+ * 
+ */
+
 public class CtrlSearch {
 
 	Graf g = null;
