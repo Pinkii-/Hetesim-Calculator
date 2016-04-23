@@ -1,5 +1,7 @@
 package Dominio;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -122,7 +124,9 @@ class HeteSim {
 			for (int j = 0; j < result.getNCols(); ++j) {
 				double top = multiplyVectors(left.getRow(i),right.getRow(j));
 				double bot = norm(left.getRow(i))*norm(right.getRow(j));
-				result.getRow(i).set(j,(float) (top/bot));
+				Float res = (float) (top/bot);
+				DecimalFormat df = new DecimalFormat("#.#####");
+				result.getRow(i).set(j,Float.valueOf(df.format(res)));
 				
 			}
 		}
