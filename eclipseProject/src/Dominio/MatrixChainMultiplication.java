@@ -36,13 +36,10 @@ public class MatrixChainMultiplication {
 		for (int l = 2; l <= ms.size(); ++l) {
 			for (int i = 1; i <= ms.size() - l + 1; ++i) {
 				int j = i + l - 1;
-				System.out.println("> " +i + " " + j);
 				m.get(i-1).set(j-1, Long.MAX_VALUE);
 				for (int k = i; k <= j-1; ++k) {
-					long q = m.get(i-1).get(k-1) + m.get(k+1-1).get(j-1) + ms.get(i-1).getNRows() * ms.get(k-1).getNCols() * ms.get(j-1).getNCols(); 
-					System.out.println(i +" "+j+" "+k+" "+q);
+					long q = m.get(i-1).get(k-1) + m.get(k+1-1).get(j-1) + ms.get(i-1).getNRows() * ms.get(k-1).getNCols() * ms.get(j-1).getNCols();
 					if (q < m.get(i-1).get(j-1)) {
-						System.out.println("Entrado");
 						m.get(i-1).set(j-1, q);
 						s.get(i-1).set(j-1, k-1);
 					}
@@ -54,7 +51,6 @@ public class MatrixChainMultiplication {
 	}
 
 	private static SparseMatrix mult(ArrayList<SparseMatrix> ms, int i, int j) {
-		System.out.println(i + " " + j);
 		if (i == j) return ms.get(i);
 		int k = s.get(i).get(j);
 		SparseMatrix left = mult(ms,i,k);

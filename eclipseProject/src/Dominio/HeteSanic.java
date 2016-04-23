@@ -143,23 +143,25 @@ public class HeteSanic {
 		if (matrixesToMultiply.size() < 1) {
 			System.out.println("BROKEN");// Throw Exception ("The path cant be this short dude, or maybe this whole shit is bugged. Dunno")
 		}
-		SparseMatrix ret = arrayListToMatrix(matrixesToMultiply.get(0).getRow(n.id));
-		System.out.println(ret);
-		for (int i = 1; i < matrixesToMultiply.size(); ++i) {
-			ret = SparseMatrix.multiply(ret,matrixesToMultiply.get(i));
-		}
-		return ret;
+		matrixesToMultiply.set(0,arrayListToMatrix(matrixesToMultiply.get(0).getRow(n.id)));
+		return mutiplyMatrixes(matrixesToMultiply);
+//		System.out.println(ret);
+//		for (int i = 1; i < matrixesToMultiply.size(); ++i) {
+//			ret = SparseMatrix.multiply(ret,matrixesToMultiply.get(i));
+//		}
+//		return ret;
 	}
 	
 	private SparseMatrix mutiplyMatrixes(ArrayList<SparseMatrix> matrixesToMultiply) {
 		if (matrixesToMultiply.size() < 1) {
 			System.out.println("BROKEN");// Throw Exception ("The path cant be this short dude, or maybe this whole shit is bugged. Dunno")
 		}
-		SparseMatrix ret = matrixesToMultiply.get(0);
-		for (int i = 1; i < matrixesToMultiply.size(); ++i) {
-			ret = SparseMatrix.multiply(ret,matrixesToMultiply.get(i));
-		}
-		return ret;
+		return MatrixChainMultiplication.compute(matrixesToMultiply);
+//		SparseMatrix ret = matrixesToMultiply.get(0);
+//		for (int i = 1; i < matrixesToMultiply.size(); ++i) {
+//			ret = SparseMatrix.multiply(ret,matrixesToMultiply.get(i));
+//		}
+//		return ret;
 	}
 	
 
