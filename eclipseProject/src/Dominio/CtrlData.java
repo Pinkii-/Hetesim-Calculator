@@ -129,14 +129,14 @@ public class CtrlData {
 		graphAndResults.first = cg.loadGraph(idGraf);
 		return graphAndResults;
 	}
-	
+	//done
 	public ArrayList<Dominio.Path> loadallPaths() throws ClassNotFoundException, IOException {
 		allPaths = new ArrayList<Dominio.Path>();
 		lsp = new LoadStorePath(pathToPaths.toString());
 		allPaths = lsp.loadAllPaths();
 		return allPaths;
 	}
-	
+	//done
 	public void storeResult(Result r) throws FileNotFoundException, CloneNotSupportedException, IOException{
 		Path p = Paths.get(pathToGrafsAndResults.toString());
 		p = p.resolve(r.getIdGraf());
@@ -146,7 +146,7 @@ public class CtrlData {
 		lsr = new LoadStoreResult(p.toString());
 		lsr.storeResult(res);
 	}
-	
+	//dine
 	public void storePath(Dominio.Path p) throws FileNotFoundException, CloneNotSupportedException, IOException {
 		Dominio.Path pa;
 		pa = (Dominio.Path) CtrlData.deepCopy(p);
@@ -162,7 +162,7 @@ public class CtrlData {
 		cg = new CtrlDataGraph(p.toString());
 		cg.saveGraph(gc, gc.nom);
 	}
-	
+	//done
 	public Result loadResult(String idResult, Integer idGraf) throws FileNotFoundException, ClassNotFoundException, IOException {
 		Path p = Paths.get(pathToGrafsAndResults.toString());
 		p = p.resolve(String.valueOf(idGraf));
@@ -171,7 +171,7 @@ public class CtrlData {
 		Result r = lsr.loadResult(idResult);
 		return r;
 	}
-	
+	//done
 	public Dominio.Path loadPath(String nomPath) throws FileNotFoundException, ClassNotFoundException, IOException {
 		Dominio.Path p = new Dominio.Path();
 		lsp = new LoadStorePath(pathToPaths.toString());
