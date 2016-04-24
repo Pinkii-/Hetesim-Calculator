@@ -99,7 +99,11 @@ public class HeteSimTest {
 						if (nodo >= nodesIni.size()) throw new NumberFormatException();
 						ArrayList<Node> nodesEnd = getNodes(contenidoPath.charAt(contenidoPath.length()-1));
 						ArrayList<Pair<Integer, Float>> m = hetesim.getHeteSim(path,nodesIni.get(nodo));
+						System.out.println(nodesEnd);
 						for (int i = 0; i < m.size(); ++i) {
+							String nom1 = nodesIni.get(nodo).nom;
+							Float val =  m.get(i).second;
+							String nom2 = nodesEnd.get(m.get(i).first).nom;
 							System.out.println(nodesIni.get(nodo).nom + " " + m.get(i).second + " " + nodesEnd.get(m.get(i).first).nom);;
 						}
 					} catch (PathException e) {
@@ -178,6 +182,7 @@ public class HeteSimTest {
 		case 'C':
 			size = graph.getMatrixConf().getNRows();
 			type = Node.Type.Conferencia;
+			break;
 		default:
 			return null;
 		}
