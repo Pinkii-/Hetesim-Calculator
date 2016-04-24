@@ -114,7 +114,7 @@ public class CtrlData {
 		return pathToGrafsAndResults.toString();
 	}
 
-
+	//done
 	public  Pair<Graf,ArrayList<Result>> loadgraphAndResults(String idGraf) throws ClassNotFoundException, FileNotFoundException, IOException {
 		Path p = Paths.get(pathToGrafsAndResults.toString());
 		p = p.resolve(idGraf); //p ahora tendria que ser el directorio nomgraf que contiene su graf y sus results.
@@ -179,19 +179,7 @@ public class CtrlData {
 		p = lsp.loadPath(nomPath);
 		return p;
 	}
-	
-	public void deletePath(String nomPath) throws ClassNotFoundException, IOException {
-		lsp = new LoadStorePath(pathToPaths.toString());
-		lsp.deletePath(nomPath);
-	}
-	//
-	public void deleteResult(String idResult, Integer idGraf) throws Exception {
-		Path p = Paths.get(pathToGrafsAndResults.toString());
-		p = p.resolve(String.valueOf(idGraf));
-		checkSubdirectory(p);
-		lsr = new LoadStoreResult(p.toString());
-		lsr.deleteResult(idResult);
-	}
+
 	//sibale
 	public boolean checkGraphFile(String filePath) {
 		cg = new CtrlDataGraph();
