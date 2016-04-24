@@ -18,8 +18,15 @@ public class CtrlDominioTest {
 	static ArrayList<String> pathNames;
 
 	static BufferedReader br;
+	
+	static String filePath;
 
 	public static void main(String[] args) throws IOException {
+		if(args.length < 1){
+			System.out.println("Debes poner como primer parametro el camino hasta un directorio con un grafo valido");
+			System.exit(0);
+		}
+		filePath = args[0];
 		br = new BufferedReader(new InputStreamReader(System.in));
 		initControllers();
 		while (true) {
@@ -260,7 +267,7 @@ public class CtrlDominioTest {
 			}
 			switch (index) {
 			case 0:
-				ctrlDominio.importGraph("C:\\Users\\Usuari\\Desktop\\PROP\\GraphForTesting");
+				ctrlDominio.importGraph(filePath);
 				break;
 			case 1:
 				pathName = askForPathName();
