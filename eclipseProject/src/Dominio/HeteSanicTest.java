@@ -100,7 +100,10 @@ public class HeteSanicTest {
 						ArrayList<Node> nodesEnd = getNodes(contenidoPath.charAt(contenidoPath.length()-1));
 						ArrayList<Pair<Integer, Float>> m = hetesanic.getHeteSim(path,nodesIni.get(nodo));
 						for (int i = 0; i < m.size(); ++i) {
-							System.out.println(nodesIni.get(nodo).nom + " " + m.get(i).second + " " + nodesEnd.get(m.get(i).first).nom);;
+							String nom1 = nodesIni.get(nodo).nom;
+							Float val =  m.get(i).second;
+							String nom2 = nodesEnd.get(m.get(i).first).nom;
+							System.out.println( nom1 + " " +val + " " + nom2);;
 						}
 					} catch (PathException e) {
 						System.out.println("El path era incorrecto: " + e.getMessage());
@@ -179,6 +182,7 @@ public class HeteSanicTest {
 		case 'C':
 			size = graph.getMatrixConf().getNRows();
 			type = Node.Type.Conferencia;
+			break;
 		default:
 			return null;
 		}

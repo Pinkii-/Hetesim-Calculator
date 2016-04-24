@@ -18,7 +18,7 @@ public class CtrlDominioTest {
 	static ArrayList<String> pathNames;
 
 	public static void main(String[] args) throws IOException {
-		if(args.length > 0){
+		if (args.length > 0) {
 			quickTest();
 			return;
 		}
@@ -40,10 +40,10 @@ public class CtrlDominioTest {
 			}
 			switch (index) {
 			case 0:
-
+				talkToCtrlDominio();
 				break;
 			case 1:
-					talkToCtrlGraph();								
+				talkToCtrlGraph();
 				break;
 			case 2:
 				break;
@@ -55,17 +55,92 @@ public class CtrlDominioTest {
 				break;
 			}
 		}
+	}
 
-	/*
-	 * initControllers(); ctrlDominio.importGraph(
-	 * "C:\\Users\\Usuari\\Desktop\\PROP\\GraphForTesting");
-	 * ctrlPaths.addPath("APC", "Related authors", "Description left empty" );
-	 * pathNames = ctrlPaths.getPathNames();
-	 * 
-	 * //ctrlDominio.searchPath(pathNames.get(0));
-	 * //ctrlDominio.saveLastSearchResult();
-	 * System.out.println(ctrlPaths.toString());
-	 */
+	private static String askForPathName() throws NumberFormatException, IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		System.out.println("Que path quieres utilizar? (Gestionado por ctrlPath");
+		ArrayList<String> pathNames = new ArrayList<String>();
+		pathNames = ctrlPaths.getPathNames();
+		Integer index = 0;
+		for (String s : pathNames) {
+			System.out.println(index + ": " + s);
+			++index;
+		}
+		index = Integer.parseInt(br.readLine());
+		return pathNames.get(index);
+	}
+
+	private static void talkToCtrlDominio() throws IOException {
+		boolean finished = false;
+
+		while (!finished) {
+			String pathName;
+			String node1Index;
+			String node1Type;
+			String node2Index;
+			String node2Type;
+			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+			System.out.println(
+					"Hola, soy CtrlDominio y me encargo de gestionar las busquedas y el I/O. Que quieres que haga?");
+			System.out.println("0 - Importa el grafo de pruebas (necesario si no has inicializado el grafo antes)");
+			System.out.println("1 - Realiza una búsqueda con un path.");
+			System.out.println("2 - Realiza una búsqueda con un una entidad y un path.");
+			System.out.println("3 - Realiza una búsqueda con dos entidades y un path");
+			System.out.println("4 - Guarda el grafo actual.");
+			System.out.println("5 - Carga un grafo ya guardado.");
+			System.out.println(
+					"6 - Imprime el grafo (lo hace CtrlGrafo, pero yo te dejo hacerlo aquí por conveniencia :D )");
+			System.out.println("7 - Salir.");
+			System.out.print("> ");
+			Integer index;
+			try {
+				index = Integer.parseInt(br.readLine());
+			} catch (NumberFormatException e) {
+				continue;
+			}
+			switch (index) {
+			case 0:
+				ctrlDominio.importGraph("C:\\Users\\Usuari\\Desktop\\PROP\\GraphForTesting");
+				break;
+			case 1:
+				pathName = askForPathName();				
+				ctrlDominio.searchPath(pathName);
+				break;
+			case 2:
+				pathName = askForPathName();
+				System.out.println("Indica el indice y tipo del nodo sobre el que deseas hacer la busqueda (cada uno en una linea):");
+				System.out.print("> ");			
+				node1Index = br.readLine();
+				System.out.print("> ");
+				node1Type = br.readLine();
+				ctrlDominio.searchPathNode(pathName, Integer.parseInt(node1Index), node1Type);
+				break;
+			case 3:
+				pathName = askForPathName();
+				System.out.println("Indica el indice y tipo del primer nodo sobre el que deseas hacer la busqueda (cada uno en una linea):");
+				System.out.print("> ");			
+				node1Index = br.readLine();
+				System.out.print("> ");
+				node1Type = br.readLine();
+				System.out.println("Indica el indice y tipo del segundo nodo sobre el que deseas hacer la busqueda (cada uno en una linea):");
+				System.out.print("> ");			
+				node2Index = br.readLine();
+				System.out.print("> ");
+				node2Type = br.readLine();
+				ctrlDominio.searchPathNodeNode(pathName, Integer.parseInt(node1Index), node1Type, Integer.parseInt(node2Index), node2Type);
+				break;
+			case 4:
+				break;
+			case 5:
+				break;
+			case 6:
+				Utils.printGraf(ctrlGraph.getGraph());
+				break;
+			case 7:
+				break;
+			}
+		}
 	}
 
 	private static void talkToCtrlGraph() throws IOException {
@@ -82,11 +157,8 @@ public class CtrlDominioTest {
 			System.out.println("2 - Borra un nodo existente.");
 			System.out.println("3 - Anade una relacion entre dos nodos existentes.");
 			System.out.println("4 - Elimina una relacion existente entre dos nodos.");
-			System.out.println("5 - Guarda el grafo actual.");
-			System.out.println("6 - Carga un grafo ya guardado.");
-			System.out.println("7 - Importa el grafo de la carpeta por defecto.");
-			System.out.println("8 - Imprime el grafo.");
-			System.out.println("9 - Salir.");
+			System.out.println("5 - Imprime el grafo.");
+			System.out.println("6 - Salir.");
 			System.out.print("> ");
 			Integer index;
 			try {
@@ -126,7 +198,8 @@ public class CtrlDominioTest {
 				System.out.println("Indica el indice del paper que deseas relacionar:");
 				System.out.print("> ");
 				paperIndex = br.readLine();
-				System.out.println("Indica el indice y tipo del nodo con el que deseas relacionarlo (cada uno en una linea):");
+				System.out.println(
+						"Indica el indice y tipo del nodo con el que deseas relacionarlo (cada uno en una linea):");
 				System.out.print("> ");
 				nodeIndex = br.readLine();
 				System.out.print("> ");
@@ -137,7 +210,8 @@ public class CtrlDominioTest {
 				System.out.println("Indica el indice del paper del cual deseas borrar su relacion:");
 				System.out.print("> ");
 				paperIndex = br.readLine();
-				System.out.println("Indica el indice y tipo del nodo del otro extremo de la relacion (cada uno en una linea):");
+				System.out.println(
+						"Indica el indice y tipo del nodo del otro extremo de la relacion (cada uno en una linea):");
 				System.out.print("> ");
 				nodeIndex = br.readLine();
 				System.out.print("> ");
@@ -145,33 +219,25 @@ public class CtrlDominioTest {
 				ctrlGraph.eraseNodeRelation(Integer.parseInt(paperIndex), Integer.parseInt(nodeIndex), nodeType);
 				break;
 			case 5:
-				break;
-			case 6:
-				break;
-			case 7:
-				break;
-			case 8:
 				Utils.printGraf(ctrlGraph.getGraph());
 				break;
-			case 9:
+			case 6:
 				finished = true;
 				break;
 			}
 		}
 	}
-	
-	private static void quickTest(){
+
+	private static void quickTest() {
 		System.out.println("Running QuickTest");
 		initControllers();
 		ctrlGraph.addNode("conference", "Conf");
 		ctrlGraph.addNode("author", "pep");
 		ctrlGraph.addNode("paper", "AwesomePaper");
-		
 		ctrlGraph.addNodeRelation(0, 0, "conference");
 		ctrlGraph.addNodeRelation(0, 0, "author");
 		Utils.printGraf(ctrlGraph.getGraph());
 	}
-
 
 	private static void initControllers() {
 		// ctrlDominio instantiates all the remaining controllers, then we get a
