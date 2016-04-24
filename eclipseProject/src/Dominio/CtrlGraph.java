@@ -6,7 +6,7 @@ package Dominio;
 
 public class CtrlGraph {
 	private Graf graph;
-	Boolean isModified;
+	Boolean isModified = false;
 
 	public CtrlGraph() {
 		graph = new Graf();
@@ -25,57 +25,54 @@ public class CtrlGraph {
 		this.graph = graph;
 	}
 
-	public void addNode(Integer nodeId, Integer nodeType, String nodeName) {
+	public int addNode(String nodeType, String nodeName) {
 		isModified = true;
-		graph.addNode(Utils.getNodeType(nodeType), nodeId, nodeName);
+		return graph.addNode(Utils.getNodeType(nodeType), 0, nodeName);
 	}
 
-	public void modifyNode(Integer nodeId, Integer nodeType, String newName, Integer newLabel) {
+	public void modifyNode(Integer nodeIndex, String nodeType, String newName) {
+		// TODO maybe there's an error here who knows, only God
 		isModified = true;
-		// TODO i cannot code any kind of error handling in here
-		// because Graf does not contain a suitable function to call when
-		// one does not know if a node exists or not.
-		// KWALITY KONTENT
-		Node n = graph.getNode(nodeId, Utils.getNodeType(nodeType));
-		Node.Label label = Utils.getNodeLabel(newLabel);
+		Node n = graph.getNode(nodeIndex, Utils.getNodeType(nodeType));
+		Node.Label label = Utils.getNodeLabel(0);
 		n.setLabel(label);
 		n.setNom(newName);
 	}
 
-	public void eraseNode(Integer nodeId, Integer nodeType) {
+	public void eraseNode(Integer nodeIndex, String nodeType) {
 		isModified = true;
-		// TODO i cannot code any kind of error handling in here
-		// because Graf does not contain a suitable function to call when
-		// one does not know if a node exists or not.
-		// KWALITY KONTENT
-		Node n = graph.getNode(nodeId, Utils.getNodeType(nodeType));
+		Node n = graph.getNode(nodeIndex, Utils.getNodeType(nodeType));
 		graph.deleteNode(n);
 	}
 
 	// PRE: node1 MUST be a paper
-	public void addNodeRelation(Integer node1Id, Integer node1Type, Integer node2Id, Integer node2Type) {
+	public void addNodeRelation(Integer node1Index, Integer node2Index, String node2Type) {
 		isModified = true;
-		// TODO i cannot code any kind of error handling in here
-		// because Graf does not contain a suitable function to call when
-		// one does not know if a node exists or not.
-		// KWALITY KONTENT
-		Node n1 = graph.getNode(node1Id, Utils.getNodeType(node1Type));
-		Node n2 = graph.getNode(node2Id, Utils.getNodeType(node2Type));
+		Node n1 = null;
+		Node n2 = null;
+		try {
+			n1 = graph.getNode(node1Index, Node.Type.Paper);
+		} catch (Exception e) {
+			System.out.println("Node 1 does not exist");
+			return;
+		}
+		try {
+			n2 = graph.getNode(node2Index, Utils.getNodeType(node2Type));
+		} catch (Exception e) {
+			System.out.println("Node 2 does not exist");
+			return;
+		}
 		if (!graph.existsArc(n1, n2)) {
-			graph.setArc(node1Id, node2Id, Utils.getNodeType(node2Type));
+			graph.setArc(node1Index, node2Index, Utils.getNodeType(node2Type));
 		} else
 			System.out.println("Relation already exists");
 	}
 
 	// PRE: node1 MUST be a paper
-	public void eraseNodeRelation(Integer node1Id, Integer node1Type, Integer node2Id, Integer node2Type) {
+	public void eraseNodeRelation(Integer node1Index, Integer node2Index, String node2Type) {
 		isModified = true;
-		// TODO i cannot code any kind of error handling in here
-		// because Graf does not contain a suitable function to call when
-		// one does not know if a node exists or not.
-		// KWALITY KONTENT
-		Node n1 = graph.getNode(node1Id, Utils.getNodeType(node1Type));
-		Node n2 = graph.getNode(node2Id, Utils.getNodeType(node2Type));
+		Node n1 = graph.getNode(node1Index, Node.Type.Paper);
+		Node n2 = graph.getNode(node2Index, Utils.getNodeType(node2Type));
 		if (graph.existsArc(n1, n2)) {
 			graph.deleteArc(n1, n2);
 		} else {
