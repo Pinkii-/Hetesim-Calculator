@@ -60,8 +60,8 @@ public class Result implements Cloneable, Serializable{
 		this.threshold = threshold;
 		
 		resultList = new ArrayList<NodePair>();
-		for (Integer i = 0; i < resultHete.getNCols(); ++i){
-			for (Integer j = 0; j < resultHete.getNRows(); ++j){
+		for (Integer i = 0; i < resultHete.getNRows(); ++i){
+			for (Integer j = 0; j < resultHete.getNCols(); ++j){
 				if (resultHete.getValue(i,j) != 0.f){
 					Node n1 = g.getNode(i, p.getContingut().get(0)); //Get first node
 					Node n2 = g.getNode(j, p.getContingut().get(p.getLength()-1)); //Get second node
