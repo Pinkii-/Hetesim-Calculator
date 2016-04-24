@@ -17,13 +17,11 @@ public class CtrlDominioTest {
 
 	static ArrayList<String> pathNames;
 
+	static BufferedReader br;
+
 	public static void main(String[] args) throws IOException {
-		if (args.length > 0) {
-			quickTest();
-			return;
-		}
+		br = new BufferedReader(new InputStreamReader(System.in));
 		initControllers();
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		while (true) {
 			System.out.println("Que numero de instruccion quieres ejecutar?");
 			System.out.println("0 - Hablar con CtrlDominio.");
@@ -46,10 +44,13 @@ public class CtrlDominioTest {
 				talkToCtrlGraph();
 				break;
 			case 2:
+				talkToCtrlPaths();
 				break;
 			case 3:
+				talkToCtrlResults();
 				break;
 			case 4:
+				System.exit(0);
 				break;
 			default:
 				break;
@@ -58,7 +59,6 @@ public class CtrlDominioTest {
 	}
 
 	private static String askForPathName() throws NumberFormatException, IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		System.out.println("Que path quieres utilizar? (Gestionado por ctrlPath");
 		ArrayList<String> pathNames = new ArrayList<String>();
 		pathNames = ctrlPaths.getPathNames();
@@ -71,15 +71,174 @@ public class CtrlDominioTest {
 		return pathNames.get(index);
 	}
 
+	private static Float askForThreshold() throws NumberFormatException, IOException {
+		System.out.println("Quieres hacer la busqueda con un valor de relacion como referencia? (S/N)");
+		System.out.print("> ");
+		String isThreshold = br.readLine();
+		isThreshold = isThreshold.toUpperCase();
+		if (isThreshold.equals("S")) {
+			System.out.println("Introduce el valor [0..1]:");
+			System.out.print("> ");
+			return Float.parseFloat(br.readLine());
+		} else
+			return -1f;
+	}
+
+	private static String askForDescription() throws IOException {
+		System.out.println("Anadimos una descripcion para el path? (S/N)");
+		System.out.print("> ");
+		String isDescription = br.readLine();
+		isDescription = isDescription.toUpperCase();
+		if (isDescription.equals("S")) {
+			System.out.println("Descripcion:");
+			System.out.print("> ");
+			String desc = br.readLine();
+			return desc;
+		} else
+			return null;
+	}
+
+	private static boolean askForStoreResult() throws IOException {
+		System.out.println("CtrlResults: Guardamos el resultado? (S/N)");
+		System.out.print("> ");
+		String SN = br.readLine();
+		SN = SN.toUpperCase();
+		if (SN.equals("S"))
+			return true;
+		else
+			return false;
+	}
+	
+	private static void printLastResult(){
+		System.out.println("CtrlResult Imprime el ultimo resultado conseguido:");
+		ctrlResults.printLastResult();
+	}
+
+	private static void talkToCtrlResults() throws IOException {
+		boolean finished = false;
+
+		while (!finished) {
+
+			System.out.println(
+					"Hola, soy CtrlResults y me encargo de gestionar todos los resultados de busquedas del dominio. Que quieres que haga?");
+			System.out.println("0 - Imprime todos los resultados.");
+			System.out.println("1 - Guardar en persistencia todos los resultados (Lo hace CtrlDominio).");
+			System.out.println("2 - Salir.");
+			System.out.print("> ");
+			Integer index;
+			try {
+				index = Integer.parseInt(br.readLine());
+			} catch (NumberFormatException e) {
+				continue;
+			}
+			switch (index) {
+			case 0:
+				ctrlResults.printResults();
+				break;
+			case 1:
+				ctrlDominio.saveResults();
+				break;
+			case 2:
+				finished = true;
+				break;
+			default:
+				break;
+			}
+		}
+	}
+
+	private static void talkToCtrlPaths() throws IOException {
+		boolean finished = false;
+		String pathName;
+		String pathContent;
+		String pathDescription;
+		ArrayList<String> pathNames;
+
+		while (!finished) {
+
+			System.out.println(
+					"Hola, soy CtrlPaths y me encargo de gestionar todos los paths del dominio. Que quieres que haga?");
+			System.out.println("0 - Anade un path nuevo.");
+			System.out.println("1 - Modifica un path existente.");
+			System.out.println("2 - Borra un path existente.");
+			System.out.println("3 - Dime la informacion sobre un path determinado.");
+			System.out.println("4 - Dame el nombre de todos los paths.");
+			System.out.println("5 - Guarda todos los paths. (Lo hace CtrlDominio)");
+			System.out.println("6 - Salir.");
+			System.out.print("> ");
+			Integer index;
+			try {
+				index = Integer.parseInt(br.readLine());
+			} catch (NumberFormatException e) {
+				continue;
+			}
+			switch (index) {
+			case 0:
+				System.out
+						.println("Indica el nombre y el contenido del path que deseas añadir (cada uno en una linea):");
+				System.out.print("> ");
+				pathName = br.readLine();
+				System.out.print("> ");
+				pathContent = br.readLine();
+				pathDescription = askForDescription();
+				if (pathDescription != null)
+					ctrlPaths.addPath(pathContent, pathName, pathDescription);
+				else
+					ctrlPaths.addPath(pathContent, pathName, "");
+				break;
+			case 1:
+				System.out.println("Indica el nombre del path que deseas modificar:");
+				System.out.print("> ");
+				pathName = br.readLine();
+				System.out.println("Indica el nuevo contenido del path que deseas modificar:");
+				System.out.print("> ");
+				pathContent = br.readLine();
+				pathDescription = askForDescription();
+				if (pathDescription != null)
+					ctrlPaths.modifyPath(pathName, pathContent, pathDescription);
+				else
+					ctrlPaths.modifyPath(pathName, pathContent);
+				break;
+			case 2:
+				System.out.println("Indica el nombre del path que deseas eliminar:");
+				System.out.print("> ");
+				pathName = br.readLine();
+				ctrlPaths.erasePath(pathName);
+				break;
+			case 3:
+				System.out.println("Indica el nombre del path a consultar:");
+				System.out.print("> ");
+				pathName = br.readLine();
+				ctrlPaths.printPath(pathName);
+				break;
+			case 4:
+				pathNames = ctrlPaths.getPathNames();
+				for (String s : pathNames) {
+					System.out.println(s);
+				}
+				break;
+			case 5:
+				ctrlDominio.savePaths();
+				break;
+			case 6:
+				finished = true;
+				break;
+			default:
+				break;
+			}
+		}
+	}
+
 	private static void talkToCtrlDominio() throws IOException {
 		boolean finished = false;
 
 		while (!finished) {
 			String pathName;
 			String node1Index;
-			String node1Type;
 			String node2Index;
-			String node2Type;
+			Float threshold;
+			String graphId;
+
 			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 			System.out.println(
 					"Hola, soy CtrlDominio y me encargo de gestionar las busquedas y el I/O. Que quieres que haga?");
@@ -104,43 +263,72 @@ public class CtrlDominioTest {
 				ctrlDominio.importGraph("C:\\Users\\Usuari\\Desktop\\PROP\\GraphForTesting");
 				break;
 			case 1:
-				pathName = askForPathName();				
-				ctrlDominio.searchPath(pathName);
+				pathName = askForPathName();
+				threshold = askForThreshold();
+				if (threshold.equals(-1))
+					ctrlDominio.searchPath(pathName);
+				else
+					ctrlDominio.searchPathThreshhold(threshold, pathName);
+				printLastResult();
+				if (askForStoreResult())
+					ctrlResults.addLastResult();
 				break;
 			case 2:
 				pathName = askForPathName();
-				System.out.println("Indica el indice y tipo del nodo sobre el que deseas hacer la busqueda (cada uno en una linea):");
-				System.out.print("> ");			
-				node1Index = br.readLine();
+				System.out.println(
+						"Indica el indice del nodo sobre el que deseas hacer la busqueda:");
 				System.out.print("> ");
-				node1Type = br.readLine();
-				ctrlDominio.searchPathNode(pathName, Integer.parseInt(node1Index), node1Type);
+				node1Index = br.readLine();
+				threshold = askForThreshold();
+				if (threshold.equals(-1))
+					ctrlDominio.searchPathNode(pathName, Integer.parseInt(node1Index));
+				else
+					ctrlDominio.searchPathNodeThreshhold(threshold, pathName, Integer.parseInt(node1Index));
+				printLastResult();
+				if (askForStoreResult())
+					ctrlResults.addLastResult();
 				break;
 			case 3:
 				pathName = askForPathName();
-				System.out.println("Indica el indice y tipo del primer nodo sobre el que deseas hacer la busqueda (cada uno en una linea):");
-				System.out.print("> ");			
-				node1Index = br.readLine();
+				System.out.println(
+						"Indica el indice del primer nodo sobre el que deseas hacer la busqueda:");
 				System.out.print("> ");
-				node1Type = br.readLine();
-				System.out.println("Indica el indice y tipo del segundo nodo sobre el que deseas hacer la busqueda (cada uno en una linea):");
-				System.out.print("> ");			
-				node2Index = br.readLine();
+				node1Index = br.readLine();				
+				System.out.println(
+						"Indica el indice del segundo nodo sobre el que deseas hacer la busqueda:");
 				System.out.print("> ");
-				node2Type = br.readLine();
-				ctrlDominio.searchPathNodeNode(pathName, Integer.parseInt(node1Index), node1Type, Integer.parseInt(node2Index), node2Type);
+				node2Index = br.readLine();				
+				threshold = askForThreshold();
+				if (threshold.equals(-1))
+					ctrlDominio.searchPathNodeNode(pathName, Integer.parseInt(node1Index),
+							Integer.parseInt(node2Index));
+				else
+					ctrlDominio.searchPathNodeNodeThreshhold(threshold, pathName, Integer.parseInt(node1Index),
+							Integer.parseInt(node2Index));
+				printLastResult();
+				if (askForStoreResult())
+					ctrlResults.addLastResult();
 				break;
 			case 4:
+				ctrlDominio.saveGraph();
 				break;
 			case 5:
+				System.out.println("Introduce la id del grafo que deseas cargar.");
+				System.out.println(">");
+				graphId = br.readLine();
+				ctrlDominio.loadGraph(graphId);
 				break;
 			case 6:
 				Utils.printGraf(ctrlGraph.getGraph());
 				break;
 			case 7:
+				finished = true;
+				break;
+			default:
 				break;
 			}
 		}
+
 	}
 
 	private static void talkToCtrlGraph() throws IOException {
@@ -224,19 +412,10 @@ public class CtrlDominioTest {
 			case 6:
 				finished = true;
 				break;
+			default:
+				break;
 			}
 		}
-	}
-
-	private static void quickTest() {
-		System.out.println("Running QuickTest");
-		initControllers();
-		ctrlGraph.addNode("conference", "Conf");
-		ctrlGraph.addNode("author", "pep");
-		ctrlGraph.addNode("paper", "AwesomePaper");
-		ctrlGraph.addNodeRelation(0, 0, "conference");
-		ctrlGraph.addNodeRelation(0, 0, "author");
-		Utils.printGraf(ctrlGraph.getGraph());
 	}
 
 	private static void initControllers() {

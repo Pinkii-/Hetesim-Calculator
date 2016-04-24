@@ -1,27 +1,21 @@
 package Dominio;
 
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-/*shit
- * CtrlDataTest: Driver para testear DataTest o algo:
- * Funcionalidades:
- * -1)TestDeepCopy
- * -------
- * Juego de prubas:
- * -PathDeepCopy: 
- * (IN)Se introducen datos para diversos paths. Luego datos para modificar dichos pats. (IN)
- * (OUT)Se copian los datos originales. Esto es. Han de ser los datos que muestre el programa y no los modificados (OUT)
+/*
+ * CtrlDataTest: Driver para testear DataTest.
  */
 public class CtrlDataTest {
 	
 	static CtrlData cd = new CtrlData();
-	static ArrayList<Integer> idgrafs = new ArrayList<Integer>(); 
 	
 	public static void main (String[] args) throws FileNotFoundException, ClassNotFoundException, IOException, CloneNotSupportedException {
 		
@@ -40,7 +34,9 @@ public class CtrlDataTest {
 						"6.- Test load all Paths\n"+
 						"7.- Test store and load Results\n"+
 						"8.- Test store Graf\n"+
-						"9.- Test load Graf and associated Results");
+						"9.- Test load Graf and associated Results\n"+
+						"10.- Test delete Path\n"+
+						"11.- Test delete Result\n");
 				select = Integer.parseInt(scanner.nextLine()); 
 	
 				switch(select){
@@ -70,6 +66,12 @@ public class CtrlDataTest {
 					break;
 				case 9:
 					testLoadGrafAndResults();
+					break;
+				case 10:
+					testDeletePath();
+					break;
+				case 11:
+					testDeleteResult();
 					break;
 				default:
 					break;
@@ -128,7 +130,7 @@ public class CtrlDataTest {
 		System.out.println("Primero vamos a añadir unos cuantos nodos de tipo Paper al grafo");
 		System.out.println("Introduce un nombre para los nodos de tipo Paper");
 		String name = scanner.nextLine();
-		System.out.println("-Introduce el número de nodos de tipo Paper a añadir:");
+		System.out.println("-Introduce el número de nodos de tipo Paper a añadir (:");
 		numNodes.add(Integer.parseInt(scanner.nextLine()));
 		for (int i = 0; i < numNodes.get(0); ++i) {
 			g.addNode(Node.Type.Paper, i, name);
@@ -314,7 +316,7 @@ public class CtrlDataTest {
 		Float valhete = Float.parseFloat(scanner.nextLine());
 		System.out.println("Introducir nombre grafo asociado: ");
 		String nomg = scanner.nextLine();
-		System.out.println("Introducir id grafo asociad: ");
+		System.out.println("Introducir id grafo asociado (Entero): ");
 		int idg = Integer.parseInt(scanner.nextLine());
 		Graf g = new Graf(nomg,idg);
 		Result rs = new Result(g,Threshold,valhete,p,n1,n2);
@@ -340,17 +342,17 @@ public class CtrlDataTest {
 	}
 	//Genera un path que será usado para luego copiarlo y modificarlo
 	//Tambien imprime por pantalla los datos de los que se compone el Path generado
-	private static void enterDataPath(Path p) {
-		Scanner scanner = new Scanner(System.in);
+	private static void enterDataPath(Path p) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		System.out.println("------------------------------------------------");
 		System.out.println("Nombre del Path: ");
-		String scan = (scanner.nextLine());
+		String scan = (br.readLine());
 		p.setNom(scan);
 		System.out.println("Descripcion del Path: ");
-		scan = (scanner.nextLine());
+		scan = (br.readLine());
 		p.setDescripcio(scan);
 		System.out.println("Contenido del Path: ");
-		scan = (scanner.nextLine());
+		scan = (br.readLine());
 		p.setContingut(scan);
 		
 	}
@@ -378,7 +380,6 @@ public class CtrlDataTest {
 		printPath(p);
 		Path copy = null;
 		copy = (Path) CtrlData.deepCopy(p);
-		System.out.println("Ha habido algun problema con la funcion de deepCopy");
 		System.out.println("PATH COPIADO");
 		System.out.println("@@@Modificamos el Path original@@@");
 		enterDataPath(p);
@@ -387,9 +388,7 @@ public class CtrlDataTest {
 		
 		System.out.println("-Copia del Path (tendria que tener los valores del path original)@@@");
 		printPath(copy); //Han de sortir els valors originals
-		
-		System.out.println("Identificadores:\nPath original:"+ p.toString()+"\nCopiaPath: "+copy.toString());
-		
+				
 	}
 	
 	private static void testResultDeepCopy() throws Exception {		
@@ -454,7 +453,7 @@ public class CtrlDataTest {
 	
 	private static void testConstructor() throws Exception {
 		System.out.println("@@@Hay que comprovar que las carpetas: Paths y GrafsAndResults han sido creadas@@@");
-		java.io.File Pathsf = new File(cd.getPathtoPahts());
+		java.io.File Pathsf = new File(cd.getPathtoPaths());
 		java.io.File GrafsAndResultsf = new File(cd.getPathtoGraphsAndResult());
 		if (Pathsf.exists()) System.out.println("La carpeta Paths ha sido creada con éxito o ya existia");
 		else throw new Exception("Error. No se ha podido crear la carpeta Paths");
@@ -464,11 +463,11 @@ public class CtrlDataTest {
 	}
 	
 	private static void testStoreAndLoadPaths() throws FileNotFoundException, CloneNotSupportedException, IOException, ClassNotFoundException {
-		Scanner scanner = new Scanner(System.in);
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		System.out.println("@@@Vamos a generar una serie de Paths@@@");
 		System.out.println("[cont],[end]");
 		String res = "";
-		res = scanner.nextLine();
+		res = br.readLine();
 		ArrayList<Path> paths = new ArrayList<Path>();
 		while (!res.equals("end")) {
 			Path p = new Path();
@@ -476,14 +475,14 @@ public class CtrlDataTest {
 			paths.add(p);
 			cd.storePath(p);
 			System.out.println("[cont],[end]");
-			res = scanner.nextLine();
+			res = br.readLine();
 		}
 		System.out.println("Paths creados:");
 		java.io.File PathtoPath;
 		for (int i = 0; i < paths.size(); ++i) {
 			Path pa = cd.loadPath(paths.get(i).getNom());
 			printPath(pa);
-			PathtoPath = new File(cd.getPathtoPahts()+"/"+pa.getNom()+".ser");
+			PathtoPath = new File(cd.getPathtoPaths()+"/"+pa.getNom()+".ser");
 			if (PathtoPath.exists()) System.out.println(PathtoPath);
 			else throw new FileNotFoundException("Error! No se ha guardado el Path");
 			System.out.println("------------------------------------------------");
@@ -499,7 +498,7 @@ public class CtrlDataTest {
 		File PathtoPath;
 		for (int i = 0; i < pathsCargados.size(); ++i) {
 			printPath(pathsCargados.get(i));
-			PathtoPath = new File(cd.getPathtoPahts()+"/"+pathsCargados.get(i).getNom()+".ser");
+			PathtoPath = new File(cd.getPathtoPaths()+"/"+pathsCargados.get(i).getNom()+".ser");
 			System.out.println(PathtoPath);
 			System.out.println("------------------------------------------------");
 		}
@@ -546,7 +545,6 @@ public class CtrlDataTest {
 		String nom = (scanner.nextLine());
 		System.out.println("Id grafo (Entero): ");
 		int id = Integer.parseInt(scanner.nextLine());
-		idgrafs.add(id);
 		Graf g = new Graf(nom,id);
 		enterDataGraf(g);
 		cd.storeGraf(g);
@@ -560,18 +558,50 @@ public class CtrlDataTest {
 	}
 	
 	public static void testLoadGrafAndResults() throws Exception {
-		if (idgrafs.size() == 0) throw new Exception("Crear y almacena primero un grafo y algunos resultados asociados");
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("@@@Vamos a cargar un grafo anteriormente guardado, y sus resultados asociados@@@");
 		Graf g = new Graf();
 		ArrayList<Result> results = new ArrayList<Result>();
 		Pair<Graf,ArrayList<Result>> GrafAndResults = new Pair<Graf,ArrayList<Result>>(g,results);
-		String out = "[";
-		for (int i = 0; i < idgrafs.size()-1; ++i) out += String.valueOf(idgrafs.get(i)) +", ";
-		out += String.valueOf(idgrafs.get(idgrafs.size()-1))+"]";
-		System.out.println("Selecciona uno de los grafos almacenados: \n"+out);
+		System.out.println("Selecciona uno de los grafos almacenados anteriormente: ");
 		String in = scanner.nextLine();
 		GrafAndResults = cd.loadgraphAndResults(in);
+		System.out.println("-Grafo cargado:");
+		printGraf(GrafAndResults.first);
+		System.out.println("-Resultados asociados:");
+		for (int i = 0; i < GrafAndResults.second.size(); ++i) {
+			printResult(GrafAndResults.second.get(i));
+		}
+		
+	}
+	
+	public static void testDeletePath() throws IOException, CloneNotSupportedException, ClassNotFoundException {
+		System.out.println("@@@Vamos a generar un Path@@@");
+		Path p = new Path();
+		enterDataPath(p);
+		System.out.println("-Path creado: ");
+		printPath(p);
+		cd.storePath(p);
+		System.out.println("PATH GUARDADO");
+		cd.deletePath(p.getNom());
+		java.nio.file.Path PathtoPath = Paths.get(cd.getPathtoPaths(), p.getNom()+".ser");
+		File f = new File(PathtoPath.toString());
+		if (f.exists()) throw new FileNotFoundException("Error! No se ha eliminado el Path");
+		else System.out.println("PATH BORRADO");
+	}
+	
+	public static void testDeleteResult() throws Exception {
+		System.out.println("@@@Vamos a generar un Resultado@@@");
+		Result r = enterDataResult();
+		System.out.println("-Resultado creado: ");
+		printResult(r);
+		cd.storeResult(r);
+		System.out.println("RESULTADO GUARDADO");
+		cd.deleteResult(r.getIdResult(),Integer.valueOf(r.getIdGraf()));
+		java.nio.file.Path PathtoResult = Paths.get(cd.getPathtoGraphsAndResult(),r.getIdGraf(),r.getIdResult()+".Result");
+		File f = new File(PathtoResult.toString());
+		if (f.exists()) throw new FileNotFoundException("Error! No se ha eliminado el Resultado");
+		else System.out.println("RESULTADO BORRADO");
 	}
 
 }

@@ -13,7 +13,7 @@ public class Utils {
 	}
 
 	public static Node.Type getNodeType(String s) {
-		s.toLowerCase();
+		s = s.toLowerCase();
 		if (s.equals("author"))
 			return Node.Type.Autor;
 		if (s.equals("conference"))
@@ -87,6 +87,12 @@ public class Utils {
 	private static void printNode(Node n) {
 		String retStr = "";
 		retStr += "Name: " + n.getNom() + "  Type: " + n.getTipus().toString();
+		System.out.println("(" + retStr + ")");
+	}
+	
+	public static void printPath(Path p){
+		String retStr = "";
+		retStr += "Name: " + p.getNom() + "  Content: " + p.getContingut() + " Description: " + p.getDescripcio();
 		System.out.println("(" + retStr + ")");
 	}
 }

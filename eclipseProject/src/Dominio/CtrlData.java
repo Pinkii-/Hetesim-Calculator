@@ -23,6 +23,12 @@ import java.nio.file.Paths;
 /**
 *
 * @author Albert Lopez Alcacer
+* 
+* Esta clase es un controlador que ofrece las funciones de tres gestores de datos: CtrlDataGraph, LoadStoreResult y LoadStorePath. Además de eso
+* implementa una función de copia en profundidad, para pasar copias de objetos independientes a los gestores.
+* Por otra parte se encarga de organizar los paths ,grafos y resultados: Crea la carpeta Paths (carpeta donde se guardaran los paths que el dominio genere, y de la
+* que se cargarán cuando sea necesario) y la carpeta GrafsAndResults (carpeta que contendrá una carpeta diferente para cada grafo junto con sus 
+* resultados asociados)
 */
 
 public class CtrlData {
@@ -32,12 +38,16 @@ public class CtrlData {
 	private LoadStoreResult lsr;
 	private LoadStorePath lsp;
 	
-	private Path pathToGrafsAndResults; //Path del directorio donde siempre se guardan las carpetas: (nombregrafo/grafo y sus resultados)
+	private Path pathToGrafsAndResults; //Path del directorio donde siempre se guardan las carpetas: (idGrafo ,que tiene dentro: grafo y sus resultados)
 	private Path pathToPaths;		  //Path del directorio donde siempre guardamos los Paths.
 	private Pair<Graf,ArrayList<Result>> graphAndResults;
 	private ArrayList<Dominio.Path> allPaths;
 
-
+	/**
+	 * Realiza una copia en profundidad del objeto pasado como parámetro.
+	 * @param o > Objeto a copiar
+	 * @return Objeto > Objeto que será una copia independiente del objeto o 
+	 */
 	static Object deepCopy(Object o) {
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -61,6 +71,11 @@ public class CtrlData {
 			return null;
 		}
 	}
+	
+	/**
+	 * Método privado que crea un directorio en caso de que no exista
+	 * @param p > Ruta donde se quiere crear el directorio
+	 */
 	private static void checkSubdirectory(Path p) {
 		File f = new File(p.toString());
 		f.setExecutable(true);
@@ -75,6 +90,10 @@ public class CtrlData {
 			}
 		}
 	}
+	/**
+	 * Creadora por defecto. Genera los dos directorios (Paths) (GrafsAndResults) en caso de no existir. y inicializa
+	 * las rutas de dichos directorios.
+	 */
 	public CtrlData() {
 		Path cwd = Paths.get(System.getProperty("user.dir"));
 		Path Paths = cwd.resolve("Paths");
@@ -105,19 +124,30 @@ public class CtrlData {
 
 	}
 	
-	
-	public String getPathtoPahts() {
+	/**
+	 * Getter de la ruta a la carpeta Paths
+	 * @return String > String que representa la ruta a la carpeta Paths.
+	 */
+	public String getPathtoPaths() {
 		return pathToPaths.toString();
 	}
 	
+	/**
+	 * Getter de la ruta a la carpeta GrafsAndResults
+	 * @return String > String que representa la ruta a la carpeta GrafsAndResults
+	 */
 	public String getPathtoGraphsAndResult() {
 		return pathToGrafsAndResults.toString();
 	}
-
-
+	
+	/**
+	 * Método que permite cargar un grafo y sus resultados asociados.
+	 * @param idGraf > String que identifica el grado guardado.
+	 * @return pair<Graf,ArrayList<Result>> > Pair que contiene el grafo con id idGraf y un ArrayList con sus resultados asociados.	
+	 */
 	public  Pair<Graf,ArrayList<Result>> loadgraphAndResults(String idGraf) throws ClassNotFoundException, FileNotFoundException, IOException {
 		Path p = Paths.get(pathToGrafsAndResults.toString());
-		p = p.resolve(idGraf); //p ahora tendria que ser el directorio nomgraf que contiene su graf y sus results.
+		p = p.resolve(idGraf);
 		checkSubdirectory(p);
 		cg = new CtrlDataGraph();
 		lsr = new LoadStoreResult(p.toString());
@@ -130,14 +160,20 @@ public class CtrlData {
 		graphAndResults.first = cg.loadGraph(pathToGrafsAndResults.resolve(idGraf).resolve(idGraf).toString());
 		return graphAndResults;
 	}
-	//done
+	/**
+	 * Método que permite cargar todos los paths previamente guardados.
+	 * @return ArrayList<Dominio.Path> > ArrayList de Paths del dominio que contiene todos los Paths almacenados anteriormente.	
+	 */
 	public ArrayList<Dominio.Path> loadallPaths() throws ClassNotFoundException, IOException {
 		allPaths = new ArrayList<Dominio.Path>();
 		lsp = new LoadStorePath(pathToPaths.toString());
 		allPaths = lsp.loadAllPaths();
 		return allPaths;
 	}
-	//done
+	/**
+	 * Método que permite almacenar un resultado.
+	 * @param r > Resultado que se quiere almacenar
+	 */
 	public void storeResult(Result r) throws FileNotFoundException, CloneNotSupportedException, IOException{
 		Path p = Paths.get(pathToGrafsAndResults.toString());
 		p = p.resolve(r.getIdGraf());
@@ -147,14 +183,20 @@ public class CtrlData {
 		lsr = new LoadStoreResult(p.toString());
 		lsr.storeResult(res);
 	}
-	//dine
+	/**
+	 * Método que permite almacenar un Path.
+	 * @param p > Path que se desea almacenar
+	 */
 	public void storePath(Dominio.Path p) throws FileNotFoundException, CloneNotSupportedException, IOException {
 		Dominio.Path pa;
 		pa = (Dominio.Path) CtrlData.deepCopy(p);
 		lsp = new LoadStorePath(pathToPaths.toString());
 		lsp.storePath(pa);
 	}
-	//done
+	/**
+	 * Método que permite almacenar un Grafo
+	 * @param g > Graf que se desea almacenar.
+	 */
 	public void storeGraf(Graf g) throws FileNotFoundException, IOException {
 		Path p = Paths.get(pathToGrafsAndResults.toString());
 		Graf gc = (Graf) CtrlData.deepCopy(g);
@@ -163,7 +205,12 @@ public class CtrlData {
 		cg = new CtrlDataGraph();
 		cg.saveGraph(gc, p.resolve(String.valueOf(gc.id)).toString());
 	}
-	//done
+	/**
+	 * Método que permite cargar un único resultado.
+	 * @param idResult > String que identifica el resultado
+	 * @param idGraf > String que identifica el grafo al que esta asociado el resultado.
+	 * @return Result > Resultado que se desea cargar.
+	 */
 	public Result loadResult(String idResult, Integer idGraf) throws FileNotFoundException, ClassNotFoundException, IOException {
 		Path p = Paths.get(pathToGrafsAndResults.toString());
 		p = p.resolve(String.valueOf(idGraf));
@@ -172,19 +219,31 @@ public class CtrlData {
 		Result r = lsr.loadResult(idResult);
 		return r;
 	}
-	//done
+	/**
+	 * Método que permite cargar un único Path.
+	 * @param nomPath > String que identifica el path guardado
+	 * @return Path > Path del dominio que se desea cargar
+	 */
 	public Dominio.Path loadPath(String nomPath) throws FileNotFoundException, ClassNotFoundException, IOException {
 		Dominio.Path p = new Dominio.Path();
 		lsp = new LoadStorePath(pathToPaths.toString());
 		p = lsp.loadPath(nomPath);
 		return p;
 	}
+	/**
+	 * Método que permite borrar un único Path
+	 * @param nomPath > String que identifica el path que se desea eliminar
+	 */
 	
 	public void deletePath(String nomPath) throws ClassNotFoundException, IOException {
 		lsp = new LoadStorePath(pathToPaths.toString());
 		lsp.deletePath(nomPath);
 	}
-	//
+	/**
+	 * Método que permite eliminar un único Resultado
+	 * @param idResult > String que identifica el resultado que se desea eliminar
+	 * @param idGraf > String que identifica el grafo al que esta asociado el resultado.
+	 */
 	public void deleteResult(String idResult, Integer idGraf) throws Exception {
 		Path p = Paths.get(pathToGrafsAndResults.toString());
 		p = p.resolve(String.valueOf(idGraf));
@@ -192,7 +251,12 @@ public class CtrlData {
 		lsr = new LoadStoreResult(p.toString());
 		lsr.deleteResult(idResult);
 	}
-	//sibale
+	/**
+	 * Método que permite comprobar si exsite un grafo
+	 * @param filePath > String que indica la ruta a comprobar.
+	 * @return boolean que indica que existe si cierto. No existe en caso contrario.
+	 */
+
 	public boolean checkGraphFile(String filePath) {
 		cg = new CtrlDataGraph();
 		return cg.checkGraphFile(filePath);

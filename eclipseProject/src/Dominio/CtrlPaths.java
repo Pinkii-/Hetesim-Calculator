@@ -62,6 +62,22 @@ public class CtrlPaths {
 			System.out.println("Path not found");
 		}
 	}
+	
+	public void modifyPath(String pathName, String newPathContent, String newPathDescription) {
+		if (paths.containsKey(pathName)) {
+			Path oldPath = paths.get(pathName);
+			Path modifiedPath = new Path();
+			modifiedPath.setContingut(newPathContent);
+			modifiedPath.setDescripcio(newPathDescription);
+			modifiedPath.setNom(oldPath.getNom());
+			paths.replace(pathName, modifiedPath);
+			modifiedPaths.replace(pathName, true);
+		} else {
+			System.out.println("Path not found");
+		}
+	}
+
+
 
 	public void addPath(String pathContent, String pathName, String description) {
 		if (!paths.containsKey(pathName)) {
@@ -78,9 +94,9 @@ public class CtrlPaths {
 
 	public void erasePath(String pathName) {
 		if (paths.containsKey(pathName)) {
-			// TODO this'll probably fuck something up
-			paths.replace(pathName, null);
-			modifiedPaths.replace(pathName, true);
+			//TODO Deeply problematic
+			paths.remove(pathName);
+			modifiedPaths.remove(pathName);
 		} else {
 			System.out.println("Path not found");
 		}
@@ -112,19 +128,29 @@ public class CtrlPaths {
 		return ret;
 	}
 	
+	public void printPath(String pathName){
+		if (paths.containsKey(pathName))
+			Utils.printPath(paths.get(pathName)); 
+		else
+			System.out.println("Path not found");
+	}
+	
 	private void initDefaultPaths(){
 		Path p = new Path();
 		p.setNom("APA");
 		p.setContingut("APA");
 		paths.put("APA", p);
+		modifiedPaths.put("APA", false);
 		p = new Path();
 		p.setNom("APC");
 		p.setContingut("APC");
 		paths.put("APC", p);
+		modifiedPaths.put("APC", false);
 		p = new Path();
 		p.setNom("APT");
 		p.setContingut("APT");
 		paths.put("APT", p);
+		modifiedPaths.put("APT", false);
 	}
 
 }
