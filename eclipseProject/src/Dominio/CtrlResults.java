@@ -13,7 +13,6 @@ public class CtrlResults {
 	private Result lastResult;
 	private Map<String, Boolean> modifiedResults;
 
-
 	public CtrlResults() {
 		lastResult = null;
 		results = new HashMap<String, Result>();
@@ -39,21 +38,19 @@ public class CtrlResults {
 	}
 
 	public void setResult(String resultId, Result result) {
-		if (results.containsKey(resultId)){
+		if (results.containsKey(resultId)) {
 			results.replace(resultId, result);
 			modifiedResults.put(resultId, true);
-		}
-		else {
+		} else {
 			System.out.println("Result not found");
 		}
 	}
 
 	public void addResult(String resultId, Result result) {
-		if (!results.containsKey(resultId)){
+		if (!results.containsKey(resultId)) {
 			results.put(resultId, result);
 			modifiedResults.put(resultId, true);
-		}
-		else
+		} else
 			System.out.println("Result already exists");
 	}
 
@@ -73,7 +70,7 @@ public class CtrlResults {
 		String nodeId = String.valueOf(System.currentTimeMillis());
 		addResult(nodeId, lastResult);
 	}
-	
+
 	public ArrayList<Result> getModifiedResults() {
 		ArrayList<Result> ret = new ArrayList<Result>();
 		for (Map.Entry<String, Boolean> entry : modifiedResults.entrySet()) {
@@ -82,6 +79,14 @@ public class CtrlResults {
 			}
 		}
 		return ret;
+	}
+	
+	public void printLastResult(){
+		System.out.println(lastResult.toString());
+	}
+
+	public void printResults() {
+		System.out.println(this.toString());
 	}
 
 }
