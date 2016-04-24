@@ -108,6 +108,7 @@ public class HeteSanic {
 		left = aux.first;
 		right = aux.second;
 		if (left.size() < 2 || right.size() < 2) throw new PathException("The path is too short");
+		if (n.getTipus() != p.getContingut().get(0)) throw new RuntimeException("The first node is not of the same type that the path");
 		Collections.reverse(right);
 		SparseMatrix hete = normaliceHeteSim(multiplyVectorMatrix(n,getMatrixesToMultiply(left,right)),mutiplyMatrixes(getMatrixesToMultiply(right,left)));
 		ArrayList<Pair<Integer,Float>> ret = new ArrayList<Pair<Integer,Float>>();
@@ -126,6 +127,8 @@ public class HeteSanic {
 		left = aux.first;
 		right = aux.second;
 		if (left.size() < 2 || right.size() < 2) throw new PathException("The path is too short");
+		if (n1.getTipus() != p.getContingut().get(0)) throw new RuntimeException("The first node is not of the same type that the path");
+		if (n2.getTipus() != p.getContingut().get(p.getContingut().size()-1)) throw new RuntimeException("The second node is not of the same type that the path");
 		Collections.reverse(right);
 		return normaliceHeteSim(multiplyVectorMatrix(n1, getMatrixesToMultiply(left,right)),multiplyVectorMatrix(n2, getMatrixesToMultiply(right,left))).getValue(0,0);
 	}
