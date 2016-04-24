@@ -95,7 +95,11 @@ public class Result implements Cloneable, Serializable{
 		usedP = p;
 		modified = false;
 		this.threshold = threshold;
-		
+
+		idResult = new String(g.getNom() + " " + p.toString() + " " + n1.toString());
+		idGraph = String.valueOf(g.id);
+
+
 		resultList = new ArrayList<NodePair>();
 		for(Integer i = 0; i < resultHete.size(); ++i){
 			Node n2 = g.getNode(resultHete.get(i).first, p.getContingut().get(p.getLength()-1)); //Get second node (we already have the first)
@@ -129,6 +133,9 @@ public class Result implements Cloneable, Serializable{
 		usedP = p;
 		modified = false;
 		this.threshold = threshold;
+
+                idResult = new String(g.getNom() + " " + p.toString() + " " + n1.toString() + " " + n2.toString);
+		idGraph = String.valueOf(g.id);
 		
 		resultList = new ArrayList<NodePair>();
 		resultList.add(new NodePair(n1,n2,resultHete)); //Create NodePair and add to list. We only need to get the float value from Hetesim
