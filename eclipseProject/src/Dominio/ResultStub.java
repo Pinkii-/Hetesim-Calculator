@@ -26,9 +26,19 @@ public class ResultStub implements Serializable {
 	public void setresultList (ArrayList<NodePair> resultList) {
 		this.resultList = resultList;
 	}
+	
+	public ArrayList<NodePair> getresultList() {
+		return resultList;
+	}
 	public void setOriginDest (Node orig, Node dest) {
 		this.firstN = orig;
 		this.lastN = dest;
+	}
+	public Node getFirstN() {
+		return firstN;
+	}
+	public Node getLastN() {
+		return lastN;
 	}
 	
 	public void setPathUsed (Path p) {

@@ -15,7 +15,11 @@ import java.util.ArrayList;
  * @author Eduard Maestro
  */
 public class Path implements Serializable {
-    private ArrayList<Node.Type> contingut;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private ArrayList<Node.Type> contingut;
     private String descripcioPath;
     private String nomPath;
     

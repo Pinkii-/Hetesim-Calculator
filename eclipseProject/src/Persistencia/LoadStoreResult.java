@@ -18,12 +18,15 @@ import Dominio.Result;
 
 /**
 *
-* @author Albert
+* @author Albert Lopez Alcacer
 */
 
-@SuppressWarnings("serial")
 public class LoadStoreResult implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Path fileDirectory;
 	
 	public LoadStoreResult(String path) throws NotDirectoryException {
@@ -41,7 +44,7 @@ public class LoadStoreResult implements Serializable{
 		return fileDirectory.toString();
 	}
 	
-	public void storeResult(Result r) throws FileNotFoundException, IOException {
+	public void storeResult(Result r) throws IOException {
 		try {
 			FileOutputStream FileOutput = new FileOutputStream(fileDirectory.resolve(r.getIdResult()+".Result").toString());
 			ObjectOutputStream ObjectOutput = new ObjectOutputStream(FileOutput);
@@ -55,7 +58,7 @@ public class LoadStoreResult implements Serializable{
 		
 	}
 	
-	public Result loadResult(String idResult) throws FileNotFoundException, IOException, ClassNotFoundException {
+	public Result loadResult(String idResult) throws IOException, ClassNotFoundException {
 		try {
 			FileInputStream FileInput = new FileInputStream(fileDirectory.resolve(idResult+".Result").toString());
 			ObjectInputStream ObjectInput = new ObjectInputStream(FileInput);
@@ -66,7 +69,7 @@ public class LoadStoreResult implements Serializable{
 		
 		catch(FileNotFoundException fnfe){
 			if (Files.notExists(fileDirectory.resolve(idResult+".Result"))) {
-				System.out.println(fileDirectory.resolve(idResult+".Result").toString());
+				System.out.println("Path absoluto fichero: "+ fileDirectory.resolve(idResult+".Result").toString());
 				System.out.println("No se puede cargar el Resultado");
 			}
 			return null;
@@ -74,9 +77,10 @@ public class LoadStoreResult implements Serializable{
 		
 	}
 	
-	public void deleteResult(String idResult) throws FileNotFoundException, ClassNotFoundException, IOException {
+	public void deleteResult(String idResult) throws Exception {
 		File file = new File(fileDirectory.resolve(idResult+".Result").toString());
-		if (!file.delete()) System.out.println("No se ha podido eliminar el Resultado");
+		if (!file.exists()) throw new Exception("No existe el Resultado con ese id");
+		if (!file.delete()) throw new Exception("No se ha podido eliminar el Resultado");
 	}
 	
 	public ArrayList<Result> LoadAllResults () throws ClassNotFoundException {

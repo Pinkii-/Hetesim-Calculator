@@ -1,11 +1,10 @@
 package Dominio;
 
 
-import java.awt.Label;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.Scanner;
 
 /*shit
@@ -20,6 +19,8 @@ import java.util.Scanner;
  */
 public class CtrlDataTest {
 	
+	static CtrlData cd = new CtrlData();
+	
 	public static void main (String[] args) throws FileNotFoundException, ClassNotFoundException, IOException, CloneNotSupportedException {
 		
 		int select = -1; 
@@ -29,11 +30,14 @@ public class CtrlDataTest {
 			try{
 				Scanner scanner = new Scanner(System.in);
 				System.out.println("Introducir opción:\n"
-						+"1.- TestPathDeepCopy\n" +
-						"2.- TestResultDeepCopy\n" +
-						"3.- TestGrafDeepCopy\n" +
-						"4.- Dividir\n" +
-						"0.- Salir");
+						+"1.- Test Path deep copy\n" +
+						"2.- Test Result deep copy\n" +
+						"3.- Test Graf deep copy\n" +
+						"4.- Test constructor\n" +
+						"5.- Test store and load Paths\n"+
+						"6.- Test load all Paths\n"+
+						"7.- Test store and load Results\n"+
+						"");
 				select = Integer.parseInt(scanner.nextLine()); 
 	
 				switch(select){
@@ -46,10 +50,17 @@ public class CtrlDataTest {
 				case 3: 
 					testGrafDeepCopy();
 					break;
-				case 4: 
+				case 4:
+					testConstructor();
 					break;
-				case 0: 
+				case 5:	
+					testStoreAndLoadPaths();
 					break;
+				case 6:
+					testLoadAllPaths();
+					break;
+				case 7:
+					testStoreAndLoadResults();
 				default:
 					break;
 				}
@@ -58,14 +69,14 @@ public class CtrlDataTest {
 				
 			}catch(Exception e){
 				System.out.println(e.getMessage());
-				System.out.println("Uoop! Error!");
+				System.out.println("Uoop! Error! Esto no tendría que pasar!");
 			}
 		}
 		
 		
 	}
 	//Database, DataMining, AI, InformationRetrieval
-	private static Node.Label switchLabel(String label) {
+	private static Node.Label switchLabel(String label) throws Exception {
 		switch(label) {
 		case "Database":
 			return Node.Label.Database;
@@ -78,12 +89,11 @@ public class CtrlDataTest {
 		default:
 			break;
 		}
-		System.out.println("Error introduciendo el Label");
+		throw new Exception("Error introduciendo el Label");
 
-		return null;
 	}
 	// Autor, Conferencia, Paper, Terme, MidElement
-	private static Node.Type switchType(String type) {
+	private static Node.Type switchType(String type) throws Exception {
 		switch(type) {
 		case "Autor":
 			return  Node.Type.Autor;
@@ -98,25 +108,8 @@ public class CtrlDataTest {
 		default:
 			break;
 		}
-		System.out.println("Error introduciendo el tipo");
-		return null;
+		throw new Exception("Error introduciendo el tipo");
 	}
-	/*
-	private static Node generateNode() {
-		Scanner scanner = new Scanner(System.in);
-		Node n1 = new Node();		
-		System.out.println("Introducir nombre Nodo");
-		String nom = scanner.nextLine();
-		System.out.println("Introducir id Nodo (Entero)");
-		String id = scanner.nextLine();
-		System.out.println("Introducir tipo Nodo (Autor, Conferencia, Paper, Terme, MidElement)");
-		Node.Type t = switchType(scanner.nextLine());
-		System.out.println("Introducir label Nodo (Database, DataMining, AI, InformationRetrieval)");
-		Node.Label l = switchLabel(scanner.nextLine());
-		n1.initialize(t,Integer.parseInt(id), nom);
-		n1.setLabel(l);
-		return n1;
-	}*/
 
 	private static ArrayList<Integer> enterDataGraf(Graf g) {
 		ArrayList<Integer> numNodes = new ArrayList<Integer>();
@@ -155,20 +148,7 @@ public class CtrlDataTest {
 		for (int i = 0; i < numNodes.get(3); ++i) {
 			g.addNode(Node.Type.Conferencia, i, name);
 		}
-		
-		
-		/*
-		 *  public void setArc(int indexpaper, int index2, Node.Type t) {
-        switch(t) {
-            case Autor: autorPaper.afegirArc(index2, indexpaper);
-                break;
-            case Conferencia: confPaper.afegirArc(index2, indexpaper); 
-                break;
-            case Terme: temaPaper.afegirArc(index2, indexpaper);
-                break;
-            default: break;
-        }
-    }*/
+	
 		for (int i = 0; i < numNodes.get(1); ++i) {
 			for (int j = 0; j < numNodes.get(0); ++j) {
 					g.setArc(j, i, Node.Type.Autor);
@@ -287,19 +267,13 @@ public class CtrlDataTest {
 		System.out.println("[ "+retStr+" ]");
 	}
 	
-	private static void enterDataResultAndPrint(ResultStub rs, boolean modification) {
+	private static Result enterDataResult() throws Exception {
 		Scanner scanner = new Scanner(System.in);
 		Path p = new Path();
-		rs.setPathUsed(p);
-		Node n1;
-		if (!modification)
-			n1 = new Node();
-		else n1 = rs.getFirstN();
-		Node n2;
-		if (!modification)
-			n2 = new Node();
-		else n2 = rs.getLastN();
-		
+		System.out.println("Creamos path usado del Resultado");
+		enterDataPath(p);
+		Node n1 = new Node();
+		Node n2 = new Node();
 		System.out.println("Introducir nombre Nodo origen");
 		String nom = scanner.nextLine();
 		System.out.println("Introducir id Nodo origen (Entero)");
@@ -324,44 +298,39 @@ public class CtrlDataTest {
 		n2.initialize(td, Integer.parseInt(idd), nomd);
 		n2.setLabel(ld);
 		
-		System.out.println("Introducir Threshold del Result (Real)");
-		Float f = Float.parseFloat(scanner.nextLine());
-		rs.setThreshold(f);
-		ArrayList<NodePair> res;
-		
-		if (!modification)res = new ArrayList<NodePair>();
-		else {
-			res = rs.getresultList();
-			res.clear();
-		}
-		
-		System.out.println("Introducir tantos valores de Hetesim como resultados se quieran añadir");
-		System.out.println("Introducir 'end' para finalizar");
-		String c = scanner.nextLine();
-		while(!c.equals("end")) {
-			Node np1 = (Node) CtrlData.deepCopy(n1);
-			Node np2 = (Node) CtrlData.deepCopy(n2);
-			f = Float.parseFloat(c);
-			NodePair np = new NodePair(np1,np2,f);
-			res.add(np);
-			c = scanner.nextLine();
-			
-		}
-		rs.setOriginDest(n1, n2);
-		rs.setModified(false);
-		rs.setresultList(res);
-		rs.setidGraph("id");
+		System.out.println("Introducir Threshold del resultado(Real)");
+		Float Threshold = Float.parseFloat(scanner.nextLine());
+		System.out.println("Introducir valor hetesim del resultado (>= Threshold)");
+		Float valhete = Float.parseFloat(scanner.nextLine());
+		System.out.println("Introducir nombre grafo asociado: ");
+		String nomg = scanner.nextLine();
+		System.out.println("Introducir id grafo asociad: ");
+		int idg = Integer.parseInt(scanner.nextLine());
+		Graf g = new Graf(nomg,idg);
+		Result rs = new Result(g,Threshold,valhete,p,n1,n2);
+		return rs;
 	}
 	
+	private static void modifyResult(Result rs) {
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("Introducir nuevo id de grafo: ");
+		rs.setIdGraf(scanner.nextLine());
+		System.out.println("Introducir nuevo id de resutado: ");
+		rs.setIdResult(scanner.nextLine());
+		System.out.println("Introducir nuevo Threshold: ");
+		rs.setThreshold(Float.parseFloat(scanner.nextLine()));
+		System.out.println("Introducir nuevo valor de HeteSim para el resultado: ");
+		rs.modifLine(0, Float.parseFloat(scanner.nextLine()));
+	}
 
-	private static void printResult(ResultStub rs) {
+	private static void printResult(Result rs) {
 		System.out.println("------------------------------------------------");
 		System.out.println("Resultado: ");
 		System.out.println(rs.toString());
 	}
 	//Genera un path que será usado para luego copiarlo y modificarlo
 	//Tambien imprime por pantalla los datos de los que se compone el Path generado
-	private static void enterDataPathAndPrint(Path p) {
+	private static void enterDataPath(Path p) {
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("------------------------------------------------");
 		System.out.println("Nombre del Path: ");
@@ -394,14 +363,15 @@ public class CtrlDataTest {
 	private static void testPathDeepCopy() throws FileNotFoundException, ClassNotFoundException, IOException, CloneNotSupportedException {
 		System.out.println("@@@Vamos a generar un Path@@@");
 		Path p = new Path();
-		enterDataPathAndPrint(p);
+		enterDataPath(p);
 		System.out.println("-Path original:");
 		printPath(p);
-		
-		Path copy = (Path) CtrlData.deepCopy(p);
+		Path copy = null;
+		copy = (Path) CtrlData.deepCopy(p);
+		System.out.println("Ha habido algun problema con la funcion de deepCopy");
 		System.out.println("PATH COPIADO");
 		System.out.println("@@@Modificamos el Path original@@@");
-		enterDataPathAndPrint(p);
+		enterDataPath(p);
 		System.out.println("-Path modificado:");
 		printPath(p);
 		
@@ -412,29 +382,31 @@ public class CtrlDataTest {
 		
 	}
 	
-	private static void testResultDeepCopy() {		
+	private static void testResultDeepCopy() throws Exception {		
 		//Se supone que Nodo funciona
 		//Se supone que NodePair funciona
 		//Se quiere comprobar el funcionamiento de CtrlData.deepCopy con Resultados.
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("@@@Vamos a generar un resultado@@@");
 		System.out.println("------------------------------------------------");
-		System.out.println("Introducir id Resultado");
-		ResultStub rs = new ResultStub(scanner.nextLine());
-		enterDataResultAndPrint(rs,false);
+		Result rs = enterDataResult();
 		System.out.println("-Resultado original:");
 		printResult(rs);
-		
-		ResultStub rscopy = (ResultStub) CtrlData.deepCopy(rs);
+		Result rscopy = null;
+		try {
+			rscopy = (Result) CtrlData.deepCopy(rs);
+		}
+		catch (Exception e) {
+			System.out.println("Ha habido algun problema con la funcion de deepCopy");
+		}
 		System.out.println("RESULT COPIADO");
 		System.out.println("@@@Modificamos el Resultado original@@@");
 		System.out.println("------------------------------------------------");
-		System.out.println("Usamos el mismo id para el Resultado");
-		enterDataResultAndPrint(rs,true);
+		modifyResult(rs);
 		System.out.println("-Resultado modificado:");
 		printResult(rs);
 		
-		System.out.println("-Copia del Resultado (tendria que tener los valores del path original)@@@");
+		System.out.println("-Copia del Resultado (tendria que tener los valores del resultado original)@@@");
 		printResult(rscopy);
 		
 	}	
@@ -451,7 +423,13 @@ public class CtrlDataTest {
 		Graf g = new Graf(nom,id);
 		enterDataGraf(g);
 		printGraf(g);
-		Graf gcopy = (Graf) CtrlData.deepCopy(g);
+		Graf gcopy = null;
+		try {
+			gcopy = (Graf) CtrlData.deepCopy(g);
+		}
+		catch(Exception e) {
+			System.out.println("Ha habido algún problema con la función deepCopy");
+		}
 		System.out.println("GRAFO COPIADO");
 		System.out.println("@@@Modificaremos el grafo original(Añadir el mismo número de nodos de cada tipo)@@@");
 		System.out.println("------------------------------------------------");
@@ -462,7 +440,102 @@ public class CtrlDataTest {
 		System.out.println("-Copia del grafo: ");
 		printGraf(gcopy);
 		
+	}
+	
+	private static void testConstructor() throws Exception {
+		System.out.println("@@@Hay que comprovar que las carpetas: Paths y GrafsAndResults han sido creadas@@@");
+		java.io.File Pathsf = new File(cd.getPathtoPahts());
+		java.io.File GrafsAndResultsf = new File(cd.getPathtoGraphsAndResult());
+		if (Pathsf.exists()) System.out.println("La carpeta Paths ha sido creada con éxito o ya existia");
+		else throw new Exception("Error. No se ha podido crear la carpeta Paths");
+		if (GrafsAndResultsf.exists()) System.out.println("La carpeta GrafsAndResults ha sido creada con éxito o ya existia");
+		else System.out.println("Error. No se ha podido crear la carpeta GrafsAndResults");
 		
+	}
+	
+	private static void testStoreAndLoadPaths() throws FileNotFoundException, CloneNotSupportedException, IOException, ClassNotFoundException {
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("@@@Vamos a generar una serie de Paths@@@");
+		System.out.println("[cont],[end]");
+		String res = "";
+		res = scanner.nextLine();
+		ArrayList<Path> paths = new ArrayList<Path>();
+		while (!res.equals("end")) {
+			Path p = new Path();
+			enterDataPath(p);
+			paths.add(p);
+			cd.storePath(p);
+			System.out.println("[cont],[end]");
+			res = scanner.nextLine();
+		}
+		System.out.println("Paths creados:");
+		java.io.File PathtoPath;
+		for (int i = 0; i < paths.size(); ++i) {
+			Path pa = cd.loadPath(paths.get(i).getNom());
+			printPath(pa);
+			PathtoPath = new File(cd.getPathtoPahts()+"/"+pa.getNom()+".ser");
+			if (PathtoPath.exists()) System.out.println(PathtoPath);
+			else throw new FileNotFoundException("Error! No se ha guardado el Path");
+			System.out.println("------------------------------------------------");
+
+		}
+	}
+	
+	private static void testLoadAllPaths() throws FileNotFoundException, CloneNotSupportedException, IOException, ClassNotFoundException {
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("@@@Vamos a generar una serie de Paths@@@");
+		System.out.println("[cont],[end]");
+		String res = "";
+		res = scanner.nextLine();
+		while (!res.equals("end")) {
+			Path p = new Path();
+			enterDataPath(p);
+			cd.storePath(p);
+			System.out.println("[cont],[end]");
+			res = scanner.nextLine();
+		}
+		try {
+		ArrayList<Path> pathsCargados = cd.loadallPaths();
+		File PathtoPath;
+		for (int i = 0; i < pathsCargados.size(); ++i) {
+			printPath(pathsCargados.get(i));
+			PathtoPath = new File(cd.getPathtoPahts()+"/"+pathsCargados.get(i).getNom()+".ser");
+			if (PathtoPath.exists()) System.out.println(PathtoPath);
+			else throw new FileNotFoundException("Error! No se ha guardado el Path");
+			System.out.println("------------------------------------------------");
+		}
+		}
+		catch(Exception e) {
+			System.out.println("Ha habido algun problema al intentar cargar todos los Paths");
+		}
+	}
+
+	
+	private static void testStoreAndLoadResults() throws Exception {
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("@@@Vamos a generar una serie de Resultados@@@");
+		System.out.println("[cont],[end]");
+		String res = "";
+		res = scanner.nextLine();
+		ArrayList<Result> results = new ArrayList<Result>();
+		while (!res.equals("end")) {
+			Result rs = enterDataResult();
+			results.add(rs);
+			cd.storeResult(rs);
+			System.out.println("[cont],[end]");
+			res = scanner.nextLine();
+		}
+		System.out.println("Resultados creados:");
+		java.io.File PathtoResult;
+		for (int i = 0; i < results.size(); ++i) {
+			Result rs = cd.loadResult(results.get(i).getIdResult(),Integer.parseInt(results.get(i).getIdGraf()));
+			printResult(rs);
+			PathtoResult = new File(cd.getPathtoGraphsAndResult()+"/"+rs.getIdGraf()+"/"+rs.getIdResult()+".Result");
+			if (PathtoResult.exists()) System.out.println(PathtoResult);
+			else throw new FileNotFoundException("Error! No se ha guardado el Resultado");
+			System.out.println("------------------------------------------------");
+
+		}
 	}
 
 }

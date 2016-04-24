@@ -25,6 +25,7 @@ import java.nio.file.Paths;
 */
 
 public class CtrlData {
+	private static final long serialVersionUID = 1L;
 	
 	private CtrlDataGraph cg;
 	private LoadStoreResult lsr;
@@ -35,10 +36,50 @@ public class CtrlData {
 	private Pair<Graf,ArrayList<Result>> graphAndResults;
 	private ArrayList<Dominio.Path> allPaths;
 
+
+	static Object deepCopy(Object o) {
+		try {
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			ObjectOutputStream oos = new ObjectOutputStream(baos);
+			oos.writeObject(o);
+
+			ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+			ObjectInputStream ois = new ObjectInputStream(bais);
+			return ois.readObject();
+		}catch (NotSerializableException theProblem) {
+			System.out.println("El objeto no es serializable");
+			return null;
+		} catch (IOException e) {
+			System.out.println("Se ha producido un problema con la operación de E/S");
+			return null;
+		} catch (ClassNotFoundException e) {
+			System.out.println("No hay definición para la clase especificada");
+			return null;
+		} catch (Exception e) {
+			System.out.println("Ha habido algun problema con la funcion de deepCopy");
+			return null;
+		}
+	}
+	private static void checkSubdirectory(Path p) {
+		File f = new File(p.toString());
+		f.setExecutable(true);
+		f.setReadable(true);
+		f.setWritable(true);
+		if (!f.exists()) {
+			try {
+				f.mkdirs();
+			}
+			catch(SecurityException se) {
+				System.out.println("No se puede crear el directorio");
+			}
+		}
+	}
 	public CtrlData() {
 		Path cwd = Paths.get(System.getProperty("user.dir"));
 		Path Paths = cwd.resolve("Paths");
 		File Pathsf = new File(Paths.toString());
+		Pathsf.setReadable(true);
+		Pathsf.setWritable(true);
 		Path GrafsAndResults = cwd.resolve("GrafsAndResults");
 		File GrafsAndResultsf = new File(GrafsAndResults.toString());
 		if (!Pathsf.exists()) {
@@ -62,32 +103,21 @@ public class CtrlData {
 		this.pathToPaths = Paths;	
 
 	}
-	static Object deepCopy(Object o) {
-		try {
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			ObjectOutputStream oos = new ObjectOutputStream(baos);
-			oos.writeObject(o);
-
-			ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
-			ObjectInputStream ois = new ObjectInputStream(bais);
-			return ois.readObject();
-		}catch (NotSerializableException theProblem) {
-			System.out.println("El objeto no es serializable");
-			return null;
-		} catch (IOException e) {
-			System.out.println("Se ha producido un problema con la opeación de E/S");
-			return null;
-		} catch (ClassNotFoundException e) {
-			System.out.println("No hay definición para la clase especificada");
-			return null;
-		} 
+	
+	
+	public String getPathtoPahts() {
+		return pathToPaths.toString();
+	}
+	
+	public String getPathtoGraphsAndResult() {
+		return pathToGrafsAndResults.toString();
 	}
 
 
 	public  Pair<Graf,ArrayList<Result>> loadgraphAndResults(String idGraf) throws ClassNotFoundException, NotDirectoryException {
 		Path p = Paths.get(pathToGrafsAndResults.toString());
 		p = p.resolve(idGraf); //p ahora tendria que ser el directorio nomgraf que contiene su graf y sus results.
-		
+		checkSubdirectory(p);
 		cg = new CtrlDataGraph(p.toString());
 		lsr = new LoadStoreResult(p.toString());
 		
@@ -110,6 +140,7 @@ public class CtrlData {
 	public void storeResult(Result r) throws FileNotFoundException, CloneNotSupportedException, IOException{
 		Path p = Paths.get(pathToGrafsAndResults.toString());
 		p = p.resolve(r.getIdGraf());
+		checkSubdirectory(p);
 		Result res; 
 		res = (Result)CtrlData.deepCopy(r);
 		lsr = new LoadStoreResult(p.toString());
@@ -127,6 +158,7 @@ public class CtrlData {
 		Path p = Paths.get(pathToGrafsAndResults.toString());
 		Graf gc = (Graf) CtrlData.deepCopy(g);
 		p = p.resolve(String.valueOf(g.id));
+		checkSubdirectory(p);
 		cg = new CtrlDataGraph(p.toString());
 		cg.saveGraph(gc, gc.nom);
 	}
@@ -134,6 +166,7 @@ public class CtrlData {
 	public Result loadResult(String idResult, Integer idGraf) throws FileNotFoundException, ClassNotFoundException, IOException {
 		Path p = Paths.get(pathToGrafsAndResults.toString());
 		p = p.resolve(String.valueOf(idGraf));
+		checkSubdirectory(p);
 		lsr = new LoadStoreResult(p.toString());
 		Result r = lsr.loadResult(idResult);
 		return r;
@@ -151,9 +184,10 @@ public class CtrlData {
 		lsp.deletePath(nomPath);
 	}
 	
-	public void deleteResult(String idResult, Integer idGraf) throws FileNotFoundException, ClassNotFoundException, IOException {
+	public void deleteResult(String idResult, Integer idGraf) throws Exception {
 		Path p = Paths.get(pathToGrafsAndResults.toString());
 		p = p.resolve(String.valueOf(idGraf));
+		checkSubdirectory(p);
 		lsr = new LoadStoreResult(p.toString());
 		lsr.deleteResult(idResult);
 	}
