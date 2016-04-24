@@ -11,15 +11,19 @@ import java.util.Map;
 public class CtrlPaths {
 	private Map<String, Path> paths;
 	private Map<String, Boolean> modifiedPaths;
+	
+
 
 	public CtrlPaths() {
 		paths = new HashMap<String, Path>();
 		modifiedPaths = new HashMap<String, Boolean>();
+		initDefaultPaths();
 	}
 
 	public CtrlPaths(ArrayList<Path> pathArray) {
 		paths = new HashMap<String, Path>();
 		modifiedPaths = new HashMap<String, Boolean>();
+		initDefaultPaths();
 		for (Path p : pathArray) {
 			paths.put(p.getNom(), p);
 			modifiedPaths.put(p.getNom(), false);
@@ -106,6 +110,21 @@ public class CtrlPaths {
 			}
 		}
 		return ret;
+	}
+	
+	private void initDefaultPaths(){
+		Path p = new Path();
+		p.setNom("APA");
+		p.setContingut("APA");
+		paths.put("APA", p);
+		p = new Path();
+		p.setNom("APC");
+		p.setContingut("APC");
+		paths.put("APC", p);
+		p = new Path();
+		p.setNom("APT");
+		p.setContingut("APT");
+		paths.put("APT", p);
 	}
 
 }
