@@ -134,7 +134,7 @@ public class Result implements Cloneable, Serializable{
 		modified = false;
 		this.threshold = threshold;
 
-                idResult = new String(g.getNom() + " " + p.toString() + " " + n1.toString() + " " + n2.toString);
+                idResult = new String(g.getNom() + " " + p.toString() + " " + n1.toString() + " " + n2.toString());
 		idGraph = String.valueOf(g.id);
 		
 		resultList = new ArrayList<NodePair>();
