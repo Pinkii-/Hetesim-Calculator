@@ -7,23 +7,21 @@ package Dominio;
 //import java.io.FileNotFoundException;
 
 import java.io.IOException;
-import java.nio.file.NotDirectoryException;
 import java.util.ArrayList;
 
 import Persistencia.GraphImporter;
 
 public class CtrlDominio {
 
-	//I/O Controllers
+	// I/O Controllers
 	CtrlData ctrlData;
 	CtrlImport ctrlImport;
-	//Data structures Controllers
+	// Data structures Controllers
 	CtrlGraph ctrlGraph;
 	CtrlPaths ctrlPaths;
 	CtrlResults ctrlResults;
-	//Method controllers
+	// Method controllers
 	CtrlSearch ctrlSearch;
-
 
 	public CtrlDominio() {
 		ctrlData = new CtrlData();
@@ -31,13 +29,13 @@ public class CtrlDominio {
 		ctrlGraph = new CtrlGraph();
 		ctrlPaths = new CtrlPaths();
 		ctrlResults = new CtrlResults();
-	}	
+	}
 
-	public void importGraph(String filePath){
+	public void importGraph(String filePath) {
 		ctrlGraph.setGraph(GraphImporter.leMagicGoesOn(filePath));
 		ctrlSearch.setGraph(ctrlGraph.getGraph());
 	}
-	
+
 	public void createGraph() {
 		ctrlGraph.setGraph(new Graf());
 		ctrlSearch.setGraph(ctrlGraph.getGraph());
@@ -52,7 +50,7 @@ public class CtrlDominio {
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
 		}
-		for(Path p: pathArray){
+		for (Path p : pathArray) {
 			pathNames.add(p.getNom());
 		}
 		return pathNames;
@@ -65,21 +63,25 @@ public class CtrlDominio {
 			ctrlGraph = new CtrlGraph(auxPair.first);
 			ctrlSearch.setGraph(ctrlGraph.getGraph());
 			ctrlResults = new CtrlResults(auxPair.second);
-		} catch (NotDirectoryException | ClassNotFoundException e) {
+		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
 		}
 
 	}
 
 	public void storeGraph() {
-		ctrlData.storeGraf(ctrlGraph.getGraph());
+		try {
+			ctrlData.storeGraf(ctrlGraph.getGraph());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/*
 	 * SEARCH FUNCTIONS Some general recommendations when sending search queries
 	 * to CtrlDominio: All paths must be sent to the controller as a string
 	 * that's its name attribute All nodes must be sent to the controller as two
-	 * integers: First, one that holds the correspondent nodeId Second, one that
+	 * integers: First, one that holds the correspondent nodeIndex Second, one that
 	 * holds its type. WARNING: the Integer that's being passed has to be the
 	 * same as the index of the type of node that is wanted. Threshold is passed
 	 * as a float.
@@ -116,13 +118,13 @@ public class CtrlDominio {
 		}
 	}
 
-	public String searchPathNodeThreshhold(Float threshold, String pathName, Integer nodeId, Integer nodeType) {
+	public String searchPathNodeThreshhold(Float threshold, String pathName, Integer nodeIndex, String nodeType) {
 		Graf graf = ctrlGraph.getGraph();
 		if (ctrlGraph.isModified)
 			ctrlSearch.setGraph(ctrlGraph.getGraph());
 		try {
 			Result r = ctrlSearch.searchPathNodeThreshhold(graf, threshold, ctrlPaths.getPath(pathName),
-					graf.getNode(nodeId, Utils.getNodeType(nodeType)));
+					graf.getNode(nodeIndex, Utils.getNodeType(nodeType)));
 			ctrlResults.setLastResult(r);
 			return r.toString();
 		} catch (PathException e) {
@@ -132,13 +134,13 @@ public class CtrlDominio {
 
 	}
 
-	public String searchPathNode(String pathName, Integer nodeId, Integer nodeType) {
+	public String searchPathNode(String pathName, Integer nodeIndex, String nodeType) {
 		Graf graf = ctrlGraph.getGraph();
 		if (ctrlGraph.isModified)
 			ctrlSearch.setGraph(ctrlGraph.getGraph());
 		try {
 			Result r = ctrlSearch.searchPathNode(graf, ctrlPaths.getPath(pathName),
-					graf.getNode(nodeId, Utils.getNodeType(nodeType)));
+					graf.getNode(nodeIndex, Utils.getNodeType(nodeType)));
 			ctrlResults.setLastResult(r);
 			return r.toString();
 		} catch (PathException e) {
@@ -148,15 +150,15 @@ public class CtrlDominio {
 
 	}
 
-	public String searchPathNodeNodeThreshhold(Float threshold, String pathName, Integer node1Id, Integer node1Type,
-			Integer node2Id, Integer node2Type) {
+	public String searchPathNodeNodeThreshhold(Float threshold, String pathName, Integer node1Index, String node1Type,
+			Integer node2Index, String node2Type) {
 		Graf graf = ctrlGraph.getGraph();
 		if (ctrlGraph.isModified)
 			ctrlSearch.setGraph(ctrlGraph.getGraph());
 		try {
 			Result r = ctrlSearch.searchPathNodeNodeThreshhold(graf, threshold, ctrlPaths.getPath(pathName),
-					graf.getNode(node1Id, Utils.getNodeType(node1Type)),
-					graf.getNode(node2Id, Utils.getNodeType(node2Type)));
+					graf.getNode(node1Index, Utils.getNodeType(node1Type)),
+					graf.getNode(node2Index, Utils.getNodeType(node2Type)));
 			ctrlResults.setLastResult(r);
 			return r.toString();
 		} catch (PathException e) {
@@ -166,15 +168,15 @@ public class CtrlDominio {
 
 	}
 
-	public String searchPathNodeNode(String pathName, Integer node1Id, Integer node1Type, Integer node2Id,
-			Integer node2Type) {
+	public String searchPathNodeNode(String pathName, Integer node1Index, String node1Type, Integer node2Index,
+			String node2Type) {
 		Graf graf = ctrlGraph.getGraph();
 		if (ctrlGraph.isModified)
 			ctrlSearch.setGraph(ctrlGraph.getGraph());
 		try {
 			Result r = ctrlSearch.searchPathNodeNode(graf, ctrlPaths.getPath(pathName),
-					graf.getNode(node1Id, Utils.getNodeType(node1Type)),
-					graf.getNode(node2Id, Utils.getNodeType(node2Type)));
+					graf.getNode(node1Index, Utils.getNodeType(node1Type)),
+					graf.getNode(node2Index, Utils.getNodeType(node2Type)));
 			ctrlResults.setLastResult(r);
 			return r.toString();
 		} catch (PathException e) {
@@ -189,18 +191,18 @@ public class CtrlDominio {
 	}
 
 	// OTHER FUNCTIONS
-	
-	public CtrlGraph getCtrlGraph(){
+
+	public CtrlGraph getCtrlGraph() {
 		return ctrlGraph;
 	}
-	
-	public CtrlPaths getCtrlPaths(){
+
+	public CtrlPaths getCtrlPaths() {
 		return ctrlPaths;
 	}
-	
-	public CtrlResults getCtrlResults(){
+
+	public CtrlResults getCtrlResults() {
 		return ctrlResults;
-	}	
+	}
 
 	public void saveAllModifiedEntities() {
 		ArrayList<Path> modifiedPaths = ctrlPaths.getModifiedPaths();
@@ -221,26 +223,24 @@ public class CtrlDominio {
 				e.printStackTrace();
 			}
 		}
-		if(ctrlGraph.isModified){
-			ctrlData.storeGraf(ctrlGraph.getGraph());
+		if (ctrlGraph.isModified) {
+			try {
+				ctrlData.storeGraf(ctrlGraph.getGraph());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
-	
-	//THE RECYCLING BIN
-	
-	/*	
-	TODO Aprovechar esta clase?¿?¿
-	public void importGraph(String filePath){
-		ctrlImport = new CtrlImport(filePath);
-		try {
-			ctrlImport.loadGraphInfo();
-			ctrlGraph.setGraph(ctrlImport.getGraph());
-			ctrlSearch.setGraph(ctrlGraph.getGraph());
-		} catch (FileNotFoundException e) {
-			System.out.println("Error importing Graph");
-			e.printStackTrace();
-		}
-	}
-	*/
+
+	// THE RECYCLING BIN
+
+	/*
+	 * TODO Aprovechar esta clase?¿?¿ public void importGraph(String filePath){
+	 * ctrlImport = new CtrlImport(filePath); try { ctrlImport.loadGraphInfo();
+	 * ctrlGraph.setGraph(ctrlImport.getGraph());
+	 * ctrlSearch.setGraph(ctrlGraph.getGraph()); } catch (FileNotFoundException
+	 * e) { System.out.println("Error importing Graph"); e.printStackTrace(); }
+	 * }
+	 */
 
 }
