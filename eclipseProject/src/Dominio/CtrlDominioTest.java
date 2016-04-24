@@ -20,10 +20,6 @@ public class CtrlDominioTest {
 	static BufferedReader br;
 
 	public static void main(String[] args) throws IOException {
-		if (args.length > 0) {
-			quickTest();
-			return;
-		}
 		br = new BufferedReader(new InputStreamReader(System.in));
 		initControllers();
 		while (true) {
@@ -420,17 +416,6 @@ public class CtrlDominioTest {
 				break;
 			}
 		}
-	}
-
-	private static void quickTest() {
-		System.out.println("Running QuickTest");
-		initControllers();
-		ctrlGraph.addNode("conference", "Conf");
-		ctrlGraph.addNode("author", "pep");
-		ctrlGraph.addNode("paper", "AwesomePaper");
-		ctrlGraph.addNodeRelation(0, 0, "conference");
-		ctrlGraph.addNodeRelation(0, 0, "author");
-		Utils.printGraf(ctrlGraph.getGraph());
 	}
 
 	private static void initControllers() {
