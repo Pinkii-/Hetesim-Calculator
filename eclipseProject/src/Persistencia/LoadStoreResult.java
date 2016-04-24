@@ -89,7 +89,7 @@ public class LoadStoreResult implements Serializable{
 	            for (Path path : directoryStream) {
 	            	if (path.toString().indexOf(".Result") != -1) {
 	            		String s = path.getFileName().toString();
-	            		s.replace(".Result", "");
+	            		s = s.replace(".Result", "");
 	            		Results.add(loadResult(s));
 	            	}
 	            }

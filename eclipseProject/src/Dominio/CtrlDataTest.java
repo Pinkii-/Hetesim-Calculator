@@ -4,6 +4,7 @@ package Dominio;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -20,6 +21,7 @@ import java.util.Scanner;
 public class CtrlDataTest {
 	
 	static CtrlData cd = new CtrlData();
+	static ArrayList<Integer> idgrafs = new ArrayList<Integer>(); 
 	
 	public static void main (String[] args) throws FileNotFoundException, ClassNotFoundException, IOException, CloneNotSupportedException {
 		
@@ -37,7 +39,8 @@ public class CtrlDataTest {
 						"5.- Test store and load Paths\n"+
 						"6.- Test load all Paths\n"+
 						"7.- Test store and load Results\n"+
-						"");
+						"8.- Test store Graf\n"+
+						"9.- Test load Graf and associated Results");
 				select = Integer.parseInt(scanner.nextLine()); 
 	
 				switch(select){
@@ -61,6 +64,13 @@ public class CtrlDataTest {
 					break;
 				case 7:
 					testStoreAndLoadResults();
+					break;
+				case 8:
+					testStoreGraf();
+					break;
+				case 9:
+					testLoadGrafAndResults();
+					break;
 				default:
 					break;
 				}
@@ -431,7 +441,7 @@ public class CtrlDataTest {
 			System.out.println("Ha habido algún problema con la función deepCopy");
 		}
 		System.out.println("GRAFO COPIADO");
-		System.out.println("@@@Modificaremos el grafo original(Añadir el mismo número de nodos de cada tipo)@@@");
+		System.out.println("@@@Modificaremos el grafo original@@@");
 		System.out.println("------------------------------------------------");
 		clearGraf(g);
 		enterDataGraf(g);
@@ -483,25 +493,14 @@ public class CtrlDataTest {
 	
 	private static void testLoadAllPaths() throws FileNotFoundException, CloneNotSupportedException, IOException, ClassNotFoundException {
 		Scanner scanner = new Scanner(System.in);
-		System.out.println("@@@Vamos a generar una serie de Paths@@@");
-		System.out.println("[cont],[end]");
-		String res = "";
-		res = scanner.nextLine();
-		while (!res.equals("end")) {
-			Path p = new Path();
-			enterDataPath(p);
-			cd.storePath(p);
-			System.out.println("[cont],[end]");
-			res = scanner.nextLine();
-		}
+		System.out.println("@@@Vamos a cargar todos los Paths anteriormente guardados@@@");
 		try {
 		ArrayList<Path> pathsCargados = cd.loadallPaths();
 		File PathtoPath;
 		for (int i = 0; i < pathsCargados.size(); ++i) {
 			printPath(pathsCargados.get(i));
 			PathtoPath = new File(cd.getPathtoPahts()+"/"+pathsCargados.get(i).getNom()+".ser");
-			if (PathtoPath.exists()) System.out.println(PathtoPath);
-			else throw new FileNotFoundException("Error! No se ha guardado el Path");
+			System.out.println(PathtoPath);
 			System.out.println("------------------------------------------------");
 		}
 		}
@@ -525,7 +524,7 @@ public class CtrlDataTest {
 			System.out.println("[cont],[end]");
 			res = scanner.nextLine();
 		}
-		System.out.println("Resultados creados:");
+		System.out.println("Resultados:");
 		java.io.File PathtoResult;
 		for (int i = 0; i < results.size(); ++i) {
 			Result rs = cd.loadResult(results.get(i).getIdResult(),Integer.parseInt(results.get(i).getIdGraf()));
@@ -536,6 +535,43 @@ public class CtrlDataTest {
 			System.out.println("------------------------------------------------");
 
 		}
+	}
+	
+	private static void testStoreGraf() throws FileNotFoundException, IOException {
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("@@@Vamos a generar un grafo@@@");
+		System.out.println("@@@Por simplicidad relacionaremos todas las entidades posibles@@@");
+		System.out.println("@@@Así mismo, repetiremos los datos de los nodos de cada tipo@@@");
+		System.out.println("Nombre del grafo: ");
+		String nom = (scanner.nextLine());
+		System.out.println("Id grafo (Entero): ");
+		int id = Integer.parseInt(scanner.nextLine());
+		idgrafs.add(id);
+		Graf g = new Graf(nom,id);
+		enterDataGraf(g);
+		cd.storeGraf(g);
+		java.nio.file.Path PathtoGraf = Paths.get(cd.getPathtoGraphsAndResult(), String.valueOf(g.id),String.valueOf(g.id));
+		if (cd.checkGraphFile(PathtoGraf.toString())) {
+			System.out.println("Grafo guardado correctamente en:");
+			System.out.println(PathtoGraf.toString());
+		}
+		else throw new FileNotFoundException("Error! No se ha guardado el Grafo");
+
+	}
+	
+	public static void testLoadGrafAndResults() throws Exception {
+		if (idgrafs.size() == 0) throw new Exception("Crear y almacena primero un grafo y algunos resultados asociados");
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("@@@Vamos a cargar un grafo anteriormente guardado, y sus resultados asociados@@@");
+		Graf g = new Graf();
+		ArrayList<Result> results = new ArrayList<Result>();
+		Pair<Graf,ArrayList<Result>> GrafAndResults = new Pair<Graf,ArrayList<Result>>(g,results);
+		String out = "[";
+		for (int i = 0; i < idgrafs.size()-1; ++i) out += String.valueOf(idgrafs.get(i)) +", ";
+		out += String.valueOf(idgrafs.get(idgrafs.size()-1))+"]";
+		System.out.println("Selecciona uno de los grafos almacenados: \n"+out);
+		String in = scanner.nextLine();
+		GrafAndResults = cd.loadgraphAndResults(in);
 	}
 
 }

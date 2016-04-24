@@ -4,6 +4,7 @@ package Dominio;
 
 import java.util.ArrayList;
 
+import Persistencia.CtrlDataGraph;
 import Persistencia.LoadStorePath;
 import Persistencia.LoadStoreResult;
 
@@ -114,11 +115,11 @@ public class CtrlData {
 	}
 
 
-	public  Pair<Graf,ArrayList<Result>> loadgraphAndResults(String idGraf) throws ClassNotFoundException, NotDirectoryException {
+	public  Pair<Graf,ArrayList<Result>> loadgraphAndResults(String idGraf) throws ClassNotFoundException, FileNotFoundException, IOException {
 		Path p = Paths.get(pathToGrafsAndResults.toString());
 		p = p.resolve(idGraf); //p ahora tendria que ser el directorio nomgraf que contiene su graf y sus results.
 		checkSubdirectory(p);
-		cg = new CtrlDataGraph(p.toString());
+		cg = new CtrlDataGraph();
 		lsr = new LoadStoreResult(p.toString());
 		
 		Graf g = new Graf();
@@ -126,7 +127,7 @@ public class CtrlData {
 		graphAndResults = new Pair<Graf,ArrayList<Result>>(g, results);
 		
 		graphAndResults.second = lsr.LoadAllResults();
-		graphAndResults.first = cg.loadGraph(idGraf);
+		graphAndResults.first = cg.loadGraph(pathToGrafsAndResults.resolve(idGraf).resolve(idGraf).toString());
 		return graphAndResults;
 	}
 	//done
@@ -153,14 +154,14 @@ public class CtrlData {
 		lsp = new LoadStorePath(pathToPaths.toString());
 		lsp.storePath(pa);
 	}
-	
-	public void storeGraf(Graf g) {
+	//done
+	public void storeGraf(Graf g) throws FileNotFoundException, IOException {
 		Path p = Paths.get(pathToGrafsAndResults.toString());
 		Graf gc = (Graf) CtrlData.deepCopy(g);
 		p = p.resolve(String.valueOf(g.id));
 		checkSubdirectory(p);
-		cg = new CtrlDataGraph(p.toString());
-		cg.saveGraph(gc, gc.nom);
+		cg = new CtrlDataGraph();
+		cg.saveGraph(gc, p.resolve(String.valueOf(gc.id)).toString());
 	}
 	//done
 	public Result loadResult(String idResult, Integer idGraf) throws FileNotFoundException, ClassNotFoundException, IOException {
@@ -183,12 +184,17 @@ public class CtrlData {
 		lsp = new LoadStorePath(pathToPaths.toString());
 		lsp.deletePath(nomPath);
 	}
-	
+	//
 	public void deleteResult(String idResult, Integer idGraf) throws Exception {
 		Path p = Paths.get(pathToGrafsAndResults.toString());
 		p = p.resolve(String.valueOf(idGraf));
 		checkSubdirectory(p);
 		lsr = new LoadStoreResult(p.toString());
 		lsr.deleteResult(idResult);
+	}
+	//sibale
+	public boolean checkGraphFile(String filePath) {
+		cg = new CtrlDataGraph();
+		return cg.checkGraphFile(filePath);
 	}
 }
