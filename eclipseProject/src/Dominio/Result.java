@@ -54,7 +54,7 @@ public class Result implements Cloneable, Serializable{
 		if (resultHete == null) throw new RuntimeException("Null Matrix. Can't create result.");
 		
 		usedP = p;
-		idResult = new String(g.getNom() + " " + p.toString());
+		idResult = new String(g.getNom() + " " + p.getNom());
 		idGraph = String.valueOf(g.id);
 		modified = false;
 		this.threshold = threshold;
@@ -88,7 +88,7 @@ public class Result implements Cloneable, Serializable{
 	 */
 	//One node, one path
 	public Result(final Graf g, final Float threshold, final ArrayList<Pair<Integer,Float>> resultHete, final Path p, final Node n1) {
-		assert (p.getContingut().get(0) == n1.getTipus());
+		if (p.getContingut().get(0) != n1.getTipus()) throw new RuntimeException("Result Path/Node: Node type doesn't match path");
 		if (resultHete == null) throw new RuntimeException("Null ArrayList. Can't create result.");
 		
 		firstN = n1;
@@ -96,7 +96,7 @@ public class Result implements Cloneable, Serializable{
 		modified = false;
 		this.threshold = threshold;
 
-		idResult = new String(g.getNom() + " " + p.toString() + " " + n1.toString());
+		idResult = new String(g.getNom() + " " + p.getNom() + " " + n1.getNom());
 		idGraph = String.valueOf(g.id);
 
 
@@ -124,8 +124,8 @@ public class Result implements Cloneable, Serializable{
 	 */
 	public Result(final Graf g, final float threshold, final Float resultHete, final Path p, final Node n1, final Node n2){
 		//Assert that the path starts with the node type N1 and ends with the node type N2
-		assert (p.getContingut().get(0) == n1.getTipus());
-		assert (p.getContingut().get(p.getLength()-1) == n2.getTipus());
+		if (p.getContingut().get(0) != n1.getTipus()) throw new RuntimeException("Result Path/Node/Node: Node 1 type doesn't match path");
+		if (p.getContingut().get(p.getLength()-1) != n2.getTipus()) throw new RuntimeException("Result Path/Node/Node: Node 2 type doesn't match path");
 		if (resultHete == null) throw new RuntimeException("Null Float. Can't create result.");
 		
 		firstN = n1;
@@ -134,7 +134,7 @@ public class Result implements Cloneable, Serializable{
 		modified = false;
 		this.threshold = threshold;
 
-                idResult = new String(g.getNom() + " " + p.toString() + " " + n1.toString() + " " + n2.toString());
+		idResult = new String(g.getNom() + " " + p.getNom() + " " + n1.getNom() + " " + n2.getNom());
 		idGraph = String.valueOf(g.id);
 		
 		resultList = new ArrayList<NodePair>();
