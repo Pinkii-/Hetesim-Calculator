@@ -263,7 +263,7 @@ public class CtrlDominioTest {
 			System.out.println("4 - Guarda el grafo actual.");
 			System.out.println("5 - Carga un grafo ya guardado.");
 			System.out.println(
-					"6 - Imprime el grafo (lo hace CtrlGrafo, pero yo te dejo hacerlo aqu� por conveniencia :D )");
+					"6 - Imprime el grafo (lo hace CtrlGrafo)");
 			System.out.println("7 - Salir.");
 			System.out.print("> ");
 			Integer index;
