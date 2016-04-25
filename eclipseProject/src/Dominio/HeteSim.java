@@ -127,8 +127,7 @@ class HeteSim {
 				Float res;
 				if (bot == 0) res = 0.f;
 				else res = (float) (top/bot);
-				DecimalFormat df = new DecimalFormat("#.#####");
-				result.getRow(i).set(j,Float.valueOf(df.format(res)));
+				result.getRow(i).set(j, (float) (Math.floor(res*1e5)/1e5));
 				
 			}
 		}
