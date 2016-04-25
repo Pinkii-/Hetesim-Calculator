@@ -9,8 +9,11 @@ import java.io.Serializable;
  * 
  */
 
-@SuppressWarnings("serial")
+
 public class NodePair implements Serializable{
+
+	
+	private static final long serialVersionUID = 1L;
 	public Pair<Node,Node> pairN;
 	private float hetesimVal;
 	

@@ -25,8 +25,9 @@ import java.util.Collections;
  * 
  */
 
-@SuppressWarnings("serial")
 public class Result implements Cloneable, Serializable{
+	
+	private static final long serialVersionUID = 1L;
 	private Node firstN; //Search origin node
 	private Node lastN; //Search destination node
 	private Path usedP; //Search Path
