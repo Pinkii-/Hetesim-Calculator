@@ -83,9 +83,9 @@ public class Utils {
 		System.out.println("Nodos Autor:\n");
 		printMatrixNodes(g, mauthor, Node.Type.Autor);
 		System.out.println("Nodos Terme:\n");
-		printMatrixNodes(g, mterme, Node.Type.Autor);
+		printMatrixNodes(g, mterme, Node.Type.Terme);
 		System.out.println("Nodos Conferencia:\n");
-		printMatrixNodes(g, mconf, Node.Type.Autor);
+		printMatrixNodes(g, mconf, Node.Type.Conferencia);
 		System.out.println("Nodos Paper:\n");
 		printPaperNodes(g, mauthor);
 
