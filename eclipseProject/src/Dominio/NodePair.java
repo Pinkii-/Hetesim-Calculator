@@ -3,7 +3,7 @@ package Dominio;
 import java.io.Serializable;
 
 /**
- * @author Xavier
+ * @author Xavier Peñalosa
  *
  * Each row of the Result is a NodePair, which has a pair of nodes (first/last node) and its Hetesim value.
  * 
