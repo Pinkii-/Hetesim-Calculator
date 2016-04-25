@@ -3,16 +3,16 @@ Para compilar todos los tests:
 	
 
 CtrlDominioTest:
-	java Dominio.CtrlDominioTest
+	java Dominio.CtrlDominioTest ../../GrafsAndResults/
 
 CtrlDataTest:
 	java Dominio.CtrlDataTest
 
 HeteSimTest:
-	java Dominio.HeteSimTest
+	java Dominio.HeteSimTest ../../GrafsAndResults/
 
 HeteSanicTest:
-	java Dominio.HeteSanicTest
+	java Dominio.HeteSanicTest ../../GrafsAndResults/
 
 ResultTest:
 	java resultTesting.ResultTest
