@@ -558,8 +558,9 @@ public class CtrlDataTest {
 		Graf g = new Graf();
 		ArrayList<Result> results = new ArrayList<Result>();
 		Pair<Graf,ArrayList<Result>> GrafAndResults = new Pair<Graf,ArrayList<Result>>(g,results);
-		System.out.println("Selecciona uno de los grafos almacenados anteriormente: ");
+		System.out.println("Selecciona uno de los grafos almacenados anteriormente (idGrafo): ");
 		String in = br.readLine();
+		try {
 		GrafAndResults = cd.loadgraphAndResults(in);
 		System.out.println("-Grafo cargado:");
 		printGraf(GrafAndResults.first);
@@ -567,6 +568,11 @@ public class CtrlDataTest {
 		for (int i = 0; i < GrafAndResults.second.size(); ++i) {
 			printResult(GrafAndResults.second.get(i));
 		}
+		}
+		catch(Exception e) {
+			System.out.println("Es necesario guardar un grafo y algún resultado asociado antes ");
+		}
+		
 		
 	}
 	
