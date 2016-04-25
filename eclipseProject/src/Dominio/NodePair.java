@@ -3,14 +3,17 @@ package Dominio;
 import java.io.Serializable;
 
 /**
- * @author Xavier
+ * @author Xavier Peñalosa
  *
  * Each row of the Result is a NodePair, which has a pair of nodes (first/last node) and its Hetesim value.
  * 
  */
 
-@SuppressWarnings("serial")
+
 public class NodePair implements Serializable{
+
+	
+	private static final long serialVersionUID = 1L;
 	public Pair<Node,Node> pairN;
 	private float hetesimVal;
 	

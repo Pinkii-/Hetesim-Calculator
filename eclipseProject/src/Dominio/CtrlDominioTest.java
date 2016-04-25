@@ -18,11 +18,11 @@ public class CtrlDominioTest {
 	static ArrayList<String> pathNames;
 
 	static BufferedReader br;
-	
+
 	static String filePath;
 
 	public static void main(String[] args) throws IOException {
-		if(args.length < 1){
+		if (args.length < 1) {
 			System.out.println("Debes poner como primer parametro el camino hasta un directorio con un grafo valido");
 			System.exit(0);
 		}
@@ -115,8 +115,15 @@ public class CtrlDominioTest {
 		else
 			return false;
 	}
-	
-	private static void printLastResult(){
+
+	private static Integer askForNodeIndex(String nodeType) throws IOException {
+		ctrlGraph.printNodesOfType(nodeType);
+		System.out.println("Que nodo quieres utilizar?");
+		System.out.print("> ");
+		return Integer.parseInt(br.readLine());
+	}
+
+	private static void printLastResult() {
 		System.out.println("CtrlResult Imprime el ultimo resultado conseguido:");
 		ctrlResults.printLastResult();
 	}
@@ -182,7 +189,7 @@ public class CtrlDominioTest {
 			switch (index) {
 			case 0:
 				System.out
-						.println("Indica el nombre y el contenido del path que deseas añadir (cada uno en una linea):");
+						.println("Indica el nombre y el contenido del path que deseas anadir (cada uno en una linea):");
 				System.out.print("> ");
 				pathName = br.readLine();
 				System.out.print("> ");
@@ -241,8 +248,8 @@ public class CtrlDominioTest {
 
 		while (!finished) {
 			String pathName;
-			String node1Index;
-			String node2Index;
+			Integer node1Index;
+			Integer node2Index;
 			Float threshold;
 			String graphId;
 
@@ -250,13 +257,13 @@ public class CtrlDominioTest {
 			System.out.println(
 					"Hola, soy CtrlDominio y me encargo de gestionar las busquedas y el I/O. Que quieres que haga?");
 			System.out.println("0 - Importa el grafo de pruebas (necesario si no has inicializado el grafo antes)");
-			System.out.println("1 - Realiza una búsqueda con un path.");
-			System.out.println("2 - Realiza una búsqueda con un una entidad y un path.");
-			System.out.println("3 - Realiza una búsqueda con dos entidades y un path");
+			System.out.println("1 - Realiza una busqueda con un path.");
+			System.out.println("2 - Realiza una busqueda con un una entidad y un path.");
+			System.out.println("3 - Realiza una busqueda con dos entidades y un path");
 			System.out.println("4 - Guarda el grafo actual.");
 			System.out.println("5 - Carga un grafo ya guardado.");
 			System.out.println(
-					"6 - Imprime el grafo (lo hace CtrlGrafo, pero yo te dejo hacerlo aquí por conveniencia :D )");
+					"6 - Imprime el grafo (lo hace CtrlGrafo, pero yo te dejo hacerlo aquï¿½ por conveniencia :D )");
 			System.out.println("7 - Salir.");
 			System.out.print("> ");
 			Integer index;
@@ -282,36 +289,27 @@ public class CtrlDominioTest {
 				break;
 			case 2:
 				pathName = askForPathName();
-				System.out.println(
-						"Indica el indice del nodo sobre el que deseas hacer la busqueda:");
-				System.out.print("> ");
-				node1Index = br.readLine();
+				node1Index = askForNodeIndex(ctrlPaths.getPathsFirstType(pathName));
 				threshold = askForThreshold();
 				if (threshold.equals(-1))
-					ctrlDominio.searchPathNode(pathName, Integer.parseInt(node1Index));
+					ctrlDominio.searchPathNode(pathName, node1Index);
 				else
-					ctrlDominio.searchPathNodeThreshhold(threshold, pathName, Integer.parseInt(node1Index));
+					ctrlDominio.searchPathNodeThreshhold(threshold, pathName, node1Index);
 				printLastResult();
 				if (askForStoreResult())
 					ctrlResults.addLastResult();
 				break;
 			case 3:
 				pathName = askForPathName();
-				System.out.println(
-						"Indica el indice del primer nodo sobre el que deseas hacer la busqueda:");
-				System.out.print("> ");
-				node1Index = br.readLine();				
-				System.out.println(
-						"Indica el indice del segundo nodo sobre el que deseas hacer la busqueda:");
-				System.out.print("> ");
-				node2Index = br.readLine();				
+				System.out.println("Primer nodo:");
+				node1Index = askForNodeIndex(ctrlPaths.getPathsFirstType(pathName));
+				System.out.println("Segundo nodo:");
+				node2Index = askForNodeIndex(ctrlPaths.getPathsLastType(pathName));
 				threshold = askForThreshold();
 				if (threshold.equals(-1))
-					ctrlDominio.searchPathNodeNode(pathName, Integer.parseInt(node1Index),
-							Integer.parseInt(node2Index));
+					ctrlDominio.searchPathNodeNode(pathName, node1Index, node2Index);
 				else
-					ctrlDominio.searchPathNodeNodeThreshhold(threshold, pathName, Integer.parseInt(node1Index),
-							Integer.parseInt(node2Index));
+					ctrlDominio.searchPathNodeNodeThreshhold(threshold, pathName, node1Index, node2Index);
 				printLastResult();
 				if (askForStoreResult())
 					ctrlResults.addLastResult();
@@ -326,7 +324,7 @@ public class CtrlDominioTest {
 				ctrlDominio.loadGraph(graphId);
 				break;
 			case 6:
-				Utils.printGraf(ctrlGraph.getGraph());
+				ctrlGraph.printGraf();
 				break;
 			case 7:
 				finished = true;
@@ -414,7 +412,7 @@ public class CtrlDominioTest {
 				ctrlGraph.eraseNodeRelation(Integer.parseInt(paperIndex), Integer.parseInt(nodeIndex), nodeType);
 				break;
 			case 5:
-				Utils.printGraf(ctrlGraph.getGraph());
+				ctrlGraph.printGraf();
 				break;
 			case 6:
 				finished = true;

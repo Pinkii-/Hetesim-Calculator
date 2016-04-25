@@ -11,8 +11,6 @@ import java.util.Map;
 public class CtrlPaths {
 	private Map<String, Path> paths;
 	private Map<String, Boolean> modifiedPaths;
-	
-
 
 	public CtrlPaths() {
 		paths = new HashMap<String, Path>();
@@ -62,7 +60,7 @@ public class CtrlPaths {
 			System.out.println("Path not found");
 		}
 	}
-	
+
 	public void modifyPath(String pathName, String newPathContent, String newPathDescription) {
 		if (paths.containsKey(pathName)) {
 			Path oldPath = paths.get(pathName);
@@ -76,8 +74,6 @@ public class CtrlPaths {
 			System.out.println("Path not found");
 		}
 	}
-
-
 
 	public void addPath(String pathContent, String pathName, String description) {
 		if (!paths.containsKey(pathName)) {
@@ -94,15 +90,15 @@ public class CtrlPaths {
 
 	public void erasePath(String pathName) {
 		if (paths.containsKey(pathName)) {
-			//TODO Deeply problematic
+			// TODO Deeply problematic
 			paths.remove(pathName);
 			modifiedPaths.remove(pathName);
 		} else {
 			System.out.println("Path not found");
 		}
 	}
-	
-	public ArrayList<String> getPathNames(){
+
+	public ArrayList<String> getPathNames() {
 		ArrayList<String> pathNames = new ArrayList<String>();
 		for (Map.Entry<String, Path> entry : paths.entrySet()) {
 			pathNames.add(entry.getKey());
@@ -127,15 +123,34 @@ public class CtrlPaths {
 		}
 		return ret;
 	}
-	
-	public void printPath(String pathName){
+
+	public void printPath(String pathName) {
 		if (paths.containsKey(pathName))
-			Utils.printPath(paths.get(pathName)); 
+			Utils.printPath(paths.get(pathName));
 		else
 			System.out.println("Path not found");
 	}
-	
-	private void initDefaultPaths(){
+
+	public String getPathsFirstType(String pathName) {
+		if (paths.containsKey(pathName)) {
+			return paths.get(pathName).getContingut().get(0).toString();
+		} else {
+			System.out.println("Path not found");
+			return null;
+		}
+	}
+
+	public String getPathsLastType(String pathName) {
+		if (paths.containsKey(pathName)) {
+			ArrayList<Node.Type> pathContent = paths.get(pathName).getContingut();
+			return pathContent.get(pathContent.size() - 1).toString();
+		} else {
+			System.out.println("Path not found");
+			return null;
+		}
+	}
+
+	private void initDefaultPaths() {
 		Path p = new Path();
 		p.setNom("APA");
 		p.setContingut("APA");

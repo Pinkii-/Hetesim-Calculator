@@ -73,7 +73,9 @@ public class HeteSanic {
 				
 //				System.out.println(top + " " + bot + " " + top/bot);
 				
-				Float res = (float) (top/bot);
+				Float res;
+				if (bot == 0) res = 0.f;
+				else res = (float) (top/bot);
 				DecimalFormat df = new DecimalFormat("#.#####");
 				result.set(i,j,Float.valueOf(df.format(res)));
 				

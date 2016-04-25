@@ -124,8 +124,10 @@ class HeteSim {
 			for (int j = 0; j < result.getNCols(); ++j) {
 				double top = multiplyVectors(left.getRow(i),right.getRow(j));
 				double bot = norm(left.getRow(i))*norm(right.getRow(j));
-				Float res = (float) (top/bot);
-				DecimalFormat df = new DecimalFormat("#,#####");
+				Float res;
+				if (bot == 0) res = 0.f;
+				else res = (float) (top/bot);
+				DecimalFormat df = new DecimalFormat("#.#####");
 				result.getRow(i).set(j,Float.valueOf(df.format(res)));
 				
 			}
