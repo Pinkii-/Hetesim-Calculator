@@ -1,0 +1,18 @@
+Para compilar todos los tests:
+	javac Dominio/CtrlDominioTest.java Dominio/CtrlDataTest.java Dominio/HeteSimTest.java Dominio/HeteSanicTest.java resultTesting/*.java
+	
+
+CtrlDominioTest:
+	java Dominio.CtrlDominioTest
+
+CtrlDataTest:
+	java Dominio.CtrlDataTest
+
+HeteSimTest:
+	java Dominio.HeteSimTest
+
+HeteSanicTest:
+	java Dominio.HeteSanicTest
+
+ResultTest:
+	java resultTesting.ResultTest
