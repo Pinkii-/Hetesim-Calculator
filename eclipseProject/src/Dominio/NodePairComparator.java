@@ -1,4 +1,3 @@
-//Autor: Xavier Peñalosa
 package Dominio;
 
 import java.util.Comparator;
