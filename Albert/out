@@ -1,0 +1,762 @@
+Test CtrlData:
+Introducir opción:
+0.- Salir
+1.- Test Path deep copy
+2.- Test Result deep copy
+3.- Test Graf deep copy
+4.- Test constructor
+5.- Test store and load Paths
+6.- Test load all Paths
+7.- Test store and load Results
+8.- Test store Graf
+9.- Test load Graf and associated Results
+10.- Test delete Path
+11.- Test delete Result
+
+@@@Vamos a generar un Path@@@
+------------------------------------------------
+Nombre del Path: 
+Descripcion del Path: 
+Contenido del Path: 
+-Path original:
+------------------------------------------------
+Nom path: nomPath
+Descripció path: descPath
+Contingut Path: [ Paper, Autor, Paper ]
+------------------------------------------------
+PATH COPIADO
+@@@Modificamos el Path original@@@
+------------------------------------------------
+Nombre del Path: 
+Descripcion del Path: 
+Contenido del Path: 
+-Path modificado:
+------------------------------------------------
+Nom path: nomPathMod
+Descripció path: descPathMod
+Contingut Path: [ Paper, Autor, Conferencia ]
+------------------------------------------------
+-Copia del Path (tendria que tener los valores del path original)@@@
+------------------------------------------------
+Nom path: nomPath
+Descripció path: descPath
+Contingut Path: [ Paper, Autor, Paper ]
+------------------------------------------------
+
+
+Introducir opción:
+0.- Salir
+1.- Test Path deep copy
+2.- Test Result deep copy
+3.- Test Graf deep copy
+4.- Test constructor
+5.- Test store and load Paths
+6.- Test load all Paths
+7.- Test store and load Results
+8.- Test store Graf
+9.- Test load Graf and associated Results
+10.- Test delete Path
+11.- Test delete Result
+
+@@@Vamos a generar un resultado@@@
+------------------------------------------------
+Creamos path usado del Resultado
+------------------------------------------------
+Nombre del Path: 
+Descripcion del Path: 
+Contenido del Path: 
+Introducir nombre Nodo origen
+Introducir id Nodo origen (Entero)
+Introducir tipo Nodo origen (Autor, Conferencia, Paper, Terme, MidElement)
+Introducir label Nodo origen (Database, DataMining, AI, InformationRetrieval)
+Introducir nombre Nodo destino
+Introducir id Nodo destino (Entero)
+Introducir tipo Nodo destino(Autor, Conferencia, Paper, Terme, MidElement)
+Introducir label Nodo destino(Database, DataMining, AI, InformationRetrieval)
+Introducir Threshold del resultado(Real)
+Introducir valor hetesim del resultado (>= Threshold)
+Introducir nombre grafo asociado: 
+Introducir id grafo asociado (Entero): 
+-Resultado original:
+------------------------------------------------
+Resultado: 
+1
+Resultado: nomGrafAssociat test.Path@2b193f2d test.Node@355da254 test.Node@4dc63996
+    Path: test.Path@2b193f2d
+    N1: Nodeorigen
+    N2: Nodedesti
+    Threshold: 0.1
+
+    First Node: Nodeorigen - Second Node: Nodedesti - Hetesim: 0.5
+
+RESULT COPIADO
+@@@Modificamos el Resultado original@@@
+------------------------------------------------
+Introducir nuevo id de grafo: 
+Introducir nuevo id de resutado: 
+Introducir nuevo Threshold: 
+Introducir nuevo valor de HeteSim para el resultado: 
+-Resultado modificado:
+------------------------------------------------
+Resultado: 
+1
+Resultado: idResultMOD
+    Path: test.Path@2b193f2d
+    N1: Nodeorigen
+    N2: Nodedesti
+    Threshold: 0.23
+
+    First Node: Nodeorigen - Second Node: Nodedesti - Hetesim: 0.9999
+
+-Copia del Resultado (tendria que tener los valores del resultado original)@@@
+------------------------------------------------
+Resultado: 
+1
+Resultado: nomGrafAssociat test.Path@2b193f2d test.Node@355da254 test.Node@4dc63996
+    Path: test.Path@72ea2f77
+    N1: Nodeorigen
+    N2: Nodedesti
+    Threshold: 0.1
+
+    First Node: Nodeorigen - Second Node: Nodedesti - Hetesim: 0.5
+
+
+
+Introducir opción:
+0.- Salir
+1.- Test Path deep copy
+2.- Test Result deep copy
+3.- Test Graf deep copy
+4.- Test constructor
+5.- Test store and load Paths
+6.- Test load all Paths
+7.- Test store and load Results
+8.- Test store Graf
+9.- Test load Graf and associated Results
+10.- Test delete Path
+11.- Test delete Result
+
+@@@Vamos a generar un grafo@@@
+@@@Por simplicidad relacionaremos todas las entidades posibles@@@
+@@@Así mismo, repetiremos los datos de los nodos de cada tipo@@@
+Nombre del grafo: 
+Id grafo (Entero): 
+------------------------------------------------
+Primero vamos a añadir unos cuantos nodos de tipo Paper al grafo
+Introduce un nombre para los nodos de tipo Paper
+-Introduce el número de nodos de tipo Paper a añadir (:
+Vamos a añadir unos cuantos nodos de tipo Autor al grafo
+Introduce un nombre para los nodos de tipo Autor
+-Introduce el número de nodos de tipo Autor a añadir:
+Vamos a añadir unos cuantos nodos de tipo Terme al grafo
+Introduce un nombre para los nodos de tipo Terme
+-Introduce el número de nodos de tipo Terne a añadir:
+Vamos a añadir unos cuantos nodos de tipo Conferencia al grafo
+Introduce un nombre para los nodos de tipo Conferencia
+-Introduce el número de nodos de tipo Conferencia a añadir:
+------------------------------------------------
+-Nom Graf: nomGraf
+|||Matriz Adyaciencia AutorPaper|||
+1.0 1.0 1.0 1.0 1.0 1.0 
+1.0 1.0 1.0 1.0 1.0 1.0 
+1.0 1.0 1.0 1.0 1.0 1.0 
+1.0 1.0 1.0 1.0 1.0 1.0 
+1.0 1.0 1.0 1.0 1.0 1.0 
+|||Matriz Adyaciencia TemaPaper|||
+1.0 1.0 1.0 1.0 1.0 1.0 
+1.0 1.0 1.0 1.0 1.0 1.0 
+1.0 1.0 1.0 1.0 1.0 1.0 
+1.0 1.0 1.0 1.0 1.0 1.0 
+1.0 1.0 1.0 1.0 1.0 1.0 
+|||Matriz Adyaciencia ConferenciaPaper|||
+1.0 1.0 1.0 1.0 1.0 1.0 
+1.0 1.0 1.0 1.0 1.0 1.0 
+1.0 1.0 1.0 1.0 1.0 1.0 
+1.0 1.0 1.0 1.0 1.0 1.0 
+1.0 1.0 1.0 1.0 1.0 1.0 
+|||Nodos Autor|||:
+[ nom: nodeAutor Id: 0  Type: Autor ]
+[ nom: nodeAutor Id: 1  Type: Autor ]
+[ nom: nodeAutor Id: 2  Type: Autor ]
+[ nom: nodeAutor Id: 3  Type: Autor ]
+[ nom: nodeAutor Id: 4  Type: Autor ]
+|||Nodos Terme|||
+[ nom: nodeTerme Id: 0  Type: Terme ]
+[ nom: nodeTerme Id: 1  Type: Terme ]
+[ nom: nodeTerme Id: 2  Type: Terme ]
+[ nom: nodeTerme Id: 3  Type: Terme ]
+[ nom: nodeTerme Id: 4  Type: Terme ]
+|||Nodos Conferencia|||
+[ nom: nodeConf Id: 0  Type: Conferencia ]
+[ nom: nodeConf Id: 1  Type: Conferencia ]
+[ nom: nodeConf Id: 2  Type: Conferencia ]
+[ nom: nodeConf Id: 3  Type: Conferencia ]
+[ nom: nodeConf Id: 4  Type: Conferencia ]
+|||Nodos Paper|||
+[ nom: nodePaper Id: 0  Type: Paper ]
+[ nom: nodePaper Id: 1  Type: Paper ]
+[ nom: nodePaper Id: 2  Type: Paper ]
+[ nom: nodePaper Id: 3  Type: Paper ]
+[ nom: nodePaper Id: 4  Type: Paper ]
+[ nom: nodePaper Id: 5  Type: Paper ]
+GRAFO COPIADO
+@@@Modificaremos el grafo original@@@
+------------------------------------------------
+------------------------------------------------
+Primero vamos a añadir unos cuantos nodos de tipo Paper al grafo
+Introduce un nombre para los nodos de tipo Paper
+-Introduce el número de nodos de tipo Paper a añadir (:
+Vamos a añadir unos cuantos nodos de tipo Autor al grafo
+Introduce un nombre para los nodos de tipo Autor
+-Introduce el número de nodos de tipo Autor a añadir:
+Vamos a añadir unos cuantos nodos de tipo Terme al grafo
+Introduce un nombre para los nodos de tipo Terme
+-Introduce el número de nodos de tipo Terne a añadir:
+Vamos a añadir unos cuantos nodos de tipo Conferencia al grafo
+Introduce un nombre para los nodos de tipo Conferencia
+-Introduce el número de nodos de tipo Conferencia a añadir:
+-Grafo modificado: 
+------------------------------------------------
+-Nom Graf: nomGraf
+|||Matriz Adyaciencia AutorPaper|||
+1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 
+1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 
+1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 
+1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 
+|||Matriz Adyaciencia TemaPaper|||
+1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 
+1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 
+1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 
+1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 
+|||Matriz Adyaciencia ConferenciaPaper|||
+1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 
+1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 
+1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 
+1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 
+|||Nodos Autor|||:
+[ nom: nodeAutorMOD Id: 0  Type: Autor ]
+[ nom: nodeAutorMOD Id: 1  Type: Autor ]
+[ nom: nodeAutorMOD Id: 2  Type: Autor ]
+[ nom: nodeAutorMOD Id: 3  Type: Autor ]
+|||Nodos Terme|||
+[ nom: nodeTermeMOD Id: 0  Type: Terme ]
+[ nom: nodeTermeMOD Id: 1  Type: Terme ]
+[ nom: nodeTermeMOD Id: 2  Type: Terme ]
+[ nom: nodeTermeMOD Id: 3  Type: Terme ]
+|||Nodos Conferencia|||
+[ nom: nodeConfMOD Id: 0  Type: Conferencia ]
+[ nom: nodeConfMOD Id: 1  Type: Conferencia ]
+[ nom: nodeConfMOD Id: 2  Type: Conferencia ]
+[ nom: nodeConfMOD Id: 3  Type: Conferencia ]
+|||Nodos Paper|||
+[ nom: nodePaperMOD Id: 0  Type: Paper ]
+[ nom: nodePaperMOD Id: 1  Type: Paper ]
+[ nom: nodePaperMOD Id: 2  Type: Paper ]
+[ nom: nodePaperMOD Id: 3  Type: Paper ]
+[ nom: nodePaperMOD Id: 4  Type: Paper ]
+[ nom: nodePaperMOD Id: 5  Type: Paper ]
+[ nom: nodePaperMOD Id: 6  Type: Paper ]
+[ nom: nodePaperMOD Id: 7  Type: Paper ]
+-Copia del grafo: 
+------------------------------------------------
+-Nom Graf: nomGraf
+|||Matriz Adyaciencia AutorPaper|||
+1.0 1.0 1.0 1.0 1.0 1.0 
+1.0 1.0 1.0 1.0 1.0 1.0 
+1.0 1.0 1.0 1.0 1.0 1.0 
+1.0 1.0 1.0 1.0 1.0 1.0 
+1.0 1.0 1.0 1.0 1.0 1.0 
+|||Matriz Adyaciencia TemaPaper|||
+1.0 1.0 1.0 1.0 1.0 1.0 
+1.0 1.0 1.0 1.0 1.0 1.0 
+1.0 1.0 1.0 1.0 1.0 1.0 
+1.0 1.0 1.0 1.0 1.0 1.0 
+1.0 1.0 1.0 1.0 1.0 1.0 
+|||Matriz Adyaciencia ConferenciaPaper|||
+1.0 1.0 1.0 1.0 1.0 1.0 
+1.0 1.0 1.0 1.0 1.0 1.0 
+1.0 1.0 1.0 1.0 1.0 1.0 
+1.0 1.0 1.0 1.0 1.0 1.0 
+1.0 1.0 1.0 1.0 1.0 1.0 
+|||Nodos Autor|||:
+[ nom: nodeAutor Id: 0  Type: Autor ]
+[ nom: nodeAutor Id: 1  Type: Autor ]
+[ nom: nodeAutor Id: 2  Type: Autor ]
+[ nom: nodeAutor Id: 3  Type: Autor ]
+[ nom: nodeAutor Id: 4  Type: Autor ]
+|||Nodos Terme|||
+[ nom: nodeTerme Id: 0  Type: Terme ]
+[ nom: nodeTerme Id: 1  Type: Terme ]
+[ nom: nodeTerme Id: 2  Type: Terme ]
+[ nom: nodeTerme Id: 3  Type: Terme ]
+[ nom: nodeTerme Id: 4  Type: Terme ]
+|||Nodos Conferencia|||
+[ nom: nodeConf Id: 0  Type: Conferencia ]
+[ nom: nodeConf Id: 1  Type: Conferencia ]
+[ nom: nodeConf Id: 2  Type: Conferencia ]
+[ nom: nodeConf Id: 3  Type: Conferencia ]
+[ nom: nodeConf Id: 4  Type: Conferencia ]
+|||Nodos Paper|||
+[ nom: nodePaper Id: 0  Type: Paper ]
+[ nom: nodePaper Id: 1  Type: Paper ]
+[ nom: nodePaper Id: 2  Type: Paper ]
+[ nom: nodePaper Id: 3  Type: Paper ]
+[ nom: nodePaper Id: 4  Type: Paper ]
+[ nom: nodePaper Id: 5  Type: Paper ]
+
+
+Introducir opción:
+0.- Salir
+1.- Test Path deep copy
+2.- Test Result deep copy
+3.- Test Graf deep copy
+4.- Test constructor
+5.- Test store and load Paths
+6.- Test load all Paths
+7.- Test store and load Results
+8.- Test store Graf
+9.- Test load Graf and associated Results
+10.- Test delete Path
+11.- Test delete Result
+
+@@@Hay que comprovar que las carpetas: Paths y GrafsAndResults han sido creadas@@@
+La carpeta Paths ha sido creada con éxito o ya existia
+La carpeta GrafsAndResults ha sido creada con éxito o ya existia
+
+
+Introducir opción:
+0.- Salir
+1.- Test Path deep copy
+2.- Test Result deep copy
+3.- Test Graf deep copy
+4.- Test constructor
+5.- Test store and load Paths
+6.- Test load all Paths
+7.- Test store and load Results
+8.- Test store Graf
+9.- Test load Graf and associated Results
+10.- Test delete Path
+11.- Test delete Result
+
+@@@Vamos a generar una serie de Paths@@@
+[cont],[end]
+------------------------------------------------
+Nombre del Path: 
+Descripcion del Path: 
+Contenido del Path: 
+[cont],[end]
+------------------------------------------------
+Nombre del Path: 
+Descripcion del Path: 
+Contenido del Path: 
+[cont],[end]
+Paths creados:
+------------------------------------------------
+Nom path: nomPath
+Descripció path: descPath
+Contingut Path: [ Paper, Autor, Paper ]
+------------------------------------------------
+/home/albert/Paths/nomPath.ser
+------------------------------------------------
+------------------------------------------------
+Nom path: nomPath2
+Descripció path: descPath2
+Contingut Path: [ Paper, Autor, Paper, Conferencia ]
+------------------------------------------------
+/home/albert/Paths/nomPath2.ser
+------------------------------------------------
+
+
+Introducir opción:
+0.- Salir
+1.- Test Path deep copy
+2.- Test Result deep copy
+3.- Test Graf deep copy
+4.- Test constructor
+5.- Test store and load Paths
+6.- Test load all Paths
+7.- Test store and load Results
+8.- Test store Graf
+9.- Test load Graf and associated Results
+10.- Test delete Path
+11.- Test delete Result
+
+@@@Vamos a cargar todos los Paths anteriormente guardados@@@
+------------------------------------------------
+Nom path: pap2
+Descripció path: pap2
+Contingut Path: [ Paper, Autor, Terme ]
+------------------------------------------------
+/home/albert/Paths/pap2.ser
+------------------------------------------------
+------------------------------------------------
+Nom path: 4
+Descripció path: nodeConfMOD
+Ha habido algun problema al intentar cargar todos los Paths
+
+
+Introducir opción:
+0.- Salir
+1.- Test Path deep copy
+2.- Test Result deep copy
+3.- Test Graf deep copy
+4.- Test constructor
+5.- Test store and load Paths
+6.- Test load all Paths
+7.- Test store and load Results
+8.- Test store Graf
+9.- Test load Graf and associated Results
+10.- Test delete Path
+11.- Test delete Result
+
+@@@Vamos a generar una serie de Resultados@@@
+[cont],[end]
+Creamos path usado del Resultado
+------------------------------------------------
+Nombre del Path: 
+Descripcion del Path: 
+Contenido del Path: 
+Introducir nombre Nodo origen
+Introducir id Nodo origen (Entero)
+Introducir tipo Nodo origen (Autor, Conferencia, Paper, Terme, MidElement)
+Introducir label Nodo origen (Database, DataMining, AI, InformationRetrieval)
+Introducir nombre Nodo destino
+Introducir id Nodo destino (Entero)
+Introducir tipo Nodo destino(Autor, Conferencia, Paper, Terme, MidElement)
+Introducir label Nodo destino(Database, DataMining, AI, InformationRetrieval)
+Introducir Threshold del resultado(Real)
+Introducir valor hetesim del resultado (>= Threshold)
+Introducir nombre grafo asociado: 
+Introducir id grafo asociado (Entero): 
+[cont],[end]
+Creamos path usado del Resultado
+------------------------------------------------
+Nombre del Path: 
+Descripcion del Path: 
+Contenido del Path: 
+Introducir nombre Nodo origen
+Introducir id Nodo origen (Entero)
+Introducir tipo Nodo origen (Autor, Conferencia, Paper, Terme, MidElement)
+Introducir label Nodo origen (Database, DataMining, AI, InformationRetrieval)
+Introducir nombre Nodo destino
+Introducir id Nodo destino (Entero)
+Introducir tipo Nodo destino(Autor, Conferencia, Paper, Terme, MidElement)
+Introducir label Nodo destino(Database, DataMining, AI, InformationRetrieval)
+Introducir Threshold del resultado(Real)
+Introducir valor hetesim del resultado (>= Threshold)
+Introducir nombre grafo asociado: 
+Introducir id grafo asociado (Entero): 
+[cont],[end]
+Resultados:
+------------------------------------------------
+Resultado: 
+1
+Resultado: nomGrafResult test.Path@5387f9e0 test.Node@6e5e91e4 test.Node@2cdf8d8a
+    Path: test.Path@78e03bb5
+    N1: nodeOrigResult
+    N2: nodeDestResult
+    Threshold: 0.2
+
+    First Node: nodeOrigResult - Second Node: nodeDestResult - Hetesim: 0.87
+
+/home/albert/GrafsAndResults/1/nomGrafResult test.Path@5387f9e0 test.Node@6e5e91e4 test.Node@2cdf8d8a.Result
+------------------------------------------------
+------------------------------------------------
+Resultado: 
+1
+Resultado: nomGrafResult test.Path@4629104a test.Node@27f8302d test.Node@4d76f3f8
+    Path: test.Path@5e8c92f4
+    N1: nodeOrigResult2
+    N2: nomDestResult2
+    Threshold: 0.345
+
+    First Node: nodeOrigResult2 - Second Node: nomDestResult2 - Hetesim: 0.67
+
+/home/albert/GrafsAndResults/1/nomGrafResult test.Path@4629104a test.Node@27f8302d test.Node@4d76f3f8.Result
+------------------------------------------------
+
+
+Introducir opción:
+0.- Salir
+1.- Test Path deep copy
+2.- Test Result deep copy
+3.- Test Graf deep copy
+4.- Test constructor
+5.- Test store and load Paths
+6.- Test load all Paths
+7.- Test store and load Results
+8.- Test store Graf
+9.- Test load Graf and associated Results
+10.- Test delete Path
+11.- Test delete Result
+
+@@@Vamos a generar un grafo@@@
+@@@Por simplicidad relacionaremos todas las entidades posibles@@@
+@@@Así mismo, repetiremos los datos de los nodos de cada tipo@@@
+Nombre del grafo: 
+Id grafo (Entero): 
+------------------------------------------------
+Primero vamos a añadir unos cuantos nodos de tipo Paper al grafo
+Introduce un nombre para los nodos de tipo Paper
+-Introduce el número de nodos de tipo Paper a añadir (:
+Vamos a añadir unos cuantos nodos de tipo Autor al grafo
+Introduce un nombre para los nodos de tipo Autor
+-Introduce el número de nodos de tipo Autor a añadir:
+Vamos a añadir unos cuantos nodos de tipo Terme al grafo
+Introduce un nombre para los nodos de tipo Terme
+-Introduce el número de nodos de tipo Terne a añadir:
+Vamos a añadir unos cuantos nodos de tipo Conferencia al grafo
+Introduce un nombre para los nodos de tipo Conferencia
+-Introduce el número de nodos de tipo Conferencia a añadir:
+Grafo guardado correctamente en:
+/home/albert/GrafsAndResults/1/1
+
+
+Introducir opción:
+0.- Salir
+1.- Test Path deep copy
+2.- Test Result deep copy
+3.- Test Graf deep copy
+4.- Test constructor
+5.- Test store and load Paths
+6.- Test load all Paths
+7.- Test store and load Results
+8.- Test store Graf
+9.- Test load Graf and associated Results
+10.- Test delete Path
+11.- Test delete Result
+
+@@@Vamos a cargar un grafo anteriormente guardado, y sus resultados asociados@@@
+Selecciona uno de los grafos almacenados anteriormente: 
+-Grafo cargado:
+------------------------------------------------
+-Nom Graf: nomGraf
+|||Matriz Adyaciencia AutorPaper|||
+1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 
+1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 
+1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 
+1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 
+1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 
+|||Matriz Adyaciencia TemaPaper|||
+1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 
+1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 
+1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 
+1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 
+1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 
+|||Matriz Adyaciencia ConferenciaPaper|||
+1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 
+1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 
+1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 
+1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 
+1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 
+|||Nodos Autor|||:
+[ nom: nodeAutor Id: 0  Type: Autor ]
+[ nom: nodeAutor Id: 1  Type: Autor ]
+[ nom: nodeAutor Id: 2  Type: Autor ]
+[ nom: nodeAutor Id: 3  Type: Autor ]
+[ nom: nodeAutor Id: 4  Type: Autor ]
+|||Nodos Terme|||
+[ nom: nodeTerme Id: 0  Type: Terme ]
+[ nom: nodeTerme Id: 1  Type: Terme ]
+[ nom: nodeTerme Id: 2  Type: Terme ]
+[ nom: nodeTerme Id: 3  Type: Terme ]
+[ nom: nodeTerme Id: 4  Type: Terme ]
+|||Nodos Conferencia|||
+[ nom: nodeConf Id: 0  Type: Conferencia ]
+[ nom: nodeConf Id: 1  Type: Conferencia ]
+[ nom: nodeConf Id: 2  Type: Conferencia ]
+[ nom: nodeConf Id: 3  Type: Conferencia ]
+[ nom: nodeConf Id: 4  Type: Conferencia ]
+|||Nodos Paper|||
+[ nom: nodePaper Id: 0  Type: Paper ]
+[ nom: nodePaper Id: 1  Type: Paper ]
+[ nom: nodePaper Id: 2  Type: Paper ]
+[ nom: nodePaper Id: 3  Type: Paper ]
+[ nom: nodePaper Id: 4  Type: Paper ]
+[ nom: nodePaper Id: 5  Type: Paper ]
+[ nom: nodePaper Id: 6  Type: Paper ]
+[ nom: nodePaper Id: 7  Type: Paper ]
+-Resultados asociados:
+------------------------------------------------
+Resultado: 
+1
+Resultado: nomGrafResult test.Path@87aac27 test.Node@3e3abc88 test.Node@6ce253f1
+    Path: test.Path@16c0663d
+    N1: nodeOrigResult2
+    N2: nomDestResult2
+    Threshold: 0.345
+
+    First Node: nodeOrigResult2 - Second Node: nomDestResult2 - Hetesim: 0.67
+
+------------------------------------------------
+Resultado: 
+1
+Resultado: nomGrafResult test.Path@4629104a test.Node@27f8302d test.Node@4d76f3f8
+    Path: test.Path@23223dd8
+    N1: nodeOrigResult2
+    N2: nomDestResult2
+    Threshold: 0.345
+
+    First Node: nodeOrigResult2 - Second Node: nomDestResult2 - Hetesim: 0.67
+
+------------------------------------------------
+Resultado: 
+1
+Resultado: nomGrafResult test.Path@7506e922 test.Node@4ee285c6 test.Node@621be5d1
+    Path: test.Path@4ec6a292
+    N1: nodeOrigenResult2
+    N2: nomDestResult2
+    Threshold: 0.345
+
+    First Node: nodeOrigenResult2 - Second Node: nomDestResult2 - Hetesim: 0.67
+
+------------------------------------------------
+Resultado: 
+1
+Resultado: nom test.Path@7440e464 test.Node@49476842 test.Node@78308db1
+    Path: test.Path@1b40d5f0
+    N1: nomorig
+    N2: nomdest
+    Threshold: 0.1
+
+    First Node: nomorig - Second Node: nomdest - Hetesim: 0.67
+
+------------------------------------------------
+Resultado: 
+1
+Resultado: nomGrafResult test.Path@7a4f0f29 test.Node@45283ce2 test.Node@2077d4de
+    Path: test.Path@ea4a92b
+    N1: nodeOrigResult
+    N2: nodeDestResult
+    Threshold: 0.2
+
+    First Node: nodeOrigResult - Second Node: nodeDestResult - Hetesim: 0.87
+
+------------------------------------------------
+Resultado: 
+1
+Resultado: nomGrafResult test.Path@5387f9e0 test.Node@6e5e91e4 test.Node@2cdf8d8a
+    Path: test.Path@3c5a99da
+    N1: nodeOrigResult
+    N2: nodeDestResult
+    Threshold: 0.2
+
+    First Node: nodeOrigResult - Second Node: nodeDestResult - Hetesim: 0.87
+
+------------------------------------------------
+Resultado: 
+1
+Resultado: nom test.Path@4554617c test.Node@74a14482 test.Node@1540e19d
+    Path: test.Path@47f37ef1
+    N1: node
+    N2: nomde
+    Threshold: 0.2
+
+    First Node: node - Second Node: nomde - Hetesim: 0.87
+
+------------------------------------------------
+Resultado: 
+1
+Resultado: nomGrafResult test.Path@4554617c test.Node@74a14482 test.Node@1540e19d
+    Path: test.Path@5a01ccaa
+    N1: nodeOrigResult
+    N2: nodeDestResult
+    Threshold: 0.2
+
+    First Node: nodeOrigResult - Second Node: nodeDestResult - Hetesim: 0.87
+
+
+
+Introducir opción:
+0.- Salir
+1.- Test Path deep copy
+2.- Test Result deep copy
+3.- Test Graf deep copy
+4.- Test constructor
+5.- Test store and load Paths
+6.- Test load all Paths
+7.- Test store and load Results
+8.- Test store Graf
+9.- Test load Graf and associated Results
+10.- Test delete Path
+11.- Test delete Result
+
+@@@Vamos a generar un Path@@@
+------------------------------------------------
+Nombre del Path: 
+Descripcion del Path: 
+Contenido del Path: 
+-Path creado: 
+------------------------------------------------
+Nom path: nomPath
+Descripció path: descPath
+Contingut Path: [ Paper, Autor, Paper ]
+------------------------------------------------
+PATH GUARDADO
+PATH BORRADO
+
+
+Introducir opción:
+0.- Salir
+1.- Test Path deep copy
+2.- Test Result deep copy
+3.- Test Graf deep copy
+4.- Test constructor
+5.- Test store and load Paths
+6.- Test load all Paths
+7.- Test store and load Results
+8.- Test store Graf
+9.- Test load Graf and associated Results
+10.- Test delete Path
+11.- Test delete Result
+
+@@@Vamos a generar un Resultado@@@
+Creamos path usado del Resultado
+------------------------------------------------
+Nombre del Path: 
+Descripcion del Path: 
+Contenido del Path: 
+Introducir nombre Nodo origen
+Introducir id Nodo origen (Entero)
+Introducir tipo Nodo origen (Autor, Conferencia, Paper, Terme, MidElement)
+Introducir label Nodo origen (Database, DataMining, AI, InformationRetrieval)
+Introducir nombre Nodo destino
+Introducir id Nodo destino (Entero)
+Introducir tipo Nodo destino(Autor, Conferencia, Paper, Terme, MidElement)
+Introducir label Nodo destino(Database, DataMining, AI, InformationRetrieval)
+Introducir Threshold del resultado(Real)
+Introducir valor hetesim del resultado (>= Threshold)
+Introducir nombre grafo asociado: 
+Introducir id grafo asociado (Entero): 
+-Resultado creado: 
+------------------------------------------------
+Resultado: 
+1
+Resultado: nomGraf test.Path@66d33a test.Node@7cf10a6f test.Node@7e0babb1
+    Path: test.Path@66d33a
+    N1: nomNodeOrig
+    N2: nomNodeDest
+    Threshold: 0.11
+
+    First Node: nomNodeOrig - Second Node: nomNodeDest - Hetesim: 0.89
+
+RESULTADO GUARDADO
+RESULTADO BORRADO
+
+
+Introducir opción:
+0.- Salir
+1.- Test Path deep copy
+2.- Test Result deep copy
+3.- Test Graf deep copy
+4.- Test constructor
+5.- Test store and load Paths
+6.- Test load all Paths
+7.- Test store and load Results
+8.- Test store Graf
+9.- Test load Graf and associated Results
+10.- Test delete Path
+11.- Test delete Result
+
+
+

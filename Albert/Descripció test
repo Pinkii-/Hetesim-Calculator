@@ -1,0 +1,35 @@
+Descripció dels jocs de proves
+
+• Objecte de la prova:
+  Es prova el correcte funcionament de la classe CtrlData. 
+  
+• Altres elements integrats a la prova:
+  S'integra en la prova les classes Result,Path,Pair,Node,NodePairComparator,NodePair,Matrix,LoadStoreResult,LoadStorePath,Graf i CtrlDataGraph.
+  
+• Drivers construïts per aquesta prova i integrats en l'executable:
+  CtrlDataTest es un executable unic que realitza el test sencer de CtrlData.
+  Esta fet per a comprovar el correcte funcionament de cada métode que ofereix el controlador CtrlData.
+  
+• Stubs construïts per aquesta prova i integrats en l'executable, amb descripció de la
+seva missió:
+  No n'hi ha.
+  
+• Fitxers de dades necessaris: nom dels fitxers de dades, si n'hi ha, i tal cas les
+classes que s'emmagatzemen en cadascun
+  Tot esta contingut en un executable amb nom CtrlDataTest.jar
+  
+• Valors estudiats: 
+  Els valors utilitzats han de complir ser del tipus corresponent per a cada entrada demanada.
+  Una entrada diferent a l'altre, sempre que siguin del mateix tipus, no afectará al funcionament
+  de CtrlData.
+ 
+• Efectes estudiats:
+  S'ha estudiat que CtrlData compleixi les funcionalitats de realitzar copies en profunditat d'objectes,
+  servir correctament els resultats dels gestors de dades que controla, i oferir les dades correctament a
+  aquests gestors.
+
+• Operativa:
+  Per a poder editar els jocs de proves, s'ha dividit el fitxer (in) en diversos fitxers (in1,in2,in3,...in8)
+  amb les diverses proves (una per a cada opció que permet executar CtrlDataTest)
+  Per un altre banda, es pot introduir l'input de manera interactiva.
+  Per a fer servir el fitxer input i direccionar la sortida a un fitxer: cat in | java -jar CtrlDataTest.jar > out.txt
