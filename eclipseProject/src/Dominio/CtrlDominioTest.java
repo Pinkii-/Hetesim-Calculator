@@ -182,7 +182,7 @@ public class CtrlDominioTest {
 			switch (index) {
 			case 0:
 				System.out
-						.println("Indica el nombre y el contenido del path que deseas añadir (cada uno en una linea):");
+						.println("Indica el nombre y el contenido del path que deseas anyadir (cada uno en una linea):");
 				System.out.print("> ");
 				pathName = br.readLine();
 				System.out.print("> ");
@@ -250,13 +250,13 @@ public class CtrlDominioTest {
 			System.out.println(
 					"Hola, soy CtrlDominio y me encargo de gestionar las busquedas y el I/O. Que quieres que haga?");
 			System.out.println("0 - Importa el grafo de pruebas (necesario si no has inicializado el grafo antes)");
-			System.out.println("1 - Realiza una búsqueda con un path.");
-			System.out.println("2 - Realiza una búsqueda con un una entidad y un path.");
-			System.out.println("3 - Realiza una búsqueda con dos entidades y un path");
+			System.out.println("1 - Realiza una busqueda con un path.");
+			System.out.println("2 - Realiza una busqueda con un una entidad y un path.");
+			System.out.println("3 - Realiza una busqueda con dos entidades y un path");
 			System.out.println("4 - Guarda el grafo actual.");
 			System.out.println("5 - Carga un grafo ya guardado.");
 			System.out.println(
-					"6 - Imprime el grafo (lo hace CtrlGrafo, pero yo te dejo hacerlo aquí por conveniencia :D )");
+					"6 - Imprime el grafo (lo hace CtrlGrafo, pero yo te dejo hacerlo aquï¿½ por conveniencia :D )");
 			System.out.println("7 - Salir.");
 			System.out.print("> ");
 			Integer index;
