@@ -67,6 +67,14 @@ public class CtrlGraph {
 		} else
 			System.out.println("Relation already exists");
 	}
+	
+	public void printNodesOfType(String t){		
+		Utils.printNodesOfType(graph, Utils.getNodeType(t));
+	}
+	
+	public void printGraf(){
+		Utils.printGraf(graph);
+	}
 
 	// PRE: node1 MUST be a paper
 	public void eraseNodeRelation(Integer node1Index, Integer node2Index, String node2Type) {
