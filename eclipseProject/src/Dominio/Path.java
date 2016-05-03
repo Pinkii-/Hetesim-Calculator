@@ -9,19 +9,17 @@ import java.util.ArrayList;
  * and open the template in the editor.
  */
 
-
 /**
  *
  * @author Eduard Maestro
  */
 public class Path implements Serializable {
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private ArrayList<Node.Type> contingut;
+    private ArrayList<Node.Type> contingut;
+    private String path;
     private String descripcioPath;
     private String nomPath;
+    
+    private static final long serialVersionUID = 1L;
     
     //Pre: Cert.
     //Post: Es crea un path buit.
@@ -29,6 +27,7 @@ public class Path implements Serializable {
         nomPath = new String();
         descripcioPath = new String();
         contingut = new ArrayList<>();
+        path = new String();
     }
     
     //Pre: Cert.
@@ -37,16 +36,18 @@ public class Path implements Serializable {
         nomPath = new String();
         descripcioPath = new String();
         contingut = new ArrayList<>();
+        this.path = new String();
         
-        nomPath = path;
+        this.path = path;
+        nomPath = nom;
         descripcioPath = descripcio;
         contingut = stringapath(path);
     }
     
     
     
-    //Pre: 
-    //Post:
+    //Pre: path nomes conte les lletres 'A', 'P', 'C', 'T';
+    //Post: Retorna un arraylist amb les lletres canviades per Node.Type;
     private ArrayList<Node.Type> stringapath(String path) {
         ArrayList<Node.Type> noucontingut;
         noucontingut = new ArrayList<>();
@@ -72,14 +73,44 @@ public class Path implements Serializable {
         return noucontingut;
     }
     
+    //Pre: path nomes conte les lletres 'A', 'P', 'C', 'T';
+    //Post: Retorna un arraylist amb les lletres canviades per Node.Type;
+    public Node.Type tipoUltimaLetra(String path) {
+        Node.Type noutype;
+        int i = path.length() - 1;
+        // Autor A, paper P, term T, conference C; Paper al medio;
+        switch (path.charAt(i)) {
+            case 'A':
+                noutype = Node.Type.Autor;
+                break;
+            case 'C':
+                noutype = Node.Type.Conferencia;
+                break;
+            case 'P':
+                noutype = Node.Type.Paper;
+                break;
+            case 'T':
+                noutype = Node.Type.Terme;
+                break;
+            default:
+                noutype = Node.Type.MidElement;
+                break;
+        }
+        return noutype;
+    }
+    
+    
     //Pre: Cert.
     //Post: Especifica el contingut del path.
     public void setContingut(String contingut) {
         this.contingut.clear(); // Vacio/limpio el arraylist;
+        this.path = contingut;
         this.contingut = stringapath(contingut);
-        
     }
     
+    public String getStringPath () {
+        return this.path;
+    }
     
     //Pre: Cert.
     //Post: Especifica la descripcio del path.
@@ -133,6 +164,8 @@ public class Path implements Serializable {
         }
         return reversed;
     }
+    
+    
     
     //Pre: Contingut no és buit.
     //Post: retorn la primera i la segona meitat del contigut del path.

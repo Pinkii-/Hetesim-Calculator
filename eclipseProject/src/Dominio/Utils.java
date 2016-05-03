@@ -91,7 +91,7 @@ public class Utils {
 
 	}
 
-	private static void printMatrix(Matrix m) {
+	public static void printMatrix(Matrix m) {
 		for (int i = 0; i < m.getNRows(); ++i) {
 			ArrayList<Float> fila = new ArrayList<Float>();
 			fila = m.getRow(i);
@@ -103,7 +103,7 @@ public class Utils {
 		}
 	}
 
-	private static void printNode(Node n) {
+	public static void printNode(Node n) {
 		String retStr = "";
 		retStr += "Name: " + n.getNom() + "  Type: " + n.getTipus().toString();
 		System.out.println("(" + retStr + ")");
