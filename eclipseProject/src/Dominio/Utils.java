@@ -14,13 +14,13 @@ public class Utils {
 
 	public static Node.Type getNodeType(String s) {
 		s = s.toLowerCase();
-		if (s.equals("author"))
+		if (s.equals("autor"))
 			return Node.Type.Autor;
-		if (s.equals("conference"))
+		if (s.equals("conferencia"))
 			return Node.Type.Conferencia;
 		if (s.equals("paper"))
 			return Node.Type.Paper;
-		if (s.equals("term"))
+		if (s.equals("terme"))
 			return Node.Type.Terme;
 		else
 			return Node.Type.MidElement;
@@ -31,6 +31,42 @@ public class Utils {
 	}
 
 	// Printing functions
+	
+	private static void printMatrixNodes(Graf g, Matrix m, Node.Type t){
+		for (int i = 0; i < m.getNRows(); ++i) {
+			System.out.print(i + ": ");
+			printNode(g.getNode(i, t));
+		}
+	}
+	
+	private static void printPaperNodes(Graf g, Matrix m){
+		try{
+			for (int i = 0; i < m.getNCols(); ++i) {
+				System.out.print(i + ": ");
+				printNode(g.getNode(i, Node.Type.Paper));
+			}
+		}catch(Exception e){
+			//Resulta que si no hay papers peta el programa :)
+		}
+
+	}
+	
+	public static void printNodesOfType(Graf g, Node.Type t){
+		Matrix mauthor = g.getMatrixAuthor();
+		Matrix mterme = g.getMatrixTerm();
+		Matrix mconf = g.getMatrixConf();
+		if(t == Node.Type.Autor){
+			printMatrixNodes(g, mauthor, t);			
+		}else if(t == Node.Type.Conferencia){
+			printMatrixNodes(g, mconf, t);
+		}else if(t == Node.Type.Terme){
+			printMatrixNodes(g, mterme, t);
+		}else if(t == Node.Type.Paper){
+			printPaperNodes(g, mauthor);
+		}else{
+			System.out.println("Node type not found " + t);
+		}
+	}
 
 	public static void printGraf(Graf g) {
 		System.out.println("------------------------------------------------");
@@ -45,34 +81,17 @@ public class Utils {
 		System.out.println("|||Matriz Adyaciencia ConferenciaPaper|||");
 		printMatrix(mconf);
 		System.out.println("Nodos Autor:\n");
-		for (int i = 0; i < mauthor.getNRows(); ++i) {
-			System.out.print(i + ": ");
-			printNode(g.getNode(i, Node.Type.Autor));
-		}
+		printMatrixNodes(g, mauthor, Node.Type.Autor);
 		System.out.println("Nodos Terme:\n");
-		for (int i = 0; i < mterme.getNRows(); ++i) {
-			System.out.print(i + ": ");
-			printNode(g.getNode(i, Node.Type.Terme));
-		}
+		printMatrixNodes(g, mterme, Node.Type.Terme);
 		System.out.println("Nodos Conferencia:\n");
-		for (int i = 0; i < mconf.getNRows(); ++i) {
-			System.out.print(i + ": ");
-			printNode(g.getNode(i, Node.Type.Conferencia));
-		}
+		printMatrixNodes(g, mconf, Node.Type.Conferencia);
 		System.out.println("Nodos Paper:\n");
-		try{
-			for (int i = 0; i < mauthor.getNCols(); ++i) {
-				System.out.print(i + ": ");
-				printNode(g.getNode(i, Node.Type.Paper));
-			}
-		}catch(Exception e){
-			//Resulta que si no hay papers peta el programa :)
-		}
-
+		printPaperNodes(g, mauthor);
 
 	}
 
-	private static void printMatrix(Matrix m) {
+	public static void printMatrix(Matrix m) {
 		for (int i = 0; i < m.getNRows(); ++i) {
 			ArrayList<Float> fila = new ArrayList<Float>();
 			fila = m.getRow(i);
@@ -84,7 +103,7 @@ public class Utils {
 		}
 	}
 
-	private static void printNode(Node n) {
+	public static void printNode(Node n) {
 		String retStr = "";
 		retStr += "Name: " + n.getNom() + "  Type: " + n.getTipus().toString();
 		System.out.println("(" + retStr + ")");

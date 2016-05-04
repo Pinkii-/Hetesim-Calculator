@@ -1,10 +1,9 @@
-//Autor: Xavier Peñalosa
 package Dominio;
 
 import java.util.Comparator;
 
 /**
- * @author Xavier
+ * @author Xavier Peñalosa
  *
  * Defines the way to compare two NodePairs based on their HeteSim value:
  * The greater it is, the higher it will appear in the Result (Used in a mergesort by Result.java)

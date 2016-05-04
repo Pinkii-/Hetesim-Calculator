@@ -1,5 +1,5 @@
-package Dominio;
 
+package Dominio;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -8,7 +8,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Scanner;
+
+
 
 /*
  * CtrlDataTest: Driver para testear DataTest.
@@ -16,6 +17,7 @@ import java.util.Scanner;
 public class CtrlDataTest {
 	
 	static CtrlData cd = new CtrlData();
+	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	
 	public static void main (String[] args) throws FileNotFoundException, ClassNotFoundException, IOException, CloneNotSupportedException {
 		
@@ -24,9 +26,10 @@ public class CtrlDataTest {
 		
 		while(select != 0){
 			try{
-				Scanner scanner = new Scanner(System.in);
-				System.out.println("Introducir opción:\n"
-						+"1.- Test Path deep copy\n" +
+				
+				System.out.println("Introducir opción:\n"+
+						"0.- Salir\n"+
+						"1.- Test Path deep copy\n" +
 						"2.- Test Result deep copy\n" +
 						"3.- Test Graf deep copy\n" +
 						"4.- Test constructor\n" +
@@ -37,7 +40,7 @@ public class CtrlDataTest {
 						"9.- Test load Graf and associated Results\n"+
 						"10.- Test delete Path\n"+
 						"11.- Test delete Result\n");
-				select = Integer.parseInt(scanner.nextLine()); 
+				select = Integer.parseInt(br.readLine()); 
 	
 				switch(select){
 				case 1: 
@@ -87,7 +90,6 @@ public class CtrlDataTest {
 		
 		
 	}
-	//Database, DataMining, AI, InformationRetrieval
 	private static Node.Label switchLabel(String label) throws Exception {
 		switch(label) {
 		case "Database":
@@ -104,7 +106,6 @@ public class CtrlDataTest {
 		throw new Exception("Error introduciendo el Label");
 
 	}
-	// Autor, Conferencia, Paper, Terme, MidElement
 	private static Node.Type switchType(String type) throws Exception {
 		switch(type) {
 		case "Autor":
@@ -123,40 +124,40 @@ public class CtrlDataTest {
 		throw new Exception("Error introduciendo el tipo");
 	}
 
-	private static ArrayList<Integer> enterDataGraf(Graf g) {
+	private static ArrayList<Integer> enterDataGraf(Graf g) throws IOException {
 		ArrayList<Integer> numNodes = new ArrayList<Integer>();
-		Scanner scanner = new Scanner(System.in);
+		
 		System.out.println("------------------------------------------------");
 		System.out.println("Primero vamos a añadir unos cuantos nodos de tipo Paper al grafo");
 		System.out.println("Introduce un nombre para los nodos de tipo Paper");
-		String name = scanner.nextLine();
+		String name = br.readLine();
 		System.out.println("-Introduce el número de nodos de tipo Paper a añadir (:");
-		numNodes.add(Integer.parseInt(scanner.nextLine()));
+		numNodes.add(Integer.parseInt(br.readLine()));
 		for (int i = 0; i < numNodes.get(0); ++i) {
 			g.addNode(Node.Type.Paper, i, name);
 		}
 		System.out.println("Vamos a añadir unos cuantos nodos de tipo Autor al grafo");
 		System.out.println("Introduce un nombre para los nodos de tipo Autor");
-		name = scanner.nextLine();
+		name = br.readLine();
 		System.out.println("-Introduce el número de nodos de tipo Autor a añadir:");
-		numNodes.add(Integer.parseInt(scanner.nextLine()));
+		numNodes.add(Integer.parseInt(br.readLine()));
 		
 		for (int i = 0; i < numNodes.get(1); ++i) {
 			g.addNode(Node.Type.Autor, i, name);
 		}
 		System.out.println("Vamos a añadir unos cuantos nodos de tipo Terme al grafo");
 		System.out.println("Introduce un nombre para los nodos de tipo Terme");
-		name = scanner.nextLine();
+		name = br.readLine();
 		System.out.println("-Introduce el número de nodos de tipo Terne a añadir:");
-		numNodes.add(Integer.parseInt(scanner.nextLine()));
+		numNodes.add(Integer.parseInt(br.readLine()));
 		for (int i = 0; i < numNodes.get(2); ++i) {
 			g.addNode(Node.Type.Terme, i, name);
 		}
 		System.out.println("Vamos a añadir unos cuantos nodos de tipo Conferencia al grafo");
 		System.out.println("Introduce un nombre para los nodos de tipo Conferencia");
-		name = scanner.nextLine();;
+		name = br.readLine();;
 		System.out.println("-Introduce el número de nodos de tipo Conferencia a añadir:");
-		numNodes.add(Integer.parseInt(scanner.nextLine()));
+		numNodes.add(Integer.parseInt(br.readLine()));
 		for (int i = 0; i < numNodes.get(3); ++i) {
 			g.addNode(Node.Type.Conferencia, i, name);
 		}
@@ -280,59 +281,59 @@ public class CtrlDataTest {
 	}
 	
 	private static Result enterDataResult() throws Exception {
-		Scanner scanner = new Scanner(System.in);
+		
 		Path p = new Path();
 		System.out.println("Creamos path usado del Resultado");
 		enterDataPath(p);
 		Node n1 = new Node();
 		Node n2 = new Node();
 		System.out.println("Introducir nombre Nodo origen");
-		String nom = scanner.nextLine();
+		String nom = br.readLine();
 		System.out.println("Introducir id Nodo origen (Entero)");
-		String id = scanner.nextLine();
+		String id = br.readLine();
 		System.out.println("Introducir tipo Nodo origen (Autor, Conferencia, Paper, Terme, MidElement)");
-		Node.Type t = switchType(scanner.nextLine());
+		Node.Type t = switchType(br.readLine());
 		System.out.println("Introducir label Nodo origen (Database, DataMining, AI, InformationRetrieval)");
-		Node.Label l = switchLabel(scanner.nextLine());
+		Node.Label l = switchLabel(br.readLine());
 		
 		n1.initialize(t,Integer.parseInt(id), nom);
 		n1.setLabel(l);
 		
 		System.out.println("Introducir nombre Nodo destino");
-		String nomd = scanner.nextLine();
+		String nomd = br.readLine();
 		System.out.println("Introducir id Nodo destino (Entero)");
-		String idd = scanner.nextLine();
+		String idd = br.readLine();
 		System.out.println("Introducir tipo Nodo destino(Autor, Conferencia, Paper, Terme, MidElement)");
-		Node.Type td = switchType(scanner.nextLine());
+		Node.Type td = switchType(br.readLine());
 		System.out.println("Introducir label Nodo destino(Database, DataMining, AI, InformationRetrieval)");
-		Node.Label ld = switchLabel(scanner.nextLine());
+		Node.Label ld = switchLabel(br.readLine());
 		
 		n2.initialize(td, Integer.parseInt(idd), nomd);
 		n2.setLabel(ld);
 		
 		System.out.println("Introducir Threshold del resultado(Real)");
-		Float Threshold = Float.parseFloat(scanner.nextLine());
+		Float Threshold = Float.parseFloat(br.readLine());
 		System.out.println("Introducir valor hetesim del resultado (>= Threshold)");
-		Float valhete = Float.parseFloat(scanner.nextLine());
+		Float valhete = Float.parseFloat(br.readLine());
 		System.out.println("Introducir nombre grafo asociado: ");
-		String nomg = scanner.nextLine();
+		String nomg = br.readLine();
 		System.out.println("Introducir id grafo asociado (Entero): ");
-		int idg = Integer.parseInt(scanner.nextLine());
+		int idg = Integer.parseInt(br.readLine());
 		Graf g = new Graf(nomg,idg);
 		Result rs = new Result(g,Threshold,valhete,p,n1,n2);
 		return rs;
 	}
 	
-	private static void modifyResult(Result rs) {
-		Scanner scanner = new Scanner(System.in);
+	private static void modifyResult(Result rs) throws IOException {
+		
 		System.out.println("Introducir nuevo id de grafo: ");
-		rs.setIdGraf(scanner.nextLine());
+		rs.setIdGraf(br.readLine());
 		System.out.println("Introducir nuevo id de resutado: ");
-		rs.setIdResult(scanner.nextLine());
+		rs.setIdResult(br.readLine());
 		System.out.println("Introducir nuevo Threshold: ");
-		rs.setThreshold(Float.parseFloat(scanner.nextLine()));
+		rs.setThreshold(Float.parseFloat(br.readLine()));
 		System.out.println("Introducir nuevo valor de HeteSim para el resultado: ");
-		rs.modifLine(0, Float.parseFloat(scanner.nextLine()));
+		rs.modifLine(0, Float.parseFloat(br.readLine()));
 	}
 
 	private static void printResult(Result rs) {
@@ -340,10 +341,8 @@ public class CtrlDataTest {
 		System.out.println("Resultado: ");
 		System.out.println(rs.toString());
 	}
-	//Genera un path que será usado para luego copiarlo y modificarlo
-	//Tambien imprime por pantalla los datos de los que se compone el Path generado
+	
 	private static void enterDataPath(Path p) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		System.out.println("------------------------------------------------");
 		System.out.println("Nombre del Path: ");
 		String scan = (br.readLine());
@@ -387,15 +386,12 @@ public class CtrlDataTest {
 		printPath(p);
 		
 		System.out.println("-Copia del Path (tendria que tener los valores del path original)@@@");
-		printPath(copy); //Han de sortir els valors originals
+		printPath(copy); 
 				
 	}
 	
 	private static void testResultDeepCopy() throws Exception {		
-		//Se supone que Nodo funciona
-		//Se supone que NodePair funciona
-		//Se quiere comprobar el funcionamiento de CtrlData.deepCopy con Resultados.
-		Scanner scanner = new Scanner(System.in);
+		
 		System.out.println("@@@Vamos a generar un resultado@@@");
 		System.out.println("------------------------------------------------");
 		Result rs = enterDataResult();
@@ -420,15 +416,15 @@ public class CtrlDataTest {
 		
 	}	
 	
-	private static void testGrafDeepCopy() {
-		Scanner scanner = new Scanner(System.in);
+	private static void testGrafDeepCopy() throws IOException {
+		
 		System.out.println("@@@Vamos a generar un grafo@@@");
 		System.out.println("@@@Por simplicidad relacionaremos todas las entidades posibles@@@");
 		System.out.println("@@@Así mismo, repetiremos los datos de los nodos de cada tipo@@@");
 		System.out.println("Nombre del grafo: ");
-		String nom = (scanner.nextLine());
+		String nom = (br.readLine());
 		System.out.println("Id grafo (Entero): ");
-		int id = Integer.parseInt(scanner.nextLine());
+		int id = Integer.parseInt(br.readLine());
 		Graf g = new Graf(nom,id);
 		enterDataGraf(g);
 		printGraf(g);
@@ -463,7 +459,6 @@ public class CtrlDataTest {
 	}
 	
 	private static void testStoreAndLoadPaths() throws FileNotFoundException, CloneNotSupportedException, IOException, ClassNotFoundException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		System.out.println("@@@Vamos a generar una serie de Paths@@@");
 		System.out.println("[cont],[end]");
 		String res = "";
@@ -491,7 +486,7 @@ public class CtrlDataTest {
 	}
 	
 	private static void testLoadAllPaths() throws FileNotFoundException, CloneNotSupportedException, IOException, ClassNotFoundException {
-		Scanner scanner = new Scanner(System.in);
+		
 		System.out.println("@@@Vamos a cargar todos los Paths anteriormente guardados@@@");
 		try {
 		ArrayList<Path> pathsCargados = cd.loadallPaths();
@@ -510,18 +505,18 @@ public class CtrlDataTest {
 
 	
 	private static void testStoreAndLoadResults() throws Exception {
-		Scanner scanner = new Scanner(System.in);
+		
 		System.out.println("@@@Vamos a generar una serie de Resultados@@@");
 		System.out.println("[cont],[end]");
 		String res = "";
-		res = scanner.nextLine();
+		res = br.readLine();
 		ArrayList<Result> results = new ArrayList<Result>();
 		while (!res.equals("end")) {
 			Result rs = enterDataResult();
 			results.add(rs);
 			cd.storeResult(rs);
 			System.out.println("[cont],[end]");
-			res = scanner.nextLine();
+			res = br.readLine();
 		}
 		System.out.println("Resultados:");
 		java.io.File PathtoResult;
@@ -537,14 +532,14 @@ public class CtrlDataTest {
 	}
 	
 	private static void testStoreGraf() throws FileNotFoundException, IOException {
-		Scanner scanner = new Scanner(System.in);
+		
 		System.out.println("@@@Vamos a generar un grafo@@@");
 		System.out.println("@@@Por simplicidad relacionaremos todas las entidades posibles@@@");
 		System.out.println("@@@Así mismo, repetiremos los datos de los nodos de cada tipo@@@");
 		System.out.println("Nombre del grafo: ");
-		String nom = (scanner.nextLine());
+		String nom = (br.readLine());
 		System.out.println("Id grafo (Entero): ");
-		int id = Integer.parseInt(scanner.nextLine());
+		int id = Integer.parseInt(br.readLine());
 		Graf g = new Graf(nom,id);
 		enterDataGraf(g);
 		cd.storeGraf(g);
@@ -558,13 +553,14 @@ public class CtrlDataTest {
 	}
 	
 	public static void testLoadGrafAndResults() throws Exception {
-		Scanner scanner = new Scanner(System.in);
+		
 		System.out.println("@@@Vamos a cargar un grafo anteriormente guardado, y sus resultados asociados@@@");
 		Graf g = new Graf();
 		ArrayList<Result> results = new ArrayList<Result>();
 		Pair<Graf,ArrayList<Result>> GrafAndResults = new Pair<Graf,ArrayList<Result>>(g,results);
-		System.out.println("Selecciona uno de los grafos almacenados anteriormente: ");
-		String in = scanner.nextLine();
+		System.out.println("Selecciona uno de los grafos almacenados anteriormente (idGrafo): ");
+		String in = br.readLine();
+		try {
 		GrafAndResults = cd.loadgraphAndResults(in);
 		System.out.println("-Grafo cargado:");
 		printGraf(GrafAndResults.first);
@@ -572,6 +568,11 @@ public class CtrlDataTest {
 		for (int i = 0; i < GrafAndResults.second.size(); ++i) {
 			printResult(GrafAndResults.second.get(i));
 		}
+		}
+		catch(Exception e) {
+			System.out.println("Es necesario guardar un grafo y algún resultado asociado antes ");
+		}
+		
 		
 	}
 	
