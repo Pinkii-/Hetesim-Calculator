@@ -5,22 +5,22 @@
 package Dominio;
 
 public class CtrlGraph {
-	private Graf graph;
+	private Graph graph;
 	Boolean isModified = false;
 
 	public CtrlGraph() {
-		graph = new Graf();
+		graph = new Graph();
 	}
 
-	public CtrlGraph(Graf graph) {
+	public CtrlGraph(Graph graph) {
 		this.graph = graph;
 	}
 
-	public Graf getGraph() {
+	public Graph getGraph() {
 		return graph;
 	}
 
-	public void setGraph(Graf graph) {
+	public void setGraph(Graph graph) {
 		isModified = true;
 		this.graph = graph;
 	}

@@ -43,7 +43,7 @@ public class HeteSanic {
 	private SparseMatrix term2mid;
 	private SparseMatrix paper2termMid;
 	
-	private Graf graph;
+	private Graph graph;
 	
 	private enum PathTypes {
 		Author2Paper, Conf2Paper, Term2Paper, 
@@ -88,11 +88,12 @@ public class HeteSanic {
 	
 	// POST ESPECIALIZATION
 	
-	public void setGraph(Graf g) {
+	public void setGraph(Graph g) {
 		graph = g;
 		paperAuthor = paperConf = paperTerm = authorMid = confMid = termMid = false;
 	}
 	
+	// pre: no puede haber un paper que no este conectado a un autor, una conferencia y un tema como minimo
 	public SparseMatrix getHeteSim(Path p) throws PathException {
 		ArrayList<Node.Type> left, right;
 		Pair<ArrayList<Node.Type>, ArrayList<Node.Type>> aux = p.getPath();
@@ -103,6 +104,7 @@ public class HeteSanic {
 		return normaliceHeteSim(mutiplyMatrixes(getMatrixesToMultiply(left,right)),mutiplyMatrixes(getMatrixesToMultiply(right,left)));
 	}
 	
+	// pre: no puede haber un paper que no este conectado a un autor, una conferencia y un tema como minimo
 	public ArrayList<Pair<Integer,Float>> getHeteSim(Path p, Node n) throws PathException {
 		ArrayList<Node.Type> left, right;
 		Pair<ArrayList<Node.Type>, ArrayList<Node.Type>> aux = p.getPath();
@@ -122,6 +124,7 @@ public class HeteSanic {
 		return ret;
 	}
 	
+	// pre: no puede haber un paper que no este conectado a un autor, una conferencia y un tema como minimo
 	public Float getHeteSim(Path p, Node n1, Node n2) throws PathException {
 		ArrayList<Node.Type> left, right;
 		Pair<ArrayList<Node.Type>, ArrayList<Node.Type>> aux = p.getPath();

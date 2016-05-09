@@ -43,7 +43,7 @@ public class Result implements Cloneable, Serializable{
 	 * @param resultHete > Matrix with the hetesim values corresponding to the nodes i, j.
 	 * @param p > Path used to calculate the hetesim values.
 	 */
-	public Result(final Graf g, final Float threshold, final Matrix resultHete, final Path p){
+	public Result(final Graph g, final Float threshold, final Matrix resultHete, final Path p){
 		if (resultHete == null) throw new RuntimeException("Null Matrix. Can't create result.");
 		
 		usedP = p;
@@ -54,7 +54,7 @@ public class Result implements Cloneable, Serializable{
 		
 		resultList = new ArrayList<NodePair>();
 		for (Integer i = 0; i < resultHete.getNRows(); ++i){
-			for (Integer j = 0; j < resultHete.getNCols(); ++j){
+			for (Integer j : resultHete.getRow(i).keySet()) {
 				if (resultHete.getValue(i,j) != 0.f){
 					Node n1 = g.getNode(i, p.getContingut().get(0)); //Get first node
 					Node n2 = g.getNode(j, p.getContingut().get(p.getLength()-1)); //Get second node
@@ -80,7 +80,7 @@ public class Result implements Cloneable, Serializable{
 	 * @param n1 > Starting node from which HeteSim was calculated.
 	 */
 	//One node, one path
-	public Result(final Graf g, final Float threshold, final ArrayList<Pair<Integer,Float>> resultHete, final Path p, final Node n1) {
+	public Result(final Graph g, final Float threshold, final ArrayList<Pair<Integer,Float>> resultHete, final Path p, final Node n1) {
 		if (p.getContingut().get(0) != n1.getTipus()) throw new RuntimeException("Result Path/Node: Node type doesn't match path");
 		if (resultHete == null) throw new RuntimeException("Null ArrayList. Can't create result.");
 		
@@ -115,7 +115,7 @@ public class Result implements Cloneable, Serializable{
 	 * @param n1 > Starting node from which HeteSim was calculated.
 	 * @param n2 > Destination node from which HeteSim was calculated.
 	 */
-	public Result(final Graf g, final float threshold, final Float resultHete, final Path p, final Node n1, final Node n2){
+	public Result(final Graph g, final float threshold, final Float resultHete, final Path p, final Node n1, final Node n2){
 		//Assert that the path starts with the node type N1 and ends with the node type N2
 		if (p.getContingut().get(0) != n1.getTipus()) throw new RuntimeException("Result Path/Node/Node: Node 1 type doesn't match path");
 		if (p.getContingut().get(p.getLength()-1) != n2.getTipus()) throw new RuntimeException("Result Path/Node/Node: Node 2 type doesn't match path");
@@ -165,7 +165,7 @@ public class Result implements Cloneable, Serializable{
 	 * @param g > Graph used to check consistency with the stored nodes.
 	 * @return String with a value of result.toString(). It might have an extra line at the start. 
 	 */
-	public String toString(Graf g){
+	public String toString(Graph g){
 		String retStr = new String();
 		if (String.valueOf(g.id) != idGraph || modified) retStr = retStr + "Not consistent!\n";
 		retStr = retStr + toString();

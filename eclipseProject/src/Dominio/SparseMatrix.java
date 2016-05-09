@@ -12,21 +12,24 @@ import java.util.Set;
 public class SparseMatrix {
 	ArrayList<SparseVector> rows = new ArrayList<SparseVector>();
 	ArrayList<SparseVector> cols = new ArrayList<SparseVector>();
-
-	public SparseMatrix(Matrix matrix) {
-		int nCols = matrix.getNCols();
+	// Si hubiera algun paper que no tiene ninguna relacion con autor, term o conf, va a petar la multiplicacion de matrices
+	public SparseMatrix(Matrix matrix) { 
+		int nCols = 0;
 		int nRows = matrix.getNRows();
 		for (int i = 0; i < nRows; ++i) {
 			rows.add(new SparseVector());
+			nCols = Math.max(nCols, matrix.getNCols(i));
 		}
 		for (int i = 0; i < nCols; ++i) {
 			cols.add(new SparseVector());
 		}
-		for (int i = 0; i < nRows; ++i) {
-			for (int j = 0; j < nCols; ++j) {
-				set(i,j,matrix.getValue(i, j));
+		
+		for (int i = 0; i < matrix.getNRows(); ++i) {
+			for (Integer j : matrix.getRow(i).keySet()) {
+				set(i, j, matrix.getValue(i,j));
 			}
 		}
+		
 	}
 	
 	SparseMatrix(int nRows, int nCols) {
@@ -129,28 +132,28 @@ public class SparseMatrix {
 		return ret;
 	}
 	
-	static SparseMatrix multiply(Matrix m1, SparseMatrix m2) {
-		if (m1.getNCols() != m2.getNRows()) throw new RuntimeException("Dimension 'm1' cols and 'm2' rows disagree");
-		SparseMatrix ret = new SparseMatrix(m1.getNRows(), m2.getNCols());
-		for (int i = 0; i < ret.getNRows(); ++i) {
-			ArrayList<Float> v1 = m1.getRow(i);
-			for (int j = 0; j < ret.getNCols(); ++j) {
-				ret.set(i, j, SparseVector.multiply(v1, m2.getCol(j)));
-			}
-		}
-		return ret;
-	}
+//	static SparseMatrix multiply(Matrix m1, SparseMatrix m2) {
+//		if (m1.getNCols() != m2.getNRows()) throw new RuntimeException("Dimension 'm1' cols and 'm2' rows disagree");
+//		SparseMatrix ret = new SparseMatrix(m1.getNRows(), m2.getNCols());
+//		for (int i = 0; i < ret.getNRows(); ++i) {
+//			ArrayList<Float> v1 = m1.getRow(i);
+//			for (int j = 0; j < ret.getNCols(); ++j) {
+//				ret.set(i, j, SparseVector.multiply(v1, m2.getCol(j)));
+//			}
+//		}
+//		return ret;
+//	}
 	
-	static SparseMatrix multiply(SparseMatrix m1, Matrix m2) {
-		SparseMatrix ret = new SparseMatrix(m1.getNRows(), m2.getNCols());
-		for (int i = 0; i < ret.getNRows(); ++i) {
-			SparseVector v1 = m1.getRow(i);
-			for (int j = 0; j < ret.getNCols(); ++j) {
-				ret.set(i, j, SparseVector.multiply(v1, m2.getCol(j)));
-			}
-		}
-		return ret;
-	}
+//	static SparseMatrix multiply(SparseMatrix m1, Matrix m2) {
+//		SparseMatrix ret = new SparseMatrix(m1.getNRows(), m2.getNCols());
+//		for (int i = 0; i < ret.getNRows(); ++i) {
+//			SparseVector v1 = m1.getRow(i);
+//			for (int j = 0; j < ret.getNCols(); ++j) {
+//				ret.set(i, j, SparseVector.multiply(v1, m2.getCol(j)));
+//			}
+//		}
+//		return ret;
+//	}
 	
 	void normaliceRows() {
 		for (int i = 0; i < getNRows(); ++i) {
@@ -180,12 +183,19 @@ public class SparseMatrix {
 	public Matrix toMatrix() {
 		System.out.println("Starting to parseTo matrix");
 		Matrix ret = new Matrix();
-		ret.setTamany(getNRows(), getNCols());
+		ret.setNFiles(rows.size());
 		for (int i = 0; i < getNRows(); ++i) {
-			for (Integer k : rows.get(i).keySet()){
-				ret.getRow(i).set(k, getValue(i,k)); // bypassing the things and modifiying directly the 'm'
+			for (Integer j : rows.get(i).keySet()) {
+				ret.setRelevance(i, j, getValue(i,j));
 			}
 		}
+		
+		// Legacyda
+//		for (int i = 0; i < getNRows(); ++i) {
+//			for (Integer k : rows.get(i).keySet()){
+//				ret.getRow(i).put(k, getValue(i,k)); // bypassing the things and modifiying directly the 'm'
+//			}
+//		}
 		System.out.println("Done parseToMatrix");
 		return ret;
 	}

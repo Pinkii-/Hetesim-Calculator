@@ -40,7 +40,7 @@ public class CtrlData {
 	
 	private Path pathToGrafsAndResults; //Path del directorio donde siempre se guardan las carpetas: (idGrafo ,que tiene dentro: grafo y sus resultados)
 	private Path pathToPaths;		  //Path del directorio donde siempre guardamos los Paths.
-	private Pair<Graf,ArrayList<Result>> graphAndResults;
+	private Pair<Graph,ArrayList<Result>> graphAndResults;
 	private ArrayList<Dominio.Path> allPaths;
 
 	/**
@@ -145,16 +145,16 @@ public class CtrlData {
 	 * @param idGraf > String que identifica el grado guardado.
 	 * @return pair<Graf,ArrayList<Result>> > Pair que contiene el grafo con id idGraf y un ArrayList con sus resultados asociados.	
 	 */
-	public  Pair<Graf,ArrayList<Result>> loadgraphAndResults(String idGraf) throws ClassNotFoundException, FileNotFoundException, IOException {
+	public  Pair<Graph,ArrayList<Result>> loadgraphAndResults(String idGraf) throws ClassNotFoundException, FileNotFoundException, IOException {
 		Path p = Paths.get(pathToGrafsAndResults.toString());
 		p = p.resolve(idGraf);
 		checkSubdirectory(p);
 		cg = new CtrlDataGraph();
 		lsr = new LoadStoreResult(p.toString());
 		
-		Graf g = new Graf();
+		Graph g = new Graph();
 		ArrayList<Result> results = new ArrayList<Result>();
-		graphAndResults = new Pair<Graf,ArrayList<Result>>(g, results);
+		graphAndResults = new Pair<Graph,ArrayList<Result>>(g, results);
 		
 		graphAndResults.second = lsr.LoadAllResults();
 		graphAndResults.first = cg.loadGraph(pathToGrafsAndResults.resolve(idGraf).resolve(idGraf).toString());
@@ -197,9 +197,9 @@ public class CtrlData {
 	 * Método que permite almacenar un Grafo
 	 * @param g > Graf que se desea almacenar.
 	 */
-	public void storeGraf(Graf g) throws FileNotFoundException, IOException {
+	public void storeGraf(Graph g) throws FileNotFoundException, IOException {
 		Path p = Paths.get(pathToGrafsAndResults.toString());
-		Graf gc = (Graf) CtrlData.deepCopy(g);
+		Graph gc = (Graph) CtrlData.deepCopy(g);
 		p = p.resolve(String.valueOf(g.id));
 		checkSubdirectory(p);
 		cg = new CtrlDataGraph();

@@ -12,7 +12,7 @@ public class Propject {
 
 	public static void main(String[] args) throws IOException, PathException {
 		System.out.println("HelloOoOoO PROP");
-		Graf g = GraphImporter.leMagicGoesOn("/home/pinkii/Documents/PROP/DBLP_four_area/");
+		Graph g = GraphImporter.leMagicGoesOn("/home/pinkii/Documents/PROP/DBLP_four_area/");
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		

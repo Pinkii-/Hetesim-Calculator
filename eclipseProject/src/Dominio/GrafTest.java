@@ -1,7 +1,7 @@
 package Dominio;
 
 import java.util.Scanner;
-import Dominio.Graf;
+import Dominio.Graph;
 import Dominio.Node;
 
 /**
@@ -35,7 +35,7 @@ public class GrafTest {
         Node.Label etiq = null;
         int ind, ind2;
         Node n = new Node();
-        Graf g = new Graf();     //creadora
+        Graph g = new Graph();     //creadora
         Scanner in = new Scanner (System.in); //Creación de un objeto Scanner
         int op = Integer.parseInt(in.nextLine()); //Invocamos un método sobre un objeto Scanner
         

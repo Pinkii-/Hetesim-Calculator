@@ -32,14 +32,14 @@ public class Utils {
 
 	// Printing functions
 	
-	private static void printMatrixNodes(Graf g, Matrix m, Node.Type t){
+	private static void printMatrixNodes(Graph g, Matrix m, Node.Type t){
 		for (int i = 0; i < m.getNRows(); ++i) {
 			System.out.print(i + ": ");
 			printNode(g.getNode(i, t));
 		}
 	}
 	
-	private static void printPaperNodes(Graf g, Matrix m){
+	private static void printPaperNodes(Graph g, Matrix m){
 		try{
 			for (int i = 0; i < m.getNCols(); ++i) {
 				System.out.print(i + ": ");
@@ -51,7 +51,7 @@ public class Utils {
 
 	}
 	
-	public static void printNodesOfType(Graf g, Node.Type t){
+	public static void printNodesOfType(Graph g, Node.Type t){
 		Matrix mauthor = g.getMatrixAuthor();
 		Matrix mterme = g.getMatrixTerm();
 		Matrix mconf = g.getMatrixConf();
@@ -68,7 +68,7 @@ public class Utils {
 		}
 	}
 
-	public static void printGraf(Graf g) {
+	public static void printGraf(Graph g) {
 		System.out.println("------------------------------------------------");
 		System.out.println("-Nom Graf: " + g.getNom());
 		Matrix mauthor = g.getMatrixAuthor();

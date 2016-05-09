@@ -37,7 +37,7 @@ public class CtrlDominio {
 	 * ctrlSearch.setGraph(ctrlGraph.getGraph()); }
 	 */
 	public void createGraph() {
-		ctrlGraph.setGraph(new Graf());
+		ctrlGraph.setGraph(new Graph());
 		ctrlSearch.setGraph(ctrlGraph.getGraph());
 	}
 
@@ -57,7 +57,7 @@ public class CtrlDominio {
 	}
 
 	public void loadGraph(String idGraph) {
-		Pair<Graf, ArrayList<Result>> auxPair;
+		Pair<Graph, ArrayList<Result>> auxPair;
 		try {
 			auxPair = ctrlData.loadgraphAndResults(idGraph);
 			ctrlGraph = new CtrlGraph(auxPair.first);
@@ -88,7 +88,7 @@ public class CtrlDominio {
 	 */
 
 	public String searchPathThreshhold(Float threshold, String pathName) {
-		Graf graf = ctrlGraph.getGraph();
+		Graph graf = ctrlGraph.getGraph();
 		if (ctrlGraph.isModified)
 			ctrlSearch.setGraph(ctrlGraph.getGraph());
 		try {
@@ -104,7 +104,7 @@ public class CtrlDominio {
 
 	public String searchPath(String pathName) {
 		System.out.println(ctrlPaths.getPath(pathName).getContingut());
-		Graf graf = ctrlGraph.getGraph();
+		Graph graf = ctrlGraph.getGraph();
 		if (ctrlGraph.isModified)
 			ctrlSearch.setGraph(ctrlGraph.getGraph());
 		try {
@@ -119,7 +119,7 @@ public class CtrlDominio {
 	}
 
 	public String searchPathNodeThreshhold(Float threshold, String pathName, Integer nodeIndex) {
-		Graf graf = ctrlGraph.getGraph();
+		Graph graf = ctrlGraph.getGraph();
 		if (ctrlGraph.isModified)
 			ctrlSearch.setGraph(ctrlGraph.getGraph());
 		try {
@@ -137,7 +137,7 @@ public class CtrlDominio {
 	}
 
 	public String searchPathNode(String pathName, Integer nodeIndex) {
-		Graf graf = ctrlGraph.getGraph();
+		Graph graf = ctrlGraph.getGraph();
 		if (ctrlGraph.isModified)
 			ctrlSearch.setGraph(ctrlGraph.getGraph());
 		try {
@@ -156,7 +156,7 @@ public class CtrlDominio {
 
 	public String searchPathNodeNodeThreshhold(Float threshold, String pathName, Integer node1Index,
 			Integer node2Index) {
-		Graf graf = ctrlGraph.getGraph();
+		Graph graf = ctrlGraph.getGraph();
 		if (ctrlGraph.isModified)
 			ctrlSearch.setGraph(ctrlGraph.getGraph());
 		try {
@@ -175,7 +175,7 @@ public class CtrlDominio {
 	}
 
 	public String searchPathNodeNode(String pathName, Integer node1Index, Integer node2Index) {
-		Graf graf = ctrlGraph.getGraph();
+		Graph graf = ctrlGraph.getGraph();
 		if (ctrlGraph.isModified)
 			ctrlSearch.setGraph(ctrlGraph.getGraph());
 		try {

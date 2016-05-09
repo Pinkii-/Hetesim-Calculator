@@ -18,7 +18,7 @@ import Persistencia.GraphImporter;
 public class HeteSanicTest {
 
 	static HeteSanic hetesanic = new HeteSanic();
-	static Graf graph;
+	static Graph graph;
 	static Path path;
 	
 	public static void main(String[] args) throws IOException {
@@ -168,7 +168,7 @@ public class HeteSanicTest {
 		Node.Type type;
 		switch (charAt) {
 		case 'P':
-			size = graph.getMatrixTerm().getNCols();
+			size = graph.getPapers().size();
 			type = Node.Type.Paper;
 			break;
 		case 'T':

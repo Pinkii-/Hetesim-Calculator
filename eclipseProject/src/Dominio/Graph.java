@@ -7,7 +7,7 @@ import java.util.ArrayList;
  *
  * @author chus
  */
-public class Graf implements Serializable {
+public class Graph implements Serializable {
     
     //Atributos
     
@@ -23,7 +23,7 @@ public class Graf implements Serializable {
     private static final long serialVersionUID = 1L;
     //Metodos
     
-    public Graf(String nom, int id) {
+    public Graph(String nom, int id) {
         this.nom = nom;
         this.id = id;
         autorPaper = new Matrix();
@@ -35,7 +35,7 @@ public class Graf implements Serializable {
         termes = new ArrayList<Node>();
     }   
     
-    public Graf() {
+    public Graph() {
         autorPaper = new Matrix();
         temaPaper = new Matrix();
         confPaper = new Matrix();
@@ -61,27 +61,24 @@ public class Graf implements Serializable {
                 res = autors.size();
                 aux.initialize(tipus,res,nom);
                 autors.add(aux);
-                autorPaper.addNodeRow();
+                autorPaper.addNode();
                 break;
             case Conferencia:
                 res = conferencies.size();
                 aux.initialize(tipus,res,nom);
                 conferencies.add(aux);
-                confPaper.addNodeRow();
+                confPaper.addNode();
                 break;
             case Paper:
                 res = papers.size();
                 aux.initialize(tipus,res,nom);
                 papers.add(aux);
-                autorPaper.addNodeCol();
-                confPaper.addNodeCol();
-                temaPaper.addNodeCol();
                 break;
             case Terme:
                 res = termes.size();
                 aux.initialize(tipus,res,nom);
                 termes.add(aux);
-                temaPaper.addNodeRow();
+                temaPaper.addNode();
                 break;
             default: 
                 System.out.println ("Tipo incorrecto");
@@ -176,15 +173,15 @@ public class Graf implements Serializable {
             case Autor: 
                 i = existsNode(a);
                 if (i != -1 && j != -1) return autorPaper.existeixArc(i,j);
-                else throw new RuntimeException("Graf::existsArc() : No existe alguno de los nodos");
+                else throw new RuntimeException("Graph::existsArc() : No existe alguno de los nodos");
             case Conferencia: 
                 i = existsNode(a);
                 if (i != -1 && j != -1) return confPaper.existeixArc(i,j);
-                else throw new RuntimeException("Graf::existsArc() : No existe alguno de los nodos");
+                else throw new RuntimeException("Graph::existsArc() : No existe alguno de los nodos");
             case Terme: 
                 i = existsNode(a);
                 if (i != -1 && j != -1) return temaPaper.existeixArc(i,j);
-                else throw new RuntimeException("Graf::existsArc() : No existe alguno de los nodos");
+                else throw new RuntimeException("Graph::existsArc() : No existe alguno de los nodos");
             default: 
                 System.out.println ("Tipo incorrecto");
                 return false;
@@ -192,62 +189,31 @@ public class Graf implements Serializable {
     } 
     
     public void deleteNode(Node a) {
-        int i = 0;
-        boolean trob = false;
-        switch(a.getTipus()) {
-            case Autor:
-                i = 0;
-                trob = false;
-                while (i < autors.size() && !trob) {
-                    if (autors.get(i) != null) trob = (autors.get(i).equals(a));
-                    if (!trob) ++i;
-                }
-                if(trob) {
+        int i = existsNode(a);
+        if (i != -1) {
+            switch(a.getTipus()) {
+                case Autor:
                     autorPaper.borraFila(i);
                     autors.set(i,null);
-                }
-                break;
-            case Conferencia:
-                i = 0;
-                trob = false;
-                while (i < conferencies.size() && !trob) {
-                    if (conferencies.get(i) != null) trob = (conferencies.get(i).equals(a));
-                    if (!trob) ++i;
-                }
-                if(trob) {
+                    break;
+                case Conferencia:
                     confPaper.borraFila(i);
-                    conferencies.set(i,null);
-                } 
-                break;
-            case Paper: 
-                i = 0;
-                trob = false;
-                while (i < papers.size() && !trob) {
-                    if (papers.get(i) != null) trob = (papers.get(i).equals(a));
-                    if (!trob) ++i;
-                }
-                if (trob) {
+                    conferencies.set(i,null); 
+                    break;
+                case Paper: 
                     autorPaper.borraCol(i);
                     confPaper.borraCol(i);
                     temaPaper.borraCol(i);
                     papers.set(i,null);
-                }
-                break;
-            case Terme: 
-                i = 0;
-                trob = false;
-                while (i < termes.size() && !trob) {
-                    if (termes.get(i) != null) trob = (termes.get(i).equals(a));
-                    if (!trob) ++i;
-                }
-                if (trob) {
+                    break;
+                case Terme: 
                     temaPaper.borraFila(i);
                     termes.set(i,null);
-                }
-                break;
-            default: 
-                System.out.println ("Tipo incorrecto");
-                break;
+                    break;
+                default: 
+                    System.out.println ("Tipo incorrecto");
+                    break;
+            }
         }
     }
     
@@ -265,7 +231,7 @@ public class Graf implements Serializable {
                 if (i != -1 && j != -1) confPaper.esborrarArc(i,j);
                 else System.out.println ("No existeix el Node/s");
                 break;
-            case Terme: 
+            case Terme:
                 i = existsNode(a);
                 if (i != -1 && j != -1) temaPaper.esborrarArc(i,j);
                 else System.out.println ("No existeix el Node/s");
@@ -327,23 +293,47 @@ public class Graf implements Serializable {
         return confPaper;
     }
     
+    public ArrayList<Node> getAutors() {
+        return autors;
+    }
+    
+    public ArrayList<Node> getConferencies() {
+        return conferencies;
+    }
+    
+    public ArrayList<Node> getPapers() {
+        return papers;
+    }
+    
+    public ArrayList<Node> getTermes() {
+        return termes;
+    }
+    
     public void escriuArray(Node.Type tipus) {
         switch(tipus) {
-            case Autor: for (int i = 0; i < autors.size(); ++i) 
-                if (autors.get(i) != null) System.out.println ("Autor " + i + ": " + autors.get(i).getNom() + "");
-                else System.out.println ("Autor " + i + ": esborrat");
+            case Autor: 
+                for (int i = 0; i < autors.size(); ++i) {
+                    if (autors.get(i) != null) System.out.println ("Autor " + i + ": " + autors.get(i).getNom() + "");
+                    else System.out.println ("Autor " + i + ": esborrat");
+                }
                 break;
-            case Conferencia: for (int i = 0; i < conferencies.size(); ++i) 
-                if (conferencies.get(i) != null) System.out.println ("Conferencia " + i + ": " + conferencies.get(i).getNom() + ""); 
-                else System.out.println ("Conferencia " + i + ": esborrada");
+            case Conferencia: 
+                for (int i = 0; i < conferencies.size(); ++i) { 
+                    if (conferencies.get(i) != null) System.out.println ("Conferencia " + i + ": " + conferencies.get(i).getNom() + ""); 
+                    else System.out.println ("Conferencia " + i + ": esborrada");
+                }
                 break;
-            case Paper: for (int i = 0; i < papers.size(); ++i) 
-                if (papers.get(i) != null) System.out.println ("Paper " + i + ": " + papers.get(i).getNom() + "");
-                else System.out.println ("Paper " + i + ": esborrat");
+            case Paper: 
+                for (int i = 0; i < papers.size(); ++i) {
+                    if (papers.get(i) != null) System.out.println ("Paper " + i + ": " + papers.get(i).getNom() + "");
+                    else System.out.println ("Paper " + i + ": esborrat");
+                }
                 break;
-            case Terme: for (int i = 0; i < termes.size(); ++i) 
-                if (termes.get(i) != null) System.out.println ("Terme " + i + ": " + termes.get(i).getNom() + "");
-                else System.out.println ("Terme " + i + ": esborrat");
+            case Terme: 
+                for (int i = 0; i < termes.size(); ++i) {
+                    if (termes.get(i) != null) System.out.println ("Terme " + i + ": " + termes.get(i).getNom() + "");
+                    else System.out.println ("Terme " + i + ": esborrat");
+                }
                 break;
             default: 
                 System.out.println ("Tipo incorrecto");
@@ -351,4 +341,4 @@ public class Graf implements Serializable {
         }
     }
 }
- 
+  

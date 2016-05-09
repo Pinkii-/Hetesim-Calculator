@@ -50,7 +50,7 @@ class HeteSim {
 	private Matrix term2mid;
 	private Matrix paper2termMid;
 	
-	private Graf graph;
+	private Graph graph;
 	
 	private enum PathTypes {
 		Author2Paper, Conf2Paper, Term2Paper, 
@@ -136,7 +136,7 @@ class HeteSim {
 	
 	// POST ESPECIALIZATION
 	
-	public void setGraph(Graf g) {
+	public void setGraph(Graph g) {
 		graph = g;
 		paperAuthor = paperConf = paperTerm = authorMid = confMid = termMid = false;
 	}
