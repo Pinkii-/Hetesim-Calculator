@@ -12,11 +12,12 @@ import java.util.Map;
 
 /**
  *
- * @author Alejandro Ibáñez
+ * @author Alejandro Ibañez
  */
 public class Matrix {
     private ArrayList< HashMap<Integer,Float> > m = new ArrayList< HashMap<Integer,Float> >();
     private final float valArc = 1.0f;
+    private int nPapers = 0;
     
     public void afegirArc(int id1,int id2) {
         m.get(id1).put(id2, valArc);
@@ -57,18 +58,18 @@ public class Matrix {
         return m.get(i);
     }
     
+    public void addNFiles(int num) {
+    	while (m.size() < num) m.add(new HashMap<Integer,Float>());
+    }
+
     public void setNFiles(int f){
-        while (m.size() < f) m.add(new HashMap<Integer,Float>());
+        m = new ArrayList <HashMap<Integer,Float>>();
+        addNFiles(f);
     }
-
-    public void copiaTamany(Matrix c) {
-    
-    }
-
+   
     public void setRelevance(int id1,int id2,float r) {
         m.get(id1).put(id2, r);
     }
-
 
     public void borraFila(int index) {
        Iterator<Map.Entry<Integer,Float>> iter = m.get(index).entrySet().iterator();
@@ -83,15 +84,21 @@ public class Matrix {
             if (m.get(i).containsKey(index)) m.get(i).remove(index);
         }
     }
-
-    public void imprimir() {
-    /*for (int i = 0; i < m.size(); i++) {    
-        Iterator it = m.get(i).entrySet().iterator();
-            while (it.hasNext()) {
-                Map.Entry pair = (Map.Entry)it.next();
-                System.out.println("Estas imprimiendo la fila "+ i +" .");
-                System.out.println(pair.getKey() + " = " + pair.getValue());
-            }
-        }*/
+    
+    public void addPapers() {
+    	++nPapers;
+    }
+    
+    public int getNCols() {
+    	return nPapers;
+    }
+    
+    public void setNCols(int c) {
+    	nPapers = c;
+    }
+    
+    public void setTamany(int fils,int cols) {
+    	setNFiles(fils);
+    	setNCols(cols);
     }
 }

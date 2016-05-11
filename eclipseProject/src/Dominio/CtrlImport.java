@@ -20,7 +20,7 @@ import static java.util.Arrays.asList;
 public class CtrlImport {
 
     private final HashMap<Node.Type, HashMap<Integer, Integer>> eqHashMap = new HashMap<>();
-    private final Graf graph = new Graf();
+    private final Graph graph = new Graph();
     private final CtrlDataFiles data;
 
     private final List<DataFile> nodesFiles = asList(new DataFile("author.txt", Node.Type.Autor),
@@ -87,7 +87,7 @@ public class CtrlImport {
             HashMap<Integer, Integer> eqNode = new HashMap<>();
             
             node.stream().forEach((p) -> {
-                int eqID = graph.addNode(f.getType(), p.first.intValue(), p.second);
+                int eqID = graph.addNode(f.getType(), p.second);
                 eqNode.put(p.first, eqID);
             });
             eqHashMap.put(f.getType(), eqNode);
@@ -138,7 +138,7 @@ public class CtrlImport {
      * 
      * @return the graph
      */
-    public Graf getGraph() {
+    public Graph getGraph() {
         return graph;
     }
     

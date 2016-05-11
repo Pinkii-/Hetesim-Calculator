@@ -93,13 +93,10 @@ public class Utils {
 
 	public static void printMatrix(Matrix m) {
 		for (int i = 0; i < m.getNRows(); ++i) {
-			ArrayList<Float> fila = new ArrayList<Float>();
-			fila = m.getRow(i);
-			String conc = "";
 			for (int j = 0; j < m.getNCols(); ++j) {
-				conc += Float.toString(fila.get(j)) + " ";
+				System.out.print(m.getValue(i, j) + " ");
 			}
-			System.out.println(conc);
+			System.out.println("");
 		}
 	}
 
