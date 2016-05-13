@@ -18,7 +18,7 @@ import Persistencia.GraphImporter;
 public class HeteSimTest {
 
 	static HeteSim hetesim = new HeteSim();
-	static Graf graph;
+	static Graph graph;
 	static Path path;
 	
 	public static void main(String[] args) throws IOException {

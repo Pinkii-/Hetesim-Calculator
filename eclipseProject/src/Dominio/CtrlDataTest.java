@@ -124,7 +124,7 @@ public class CtrlDataTest {
 		throw new Exception("Error introduciendo el tipo");
 	}
 
-	private static ArrayList<Integer> enterDataGraf(Graf g) throws IOException {
+	private static ArrayList<Integer> enterDataGraf(Graph g) throws IOException {
 		ArrayList<Integer> numNodes = new ArrayList<Integer>();
 		
 		System.out.println("------------------------------------------------");
@@ -134,7 +134,7 @@ public class CtrlDataTest {
 		System.out.println("-Introduce el número de nodos de tipo Paper a añadir (:");
 		numNodes.add(Integer.parseInt(br.readLine()));
 		for (int i = 0; i < numNodes.get(0); ++i) {
-			g.addNode(Node.Type.Paper, i, name);
+			g.addNode(Node.Type.Paper, name);
 		}
 		System.out.println("Vamos a añadir unos cuantos nodos de tipo Autor al grafo");
 		System.out.println("Introduce un nombre para los nodos de tipo Autor");
@@ -143,7 +143,7 @@ public class CtrlDataTest {
 		numNodes.add(Integer.parseInt(br.readLine()));
 		
 		for (int i = 0; i < numNodes.get(1); ++i) {
-			g.addNode(Node.Type.Autor, i, name);
+			g.addNode(Node.Type.Autor, name);
 		}
 		System.out.println("Vamos a añadir unos cuantos nodos de tipo Terme al grafo");
 		System.out.println("Introduce un nombre para los nodos de tipo Terme");
@@ -151,7 +151,7 @@ public class CtrlDataTest {
 		System.out.println("-Introduce el número de nodos de tipo Terne a añadir:");
 		numNodes.add(Integer.parseInt(br.readLine()));
 		for (int i = 0; i < numNodes.get(2); ++i) {
-			g.addNode(Node.Type.Terme, i, name);
+			g.addNode(Node.Type.Terme, name);
 		}
 		System.out.println("Vamos a añadir unos cuantos nodos de tipo Conferencia al grafo");
 		System.out.println("Introduce un nombre para los nodos de tipo Conferencia");
@@ -159,7 +159,7 @@ public class CtrlDataTest {
 		System.out.println("-Introduce el número de nodos de tipo Conferencia a añadir:");
 		numNodes.add(Integer.parseInt(br.readLine()));
 		for (int i = 0; i < numNodes.get(3); ++i) {
-			g.addNode(Node.Type.Conferencia, i, name);
+			g.addNode(Node.Type.Conferencia, name);
 		}
 	
 		for (int i = 0; i < numNodes.get(1); ++i) {
@@ -180,7 +180,7 @@ public class CtrlDataTest {
 		return numNodes;
 		
 	}
-	private static void clearGraf(Graf g) {
+	private static void clearGraf(Graph g) {
 		ArrayList<Node> nodesAutor = new ArrayList<Node>();
 		for (int i = 0; i < g.getMatrixAuthor().getNRows(); ++i) {
 			nodesAutor.add(g.getNode(i, Node.Type.Autor));
@@ -230,7 +230,7 @@ public class CtrlDataTest {
 		g.getMatrixConf().setTamany(0, 0);
 		g.getMatrixTerm().setTamany(0, 0);
 	}
-	private static void printGraf(Graf g) {
+	private static void printGraf(Graph g) {
 		System.out.println("------------------------------------------------");
 		System.out.println("-Nom Graf: " + g.getNom());
 		Matrix mauthor = g.getMatrixAuthor();
@@ -319,7 +319,7 @@ public class CtrlDataTest {
 		String nomg = br.readLine();
 		System.out.println("Introducir id grafo asociado (Entero): ");
 		int idg = Integer.parseInt(br.readLine());
-		Graf g = new Graf(nomg,idg);
+		Graph g = new Graph(nomg,idg);
 		Result rs = new Result(g,Threshold,valhete,p,n1,n2);
 		return rs;
 	}
@@ -425,12 +425,12 @@ public class CtrlDataTest {
 		String nom = (br.readLine());
 		System.out.println("Id grafo (Entero): ");
 		int id = Integer.parseInt(br.readLine());
-		Graf g = new Graf(nom,id);
+		Graph g = new Graph(nom,id);
 		enterDataGraf(g);
 		printGraf(g);
-		Graf gcopy = null;
+		Graph gcopy = null;
 		try {
-			gcopy = (Graf) CtrlData.deepCopy(g);
+			gcopy = (Graph) CtrlData.deepCopy(g);
 		}
 		catch(Exception e) {
 			System.out.println("Ha habido algún problema con la función deepCopy");
@@ -540,7 +540,7 @@ public class CtrlDataTest {
 		String nom = (br.readLine());
 		System.out.println("Id grafo (Entero): ");
 		int id = Integer.parseInt(br.readLine());
-		Graf g = new Graf(nom,id);
+		Graph g = new Graph(nom,id);
 		enterDataGraf(g);
 		cd.storeGraf(g);
 		java.nio.file.Path PathtoGraf = Paths.get(cd.getPathtoGraphsAndResult(), String.valueOf(g.id),String.valueOf(g.id));
@@ -555,9 +555,9 @@ public class CtrlDataTest {
 	public static void testLoadGrafAndResults() throws Exception {
 		
 		System.out.println("@@@Vamos a cargar un grafo anteriormente guardado, y sus resultados asociados@@@");
-		Graf g = new Graf();
+		Graph g = new Graph();
 		ArrayList<Result> results = new ArrayList<Result>();
-		Pair<Graf,ArrayList<Result>> GrafAndResults = new Pair<Graf,ArrayList<Result>>(g,results);
+		Pair<Graph,ArrayList<Result>> GrafAndResults = new Pair<Graph,ArrayList<Result>>(g,results);
 		System.out.println("Selecciona uno de los grafos almacenados anteriormente (idGrafo): ");
 		String in = br.readLine();
 		try {

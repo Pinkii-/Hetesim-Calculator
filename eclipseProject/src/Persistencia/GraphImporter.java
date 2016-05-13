@@ -6,7 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
 
-import Dominio.Graf;
+import Dominio.Graph;
 import Dominio.Node;
 
 /**
@@ -16,7 +16,7 @@ import Dominio.Node;
  */
 
 public class GraphImporter {
-	static public Graf g;
+	static public Graph g;
 	static HashMap <Integer,Integer> authors = new HashMap <Integer,Integer>();
 	static HashMap <Integer,Integer> papers = new HashMap <Integer,Integer>();
 	static HashMap <Integer,Integer> terms = new HashMap <Integer,Integer>();
@@ -24,9 +24,9 @@ public class GraphImporter {
 	
 	static String directoryPath = "/home/pinkii/Documents/PROP/DBLP_four_area/";
 	
-	static public Graf leMagicGoesOn(String path) {
+	static public Graph leMagicGoesOn(String path) {
 		directoryPath = path;
-		g = new Graf();
+		g = new Graph();
 		authors = new HashMap <Integer,Integer>();
 		papers = new HashMap <Integer,Integer>();
 		terms = new HashMap <Integer,Integer>();
@@ -85,7 +85,7 @@ public class GraphImporter {
 				String[] sings = line.split("\\t");
 				Integer id = Integer.parseInt(sings[0]);
 				String name = sings[1];
-				map.put(id, g.addNode(type, id, name));
+				map.put(id, g.addNode(type, name));
 			}
 		} catch (IOException e) {
 			System.out.println("I'm so sorry, but I couldn't read your file :( " + Paths.get(directoryPath).resolve(path));

@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
-import Dominio.Graf;
+import Dominio.Graph;
 import java.io.File;
 import java.io.FileNotFoundException;
 
@@ -47,7 +47,7 @@ public class CtrlDataGraph {
      * @throws FileNotFoundException
      * @throws IOException
      */
-    public void saveGraph(Graf g, String filePath) throws FileNotFoundException, IOException {
+    public void saveGraph(Graph g, String filePath) throws FileNotFoundException, IOException {
 
         File file = new File(filePath);
         String name = file.getName();
@@ -65,13 +65,13 @@ public class CtrlDataGraph {
      * @throws FileNotFoundException
      * @throws IOException
      */
-    public Graf loadGraph(String filePath) throws FileNotFoundException, IOException {
+    public Graph loadGraph(String filePath) throws FileNotFoundException, IOException {
 
-        Graf g = null;
+        Graph g = null;
         try {
             FileInputStream fileInputStream = new FileInputStream(filePath + ".ser");
             ObjectInputStream in = new ObjectInputStream(fileInputStream);
-            g = (Graf) in.readObject();
+            g = (Graph) in.readObject();
             in.close();
             fileInputStream.close();
         } catch (ClassNotFoundException c) {
