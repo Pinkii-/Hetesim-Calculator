@@ -17,7 +17,7 @@ import java.util.Collections;
  * 
  */
 
-public class Result implements Cloneable, Serializable{
+public class Result implements Cloneable, Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	private Node firstN; //Search origin node
@@ -192,26 +192,6 @@ public class Result implements Cloneable, Serializable{
 		}
 		return retResult;
 	}
-	
-	
-	//Clone all the information, not just the main object
-	/*
-	public Result deepClone() {
-		try {
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			ObjectOutputStream oos = new ObjectOutputStream(baos);
-			oos.writeObject(this);
-
-			ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
-			ObjectInputStream ois = new ObjectInputStream(bais);
-			return (Result) ois.readObject();
-		} catch (IOException e) {
-			return null;
-		} catch (ClassNotFoundException e) {
-			return null;
-		}
-	}
-	*/
 	
 	
 	public String getIdResult(){
