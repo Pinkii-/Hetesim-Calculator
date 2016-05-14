@@ -15,7 +15,12 @@ public class VistaPrincipal {
 	
 	// Componentes UI
 	private JFrame jFrame = new JFrame(APPLICATION_NAME);
+	
+	// Panels;
+	enum Panels {ModificaGraph, Test};
+	
 	private JPanel content = new JPanel();
+	private JPanel modificaGraph = new ModificaGraphPanel();
 
 	// Menus
 	private JMenuBar menuBar = new JMenuBar();
@@ -49,6 +54,7 @@ public class VistaPrincipal {
 	private void initComponents() {
 		initFrame();
 		initMenuBar();
+//		changePanel(Panels.ModificaGraph);
 	}
 	
 	private void initFrame() {
@@ -61,7 +67,8 @@ public class VistaPrincipal {
 		
 		//set the first contentPanel
 		JPanel contentPane = (JPanel) jFrame.getContentPane();
-		contentPane.add(content);
+		contentPane.add(modificaGraph);
+		contentPane.setBackground(Color.blue);
 	}
 	
 	private void initMenuBar() {
@@ -83,6 +90,18 @@ public class VistaPrincipal {
 		jFrame.setJMenuBar(menuBar);
 	}
 	
-
+	void changePanel(Panels p) {
+		jFrame.getContentPane().removeAll();
+		switch (p) {
+			case ModificaGraph:
+				jFrame.getContentPane().add(modificaGraph);
+				break;
+			case Test:
+				jFrame.getContentPane().add(content);
+				break;
+			default:
+				throw new RuntimeException("Ese panel no existe h3h3h3h3h3h3h3h3h3h3h3h3h3h3h3");
+		}
+	}
 
 }
