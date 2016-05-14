@@ -17,10 +17,11 @@ public class VistaPrincipal {
 	private JFrame jFrame = new JFrame(APPLICATION_NAME);
 	
 	// Panels;
-	enum Panels {ModificaGraph, Test};
+	enum Panels {ModificaGraph, Test, Exit};
+	private Panels nextPanel;
 	
 	private JPanel content = new JPanel();
-	private JPanel modificaGraph = new ModificaGraphPanel();
+	private AbstractPanel modificaGraph = new PanelModificaGraph(this);
 
 	// Menus
 	private JMenuBar menuBar = new JMenuBar();
@@ -49,12 +50,33 @@ public class VistaPrincipal {
 		jFrame.setVisible(true);
 	}
 	
+	// listeners de los menus
+	
+	private void asign_listeners() {
+	
+		menuitemFileExit.addActionListener
+		( new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				changePanel(Panels.Exit);
+				
+			}
+		});
+		
+		menuitemEditGraph.addActionListener
+	    (new ActionListener() {
+	      public void actionPerformed (ActionEvent event) {
+	        changePanel(Panels.ModificaGraph);
+	      }
+	    });
+		
+	}
+	
 	// private metods
 	
 	private void initComponents() {
 		initFrame();
 		initMenuBar();
-//		changePanel(Panels.ModificaGraph);
+		asign_listeners();
 	}
 	
 	private void initFrame() {
@@ -67,7 +89,7 @@ public class VistaPrincipal {
 		
 		//set the first contentPanel
 		JPanel contentPane = (JPanel) jFrame.getContentPane();
-		contentPane.add(modificaGraph);
+		contentPane.add(content);
 		contentPane.setBackground(Color.blue);
 	}
 	
@@ -91,17 +113,33 @@ public class VistaPrincipal {
 	}
 	
 	void changePanel(Panels p) {
+		System.out.println("Cambiando a panel " + p.toString());
+		nextPanel = p;
+		try {
+			AbstractPanel currentPanel = (AbstractPanel) jFrame.getContentPane().getComponent(0);
+			currentPanel.closeIt();
+		}
+		catch (Exception e) {
+			continueAction();
+		}
+	}
+	
+	void continueAction() {
 		jFrame.getContentPane().removeAll();
-		switch (p) {
+		switch (nextPanel) {
 			case ModificaGraph:
 				jFrame.getContentPane().add(modificaGraph);
 				break;
 			case Test:
 				jFrame.getContentPane().add(content);
 				break;
+			case Exit:
+				System.exit(0);
 			default:
 				throw new RuntimeException("Ese panel no existe h3h3h3h3h3h3h3h3h3h3h3h3h3h3h3");
 		}
+		jFrame.pack();
+		jFrame.repaint();
 	}
 
 }

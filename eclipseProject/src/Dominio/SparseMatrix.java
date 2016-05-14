@@ -12,13 +12,12 @@ import java.util.Set;
 public class SparseMatrix {
 	ArrayList<SparseVector> rows = new ArrayList<SparseVector>();
 	ArrayList<SparseVector> cols = new ArrayList<SparseVector>();
-	// Si hubiera algun paper que no tiene ninguna relacion con autor, term o conf, va a petar la multiplicacion de matrices
+	
 	public SparseMatrix(Matrix matrix) { 
-		int nCols = 0;
+		int nCols = matrix.getNCols();
 		int nRows = matrix.getNRows();
 		for (int i = 0; i < nRows; ++i) {
 			rows.add(new SparseVector());
-			nCols = Math.max(nCols, matrix.getNCols(i));
 		}
 		for (int i = 0; i < nCols; ++i) {
 			cols.add(new SparseVector());

@@ -125,7 +125,7 @@ public class HeteSanic {
 	}
 	
 	// pre: no puede haber un paper que no este conectado a un autor, una conferencia y un tema como minimo
-	public Float getHeteSim(Path p, Node n1, Node n2) throws PathException {
+	public Float getHeteSim(Path p, Node n1, Node n2) throws PathException {		
 		ArrayList<Node.Type> left, right;
 		Pair<ArrayList<Node.Type>, ArrayList<Node.Type>> aux = p.getPath();
 		left = aux.first;
