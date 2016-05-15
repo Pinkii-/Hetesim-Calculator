@@ -9,12 +9,12 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 
-public class VistaPrincipal {
+public class VistaPrincipal extends VistaAbstracta{
 
 	private String APPLICATION_NAME = "ola k ase lol";
 	
 	// Componentes UI
-	private JFrame jFrame = new JFrame(APPLICATION_NAME);
+//	private JFrame this = new JFrame(APPLICATION_NAME);
 	
 	// Panels;
 	enum Panels {ModificaGraph, LoadResult, Test, Exit};
@@ -47,9 +47,17 @@ public class VistaPrincipal {
 	
 	public VistaPrincipal() {
 		initComponents();
-		jFrame.setEnabled(true);
-		jFrame.pack();
-		jFrame.setVisible(true);
+		this.setEnabled(true);
+		this.pack();
+		this.setVisible(true);
+		
+		this.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				System.out.println("windowClosing");
+				changePanel(Panels.Exit);
+			}
+		});
 	}
 	
 	// listeners de los menus
@@ -89,15 +97,15 @@ public class VistaPrincipal {
 	}
 	
 	private void initFrame() {
-		jFrame.setSize(600, 400);
-		jFrame.setMinimumSize(jFrame.getSize());
-		jFrame.setResizable(false);
+		this.setSize(600, 400);
+		this.setMinimumSize(this.getSize());
+		this.setResizable(false);
 		
-		jFrame.setLocationRelativeTo(null);
-		jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setLocationRelativeTo(null);
+		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		
 		//set the first contentPanel
-		JPanel contentPane = (JPanel) jFrame.getContentPane();
+		JPanel contentPane = (JPanel) this.getContentPane();
 		contentPane.add(content);
 		contentPane.setBackground(Color.blue);
 	}
@@ -119,15 +127,15 @@ public class VistaPrincipal {
 		menuBar.add(menuFile);
 		menuBar.add(menuEdit);
 		
-		jFrame.setJMenuBar(menuBar);
+		this.setJMenuBar(menuBar);
 	}
 	
 	void changePanel(Panels p) {
 		System.out.println("Cambiando a panel " + p.toString());
 		nextPanel = p;
 		try {
-			AbstractPanel currentPanel = (AbstractPanel) jFrame.getContentPane().getComponent(0);
-			currentPanel.closeIt();
+			AbstractPanel currentPanel = (AbstractPanel) this.getContentPane().getComponent(0);
+			currentPanel.close();
 		}
 		catch (Exception e) {
 			continueAction();
@@ -135,24 +143,31 @@ public class VistaPrincipal {
 	}
 	
 	void continueAction() {
-		jFrame.getContentPane().removeAll();
+		this.getContentPane().removeAll();
 		switch (nextPanel) {
 			case ModificaGraph:
-				jFrame.getContentPane().add(modificaGraph);
+				this.getContentPane().add(modificaGraph);
 				break;
 			case Test:
-				jFrame.getContentPane().add(content);
+				this.getContentPane().add(content);
 				break;
 			case LoadResult:
-				jFrame.getContentPane().add(loadResult);
+				this.getContentPane().add(loadResult);
 				break;
 			case Exit:
+				dispose();
 				System.exit(0);
 			default:
 				throw new RuntimeException("Ese panel no existe h3h3h3h3h3h3h3h3h3h3h3h3h3h3h3");
 		}
-		jFrame.pack();
-		jFrame.repaint();
+		this.pack();
+		this.repaint();
+	}
+	
+	void setEnabledPrincipal(Boolean b) {
+		System.out.println("lalala");
+		menuFile.setEnabled(b);
+		menuEdit.setEnabled(b);
 	}
 
 }

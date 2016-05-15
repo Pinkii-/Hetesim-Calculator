@@ -82,9 +82,9 @@ public class CtrlGraph {
 	}
 
 	// PRE: node1 MUST be a paper
-	public void eraseNodeRelation(Integer node1Index, Integer node2Index, String node2Type) {
+	public void eraseNodeRelation(Integer node1IndexPaper, Integer node2Index, String node2Type) {
 		isModified = true;
-		Node n1 = graph.getNode(node1Index, Node.Type.Paper);
+		Node n1 = graph.getNode(node1IndexPaper, Node.Type.Paper);
 		Node n2 = graph.getNode(node2Index, Utils.getNodeType(node2Type));
 		try {
 			if (graph.existsArc(n1, n2)) {
