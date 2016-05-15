@@ -22,7 +22,9 @@ public class PanelModificaGraph extends AbstractPanel {
 	@Override
 	public void closeIt() {
 		// Preguntar si estas seguro de que te pueden cerrar desde un sitio externo
-		vp.continueAction();
+		String[] buttons = {"Salir", "Cancelar"};
+		int result = VistaDialog.setDialog("Titulo", "¿Estas seguro que quieres salir?\n (Se perderan todo los cambios no guardados)", buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
+		if (result == 0) vp.continueAction();
 	}
 
 }
