@@ -77,56 +77,56 @@ public class MatrixManager implements Serializable {
 		return fileDirectory.toString();
 	}
 	
-	public void storeMatrix(Matrix m) throws IOException {
+	public void storeMatrix(Matrix m, String name) throws IOException {
 		try {
-			FileOutputStream FileOutput = new FileOutputStream(fileDirectory.resolve(m.getIdResult()+".Matrix").toString());
+			FileOutputStream FileOutput = new FileOutputStream(fileDirectory.resolve(name+".matrix").toString());
 			ObjectOutputStream ObjectOutput = new ObjectOutputStream(FileOutput);
 			ObjectOutput.writeObject(matrixDeepCopy(m));
 			ObjectOutput.close();
 		}
 		catch(FileNotFoundException fnfe){
-			System.out.println("Path absoluto fichero:"+fileDirectory.resolve(m.getIdResult()+".Matrix").toString());
+			System.out.println("Path absoluto fichero:"+fileDirectory.resolve(name+".matrix").toString());
 			System.out.println("No se puede guardar la Matriz");
 		}
 		
 	}
 	
-	public Matrix loadMatrix(String idMatrix ) throws IOException, ClassNotFoundException {
-		try {
-			FileInputStream FileInput = new FileInputStream(fileDirectory.resolve(idMatrix+".Matrix").toString());
+	public Matrix loadMatrix(String name ) throws IOException, ClassNotFoundException, FileNotFoundException {
+//		try {
+			FileInputStream FileInput = new FileInputStream(fileDirectory.resolve(name+".matrix").toString());
 			ObjectInputStream ObjectInput = new ObjectInputStream(FileInput);
 			Object aux = ObjectInput.readObject();
 			ObjectInput.close();
 			return (Matrix)aux;
-		}
+//		}
 		
-		catch(FileNotFoundException fnfe){
-			if (Files.notExists(fileDirectory.resolve(idMatrix+".Matrix"))) {
-				System.out.println("Path absoluto fichero: "+ fileDirectory.resolve(idMatrix+".Matrix").toString());
-				System.out.println("No se puede cargar la Matriz");
-			}
-			return null;
-		}
+//		catch(FileNotFoundException fnfe){
+//			if (Files.notExists(fileDirectory.resolve(name+".matrix"))) {
+//				System.out.println("Path absoluto fichero: "+ fileDirectory.resolve(name+".matrix").toString());
+//				System.out.println("No se puede cargar la Matriz");
+//			}
+//			return null;
+//		}
 		
 	}
 	
-	public void deleteMatrix(String idMatrix) throws Exception {
-		File file = new File(fileDirectory.resolve(idMatrix+".Matrix").toString());
+	public void deleteMatrix(String name) throws Exception {
+		File file = new File(fileDirectory.resolve(name+".matrix").toString());
 		if (!file.exists()) throw new Exception("No existe la Matriz con ese id");
 		if (!file.delete()) throw new Exception("No se ha podido eliminar la Matriz");
 	}
 	
 	public ArrayList<Matrix> LoadAllMatrices () throws ClassNotFoundException {
-		ArrayList<Matrix> Matrices = new ArrayList<Matrix>();   
+		ArrayList<Matrix> matrices = new ArrayList<Matrix>();   
 		try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(fileDirectory)) {
 	            for (Path path : directoryStream) {
-	            	if (path.toString().indexOf(".Matrix") != -1) {
+	            	if (path.toString().indexOf(".matrix") != -1) {
 	            		String s = path.getFileName().toString();
-	            		s = s.replace(".Matrix", "");
-	            		Matrices.add(loadMatrix(s));
+	            		s = s.replace(".matrix", "");
+	            		matrices.add(loadMatrix(s));
 	            	}
 	            }
-	            return Matrices;
+	            return matrices;
 	        } catch (IOException ex) {
 	        	System.out.println("No se puede iterar por las Matrices");
 	        	return null;

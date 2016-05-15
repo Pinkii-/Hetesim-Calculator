@@ -92,7 +92,7 @@ public class CtrlDominio {
 		if (ctrlGraph.isModified)
 			ctrlSearch.setGraph(ctrlGraph.getGraph());
 		try {
-			Result r = ctrlSearch.searchPathThreshhold(graf, threshold, ctrlPaths.getPath(pathName));
+			Result r = ctrlSearch.searchPathThreshhold(threshold, ctrlPaths.getPath(pathName));
 			ctrlResults.setLastResult(r);
 			return r.toString();
 		} catch (PathException e) {
@@ -108,7 +108,7 @@ public class CtrlDominio {
 		if (ctrlGraph.isModified)
 			ctrlSearch.setGraph(ctrlGraph.getGraph());
 		try {
-			Result r = ctrlSearch.searchPath(graf, ctrlPaths.getPath(pathName));
+			Result r = ctrlSearch.searchPath(ctrlPaths.getPath(pathName));
 			ctrlResults.setLastResult(r);
 			return r.toString();
 		} catch (PathException e) {
@@ -125,7 +125,7 @@ public class CtrlDominio {
 		try {
 			Path path = ctrlPaths.getPath(pathName);
 			ArrayList<Node.Type> pathTypes= path.getContingut();
-			Result r = ctrlSearch.searchPathNodeThreshhold(graf, threshold, ctrlPaths.getPath(pathName),
+			Result r = ctrlSearch.searchPathNodeThreshhold(threshold, ctrlPaths.getPath(pathName),
 					graf.getNode(nodeIndex, pathTypes.get(0)));
 			ctrlResults.setLastResult(r);
 			return r.toString();
@@ -143,7 +143,7 @@ public class CtrlDominio {
 		try {
 			Path path = ctrlPaths.getPath(pathName);
 			ArrayList<Node.Type> pathTypes= path.getContingut();
-			Result r = ctrlSearch.searchPathNode(graf, ctrlPaths.getPath(pathName),
+			Result r = ctrlSearch.searchPathNode(ctrlPaths.getPath(pathName),
 					graf.getNode(nodeIndex, pathTypes.get(0)));
 			ctrlResults.setLastResult(r);
 			return r.toString();
@@ -162,7 +162,7 @@ public class CtrlDominio {
 		try {
 			Path path = ctrlPaths.getPath(pathName);
 			ArrayList<Node.Type> pathTypes= path.getContingut();
-			Result r = ctrlSearch.searchPathNodeNodeThreshhold(graf, threshold, ctrlPaths.getPath(pathName),
+			Result r = ctrlSearch.searchPathNodeNodeThreshhold(threshold, ctrlPaths.getPath(pathName),
 					graf.getNode(node1Index, pathTypes.get(0)),
 					graf.getNode(node2Index, pathTypes.get(pathTypes.size() - 1)));
 			ctrlResults.setLastResult(r);
@@ -181,7 +181,7 @@ public class CtrlDominio {
 		try {
 			Path path = ctrlPaths.getPath(pathName);
 			ArrayList<Node.Type> pathTypes= path.getContingut();
-			Result r = ctrlSearch.searchPathNodeNode(graf, ctrlPaths.getPath(pathName),
+			Result r = ctrlSearch.searchPathNodeNode(ctrlPaths.getPath(pathName),
 					graf.getNode(node1Index, pathTypes.get(0)),
 					graf.getNode(node2Index, pathTypes.get(pathTypes.size() - 1)));
 			ctrlResults.setLastResult(r);

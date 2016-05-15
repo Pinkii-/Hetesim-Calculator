@@ -17,7 +17,7 @@ public class VistaPrincipal {
 	private JFrame jFrame = new JFrame(APPLICATION_NAME);
 	
 	// Panels;
-	enum Panels {ModificaGraph, Test, Exit, LoadResult};
+	enum Panels {ModificaGraph, LoadResult, Test, Exit};
 	private Panels nextPanel;
 	
 	private JPanel content = new JPanel();
