@@ -48,7 +48,7 @@ public class CtrlData {
 	 * @param o > Objeto a copiar
 	 * @return Objeto > Objeto que será una copia independiente del objeto o 
 	 */
-	static Object deepCopy(Object o) {
+	private static Object deepCopy(Object o) {
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			ObjectOutputStream oos = new ObjectOutputStream(baos);

@@ -17,11 +17,12 @@ public class VistaPrincipal {
 	private JFrame jFrame = new JFrame(APPLICATION_NAME);
 	
 	// Panels;
-	enum Panels {ModificaGraph, Test, Exit};
+	enum Panels {ModificaGraph, Test, Exit, LoadResult};
 	private Panels nextPanel;
 	
 	private JPanel content = new JPanel();
 	private AbstractPanel modificaGraph = new PanelModificaGraph(this);
+	private AbstractPanel loadResult = new PanelLoadResult(this);
 
 	// Menus
 	private JMenuBar menuBar = new JMenuBar();
@@ -31,6 +32,7 @@ public class VistaPrincipal {
 	private JMenuItem menuitemFileNewGraph = new JMenuItem("New Graph");
 	private JMenuItem menuitemFileLoadGraf = new JMenuItem("Load Graph");
 	private JMenuItem menuitemFileImportGraf = new JMenuItem("Import Graph");
+	private JMenuItem menuitemFileLoadResult = new JMenuItem("Load Result");
 
 	private JMenuItem menuitemFileExit = new JMenuItem("Exit");
 		// Edit
@@ -69,6 +71,13 @@ public class VistaPrincipal {
 	      }
 	    });
 		
+		menuitemFileLoadResult.addActionListener
+		(new ActionListener() {
+			public void actionPerformed (ActionEvent event) {
+				changePanel(Panels.LoadResult);
+			}
+		});
+		
 	}
 	
 	// private metods
@@ -98,6 +107,7 @@ public class VistaPrincipal {
 		menuFile.add(menuitemFileNewGraph);
 		menuFile.add(menuitemFileLoadGraf);
 		menuFile.add(menuitemFileImportGraf);
+		menuFile.add(menuitemFileLoadResult);
 		menuFile.add(menuitemFileExit);
 		
 		menuEditModify.add(menuitemEditGraph);
@@ -132,6 +142,9 @@ public class VistaPrincipal {
 				break;
 			case Test:
 				jFrame.getContentPane().add(content);
+				break;
+			case LoadResult:
+				jFrame.getContentPane().add(loadResult);
 				break;
 			case Exit:
 				System.exit(0);
