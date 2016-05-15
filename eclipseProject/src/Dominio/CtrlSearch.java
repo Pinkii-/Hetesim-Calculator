@@ -23,7 +23,7 @@ public class CtrlSearch {
 	public void setGraph(Graph g) {
 		this.g = g;
 		het.setGraph(g);
-		mm = new MatrixManager("matricesPrecalculadas"+g.id);
+		mm = new MatrixManager("matricesPrecalculadas/"+g.id);
 		lastMatrixWanted = "";
 	}
 
