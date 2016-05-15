@@ -19,7 +19,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import Dominio.Matrix;
-
+//Necesita que matrix tenga una id
 public class MatrixManager implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private Path fileDirectory;
