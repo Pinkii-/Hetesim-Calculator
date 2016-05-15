@@ -20,10 +20,10 @@ public class CtrlSearch {
 	Matrix lastMatrix;
 	String lastMatrixWanted;
 	
-	public void setGraph(Graph g, String pathToGraph) {
+	public void setGraph(Graph g) {
 		this.g = g;
 		het.setGraph(g);
-		mm = new MatrixManager(pathToGraph);
+		mm = new MatrixManager("matricesPrecalculadas"+g.id);
 		lastMatrixWanted = "";
 	}
 
