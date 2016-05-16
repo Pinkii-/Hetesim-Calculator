@@ -178,9 +178,5 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 			}
 		}
 		
-		else {
-			System.out.println("asd");
-		}
-		
 	}
 }
