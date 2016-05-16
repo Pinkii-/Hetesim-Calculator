@@ -17,21 +17,24 @@ abstract public class AbstractPanel extends JPanel {
 		childs = new ArrayList<VistaAbstracta>();
 	}
 	
-	public void close() {
-		if (childs.size() != 0) {
-			childs.get(0).toFront();
+	public int close() {
+		int ret = 0;
+		int currentChild = -1;
+		while (ret == 0 && ++currentChild < childs.size()) {
+			childs.get(currentChild).toFront();
 			// En windows el toFront no te pone la ventana deltante.
-			childs.get(0).setAlwaysOnTop(true);
-			childs.get(0).setAlwaysOnTop(false);
+			childs.get(currentChild).setAlwaysOnTop(true);
+			childs.get(currentChild).setAlwaysOnTop(false);
 			AbstractPanel panel = (AbstractPanel) childs.get(0).getContentPane().getComponent(0);
-			panel.close();
+			ret = panel.close();
 		}
-		else closeIt();
+		if (ret == 0) return closeIt();
+		else return ret;
 		
 	}
 	
-	// Preguntar si estás seguro de querer cerrarlo
-	abstract public void closeIt(); 
+	// Preguntar si estás seguro de querer cerrarlo. Devolver un 0 cuando si.
+	abstract public int closeIt(); 
 	
 	abstract public void setEnabledEverything(Boolean b);
 	
