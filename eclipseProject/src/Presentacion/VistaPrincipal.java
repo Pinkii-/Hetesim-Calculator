@@ -6,11 +6,16 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import Dominio.CtrlDominio;
+
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 
 public class VistaPrincipal extends VistaAbstracta{
 
+	private CtrlDominio cd;
+	
 	private String APPLICATION_NAME = "ola k ase lol";
 	
 	// Componentes UI
@@ -49,7 +54,8 @@ public class VistaPrincipal extends VistaAbstracta{
 	
 	// Constructor and public stuff
 	
-	public VistaPrincipal() {
+	public VistaPrincipal(CtrlDominio cd) {
+		super(cd);
 		initComponents();
 		this.setEnabled(true);
 		this.pack();
@@ -141,6 +147,8 @@ public class VistaPrincipal extends VistaAbstracta{
 		
 		this.setJMenuBar(menuBar);
 	}
+	
+	// Stuff
 	
 	void changePanel(Panels p) {
 		System.out.println("Cambiando a panel " + p.toString());
