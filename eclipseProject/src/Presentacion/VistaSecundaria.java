@@ -15,7 +15,6 @@ public class VistaSecundaria extends VistaAbstracta {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				System.out.println("windowClosing");
-				parent.setEnabledEverything(true);
 				AbstractPanel currentPanel = (AbstractPanel) vs.getContentPane().getComponent(0);
 				currentPanel.close();
 			}
