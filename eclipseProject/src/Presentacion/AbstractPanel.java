@@ -19,8 +19,10 @@ abstract public class AbstractPanel extends JPanel {
 	
 	public int close() {
 		int ret = 0;
-		int currentChild = -1;
-		while (ret == 0 && ++currentChild < childs.size()) {
+		int currentChild = 0;
+		System.out.println("Childs :" + childs.size());
+		
+		while (ret == 0 && currentChild < childs.size()) {
 			childs.get(currentChild).toFront();
 			// En windows el toFront no te pone la ventana deltante.
 			childs.get(currentChild).setAlwaysOnTop(true);
