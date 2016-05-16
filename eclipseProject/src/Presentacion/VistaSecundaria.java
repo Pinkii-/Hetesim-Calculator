@@ -3,11 +3,14 @@ package Presentacion;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import Dominio.CtrlDominio;
+
 public class VistaSecundaria extends VistaAbstracta {
 
 	AbstractPanel parent;
 	
-	VistaSecundaria(AbstractPanel p, boolean bloqueante) {
+	VistaSecundaria(CtrlDominio cd, AbstractPanel p, boolean bloqueante) {
+		super(cd);
 		parent = p;
 		parent.setEnabledEverything(!bloqueante);
 		VistaSecundaria vs = this;

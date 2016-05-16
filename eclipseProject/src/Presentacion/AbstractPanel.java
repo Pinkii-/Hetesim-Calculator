@@ -7,14 +7,18 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import Dominio.CtrlDominio;
+
 abstract public class AbstractPanel extends JPanel {
 	
 	VistaAbstracta vp;
 	ArrayList<VistaAbstracta> childs;
+	CtrlDominio cd;
 	
 	AbstractPanel(VistaAbstracta vp) {
 		this.vp = vp;
 		childs = new ArrayList<VistaAbstracta>();
+		cd = vp.getCtrlDominio();
 	}
 	
 	public int close() {
@@ -41,7 +45,7 @@ abstract public class AbstractPanel extends JPanel {
 	abstract public void setEnabledEverything(Boolean b);
 	
 	void addVista(Class<?> clas, boolean bloqueante) {
-		VistaSecundaria newView = new VistaSecundaria(this, bloqueante);
+		VistaSecundaria newView = new VistaSecundaria(cd,this, bloqueante);
 		newView.setSize(600, 400);
 		newView.setMinimumSize(newView.getSize());
 		newView.setResizable(false);

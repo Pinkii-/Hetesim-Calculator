@@ -55,7 +55,7 @@ public class VistaPrincipal extends VistaAbstracta{
 	// Constructor and public stuff
 	
 	public VistaPrincipal(CtrlDominio cd) {
-		this.cd = cd;
+		super(cd);
 		initComponents();
 		this.setEnabled(true);
 		this.pack();
@@ -68,10 +68,6 @@ public class VistaPrincipal extends VistaAbstracta{
 				changePanel(Panels.Exit);
 			}
 		});
-	}
-	
-	public CtrlDominio getCtrlDominio() {
-		return cd;
 	}
 	
 	// listeners de los menus
