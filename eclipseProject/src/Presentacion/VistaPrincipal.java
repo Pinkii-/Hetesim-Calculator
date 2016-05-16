@@ -36,6 +36,9 @@ public class VistaPrincipal extends VistaAbstracta{
 	private JMenuItem menuitemFileLoadResult = new JMenuItem("Load Result");
 
 	private JMenuItem menuitemFileExit = new JMenuItem("Exit");
+	
+
+	private JMenuItem menuitemNuevaBusqueda = new JMenuItem("New Search");
 		// Edit
 	private JMenu menuEdit = new JMenu("Edit");
 	private JMenu menuEditModify = new JMenu("Modify");
@@ -87,6 +90,12 @@ public class VistaPrincipal extends VistaAbstracta{
 			}
 		});
 		
+		menuitemNuevaBusqueda.addActionListener
+		(new ActionListener() {
+			public void actionPerformed (ActionEvent event) {
+				changePanel(Panels.NuevaBusqueda);
+			}
+		});
 		
 	}
 	
@@ -119,6 +128,7 @@ public class VistaPrincipal extends VistaAbstracta{
 		menuFile.add(menuitemFileImportGraf);
 		menuFile.add(menuitemFileLoadResult);
 		menuFile.add(menuitemFileExit);
+		menuFile.add(menuitemNuevaBusqueda);
 		
 		menuEditModify.add(menuitemEditGraph);
 		menuEditModify.add(menuitemEditPath);
