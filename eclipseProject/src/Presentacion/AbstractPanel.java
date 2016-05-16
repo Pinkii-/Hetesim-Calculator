@@ -38,8 +38,8 @@ abstract public class AbstractPanel extends JPanel {
 	
 	abstract public void setEnabledEverything(Boolean b);
 	
-	void addVista(Class<?> clas) {
-		VistaSecundaria newView = new VistaSecundaria(this);
+	void addVista(Class<?> clas, boolean bloqueante) {
+		VistaSecundaria newView = new VistaSecundaria(this, bloqueante);
 		newView.setSize(600, 400);
 		newView.setMinimumSize(newView.getSize());
 		newView.setResizable(false);

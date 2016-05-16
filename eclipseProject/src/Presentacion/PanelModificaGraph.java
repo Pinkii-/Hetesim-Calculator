@@ -35,7 +35,7 @@ public class PanelModificaGraph extends AbstractPanel {
 		PanelModificaGraph aux = this;
 		buttonAddNode.addActionListener( new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				aux.addVista(PanelModificaGraph.class);
+				aux.addVista(PanelModificaGraph.class, false);
 			}
 		});
 	}

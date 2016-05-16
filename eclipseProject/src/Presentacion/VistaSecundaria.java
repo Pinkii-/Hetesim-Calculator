@@ -7,9 +7,9 @@ public class VistaSecundaria extends VistaAbstracta {
 
 	AbstractPanel parent;
 	
-	VistaSecundaria(AbstractPanel p) {
+	VistaSecundaria(AbstractPanel p, boolean bloqueante) {
 		parent = p;
-		parent.setEnabledEverything(false);
+		parent.setEnabledEverything(!bloqueante);
 		VistaSecundaria vs = this;
 		this.addWindowListener(new WindowAdapter() {
 			@Override
