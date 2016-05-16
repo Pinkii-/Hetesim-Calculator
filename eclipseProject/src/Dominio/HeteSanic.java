@@ -140,7 +140,7 @@ public class HeteSanic {
 	// Private Metods
 	
 	private SparseMatrix arrayListToMatrix(SparseVector sparseVector) {
-		System.out.println("SparseVector to matrix \n" + sparseVector + "\n");
+//		System.out.println("SparseVector to matrix \n" + sparseVector + "\n");
 		SparseMatrix ret = new SparseMatrix(1, sparseVector.size());
 		for (int i : sparseVector.keySet()) {
 			ret.set(0,i,sparseVector.get(i));
@@ -149,7 +149,7 @@ public class HeteSanic {
 	}
 	
 	private SparseMatrix multiplyVectorMatrix(Node n, ArrayList<SparseMatrix> matrixesToMultiply) {
-		System.out.println("multiplying matrixes");
+//		System.out.println("multiplying matrixes");
 		if (matrixesToMultiply.size() < 1) {
 			System.out.println("BROKEN");// Throw Exception ("The path cant be this short dude, or maybe this whole shit is bugged. Dunno")
 		}
@@ -194,11 +194,10 @@ public class HeteSanic {
 			switch (w.pathType) {
 			case Author2Paper:
 				if (!paperAuthor) { // init paper2Author
-					System.out.println("init paperAuthor");
 					this.author2paper = new SparseMatrix(graph.getMatrixAuthor());
 					this.paper2author = new SparseMatrix(this.author2paper);
-
-					System.out.println("finished paperAuthor");
+//
+//					System.out.println("finished paperAuthor");
 					
 					this.author2paper.normaliceRows();
 					this.paper2author.transpose();
