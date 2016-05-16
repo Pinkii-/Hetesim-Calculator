@@ -17,12 +17,13 @@ public class VistaPrincipal extends VistaAbstracta{
 //	private JFrame this = new JFrame(APPLICATION_NAME);
 	
 	// Panels;
-	enum Panels {ModificaGraph, LoadResult, Test, Exit};
+	enum Panels {ModificaGraph, LoadResult, NuevaBusqueda, Test, Exit};
 	private Panels nextPanel;
 	
 	private JPanel content = new JPanel();
 	private AbstractPanel modificaGraph = new PanelModificaGraph(this);
 	private AbstractPanel loadResult = new PanelLoadResult(this);
+	private AbstractPanel nuevaBusqueda = new PanelNuevaBusqueda(this);
 
 	// Menus
 	private JMenuBar menuBar = new JMenuBar();
@@ -85,6 +86,7 @@ public class VistaPrincipal extends VistaAbstracta{
 				changePanel(Panels.LoadResult);
 			}
 		});
+		
 		
 	}
 	
@@ -153,6 +155,9 @@ public class VistaPrincipal extends VistaAbstracta{
 				break;
 			case LoadResult:
 				this.getContentPane().add(loadResult);
+				break;
+			case NuevaBusqueda:
+				this.getContentPane().add(nuevaBusqueda);
 				break;
 			case Exit:
 				dispose();
