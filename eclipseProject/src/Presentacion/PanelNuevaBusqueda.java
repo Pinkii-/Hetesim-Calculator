@@ -59,7 +59,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		node2SelectType = new JComboBox<String>(new String[]{" - Pick a type -", "Paper 2", "Autor 2", "Conferencia 2", "Term 2"});
 		node2SelectType.setEditable(true);
 		node2SelectType.setEnabled(false);
-		node2SelectType.setSelectedIndex(-1);
+		node2SelectType.setSelectedIndex(0);
 		node2SelectType.setSize(new Dimension(30,30));
 		springLayout.putConstraint(SpringLayout.WEST, node2SelectType, 50, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.NORTH, node2SelectType, 20, SpringLayout.SOUTH, node1SelectType);
@@ -133,12 +133,12 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 				node1Select.setSelectedIndex(0);
 				
 				//If there isn't a selected type for node 2 type selector
-				if (node2SelectType.getSelectedIndex() < 1) {
+				//if (node2SelectType.getSelectedIndex() < 1) {
 					//Enable the JComboBox for interaction
 					node2SelectType.setEnabled(true);
 					//Set default option to "Pick a type"
 					node2SelectType.setSelectedIndex(0);
-				}
+				//}
 			}
 			//If the selected option is "Pick a type"
 			else {
@@ -176,6 +176,10 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 				//Set hidden option
 				node2Select.setSelectedIndex(-1);
 			}
+		}
+		
+		else {
+			System.out.println("asd");
 		}
 		
 	}
