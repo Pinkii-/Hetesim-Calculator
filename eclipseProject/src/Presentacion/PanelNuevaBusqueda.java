@@ -10,6 +10,11 @@ import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 
+/**
+ * 
+ * @author Xavier Peñalosa
+ *
+ */
 public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 
 	private JComboBox<String> node1SelectType, node2SelectType;
@@ -78,15 +83,19 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 	public void initStrings(){
 		
 		//Papers
+		//String[] papers = this.cd.getPaperNames();
 		nodeStrings[0] = new DefaultComboBoxModel<String>(
 				new String[]{" - Pick a paper -","Paper 1","Paper 2","Paper 3","Etc"});
 		//Autors
+		//String[] autors = this.cd.getAutorNames();
 		nodeStrings[1] = new DefaultComboBoxModel<String>(
 				new String[]{" - Pick an author -","Autor 1","Autor 2","Autor 3","Autor 4","Autor 5","Autor 6","Autor 7","Autor 8","This shouldn't be displayed", "Oh shit -------------------------------- It's broken"});
 		//Conferencies
+		//String[] conferencies = this.cd.getConfNames();
 		nodeStrings[2] = new DefaultComboBoxModel<String>(
 				new String[]{" - Pick a conference -","Conferencia 1"});
 		//Terms
+		//String[] terms = this.cd.getTermNames();
 		nodeStrings[3] = new DefaultComboBoxModel<String>(
 				new String[]{" - Pick a term -","Term 1", "Term 2"});
 		
@@ -133,12 +142,12 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 				node1Select.setSelectedIndex(0);
 				
 				//If there isn't a selected type for node 2 type selector
-				//if (node2SelectType.getSelectedIndex() < 1) {
+				if (node2SelectType.getSelectedIndex() < 1) {
 					//Enable the JComboBox for interaction
 					node2SelectType.setEnabled(true);
 					//Set default option to "Pick a type"
 					node2SelectType.setSelectedIndex(0);
-				//}
+				}
 			}
 			//If the selected option is "Pick a type"
 			else {
