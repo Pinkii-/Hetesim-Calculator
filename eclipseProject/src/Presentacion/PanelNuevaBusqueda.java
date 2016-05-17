@@ -25,7 +25,6 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 
 	PanelNuevaBusqueda(VistaAbstracta vp) {
 		super(vp);
-		
 		initComponents();
 		assignListeners();
 	}
