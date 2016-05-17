@@ -13,6 +13,7 @@ import javax.swing.JComboBox;
 import javax.swing.MutableComboBoxModel;
 
 import Dominio.CtrlDominio;
+import Dominio.Node;
 
 /**
  * Custom implementaton of <strong>JComboBox</strong> to filter the dropdown list relative to the typed text
@@ -29,25 +30,26 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 	private CtrlDominio cd = new CtrlDominio();
 	
 	private ComboBoxModel<String>[] rawStrings = new ComboBoxModel[4];
-	private MutableComboBoxModel<String> filteredStrings;
+	private ComboBoxModel<String> filteredStrings;
 	private Integer inCase = new Integer(-1);
+	private Integer matchStart = new Integer(0);
 	
-	public MyComboBox(ArrayList<String> alist){
+	public MyComboBox(){
 		super();
 		
 		initParams();
-		initStrings(alist);
 	}
 	
 	public void tempUseCtrlDominio(CtrlDominio cd){
 		this.cd = cd;
+		initStrings(this.cd);
 	}
 	
 	public void setParent(JComboBox<String> parent){
 		parentBox = parent;
 	}
 	private void initParams(){
-		setPreferredSize(new Dimension(150,24));
+		setPreferredSize(new Dimension(148,24));
 		setEditable(true);
 		setEnabled(false);
 		setFocusable(true);
@@ -60,33 +62,47 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 	 * 
 	 * @param alist Contains the names of the nodes
 	 */
-	private void initStrings(ArrayList<String> alist){
+	private void initStrings(CtrlDominio cd){
 		
 		filteredStrings = (MutableComboBoxModel<String>) new DefaultComboBoxModel();
 		rawStrings = new ComboBoxModel[4];
-		//Papers
-		//String[] papers = cd.getPaperNames();
-		//rawStrings[0] = new DefaultComboBoxModel<String(papers);
+
+		/*
+		 * Will use these once we have access to the graph
+		 * 
+		String[] papers = getNodeNames(cd.getCtrlGraph().getGraph().getPapers());
+			rawStrings[0] = new DefaultComboBoxModel<String>(papers);
+		String[] autors = getNodeNames(cd.getCtrlGraph().getGraph().getAutors());
+			rawStrings[1] = new DefaultComboBoxModel<String>(autors);
+		String[] conferencies = getNodeNames(cd.getCtrlGraph().getGraph().getConferencies());
+			rawStrings[2] = new DefaultComboBoxModel<String>(conferencies);
+		String[] terms = getNodeNames(cd.getCtrlGraph().getGraph().getTermes());
+			rawStrings[3] = new DefaultComboBoxModel<String>(terms);
+		*/
+			
 		rawStrings[0] = new DefaultComboBoxModel<String>(
-				new String[]{" - Pick a paper -","Paper 1","Paper 2","Paper 3","Etc"});
-		//Autors
-		//String[] autors = cd.getAutorNames();
-		//rawStrings[1] = new DefaultComboBoxModel<String(autors);
+			new String[]{" - Pick a paper -","Paper 1","Paper 2","Paper 3","Paper 4","Paper 5","Paper 6","Paper 7","Paper 8"});
 		rawStrings[1] = new DefaultComboBoxModel<String>(
-				new String[]{" - Pick an author -","Autor 1","Autor 2","Autor 3","Autor 4","Autor 5","Autor 6","Autor 7","Autor 8","This shouldn't be displayed"});
-		//Conferencies
-		//String[] conferencies = cd.getConfNames();
-		//rawStrings[2] = new DefaultComboBoxModel<String(conferencies);
+			new String[]{" - Pick an author -","Autor 1","Autor 2","Autor 3","Autor 4","Autor 5","Autor 6","Autor 7","Autor 8","This is too long"});
 		rawStrings[2] = new DefaultComboBoxModel<String>(
-				new String[]{" - Pick a conf. -","Conferencia 1"});
-		//Terms
-		//String[] terms = cd.getTermNames();
-		//rawStrings[3] = new DefaultComboBoxModel<String(terms);
+			new String[]{" - Pick a conf. -","Conferencia 1","Conferencia 2","Conferencia 2","Conferencia 3","Conferencia 4","Conferencia 5","Conferencia 6","Conferencia 7","Conferencia 8"});
 		rawStrings[3] = new DefaultComboBoxModel<String>(
-				new String[]{" - Pick a term -","Term 1", "Term 2"});
+			new String[]{" - Pick a term -","Term 1", "Term 2","Term 3", "Term 4","Term 5", "Term 6","Term 7", "Term 8"});
 		
 	}
-	
+	/**
+	 * Stub
+	 * 
+	 * @param alnode Node list from which we will get the names
+	 * @return Array of node names as string
+	 */
+	private String[] getNodeNames(ArrayList<Node> alnode) {
+		ArrayList<String> nodeNames = new ArrayList<String>();
+		for (int i = 0; i < alnode.size(); ++i){
+			nodeNames.add(alnode.get(i).getNom());
+		}
+		return (String[]) nodeNames.toArray().clone();
+	}
 	
 	/**
 	 * Add all the strings that match the prefix typed in the JComboBox to the filtered arraylist
@@ -96,10 +112,10 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 	 * @see #findStart(ComboBoxModel, String, int, int)
 	 */
 	private void updateSubstrings(){
-		int start = findStart(rawStrings[inCase], getEditor().getItem().toString(), 1, 2);
+		matchStart = findStart(rawStrings[inCase], getEditor().getItem().toString(), 1, 8);
 		System.out.println("Result is:");
-		System.out.println(start);
-		if (start >= 0 && start < rawStrings.length && filteredStrings != null){
+		System.out.println(matchStart);
+		if (matchStart >= 0 && matchStart < rawStrings.length && filteredStrings != null){
 			/*System.out.println("A 2");
 			for (int i = 0, c = filteredStrings.getSize(); i < c; ++i){
 				filteredStrings.removeElementAt(i);
@@ -109,7 +125,8 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 				filteredStrings.addElement(rawStrings[inCase].getElementAt(start));
 				++start;
 			}*/
-			setSelectedIndex(start);
+			setSelectedIndex(matchStart); //Update JComboBox visually
+			getEditor().setItem(getSelectedItem()); //Update text in the JComboBox
 		}
 	}
 	/**
@@ -123,9 +140,6 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 	 */
 	private Integer findStart(ComboBoxModel<String> nodeNames, String text, int begin, int end){
 		if (begin == end || begin +1 == end){
-			System.out.println("Not looping");
-			System.out.println(begin);
-			System.out.println(nodeNames.getElementAt(begin));
 			if (nodeNames.getElementAt(begin).startsWith(text)) return begin;
 			else if (nodeNames.getElementAt(end).startsWith(text)) return end;
 			else return -1;
@@ -188,8 +202,12 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 			if (getEditor().getItem().toString().length() > 3){
 				//System.out.println(getSelectedItem().toString());
 				updateSubstrings();
+				//setModel(filteredStrings);
 				//if (filteredStrings != null) setModel(filteredStrings);
 				//else System.out.println("\n\nContact fox\n");
+			}
+			else {
+				setModel(rawStrings[inCase]);
 			}
 		}
 	}

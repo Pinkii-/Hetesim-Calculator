@@ -32,12 +32,10 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 	/**
 	 * Initialize the components for the panel
 	 * 
-	 * node1SelectType: Dropdown list to pick the NodeType for the first node
-	 * node2SelectType: Dropdown list to pick the NodeType for the second node
-	 * node1Select: Dropdown list to pick the first node. Only the nodes that belong to the selected NodeType in node1SelectType will be displayed
-	 * node2Select: Dropdown list to pick the last node. Only the nodes that belong to the selected NodeType in node2SelectType will be displayed
-	 * 
-	 * 
+	 * <strong>node1SelectType</strong>: Dropdown list to pick the NodeType for the first node <p>
+	 * <strong>node2SelectType</strong>: Dropdown list to pick the NodeType for the second node <p>
+	 * <strong>node1Select</strong>: Dropdown list to pick the first node. Only the nodes that belong to the selected NodeType in node1SelectType will be displayed <p>
+	 * <strong>node2Select</strong>: Dropdown list to pick the last node. Only the nodes that belong to the selected NodeType in node2SelectType will be displayed <p>
 	 */
 	public void initComponents() {
 		
@@ -51,13 +49,14 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		springLayout.putConstraint(SpringLayout.NORTH, node1SelectType, 50, SpringLayout.NORTH, this);
 		add(node1SelectType);
 		
-			node1Select = new MyComboBox(null);
+			node1Select = new MyComboBox();
 			node1Select.setParent(node1SelectType);
+			node1Select.tempUseCtrlDominio(this.cd);
 			springLayout.putConstraint(SpringLayout.WEST, node1Select, 20, SpringLayout.EAST, node1SelectType);
 			springLayout.putConstraint(SpringLayout.NORTH, node1Select, 50, SpringLayout.NORTH, this);
 			add(node1Select);
 		
-		node2SelectType = new JComboBox<String>(new String[]{" - Pick a type -", "Paper 2", "Autor 2", "Conferencia 2", "Term 2"});
+		node2SelectType = new JComboBox<String>(new String[]{" - Pick a type -", "Paper ", "Autor ", "Conferencia ", "Term "});
 		node2SelectType.setEditable(true);
 		node2SelectType.setEnabled(false);
 		node2SelectType.setSelectedIndex(0);
@@ -66,8 +65,9 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		springLayout.putConstraint(SpringLayout.NORTH, node2SelectType, 20, SpringLayout.SOUTH, node1SelectType);
 		add(node2SelectType);
 		
-			node2Select = new MyComboBox(null);
+			node2Select = new MyComboBox();
 			node2Select.setParent(node2SelectType);
+			node2Select.tempUseCtrlDominio(this.cd);
 			springLayout.putConstraint(SpringLayout.WEST, node2Select, 20, SpringLayout.EAST, node2SelectType);
 			springLayout.putConstraint(SpringLayout.NORTH, node2Select, 20, SpringLayout.SOUTH, node1Select);
 			add(node2Select);
@@ -109,14 +109,6 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		if (e.getSource().equals(node1SelectType)){
 			//If a type has been selected
 			if (node1SelectType.getSelectedIndex() > 0){
-				/*
-				//Set the strings corresponding to the selected type
-				node1Select.setModel(nodeStrings[node1SelectType.getSelectedIndex()-1]);
-				//Enable the JComboBox for interaction
-				node1Select.setEnabled(true);
-				//Set default option to Pick an item
-				node1Select.setSelectedIndex(0);
-				*/
 				//If there isn't a selected type for node 2 type selector
 				if (node2SelectType.getSelectedIndex() < 1) {
 					//Enable the JComboBox for interaction
@@ -127,12 +119,6 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 			}
 			//If the selected option is "Pick a type"
 			else {
-				/*
-				//Disable the JComboBox for interaction
-				node1Select.setEnabled(false);
-				//Set hidden option
-				node1Select.setSelectedIndex(-1);
-				*/
 				//Disable the JComboBox for interaction
 				node2SelectType.setEnabled(false);
 				//Set default option to "Pick a type"
