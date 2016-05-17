@@ -7,7 +7,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
@@ -18,8 +17,9 @@ import Dominio.CtrlDominio;
 import Dominio.Node;
 
 /**
- * Custom implementaton of <strong>JComboBox</strong> to filter the dropdown list relative to the typed text
+ * Custom implementaton of <code>JComboBox</code> to filter the dropdown list relative to the typed text.<p>
  * Needs a parent from which to read events and select the corresponding list.
+ * 
  * @author Xavier Peñalosa
  *
  */
@@ -30,6 +30,7 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 	private JComboBox<String> parentBox;
 	
 	private CtrlDominio cd = new CtrlDominio();
+	private Boolean autocomplete;
 	
 	private ComboBoxModel<String>[] rawStrings = new ComboBoxModel[4];
 	private ComboBoxModel<String> filteredStrings;
@@ -42,6 +43,12 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 		initParams();
 	}
 	
+	/**
+	 * <b>Stub:</b> Gives the <code>JComboBox</code> a <code>CtrlDominio</code>
+	 * instance in order to get the needed information for the different selections.
+	 * 
+	 * @param cd - CtrlDominio, used to request node information
+	 */
 	public void tempUseCtrlDominio(CtrlDominio cd){
 		this.cd = cd;
 		initStrings(this.cd);
@@ -49,8 +56,11 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 	
 	public void setParent(JComboBox<String> parent){
 		parentBox = parent;
+		parent.addActionListener(this);
 	}
 	private void initParams(){
+		autocomplete = false;
+		
 		setPreferredSize(new Dimension(148,24));
 		setEditable(true);
 		setEnabled(false);
@@ -59,12 +69,26 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 		addActionListener(this);
 		getEditor().getEditorComponent().addKeyListener(this);
 	}
+	
 	/**
-	 * Gets the node names for the dropdown JComboBox and stores them in a Model
+	 * Calling this function with a <b>true</b> value will autocomplete the
+	 * items in the <code>JComboBox</code> once a match is found with more
+	 * than 4 characters.<p> Calling this function with a <b>false</b> value
+	 * will disable the automatic completion of the field.
 	 * 
-	 * <strong>Warning</strong> The strings must be ordered for the autocompletion to work 
+	 * @param b - New value
+	 */
+	public void setAutocomplete(Boolean b){
+		autocomplete = b;
+	}
+	
+	/**
+	 * Gets the node names for the dropdown <code>JComboBox</code> and stores them in a
+	 * <code>Model</code><p><b>Warning:</b><p>The strings must be in ascending order for
+	 * the autocompletion to work 
 	 * 
-	 * @param alist Contains the names of the nodes
+	 * @param cd - CtrlDominio, to which the node information is requested
+	 * @see #setAutocomplete(Boolean)
 	 */
 	private void initStrings(CtrlDominio cd){
 		
@@ -87,19 +111,21 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 		rawStrings[0] = new DefaultComboBoxModel<String>(
 			new String[]{" - Pick a paper -","Paper 1","Paper 2","Paper 3","Paper 4","Paper 5","Paper 6","Paper 7","Paper 8"});
 		rawStrings[1] = new DefaultComboBoxModel<String>(
-			new String[]{" - Pick an author -","Autor 1","Autor 2","Autor 3","Autor 4","Autor 5","Autor 6","Autor 7","Autor 8","This is tooooooooooooooooooo long"});
+			new String[]{" - Pick an author -","Author 1","Author 2","Author 3","Autor 4","Autor 5","Autora 6","Autora 7","Autora 8","This is tooooooooooooooooooo long"});
 		rawStrings[2] = new DefaultComboBoxModel<String>(
-			new String[]{" - Pick a conf. -","Conferencia 1","Conferencia 2","Conferencia 2","Conferencia 3","Conferencia 4","Conferencia 5","Conferencia 6","Conferencia 7","Conferencia 8"});
+			new String[]{" - Pick a conf. -","Conference 1","Conference 2","Conference 2","Conference 3","Conferencia 4","Conferencia 5","Conferencia 6","Conferencia 7","Conferencia 8"});
 		rawStrings[3] = new DefaultComboBoxModel<String>(
-			new String[]{" - Pick a term -","Term 1", "Term 2","Term 3", "Term 4","Term 5", "Term 6","Term 7", "Term 8"});
+			new String[]{" - Pick a term -","Term 1","Term 2","Term 3","Term 4","Term 5","Term 6","Term 7","Term 8"});
 		
 	}
 	/**
-	 * Stub
+	 * <b>Stub:</b> Gets an <code>ArrayList</code> of <code>String</code>s which corresponds to
+	 * the names of the nodes in <u>alnode</u>.
 	 * 
-	 * @param alnode Node list from which we will get the names
+	 * @param alnode <code>Node</code> list from which we will get the names
 	 * @return Array of node names as string
 	 */
+	@SuppressWarnings("unused")
 	private String[] getNodeNames(ArrayList<Node> alnode) {
 		ArrayList<String> nodeNames = new ArrayList<String>();
 		for (int i = 0; i < alnode.size(); ++i){
@@ -110,48 +136,58 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 	}
 	
 	/**
-	 * Add all the strings that match the prefix typed in the JComboBox to the filtered arraylist
-	 * Calls a binary search to find the first element that matches (<strong>start</strong>)and scans lineally until the string doesn't match
+	 * Add all the <code>String</code>s that match the prefix typed in the <code>JComboBox</code>
+	 * to the filtered <code>ArrayList</code>.<p> Calls a binary search to find the first element
+	 * that matches (<u>start</u>) and scans lineally until the string doesn't match.
 	 * 
 	 * 
 	 * @see #findStart(ComboBoxModel, String, int, int)
 	 */
 	private void updateSubstrings(){
-		System.out.println(rawStrings[inCase].getSize());
-		matchStart = findStart(rawStrings[inCase], getEditor().getItem().toString(), 1, rawStrings[inCase].getSize()-1);
+		matchStart = findStart(rawStrings[inCase], getEditor().getItem().toString(), 0, rawStrings[inCase].getSize()-1);
 		if (matchStart >= 0 && matchStart < rawStrings[inCase].getSize() && filteredStrings != null){
-			/*System.out.println("A 2");
-			for (int i = 0, c = filteredStrings.getSize(); i < c; ++i){
-				filteredStrings.removeElementAt(i);
+			ArrayList<String> alist = new ArrayList<String>();
+			while (matchStart < rawStrings[inCase].getSize() && rawStrings[inCase].getElementAt(matchStart).startsWith(getEditor().getItem().toString())){
+				alist.add(rawStrings[inCase].getElementAt(matchStart));
+				++matchStart;
 			}
-			System.out.println("A 3");
-			while (rawStrings[inCase].getElementAt(start).startsWith(getSelectedItem().toString())){
-				filteredStrings.addElement(rawStrings[inCase].getElementAt(start));
-				++start;
-			}*/
-			setSelectedIndex(matchStart); //Update JComboBox visually
-			getEditor().setItem(getSelectedItem()); //Update text in the JComboBox
+			filteredStrings = new DefaultComboBoxModel(alist.toArray());
 		}
-		else if (matchStart == 10) System.out.println("\n\n Contact fox \n");
+		else if (matchStart == -1){
+			auxSetModel(rawStrings[inCase]);
+		}
+		else {
+			throw new RuntimeException("\n\n Something went wrong in updateSubstrings! \n Contact fox! \n");
+		}
 	}
+	
 	/**
-	 * Recursive call to find the first element that starts with the string <strong>text</strong>
+	 * Keeps the current text in display and updates the dropdown options with the ComboBoxModel <u>model</u>
 	 * 
-	 * @param nodeNames List of all the available strings
-	 * @param text The prefix we are looking for
-	 * @param begin Lower bound for the search
-	 * @param end Upper bound for the search
-	 * @return The first element which starts with the substring <strong>text</strong>
+	 * @param model - Model to be set
+	 */
+	private void auxSetModel(ComboBoxModel<String> model){
+		String temp = getEditor().getItem().toString();
+		setModel(model);
+		getEditor().setItem(temp);
+	}
+	
+	/**
+	 * Recursive call to find the first element that starts with the <code>String</code> <u>text</u>
+	 * 
+	 * @param nodeNames - List of all the available strings
+	 * @param text - The prefix we are looking for in the strings
+	 * @param begin - Lower bound for the search
+	 * @param end - Upper bound for the search
+	 * @return The first element which starts with the substring <u>text</u>
 	 */
 	private Integer findStart(ComboBoxModel<String> nodeNames, String text, int begin, int end){
 		if (begin == end || begin +1 == end){
-			if (nodeNames.getElementAt(begin).startsWith(text)) {System.out.println(begin);return begin;}
-			else if (nodeNames.getElementAt(end).startsWith(text)) {System.out.println(end);return end;}
+			if (nodeNames.getElementAt(begin).startsWith(text)) return begin;
+			else if (nodeNames.getElementAt(end).startsWith(text)) return end;
 			else return -1;
 		}
 		else {
-			System.out.println(nodeNames.getElementAt(begin));
-			System.out.println(nodeNames.getElementAt(end));
 			int middle = (begin + end)/2;
 			if (nodeNames.getElementAt(middle).compareToIgnoreCase(text) < 0){
 				return findStart(nodeNames,text,middle,end);
@@ -166,7 +202,7 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource().equals(parentBox)){
+		if (parentBox != null && e.getSource().equals(parentBox)){
 			int index = parentBox.getSelectedIndex() - 1;
 			if (index >= 0){
 				/*
@@ -190,6 +226,19 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 			}
 			else if (index == -2) throw new RuntimeException("\n\n ~MyComboBox exploded, contact a fox to get it fixed~ \n");
 		}
+		else if (e.getSource().equals(this)){
+			/*
+			 * The main idea is to lock the dropdown to the selected item...
+			 * 
+			if (getSelectedIndex != -1){
+				updateSubstrings();
+				auxSetModel(filteredStrings);
+			}
+			*/
+		}
+		else {
+			throw new RuntimeException("\n\n ~MyComboBox exploded, contact a fox to get it fixed~ \n");
+		}
 	}
 	
 	
@@ -206,14 +255,26 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 	public void keyReleased(KeyEvent e) {
 		if (e.getKeyCode() != e.VK_BACK_SPACE){
 			if (getEditor().getItem().toString().length() > 3){
-				//System.out.println(getSelectedItem().toString());
 				updateSubstrings();
-				//setModel(filteredStrings);
-				//if (filteredStrings != null) setModel(filteredStrings);
-				//else System.out.println("\n\nContact fox\n");
+				
+				if (autocomplete){
+					setModel(filteredStrings);
+					setSelectedIndex(0); //Update JComboBox visually
+					getEditor().setItem(getSelectedItem()); //Update text in the JComboBox
+				}
+				else {
+					auxSetModel(filteredStrings);
+				}
 			}
 			else {
-				setModel(rawStrings[inCase]);
+				auxSetModel(rawStrings[inCase]);
+			}
+		}
+		else {
+			if (getEditor().getItem().toString().length() > 3){
+				updateSubstrings();
+				
+				auxSetModel(filteredStrings);
 			}
 		}
 	}

@@ -74,8 +74,6 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 	public void assignListeners(){
 		
 		node1SelectType.addActionListener(this);
-		node1SelectType.addActionListener(node1Select);
-		node2SelectType.addActionListener(node2Select);
 	}
 
 	@Override
