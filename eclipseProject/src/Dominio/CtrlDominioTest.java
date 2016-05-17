@@ -324,7 +324,9 @@ public class CtrlDominioTest {
 				ctrlDominio.loadGraph(graphId);
 				break;
 			case 6:
+				System.out.println(ctrlGraph.getFormatted());
 				ctrlGraph.printGraf();
+				//ctrlGraph.printGraf();
 				break;
 			case 7:
 				finished = true;

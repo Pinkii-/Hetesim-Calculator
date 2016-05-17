@@ -22,6 +22,8 @@ public class CtrlDominio {
 	CtrlResults ctrlResults;
 	// Method controllers
 	CtrlSearch ctrlSearch;
+	//path to where the graph is stored
+	String graphPath;
 
 	public CtrlDominio() {
 		ctrlData = new CtrlData();
@@ -88,7 +90,6 @@ public class CtrlDominio {
 	 */
 
 	public String searchPathThreshhold(Float threshold, String pathName) {
-		Graph graf = ctrlGraph.getGraph();
 		if (ctrlGraph.isModified)
 			ctrlSearch.setGraph(ctrlGraph.getGraph());
 		try {
@@ -104,7 +105,6 @@ public class CtrlDominio {
 
 	public String searchPath(String pathName) {
 		System.out.println(ctrlPaths.getPath(pathName).getContingut());
-		Graph graf = ctrlGraph.getGraph();
 		if (ctrlGraph.isModified)
 			ctrlSearch.setGraph(ctrlGraph.getGraph());
 		try {
