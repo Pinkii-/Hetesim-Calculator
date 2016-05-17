@@ -6,6 +6,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
@@ -60,6 +62,8 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 	/**
 	 * Gets the node names for the dropdown JComboBox and stores them in a Model
 	 * 
+	 * <strong>Warning</strong> The strings must be ordered for the autocompletion to work 
+	 * 
 	 * @param alist Contains the names of the nodes
 	 */
 	private void initStrings(CtrlDominio cd){
@@ -83,7 +87,7 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 		rawStrings[0] = new DefaultComboBoxModel<String>(
 			new String[]{" - Pick a paper -","Paper 1","Paper 2","Paper 3","Paper 4","Paper 5","Paper 6","Paper 7","Paper 8"});
 		rawStrings[1] = new DefaultComboBoxModel<String>(
-			new String[]{" - Pick an author -","Autor 1","Autor 2","Autor 3","Autor 4","Autor 5","Autor 6","Autor 7","Autor 8","This is too long"});
+			new String[]{" - Pick an author -","Autor 1","Autor 2","Autor 3","Autor 4","Autor 5","Autor 6","Autor 7","Autor 8","This is tooooooooooooooooooo long"});
 		rawStrings[2] = new DefaultComboBoxModel<String>(
 			new String[]{" - Pick a conf. -","Conferencia 1","Conferencia 2","Conferencia 2","Conferencia 3","Conferencia 4","Conferencia 5","Conferencia 6","Conferencia 7","Conferencia 8"});
 		rawStrings[3] = new DefaultComboBoxModel<String>(
@@ -101,6 +105,7 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 		for (int i = 0; i < alnode.size(); ++i){
 			nodeNames.add(alnode.get(i).getNom());
 		}
+		Collections.sort(nodeNames);
 		return (String[]) nodeNames.toArray().clone();
 	}
 	
@@ -112,10 +117,9 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 	 * @see #findStart(ComboBoxModel, String, int, int)
 	 */
 	private void updateSubstrings(){
-		matchStart = findStart(rawStrings[inCase], getEditor().getItem().toString(), 1, 8);
-		System.out.println("Result is:");
-		System.out.println(matchStart);
-		if (matchStart >= 0 && matchStart < rawStrings.length && filteredStrings != null){
+		System.out.println(rawStrings[inCase].getSize());
+		matchStart = findStart(rawStrings[inCase], getEditor().getItem().toString(), 1, rawStrings[inCase].getSize()-1);
+		if (matchStart >= 0 && matchStart < rawStrings[inCase].getSize() && filteredStrings != null){
 			/*System.out.println("A 2");
 			for (int i = 0, c = filteredStrings.getSize(); i < c; ++i){
 				filteredStrings.removeElementAt(i);
@@ -128,6 +132,7 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 			setSelectedIndex(matchStart); //Update JComboBox visually
 			getEditor().setItem(getSelectedItem()); //Update text in the JComboBox
 		}
+		else if (matchStart == 10) System.out.println("\n\n Contact fox \n");
 	}
 	/**
 	 * Recursive call to find the first element that starts with the string <strong>text</strong>
@@ -140,13 +145,14 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 	 */
 	private Integer findStart(ComboBoxModel<String> nodeNames, String text, int begin, int end){
 		if (begin == end || begin +1 == end){
-			if (nodeNames.getElementAt(begin).startsWith(text)) return begin;
-			else if (nodeNames.getElementAt(end).startsWith(text)) return end;
+			if (nodeNames.getElementAt(begin).startsWith(text)) {System.out.println(begin);return begin;}
+			else if (nodeNames.getElementAt(end).startsWith(text)) {System.out.println(end);return end;}
 			else return -1;
 		}
 		else {
+			System.out.println(nodeNames.getElementAt(begin));
+			System.out.println(nodeNames.getElementAt(end));
 			int middle = (begin + end)/2;
-			System.out.println(middle);
 			if (nodeNames.getElementAt(middle).compareToIgnoreCase(text) < 0){
 				return findStart(nodeNames,text,middle,end);
 			}

@@ -43,8 +43,6 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		setLayout(springLayout);
 		
 		node1SelectType = new JComboBox<String>(new String[]{" - Pick a type -","Paper", "Autor", "Conferencia", "Term"});
-		node1SelectType.setEditable(true);
-		node1SelectType.setSelectedIndex(0);
 		springLayout.putConstraint(SpringLayout.WEST, node1SelectType, 50, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.NORTH, node1SelectType, 50, SpringLayout.NORTH, this);
 		add(node1SelectType);
@@ -57,10 +55,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 			add(node1Select);
 		
 		node2SelectType = new JComboBox<String>(new String[]{" - Pick a type -", "Paper ", "Autor ", "Conferencia ", "Term "});
-		node2SelectType.setEditable(true);
 		node2SelectType.setEnabled(false);
-		node2SelectType.setSelectedIndex(0);
-		node2SelectType.setSize(new Dimension(30,30));
 		springLayout.putConstraint(SpringLayout.WEST, node2SelectType, 50, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.NORTH, node2SelectType, 20, SpringLayout.SOUTH, node1SelectType);
 		add(node2SelectType);
