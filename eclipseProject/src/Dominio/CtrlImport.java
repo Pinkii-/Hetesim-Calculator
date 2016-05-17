@@ -8,20 +8,21 @@ package Dominio;
 import Persistencia.CtrlDataFiles;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import java.util.HashMap;
 import java.util.List;
 import static java.util.Arrays.asList;
 
 /**
- *
  * @author Ferrer Rodríguez, Jorge
+ * @version 1.0
  */
 public class CtrlImport {
 
     private final HashMap<Node.Type, HashMap<Integer, Integer>> eqHashMap = new HashMap<>();
     private final Graph graph = new Graph();
-    private final CtrlDataFiles data;
+    private final CtrlDataFiles data = new CtrlDataFiles();
 
     private final List<DataFile> nodesFiles = asList(new DataFile("author.txt", Node.Type.Autor),
             new DataFile("conf.txt", Node.Type.Conferencia),
@@ -52,22 +53,20 @@ public class CtrlImport {
      */
     public CtrlImport(String filesPath) throws IllegalArgumentException {
         File directory = new File(filesPath);
-        if (!directory.isDirectory()) {
-            throw new IllegalArgumentException("filesPath isn't a directory");
-        } else{
-            filesDirectory = filesPath + File.separator;
-            this.data = new CtrlDataFiles();
-        }
+        if (!directory.isDirectory())
+            throw new IllegalArgumentException(filesPath + " is not a directory");
+        else filesDirectory = filesPath + File.separator;
     }
 
     /**
      * Load all the information on the graph
      *
+     * @throws IOException
      * @throws FileNotFoundException: the file does not exist.
      * @throws NumberFormatException: in the position of an integer there's another type.
      * @throws IndexOutOfBoundsException: the number of elements of a line is incorrect.
      */
-    public void loadGraphInfo() throws FileNotFoundException {
+    public void loadGraphInfo() throws IOException {
         addNodes();
         addRelations();
         addLabelNodes();
@@ -76,11 +75,12 @@ public class CtrlImport {
     /**
      * Add all the information of each node type
      *
+     * @throws IOException
      * @throws FileNotFoundException: the file does not exist.
      * @throws NumberFormatException: in the position of an integer there's another type.
      * @throws IndexOutOfBoundsException: the number of elements of a line is incorrect.
      */
-    private void addNodes() throws FileNotFoundException {
+    private void addNodes() throws IOException {
         for (DataFile f : nodesFiles) {
             File file = new File(filesDirectory + f.getFileName());
             List<Pair<Integer, String>> node = data.getNodes(file);
@@ -98,11 +98,12 @@ public class CtrlImport {
      * If the nodes involved in the relation exist in the graph, then the the
      * information of the relation is added.
      * 
+     * @throws IOException
      * @throws FileNotFoundException: the file does not exist.
      * @throws NumberFormatException: in the position of an integer there's another type.
      * @throws IndexOutOfBoundsException: the number of elements of a line is incorrect.
      */
-    private void addRelations() throws FileNotFoundException {
+    private void addRelations() throws IOException {
         for (DataFile f : relationsFiles) {
             File file = new File(filesDirectory + f.getFileName());
             List<Pair<Integer, Integer>> rel = data.getRelations(file);
@@ -118,11 +119,12 @@ public class CtrlImport {
     /**
      * Add the node with its label, if previously exists in the graph
      * 
+     * @throws IOException
      * @throws FileNotFoundException: the file does not exist.
      * @throws NumberFormatException: in the position of an integer there's another type.
      * @throws IndexOutOfBoundsException: the number of elements of a line is incorrect.
      */
-    private void addLabelNodes() throws FileNotFoundException {
+    private void addLabelNodes() throws IOException {
         for (DataFile f : labelsFiles) {
             File file = new File(filesDirectory + f.getFileName());
             List<Pair<Integer, Integer>> label = data.getLabels(file);
@@ -136,15 +138,9 @@ public class CtrlImport {
 
     /**
      * 
-     * @return the graph
+     * @return
      */
     public Graph getGraph() {
         return graph;
     }
-    
-    public static void main(String... args) throws FileNotFoundException{
-        CtrlImport c = new CtrlImport("data/dblp");
-        c.loadGraphInfo();
-    }
-
 }

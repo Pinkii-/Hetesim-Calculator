@@ -4,6 +4,8 @@
 
 package Dominio;
 
+import java.util.ArrayList;
+
 public class CtrlGraph {
 	private Graph graph;
 	Boolean isModified = false;
@@ -96,6 +98,96 @@ public class CtrlGraph {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public static Node.Label getNodeLabel(Integer i) {
+		return Node.Label.values()[i];
+	}
+
+	//FORMATTING STUFF ----------------------------------------------------------------
+	
+	private ArrayList<String> formatMatrixNodes(Matrix m, Node.Type t){
+		ArrayList<String> ret = new ArrayList<String>();
+		for (int i = 0; i < m.getNRows(); ++i) {
+			ret.add(i + ": " + formatNode(graph.getNode(i, t)));
+		}
+		return ret;
+	}
+	
+	private ArrayList<String> formatPaperNodes(Matrix m){
+		ArrayList<String> ret = new ArrayList<String>();
+		try{
+			for (int i = 0; i < m.getNCols(); ++i) {
+				ret.add(i + ": " + formatNode(graph.getNode(i, Node.Type.Paper)));
+			}
+		}catch(Exception e){
+			//Resulta que si no hay papers peta el programa :)
+		}
+		return ret;
+
+	}
+	//Returns an arrayList of Strings of the nodes with type t formatted in strings
+	public ArrayList<String> formatNodesOfType(String nodeType){
+		Matrix mauthor = graph.getMatrixAuthor();
+		Matrix mterme = graph.getMatrixTerm();
+		Matrix mconf = graph.getMatrixConf();
+		Node.Type t = Node.Type.valueOf(nodeType);
+		if(t == Node.Type.Autor){
+			return formatMatrixNodes(mauthor, t);			
+		}else if(t == Node.Type.Conferencia){
+			return formatMatrixNodes(mconf, t);
+		}else if(t == Node.Type.Terme){
+			return formatMatrixNodes(mterme, t);
+		}else if(t == Node.Type.Paper){
+			return formatPaperNodes(mauthor);
+		}else{
+			System.out.println("Node type not found " + t);
+			return null;
+		}
+	}
+	
+	//Returns an arrayList of strings formatted by the following criteria:
+	/*
+	 * 0) Graph's name (size 1)
+	 * 1) A - P relations (size NCol * NRows)
+	 * 2) T - P relations (size NCol * NRows)
+	 * 3) C - P relations (size NCol * NRows)
+	 * 3) A nodes (size NRows)
+	 * 4) T nodes (size NRows)
+	 * 5) C nodes (size NRows)
+	 * 6) P nodes (size NRows) 
+	 */
+	public ArrayList<String> getFormatted() {
+		ArrayList<String> ret = new ArrayList<String>();
+		ret.add(graph.getNom());
+		Matrix mauthor = graph.getMatrixAuthor();
+		Matrix mterme = graph.getMatrixTerm();
+		Matrix mconf = graph.getMatrixConf();
+		//Adding relations
+		ret.addAll(formatMatrix(mauthor));
+		ret.addAll(formatMatrix(mterme));
+		ret.addAll(formatMatrix(mconf));
+		//Adding nodes
+		ret.addAll(formatMatrixNodes(mauthor, Node.Type.Autor));
+		ret.addAll(formatMatrixNodes(mterme, Node.Type.Terme));
+		ret.addAll(formatMatrixNodes(mconf, Node.Type.Conferencia));
+		ret.addAll(formatPaperNodes(mauthor));
+		return ret;
+
+	}
+
+	public ArrayList<String> formatMatrix(Matrix m) {
+		ArrayList<String> ret = new ArrayList<String>();
+		for (int i = 0; i < m.getNRows(); ++i) {
+			for (int j = 0; j < m.getNCols(); ++j) {
+				ret.add(m.getValue(i, j) + " ");
+			}
+		}
+		return ret;
+	}
+
+	public String formatNode(Node n) {
+		return "Name: " + n.getNom() + " Type: " + n.getTipus().toString();
 	}
 
 	public String toString() {
