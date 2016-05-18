@@ -56,6 +56,7 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 	
 	public void setParent(JComboBox<String> parent){
 		parentBox = parent;
+		parent.setPreferredSize(new Dimension(148,24));
 		parent.addActionListener(this);
 	}
 	private void initParams(){
@@ -152,6 +153,7 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 				++matchStart;
 			}
 			filteredStrings = new DefaultComboBoxModel(alist.toArray());
+			showPopup();
 		}
 		else if (matchStart == -1){
 			auxSetModel(rawStrings[inCase]);
@@ -253,30 +255,15 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		if (e.getKeyCode() != e.VK_BACK_SPACE){
-			if (getEditor().getItem().toString().length() > 3){
-				updateSubstrings();
-				
-				if (autocomplete){
-					setModel(filteredStrings);
-					setSelectedIndex(0); //Update JComboBox visually
-					getEditor().setItem(getSelectedItem()); //Update text in the JComboBox
-				}
-				else {
-					auxSetModel(filteredStrings);
-				}
-			}
-			else {
-				auxSetModel(rawStrings[inCase]);
-			}
+		if (getEditor().getItem().toString().length() > 0){
+			updateSubstrings();
+			auxSetModel(filteredStrings);
 		}
 		else {
-			if (getEditor().getItem().toString().length() > 3){
-				updateSubstrings();
-				
-				auxSetModel(filteredStrings);
-			}
+			auxSetModel(rawStrings[inCase]);
 		}
+		
+		showPopup();
 	}
 
 }

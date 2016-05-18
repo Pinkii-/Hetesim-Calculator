@@ -9,8 +9,10 @@ import java.awt.event.ActionListener;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
+import javax.swing.JList;
 
 /**
+ * Panel para el caso de uso de nueva Búsqueda
  * 
  * @author Xavier Peñalosa
  *
@@ -19,8 +21,8 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 
 	private JComboBox<String> node1SelectType, node2SelectType;
 	private MyComboBox node1Select, node2Select;
+	private MyList resultList;
 	private static final long serialVersionUID = 1L;
-	private ComboBoxModel<String>[] nodeStrings = new ComboBoxModel[4];
 	
 
 	PanelNuevaBusqueda(VistaAbstracta vp) {
@@ -31,11 +33,11 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 	
 	/**
 	 * Initialize the components for the panel
-	 * 
-	 * <strong>node1SelectType</strong>: Dropdown list to pick the NodeType for the first node <p>
-	 * <strong>node2SelectType</strong>: Dropdown list to pick the NodeType for the second node <p>
-	 * <strong>node1Select</strong>: Dropdown list to pick the first node. Only the nodes that belong to the selected NodeType in node1SelectType will be displayed <p>
-	 * <strong>node2Select</strong>: Dropdown list to pick the last node. Only the nodes that belong to the selected NodeType in node2SelectType will be displayed <p>
+	 * <p>
+	 * <b>node1SelectType</b>: Dropdown list to pick the NodeType for the first node <p>
+	 * <b>node2SelectType</b>: Dropdown list to pick the NodeType for the second node <p>
+	 * <b>node1Select</b>: Dropdown list to pick the first node. Only the nodes that belong to the selected NodeType in node1SelectType will be displayed <p>
+	 * <b>node2Select</b>: Dropdown list to pick the last node. Only the nodes that belong to the selected NodeType in node2SelectType will be displayed
 	 */
 	public void initComponents() {
 		
@@ -43,33 +45,42 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		setLayout(springLayout);
 		
 		node1SelectType = new JComboBox<String>(new String[]{" - Pick a type -","Paper", "Autor", "Conferencia", "Term"});
-		springLayout.putConstraint(SpringLayout.WEST, node1SelectType, 50, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.NORTH, node1SelectType, 50, SpringLayout.NORTH, this);
 		add(node1SelectType);
 		
 			node1Select = new MyComboBox();
 			node1Select.setParent(node1SelectType);
 			node1Select.tempUseCtrlDominio(this.cd);
-			springLayout.putConstraint(SpringLayout.WEST, node1Select, 20, SpringLayout.EAST, node1SelectType);
-			springLayout.putConstraint(SpringLayout.NORTH, node1Select, 50, SpringLayout.NORTH, this);
 			add(node1Select);
 		
 		node2SelectType = new JComboBox<String>(new String[]{" - Pick a type -", "Paper ", "Autor ", "Conferencia ", "Term "});
 		node2SelectType.setEnabled(false);
-		springLayout.putConstraint(SpringLayout.WEST, node2SelectType, 50, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.NORTH, node2SelectType, 20, SpringLayout.SOUTH, node1SelectType);
 		add(node2SelectType);
 		
 			node2Select = new MyComboBox();
 			node2Select.setParent(node2SelectType);
 			node2Select.tempUseCtrlDominio(this.cd);
-			springLayout.putConstraint(SpringLayout.WEST, node2Select, 20, SpringLayout.EAST, node2SelectType);
-			springLayout.putConstraint(SpringLayout.NORTH, node2Select, 20, SpringLayout.SOUTH, node1Select);
 			add(node2Select);
+			
+		resultList = new MyList();
+		resultList.setSelectionMode(0);
+		add(resultList);
 		
+		putConstraints(springLayout);
 	}
 	
-	
+	private void putConstraints(SpringLayout sl){
+		sl.putConstraint(SpringLayout.WEST, node1SelectType, 50, SpringLayout.WEST, this);
+		sl.putConstraint(SpringLayout.NORTH, node1SelectType, 50, SpringLayout.NORTH, this);
+		sl.putConstraint(SpringLayout.WEST, node1Select, 20, SpringLayout.EAST, node1SelectType);
+		sl.putConstraint(SpringLayout.NORTH, node1Select, 50, SpringLayout.NORTH, this);
+		sl.putConstraint(SpringLayout.WEST, node2SelectType, 50, SpringLayout.WEST, this);
+		sl.putConstraint(SpringLayout.NORTH, node2SelectType, 20, SpringLayout.SOUTH, node1SelectType);
+		sl.putConstraint(SpringLayout.WEST, node2Select, 20, SpringLayout.EAST, node2SelectType);
+		sl.putConstraint(SpringLayout.NORTH, node2Select, 20, SpringLayout.SOUTH, node1Select);
+		
+		sl.putConstraint(SpringLayout.NORTH, resultList, 20, SpringLayout.SOUTH, node2SelectType);
+		sl.putConstraint(SpringLayout.WEST, resultList, 50, SpringLayout.WEST, this);
+	}
 	
 	public void assignListeners(){
 		
