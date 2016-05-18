@@ -114,7 +114,7 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 		rawStrings[1] = new DefaultComboBoxModel<String>(
 			new String[]{" - Pick an author -","Author 1","Author 2","Author 3","Autor 4","Autor 5","Autora 6","Autora 7","Autora 8","This is tooooooooooooooooooo long"});
 		rawStrings[2] = new DefaultComboBoxModel<String>(
-			new String[]{" - Pick a conf. -","Conference 1","Conference 2","Conference 2","Conference 3","Conferencia 4","Conferencia 5","Conferencia 6","Conferencia 7","Conferencia 8"});
+			new String[]{" - Pick a conf. -","Conference 1","Conference 2","Conference 3","Conferencia 4","Conferencia 5","Conferencia 6","Conferencia 7","Conferencia 8"});
 		rawStrings[3] = new DefaultComboBoxModel<String>(
 			new String[]{" - Pick a term -","Term 1","Term 2","Term 3","Term 4","Term 5","Term 6","Term 7","Term 8"});
 		
@@ -226,21 +226,9 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 				setSelectedIndex(-1);
 				setEnabled(false);
 			}
-			else if (index == -2) throw new RuntimeException("\n\n ~MyComboBox exploded, contact a fox to get it fixed~ \n");
+			else if (index == -2) throw new RuntimeException("\n\n ~MyComboBox exploded, contact a fox to get 1 fixed~ \n");
 		}
-		else if (e.getSource().equals(this)){
-			/*
-			 * The main idea is to lock the dropdown to the selected item...
-			 * 
-			if (getSelectedIndex != -1){
-				updateSubstrings();
-				auxSetModel(filteredStrings);
-			}
-			*/
-		}
-		else {
-			throw new RuntimeException("\n\n ~MyComboBox exploded, contact a fox to get it fixed~ \n");
-		}
+		
 	}
 	
 	
@@ -253,17 +241,26 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 	public void keyPressed(KeyEvent e) {
 	}
 
+	/**
+	 * Used to control the dropdown menu and filter the options displayed.
+	 * Ignores the keys with a default action (<code>Enter, Up, Down</code>)
+	 * 
+	 * @param e Key Event
+	 */
 	@Override
 	public void keyReleased(KeyEvent e) {
-		if (getEditor().getItem().toString().length() > 0){
-			updateSubstrings();
-			auxSetModel(filteredStrings);
+		int code = e.getKeyCode();
+		if (code != KeyEvent.VK_ENTER && code != KeyEvent.VK_UP && code != KeyEvent.VK_DOWN){
+			if (getEditor().getItem().toString().length() > 0){
+				updateSubstrings();
+				auxSetModel(filteredStrings);
+			}
+			else {
+				auxSetModel(rawStrings[inCase]);
+			}
+			
+			showPopup();
 		}
-		else {
-			auxSetModel(rawStrings[inCase]);
-		}
-		
-		showPopup();
 	}
 
 }
