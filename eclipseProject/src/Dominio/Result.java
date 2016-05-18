@@ -254,15 +254,3 @@ public class Result implements Cloneable, Serializable {
 		Collections.sort(resultList,new NodePairComparator());
 	}
 }
-
-
-/* * * * * * * * * * * * * * * * * * *
- * 									 *
- * Clases propias de Resultado.java  *
- * 								     *
- * * * * * * * * * * * * * * * * * * */
-
-
-
-
-

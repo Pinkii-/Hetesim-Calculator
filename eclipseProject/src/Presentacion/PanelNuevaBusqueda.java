@@ -21,7 +21,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 
 	private JComboBox<String> node1SelectType, node2SelectType;
 	private MyComboBox node1Select, node2Select;
-	private MyList resultList;
+	private JList resultList;
 	private static final long serialVersionUID = 1L;
 	
 
@@ -61,7 +61,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 			node2Select.tempUseCtrlDominio(this.cd);
 			add(node2Select);
 			
-		resultList = new MyList();
+		resultList = new JList();
 		resultList.setSelectionMode(0);
 		add(resultList);
 		

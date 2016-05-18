@@ -55,9 +55,11 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 	}
 	
 	public void setParent(JComboBox<String> parent){
-		parentBox = parent;
-		parent.setPreferredSize(new Dimension(148,24));
-		parent.addActionListener(this);
+		if (parent != null){
+			parentBox = parent;
+			parentBox.setPreferredSize(new Dimension(148,24));
+			parentBox.addActionListener(this);
+		}
 	}
 	private void initParams(){
 		autocomplete = false;
@@ -67,6 +69,7 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 		setEnabled(false);
 		setFocusable(true);
 		setSelectedIndex(-1);
+		
 		addActionListener(this);
 		getEditor().getEditorComponent().addKeyListener(this);
 	}
@@ -119,6 +122,7 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 			new String[]{" - Pick a term -","Term 1","Term 2","Term 3","Term 4","Term 5","Term 6","Term 7","Term 8"});
 		
 	}
+	
 	/**
 	 * <b>Stub:</b> Gets an <code>ArrayList</code> of <code>String</code>s which corresponds to
 	 * the names of the nodes in <u>alnode</u>.
@@ -145,10 +149,10 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 	 * @see #findStart(ComboBoxModel, String, int, int)
 	 */
 	private void updateSubstrings(){
-		matchStart = findStart(rawStrings[inCase], getEditor().getItem().toString(), 0, rawStrings[inCase].getSize()-1);
+		matchStart = findStart(rawStrings[inCase], getEditor().getItem().toString().toLowerCase(), 0, rawStrings[inCase].getSize()-1);
 		if (matchStart >= 0 && matchStart < rawStrings[inCase].getSize() && filteredStrings != null){
 			ArrayList<String> alist = new ArrayList<String>();
-			while (matchStart < rawStrings[inCase].getSize() && rawStrings[inCase].getElementAt(matchStart).startsWith(getEditor().getItem().toString())){
+			while (matchStart < rawStrings[inCase].getSize() && rawStrings[inCase].getElementAt(matchStart).toLowerCase().startsWith(getEditor().getItem().toString().toLowerCase())){
 				alist.add(rawStrings[inCase].getElementAt(matchStart));
 				++matchStart;
 			}
@@ -185,8 +189,8 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 	 */
 	private Integer findStart(ComboBoxModel<String> nodeNames, String text, int begin, int end){
 		if (begin == end || begin +1 == end){
-			if (nodeNames.getElementAt(begin).startsWith(text)) return begin;
-			else if (nodeNames.getElementAt(end).startsWith(text)) return end;
+			if (nodeNames.getElementAt(begin).toLowerCase().startsWith(text)) return begin;
+			else if (nodeNames.getElementAt(end).toLowerCase().startsWith(text)) return end;
 			else return -1;
 		}
 		else {
