@@ -44,13 +44,13 @@ public class CtrlDataTest {
 	
 				switch(select){
 				case 1: 
-					testPathDeepCopy();
+					//testPathDeepCopy();
 					break;
 				case 2: 
-					testResultDeepCopy();
+					//testResultDeepCopy();
 					break;
 				case 3: 
-					testGrafDeepCopy();
+					//testGrafDeepCopy();
 					break;
 				case 4:
 					testConstructor();
@@ -263,14 +263,13 @@ public class CtrlDataTest {
 	
 	private static void printMatrix(Matrix m) {
 		for (int i = 0; i < m.getNRows(); ++i) {
-			ArrayList<Float> fila = new ArrayList<Float>();
-			fila = m.getRow(i);
 			String conc = "";
 			for (int j = 0; j < m.getNCols(); ++j) {
-				conc += Float.toString(fila.get(j))+" ";
+				conc += Float.toString(m.getValue(i, j))+" ";
 			}
 			System.out.println(conc);
 		}
+		System.out.println(String.valueOf(m.getNCols())+","+String.valueOf(m.getNRows()));
 	}
 	
 	private static void printNode(Node n) {
@@ -280,7 +279,7 @@ public class CtrlDataTest {
 		System.out.println("[ "+retStr+" ]");
 	}
 	
-	private static Result enterDataResult() throws Exception {
+	public static Result enterDataResult() throws Exception {
 		
 		Path p = new Path();
 		System.out.println("Creamos path usado del Resultado");
@@ -371,6 +370,7 @@ public class CtrlDataTest {
 		System.out.println("------------------------------------------------");
 		
 	}
+	/*
 	private static void testPathDeepCopy() throws FileNotFoundException, ClassNotFoundException, IOException, CloneNotSupportedException {
 		System.out.println("@@@Vamos a generar un Path@@@");
 		Path p = new Path();
@@ -389,7 +389,8 @@ public class CtrlDataTest {
 		printPath(copy); 
 				
 	}
-	
+	*/
+	/*
 	private static void testResultDeepCopy() throws Exception {		
 		
 		System.out.println("@@@Vamos a generar un resultado@@@");
@@ -415,7 +416,8 @@ public class CtrlDataTest {
 		printResult(rscopy);
 		
 	}	
-	
+	*/
+	/*
 	private static void testGrafDeepCopy() throws IOException {
 		
 		System.out.println("@@@Vamos a generar un grafo@@@");
@@ -445,7 +447,7 @@ public class CtrlDataTest {
 		System.out.println("-Copia del grafo: ");
 		printGraf(gcopy);
 		
-	}
+	}*/
 	
 	private static void testConstructor() throws Exception {
 		System.out.println("@@@Hay que comprovar que las carpetas: Paths y GrafsAndResults han sido creadas@@@");
