@@ -1,20 +1,19 @@
 package Presentacion;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.FlowLayout;
+import java.awt.Dimension;
+import java.awt.Font;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
-import javax.swing.SpringLayout;
+import javax.swing.SwingConstants;
 
 import Dominio.CtrlDataTest;
 import Dominio.Result;
@@ -24,18 +23,14 @@ public class PanelLoadResult extends AbstractPanel{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	JPanel subpanel = new JPanel();
-	JPanel panel = new JPanel();
-	
-	JTable table;
-	JSplitPane splitpane = new JSplitPane();
-	JPanel infoAndActions = new JPanel();
-	JLabel label = new JLabel("INFO	");
-	
-	JButton first = new JButton("lmao");
-	JButton second = new JButton("ayy");
-	
-	Result rs;
+	private JPanel infoAndActions = new JPanel();
+	private JPanel actions = new JPanel();
+	private JPanel info = new JPanel();
+	private JTable table;
+	private JSplitPane splitpane = new JSplitPane();
+	private Result rs;
+	private JButton first = new JButton("lmao");
+	private JButton second = new JButton("ayy");
 	
 	public PanelLoadResult (VistaPrincipal vp)  {
 		super(vp);
@@ -54,6 +49,7 @@ public class PanelLoadResult extends AbstractPanel{
 	}
 	
 	private void generateTable() {
+		
 		String[] columnNames = {"Entidad A",
                 "Tipo",
                 "Entidad B",
@@ -76,23 +72,62 @@ public class PanelLoadResult extends AbstractPanel{
 		table.setFillsViewportHeight(true);
 		splitpane.setLeftComponent(new JScrollPane(table));
 	}
-	
-	private void initSubPanels(BoxLayout sp) {
-		generateTable();
+	private void generateInfoPanel() {
+		JLabel label = new JLabel("INFO	");
+		JLabel origen = new JLabel("Origen: ");
+		JLabel destino = new JLabel("Destino: ");
+		JLabel path = new JLabel("Path usado: ");
+		JLabel threshold = new JLabel("Threshold usado: ");
+		JLabel modificado = new JLabel("Resultado modificado: ");
+		JCheckBox cb = new JCheckBox();
+		cb.setSelected(true);
+		cb.setOpaque(true);
+		info.add(Box.createHorizontalGlue());
+		info.setLayout(new BoxLayout(info,BoxLayout.PAGE_AXIS));
+		info.setAlignmentX(RIGHT_ALIGNMENT);
+		info.add(label);
+		info.add(Box.createRigidArea(new Dimension(0,50)));
+		info.add(origen);
+		info.add(destino);
+		info.add(path);
+		info.add(threshold);
+		info.add(cb);
+	}
+	private void generateActionPanel() {
+		actions.setLayout(new BoxLayout(actions,BoxLayout.LINE_AXIS));
+		actions.setAlignmentX(LEFT_ALIGNMENT);
+		actions.add(Box.createHorizontalGlue());
+		actions.add(first);
+		actions.add(second);
+	}
+	private void generateInfoAndActionPanel() {
+		
 		infoAndActions.setLayout(new BoxLayout(infoAndActions,BoxLayout.PAGE_AXIS));
-		infoAndActions.add(label);
+		
+		generateInfoPanel();
+		infoAndActions.add(info);
+		
+		JSeparator seperator = new JSeparator(SwingConstants.HORIZONTAL);
+		seperator.setMaximumSize( new Dimension(Integer.MAX_VALUE, 1) );
+		infoAndActions.add(seperator);
+		
 		infoAndActions.add(Box.createVerticalGlue());
-		infoAndActions.add(first);
-		infoAndActions.add(second);
+		generateActionPanel();
+		infoAndActions.add(actions);
+		
 		splitpane.setRightComponent(infoAndActions);
 		splitpane.resetToPreferredSizes();
 		add(splitpane);
 	}
+	private void initSubPanels() {
+		generateTable();
+		generateInfoAndActionPanel();
+		
+	}
 	private void initComponents() {
 		BoxLayout bl = new BoxLayout(this,BoxLayout.LINE_AXIS);
 		setLayout(bl);
-		setLayout(bl);
-		initSubPanels(bl);
+		initSubPanels();
 		
 	}
 	
