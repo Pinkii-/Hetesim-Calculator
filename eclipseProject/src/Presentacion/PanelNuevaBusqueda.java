@@ -64,7 +64,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 			node2Select.setAutocomplete(true);
 			add(node2Select);
 			
-		resultList = new JList();
+		resultList = new MyList();
 		resultList.setSelectionMode(0);
 		add(resultList);
 		

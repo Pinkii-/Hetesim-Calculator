@@ -63,8 +63,11 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 	 */
 	public void linkToParent(JComboBox<String> parent){
 		if (parent != null){
+			ComboBoxModel parentCB = new DefaultComboBoxModel(new String[]{"- Node Type -","Paper","Autor","Conferencia","Term"});
 			parentBox = parent;
 			parentBox.addActionListener(this);
+			parentBox.setModel(parentCB);
+			parentBox.setSelectedItem("- Node Type -");
 		}
 	}
 	private void initParams(){
@@ -177,7 +180,12 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 		else throw new RuntimeException("\n\n ~MyComboBox exploded, List index out of bounds~ \n");
 	}
 	
-	public Integer getListListSize(){
+	/**
+	 * 
+	 * 
+	 * @return The amount of lists currently stored
+	 */
+	public Integer getListSize(){
 		return rawStrings.length;
 	}
 	
@@ -215,7 +223,6 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 				++matchStart;
 			}
 			filteredStrings = new DefaultComboBoxModel(alist.toArray());
-			showPopup();
 		}
 		else if (matchStart == -1){
 			auxSetModel(rawStrings[inCase]);
@@ -224,6 +231,7 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 			if (filteredStrings == null) throw new RuntimeException("\n\n ~MyComboBox exploded, filteredStrings is null~ \n");
 			else throw new RuntimeException("\n\n ~MyComboBox exploded, matchStart out of bounds?~ \n");
 		}
+		showPopup();
 	}
 	
 	/**
@@ -273,6 +281,8 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 			if (index >= 0){ //List is valid
 				setList(index);
 				setEnabled(true);
+				setSelectedItem(rawStrings[index].getElementAt(-1));
+				requestFocus();
 			}
 			else if (index == -1) { //Pick a type
 				setSelectedIndex(-1);
