@@ -59,7 +59,6 @@ public class VistaPrincipal extends VistaAbstracta{
 		initComponents();
 		this.setEnabled(true);
 		this.pack();
-		this.setResizable(true);
 		this.setVisible(true);
 		
 		this.addWindowListener(new WindowAdapter() {
