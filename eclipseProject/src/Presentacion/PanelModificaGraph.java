@@ -59,7 +59,7 @@ public class PanelModificaGraph extends AbstractPanel {
 			@Override
 			public void keyReleased(KeyEvent e){
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					findingNode.getLis
+					//findingNode.getLis
 					
 				}
 			}

@@ -109,26 +109,24 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 		rawStrings = new ComboBoxModel[4];
 
 		/*
-		 * Will use these once we have access to the graph
-		 * 
-		String[] papers = getNodeNames(cd.getCtrlGraph().getGraph().getPapers());
+		String[] papers = (String[]) cd.getCtrlGraph().formatNodesOfType("Paper").toArray();
 			rawStrings[0] = new DefaultComboBoxModel<String>(papers);
-		String[] autors = getNodeNames(cd.getCtrlGraph().getGraph().getAutors());
+		String[] autors = (String[]) cd.getCtrlGraph().formatNodesOfType("Autor").toArray();
 			rawStrings[1] = new DefaultComboBoxModel<String>(autors);
-		String[] conferencies = getNodeNames(cd.getCtrlGraph().getGraph().getConferencies());
+		String[] conferencies = (String[]) cd.getCtrlGraph().formatNodesOfType("Conferencia").toArray();
 			rawStrings[2] = new DefaultComboBoxModel<String>(conferencies);
-		String[] terms = getNodeNames(cd.getCtrlGraph().getGraph().getTermes());
+		String[] terms = (String[]) cd.getCtrlGraph().formatNodesOfType("Terme").toArray();
 			rawStrings[3] = new DefaultComboBoxModel<String>(terms);
 		*/
-			
+		
 		rawStrings[0] = new DefaultComboBoxModel<String>(
-			new String[]{" - Pick a paper -","Paper 1","Paper 2","Paper 3","Paper 4","Paper 5","Paper 6","Paper 7","Paper 8"});
+			new String[]{" - All papers -","Paper 1","Paper 2","Paper 3","Paper 4","Paper 5","Paper 6","Paper 7","Paper 8"});
 		rawStrings[1] = new DefaultComboBoxModel<String>(
-			new String[]{" - Pick an author -","Author 1","Author 2","Author 3","Autor 4","Autor 5","Autora 6","Autora 7","Autora 8","This is tooooooooooooooooooo long"});
+			new String[]{" - All authors -","Author 1","Author 2","Author 3","Autor 4","Autor 5","Autora 6","Autora 7","Autora 8","This is tooooooooooooooooooo long"});
 		rawStrings[2] = new DefaultComboBoxModel<String>(
-			new String[]{" - Pick a conf. -","Conference 1","Conference 2","Conference 3","Conferencia 4","Conferencia 5","Conferencia 6","Conferencia 7","Conferencia 8"});
+			new String[]{" - All conferences -","Conference 1","Conference 2","Conference 3","Conferencia 4","Conferencia 5","Conferencia 6","Conferencia 7","Conferencia 8"});
 		rawStrings[3] = new DefaultComboBoxModel<String>(
-			new String[]{" - Pick a term -","Term 1","Term 2","Term 3","Term 4","Term 5","Term 6","Term 7","Term 8"});
+			new String[]{" - All terms -","Term 1","Term 2","Term 3","Term 4","Term 5","Term 6","Term 7","Term 8"});
 		
 	}
 	

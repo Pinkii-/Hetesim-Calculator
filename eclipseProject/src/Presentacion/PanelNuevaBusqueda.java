@@ -19,7 +19,7 @@ import javax.swing.JList;
  */
 public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 
-	private JComboBox<String> node1SelectType, node2SelectType;
+	private JComboBox<String> node1SelectType, node2SelectType, pathSelect;
 	private MyComboBox node1Select, node2Select;
 	private JList resultList;
 	private static final long serialVersionUID = 1L;
@@ -43,6 +43,11 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		
 		SpringLayout springLayout = new SpringLayout();
 		setLayout(springLayout);
+		
+		
+		pathSelect = new JComboBox<String>((String[]) cd.getCtrlPaths().getPathNames().toArray());
+		add(pathSelect);
+		
 		
 		node1SelectType = new JComboBox<String>(new String[]{" - Pick a type -","Paper", "Autor", "Conferencia", "Term"});
 		node1SelectType.setPreferredSize(new Dimension(148,24));
@@ -72,14 +77,26 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 	}
 	
 	private void putConstraints(SpringLayout sl){
+		sl.putConstraint(SpringLayout.NORTH, pathSelect, 20, SpringLayout.NORTH, this);
+		sl.putConstraint(SpringLayout.WEST, pathSelect, 50, SpringLayout.WEST, this);
+		
+		
+
+		sl.putConstraint(SpringLayout.NORTH, node1SelectType, 20, SpringLayout.SOUTH, pathSelect);
 		sl.putConstraint(SpringLayout.WEST, node1SelectType, 50, SpringLayout.WEST, this);
-		sl.putConstraint(SpringLayout.NORTH, node1SelectType, 50, SpringLayout.NORTH, this);
+
+		sl.putConstraint(SpringLayout.NORTH, node1Select, 20, SpringLayout.SOUTH, pathSelect);
 		sl.putConstraint(SpringLayout.WEST, node1Select, 20, SpringLayout.EAST, node1SelectType);
-		sl.putConstraint(SpringLayout.NORTH, node1Select, 50, SpringLayout.NORTH, this);
-		sl.putConstraint(SpringLayout.WEST, node2SelectType, 50, SpringLayout.WEST, this);
+
+		
 		sl.putConstraint(SpringLayout.NORTH, node2SelectType, 20, SpringLayout.SOUTH, node1SelectType);
-		sl.putConstraint(SpringLayout.WEST, node2Select, 20, SpringLayout.EAST, node2SelectType);
+		sl.putConstraint(SpringLayout.WEST, node2SelectType, 50, SpringLayout.WEST, this);
+
 		sl.putConstraint(SpringLayout.NORTH, node2Select, 20, SpringLayout.SOUTH, node1Select);
+		sl.putConstraint(SpringLayout.WEST, node2Select, 20, SpringLayout.EAST, node2SelectType);
+
+		
+		
 		
 		sl.putConstraint(SpringLayout.NORTH, resultList, 20, SpringLayout.SOUTH, node2SelectType);
 		sl.putConstraint(SpringLayout.WEST, resultList, 50, SpringLayout.WEST, this);
@@ -88,6 +105,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 	public void assignListeners(){
 		
 		node1SelectType.addActionListener(this);
+		pathSelect.addActionListener(this);
 		
 	}
 
