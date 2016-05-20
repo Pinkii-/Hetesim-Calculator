@@ -45,20 +45,23 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		setLayout(springLayout);
 		
 		node1SelectType = new JComboBox<String>(new String[]{" - Pick a type -","Paper", "Autor", "Conferencia", "Term"});
+		node1SelectType.setPreferredSize(new Dimension(148,24));
 		add(node1SelectType);
 		
 			node1Select = new MyComboBox();
-			node1Select.setParent(node1SelectType);
-			node1Select.tempUseCtrlDominio(this.cd);
+			node1Select.linkToParent(node1SelectType);
+			node1Select.loadNodesToLists(this.cd);
 			add(node1Select);
 		
 		node2SelectType = new JComboBox<String>(new String[]{" - Pick a type -", "Paper ", "Autor ", "Conferencia ", "Term "});
+		node2SelectType.setPreferredSize(new Dimension(148,24));
 		node2SelectType.setEnabled(false);
 		add(node2SelectType);
 		
 			node2Select = new MyComboBox();
-			node2Select.setParent(node2SelectType);
-			node2Select.tempUseCtrlDominio(this.cd);
+			node2Select.linkToParent(node2SelectType);
+			node2Select.loadNodesToLists(this.cd);
+			node2Select.setAutocomplete(true);
 			add(node2Select);
 			
 		resultList = new JList();
@@ -85,6 +88,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 	public void assignListeners(){
 		
 		node1SelectType.addActionListener(this);
+		
 	}
 
 	@Override

@@ -18,7 +18,7 @@ import Dominio.Node;
 
 /**
  * Custom implementaton of <code>JComboBox</code> to filter the dropdown list relative to the typed text.<p>
- * Needs a parent from which to read events and select the corresponding list.
+ * Supports a parent from which to read events and select the corresponding list.
  * 
  * @author Xavier Peñalosa
  *
@@ -32,7 +32,7 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 	private CtrlDominio cd = new CtrlDominio();
 	private Boolean autocomplete;
 	
-	private ComboBoxModel<String>[] rawStrings = new ComboBoxModel[4];
+	private ComboBoxModel<String>[] rawStrings;
 	private ComboBoxModel<String> filteredStrings;
 	private Integer inCase = new Integer(-1);
 	private Integer matchStart = new Integer(0);
@@ -49,15 +49,21 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 	 * 
 	 * @param cd - CtrlDominio, used to request node information
 	 */
-	public void tempUseCtrlDominio(CtrlDominio cd){
+	public void loadNodesToLists(CtrlDominio cd){
 		this.cd = cd;
 		initStrings(this.cd);
 	}
 	
-	public void setParent(JComboBox<String> parent){
+	/**
+	 * Adds a JComboString from which to check events. The handled events can be seen
+	 * in <code>actionPerformed(ActionEvent)</code>
+	 * 
+	 * @param parent
+	 * @see #actionPerformed(ActionEvent)
+	 */
+	public void linkToParent(JComboBox<String> parent){
 		if (parent != null){
 			parentBox = parent;
-			parentBox.setPreferredSize(new Dimension(148,24));
 			parentBox.addActionListener(this);
 		}
 	}
@@ -124,13 +130,65 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 	}
 	
 	/**
+	 * Add a new array of choices to the JComboBox
+	 * 
+	 * @param name - Name to identify the item
+	 * @param newItem - Array of strings to add
+	 */
+	public void addList(String[] newItem){
+		if (newItem != null){
+			ComboBoxModel<String>[] newRawStrings = new ComboBoxModel[rawStrings.length+1];
+			for (int i = 0; i < rawStrings.length; ++i){
+				String[] tempString = new String[rawStrings[i].getSize()];
+				for(int j = 0; j < rawStrings[i].getSize(); ++j){
+					tempString[j] = rawStrings[i].getElementAt(j);
+				}
+				newRawStrings[i] = new DefaultComboBoxModel<String>(tempString);
+			}
+			newRawStrings[newRawStrings.length-1] = new DefaultComboBoxModel<String>(newItem);
+			rawStrings = newRawStrings;
+		}
+	}
+	/**
+	 * Add a new array of choices to the JComboBox.
+	 * 
+	 * @param newItem - ArrayList of strings to add
+	 * @see #addList(String[])
+	 */
+	public void addList(ArrayList<String> newItem){
+		addList((String[]) newItem.toArray());
+	}
+	
+	/**
+	 * Sets the ComboBoxModel stored in position <b>index</b>. This changes the dropdown list
+	 * and therefore the options that can be selected.
+	 * 
+	 * @param index - Index of the ComboBoxModel to set
+	 */
+	public void setList(Integer index){
+		if (index < rawStrings.length && index >= 0){
+			if (inCase != index){
+				inCase = index;
+				setModel(rawStrings[index]);
+				setSelectedIndex(0);
+				getEditor().setItem(rawStrings[index].getElementAt(0));
+			}
+		}
+		else throw new RuntimeException("\n\n ~MyComboBox exploded, Index out of bounds~ \n");
+	}
+	
+	public Integer getListListSize(){
+		return rawStrings.length;
+	}
+	
+	
+	/**
 	 * <b>Stub:</b> Gets an <code>ArrayList</code> of <code>String</code>s which corresponds to
 	 * the names of the nodes in <u>alnode</u>.
 	 * 
 	 * @param alnode <code>Node</code> list from which we will get the names
 	 * @return Array of node names as string
 	 */
-	@SuppressWarnings("unused")
 	private String[] getNodeNames(ArrayList<Node> alnode) {
 		ArrayList<String> nodeNames = new ArrayList<String>();
 		for (int i = 0; i < alnode.size(); ++i){
@@ -163,7 +221,8 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 			auxSetModel(rawStrings[inCase]);
 		}
 		else {
-			throw new RuntimeException("\n\n Something went wrong in updateSubstrings! \n Contact fox! \n");
+			if (filteredStrings == null) throw new RuntimeException("\n\n ~MyComboBox exploded, filteredStrings is null~ \n");
+			else throw new RuntimeException("\n\n ~MyComboBox exploded, matchStart out of bounds?~ \n");
 		}
 	}
 	
@@ -210,29 +269,17 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 	public void actionPerformed(ActionEvent e) {
 		if (parentBox != null && e.getSource().equals(parentBox)){
 			int index = parentBox.getSelectedIndex() - 1;
-			if (index >= 0){
-				/*
-				 * Either of the valid types
-				 * 
-				 * 0 - Paper
-				 * 1 - Author
-				 * 2 - Conference
-				 * 3 - Term
-				 */
-				if (inCase != index){
-					setModel(rawStrings[index]);
-					setSelectedIndex(0);
-					inCase = index;
-				}
+			
+			if (index >= 0){ //List is valid
+				setList(index);
 				setEnabled(true);
 			}
 			else if (index == -1) { //Pick a type
 				setSelectedIndex(-1);
 				setEnabled(false);
 			}
-			else if (index == -2) throw new RuntimeException("\n\n ~MyComboBox exploded, contact a fox to get 1 fixed~ \n");
+			else if (index == -2) throw new RuntimeException("\n\n ~MyComboBox exploded, tried to set index -2~ \n");
 		}
-		
 	}
 	
 	
@@ -258,12 +305,21 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 			if (getEditor().getItem().toString().length() > 0){
 				updateSubstrings();
 				auxSetModel(filteredStrings);
+				if (autocomplete && filteredStrings.getSize()==1){
+					getEditor().setItem(getSelectedItem());
+				}
 			}
 			else {
 				auxSetModel(rawStrings[inCase]);
 			}
 			
 			showPopup();
+		}
+		else if (code == KeyEvent.VK_ENTER){
+			if (getSelectedIndex() >= 0 && getModel() == filteredStrings){
+				setSelectedItem(filteredStrings.getElementAt(getSelectedIndex()));
+				getEditor().setItem(getSelectedItem());
+			}
 		}
 	}
 
