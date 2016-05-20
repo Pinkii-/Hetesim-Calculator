@@ -15,7 +15,7 @@ import javax.swing.event.ListSelectionListener;
  * @author Xavier Peñalosa
  *
  */
-public class MyList extends JList<NodePairPresentacion> implements ListSelectionListener, MouseListener {
+public class MyList extends JList implements ListSelectionListener, MouseListener {
 
 	
 	/*

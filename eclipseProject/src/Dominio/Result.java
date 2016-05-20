@@ -211,6 +211,10 @@ public class Result implements Cloneable, Serializable {
 		this.idGraph = idGraph;
 	}
 	
+	public String getUsedPath(){
+		return usedP.getNom();
+	}
+	
 	
 	/**
 	 * Modify the value of the HeteSim for the NodePair stored in line i
@@ -247,7 +251,9 @@ public class Result implements Cloneable, Serializable {
 	public void setModified(){ 
 		modified = true;
 	}
-	
+	public boolean isModified(){
+		return modified;
+	}
 	
 	
 	private void sortResult(){ //Sort the result list by hetesim value

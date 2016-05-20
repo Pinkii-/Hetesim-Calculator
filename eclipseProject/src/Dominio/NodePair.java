@@ -32,6 +32,13 @@ public class NodePair implements Serializable{
 		this.hetesimVal = hetesimVal;
 	}
 
+	public Node getFirstNode(){
+		return pairN.first;
+	}
+	public Node getSecondNode(){
+		return pairN.second;
+	}
+	
 	public float getHetesim(){
 		return hetesimVal;
 	}
