@@ -243,6 +243,7 @@ public class CtrlDominio {
 				e.printStackTrace();
 			}
 		}
+		ctrlResults.resultsStored();
 	}
 
 	public void saveAllModifiedEntities() {

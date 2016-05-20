@@ -66,9 +66,10 @@ public class CtrlResults {
 		this.lastResult = lastResult;
 	}
 
-	public void addLastResult() {
-		String nodeId = String.valueOf(System.currentTimeMillis());
-		addResult(nodeId, lastResult);
+	public String addLastResult() {
+		String resultId = String.valueOf(System.currentTimeMillis());
+		addResult(resultId, lastResult);
+		return resultId;
 	}
 
 	public ArrayList<Result> getModifiedResults() {
@@ -94,7 +95,7 @@ public class CtrlResults {
 		ArrayList<ArrayList<String>> ret = new ArrayList<ArrayList<String>>();
 		ArrayList<String> firstCol = new ArrayList<String>();
 		firstCol.add(resultId);
-		firstCol.add("PATH XDXD");
+		firstCol.add(res.getUsedPath());
 		firstCol.add(res.getIdGraf());
 		ret.add(firstCol);
 		ArrayList<NodePair> nodes = getResult(resultId).getResult();
@@ -123,6 +124,12 @@ public class CtrlResults {
 
 	public void printResults() {
 		System.out.println(this.toString());
+	}
+	
+	public void resultsStored(){
+		for (Map.Entry<String, Boolean> entry : modifiedResults.entrySet()) {
+			entry.setValue(false);
+		}
 	}
 
 }
