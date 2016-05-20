@@ -22,13 +22,14 @@ public class VistaPrincipal extends VistaAbstracta{
 //	private JFrame this = new JFrame(APPLICATION_NAME);
 	
 	// Panels;
-	enum Panels {ModificaGraph, LoadResult, NuevaBusqueda, Test, Exit};
+	enum Panels {ModificaGraph, LoadResult, PanelMostrarResultado, NuevaBusqueda, Test, Exit};
 	private Panels nextPanel;
 	
 	private JPanel content = new JPanel();
-	private AbstractPanel modificaGraph = new PanelModificaGraph(this);
-	private AbstractPanel loadResult = new PanelLoadResult(this);
-	private AbstractPanel nuevaBusqueda = new PanelNuevaBusqueda(this);
+	AbstractPanel modificaGraph = new PanelModificaGraph(this);
+	AbstractPanel loadResult = new PanelLoadResult(this);
+	AbstractPanel nuevaBusqueda = new PanelNuevaBusqueda(this);
+	AbstractPanel panelMostrarResultado = new PanelMostrarResultado(this);
 
 	// Menus
 	private JMenuBar menuBar = new JMenuBar();
