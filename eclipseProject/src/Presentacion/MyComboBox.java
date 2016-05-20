@@ -185,7 +185,7 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 	 * 
 	 * @return The amount of lists currently stored
 	 */
-	public Integer getListSize(){
+	public Integer getListAmount(){
 		return rawStrings.length;
 	}
 	
