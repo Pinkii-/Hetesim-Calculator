@@ -174,7 +174,7 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 				getEditor().setItem(rawStrings[index].getElementAt(0));
 			}
 		}
-		else throw new RuntimeException("\n\n ~MyComboBox exploded, Index out of bounds~ \n");
+		else throw new RuntimeException("\n\n ~MyComboBox exploded, List index out of bounds~ \n");
 	}
 	
 	public Integer getListListSize(){
