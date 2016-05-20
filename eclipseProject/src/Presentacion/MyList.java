@@ -6,6 +6,9 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.JList;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -21,6 +24,11 @@ public class MyList extends JList implements ListSelectionListener, MouseListene
 	/*
 	 * public MyList(ArrayList<String)
 	 */
+	public MyList(){
+		super();
+		initParams();
+		
+	}
 	
 	public MyList(ArrayList<NodePairPresentacion> alist){
 		super();
@@ -29,7 +37,8 @@ public class MyList extends JList implements ListSelectionListener, MouseListene
 	}
 	private void initParams(){
 		
-		
+
+		setBorder(new TitledBorder(LineBorder.createGrayLineBorder(),""));
 		setEnabled(false);
 		setFocusable(true);
 		setPreferredSize(new Dimension(316,200));
