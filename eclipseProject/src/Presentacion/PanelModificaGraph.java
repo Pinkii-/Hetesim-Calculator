@@ -90,7 +90,7 @@ public class PanelModificaGraph extends AbstractPanel {
 		PanelModificaGraph aux = this;
 		buttonAddNode.addActionListener( new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				aux.addVista(PanelEditNode.class, true); // Cambiar al panel que agrega nodos
+				//aux.addVista(PanelEditNode.class, true); // Cambiar al panel que agrega nodos
 			}
 		});
 		comboBoxTypeOfNode.addActionListener(new ActionListener() {
