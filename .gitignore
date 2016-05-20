@@ -14,3 +14,4 @@ userDict.txt
 *.ser
 *.Result
 *.classpath
+*.prefs
