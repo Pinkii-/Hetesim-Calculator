@@ -189,6 +189,42 @@ public class CtrlGraph {
 	public String formatNode(Node n) {
 		return "Name: " + n.getNom() + " Type: " + n.getTipus().toString();
 	}
+	
+	//Returns an arrayList of strings formatted by the following criteria:
+	/*
+	 * 0) Node's name (size 1)
+	 * 1) Node's type (size 1)
+	 * 2) Name of the papers it is related to (variable size)
+	 */
+	//If it's a paper:
+	//Returns an arrayList of strings formatted by the following criteria:
+	/*
+	 * 0) Node's name (size 1)
+	 * 1) Node's type (size 1)
+	 * 2) Name of the authors it is related to			(variable size)
+	 * 3) Name of the terms it is related to			(variable size)
+	 * 4) Name of the conferences it is related to	 	(variable size)
+	 */
+	public ArrayList<String> getNodeFormatted(Integer index, String nodeType){
+		ArrayList<String> ret = new ArrayList<String>();
+		//TODO
+		Node node = graph.getNode(index, Node.Type.valueOf(nodeType));
+		ret.add(node.getNom());
+		ret.add(node.getTipus().toString());
+		ArrayList<Node> relations = getNodeRelations(node);
+		for(Node n: relations){
+			ret.add(n.getNom());
+		}
+		return ret;
+	}
+	
+	public ArrayList<Node> getNodeRelations(Node node){
+		 ArrayList<Node> ret = new ArrayList<Node>();
+		 ret.add(graph.getNode(0, Node.Type.Paper));
+		 ret.add(graph.getNode(1, Node.Type.Paper));
+		 ret.add(graph.getNode(2, Node.Type.Paper));
+		 return ret;
+	}
 
 	public String toString() {
 		return graph.toString();

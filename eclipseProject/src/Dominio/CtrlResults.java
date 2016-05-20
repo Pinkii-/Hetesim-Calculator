@@ -81,6 +81,27 @@ public class CtrlResults {
 		return ret;
 	}
 	
+	//Returns an arrayList of strings formatted by the following criteria:
+	/*
+	 * 0) 0) Result's Id id 1)Name of the path used 2) GraphId
+	 * 1) 0) First Node's name 1) First Node's type 2) Second Node's name 3) Second Node's type
+	 * 1) 4) HeteSim value
+	 * Number of rows is of variable size, depends on the size of the result
+	 */
+	
+	public ArrayList<ArrayList<String>> getFormatted(String resultId){
+		ArrayList<NodePair> nodes = getResult(resultId).getResult();
+		//for(NodePair np: )
+		return null;
+	}
+	
+	public boolean isModified(String resultId){
+		if(modifiedResults.containsKey(resultId))
+			return modifiedResults.get(resultId);
+		System.out.println("Result does not exist!");
+		return false;
+	}
+	
 	public void printLastResult(){
 		System.out.println(lastResult.toString());
 	}
