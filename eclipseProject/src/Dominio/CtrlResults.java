@@ -90,9 +90,24 @@ public class CtrlResults {
 	 */
 	
 	public ArrayList<ArrayList<String>> getFormatted(String resultId){
+		Result res =  getResult(resultId);
+		ArrayList<ArrayList<String>> ret = new ArrayList<ArrayList<String>>();
+		ArrayList<String> firstCol = new ArrayList<String>();
+		firstCol.add(resultId);
+		firstCol.add("PATH XDXD");
+		firstCol.add(res.getIdGraf());
+		ret.add(firstCol);
 		ArrayList<NodePair> nodes = getResult(resultId).getResult();
-		//for(NodePair np: )
-		return null;
+		for (NodePair np: nodes){
+			ArrayList<String> col = new ArrayList<String>();
+			col.add(np.pairN.first.getNom());
+			col.add(np.pairN.first.getTipus().toString());
+			col.add(np.pairN.second.getNom());
+			col.add(np.pairN.second.getTipus().toString());
+			col.add(String.valueOf(np.getHetesim()));
+			ret.add(col);
+		}
+		return ret;
 	}
 	
 	public boolean isModified(String resultId){
