@@ -41,7 +41,7 @@ public class MyList extends JList implements ListSelectionListener, MouseListene
 		setBorder(new TitledBorder(LineBorder.createGrayLineBorder(),""));
 		setEnabled(false);
 		setFocusable(true);
-		setPreferredSize(new Dimension(316,200));
+		setPreferredSize(new Dimension(348,208));
 		
 		addListSelectionListener(this);
 		addMouseListener(this);

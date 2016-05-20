@@ -46,7 +46,7 @@ public class PanelModificaGraph extends AbstractPanel {
 		
 		findingNode = new MyComboBox();
 		findingNode.loadNodesToLists(cd);
-		findingNode.linkToParent(comboBoxTypeOfNode);
+		findingNode.linkToParentComboBox(comboBoxTypeOfNode);
 			//equisde no se como hacer lo que quiero que haga
 		findingNode.setMaximumSize(new Dimension(buttonAddNode.getMinimumSize().width*2, buttonAddNode.getMinimumSize().height));
 		findingNode.setMinimumSize(new Dimension(buttonAddNode.getMinimumSize().width*2, buttonAddNode.getMinimumSize().height));

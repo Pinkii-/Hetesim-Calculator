@@ -11,6 +11,7 @@ import java.util.Collections;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.MutableComboBoxModel;
 
 import Dominio.CtrlDominio;
@@ -27,7 +28,7 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 
 
 	private static final long serialVersionUID = 1L;
-	private JComboBox<String> parentBox;
+	private JComboBox<String> parentComboBox;
 	
 	private CtrlDominio cd = new CtrlDominio();
 	private Boolean autocomplete;
@@ -61,19 +62,20 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 	 * @param parent
 	 * @see #actionPerformed(ActionEvent)
 	 */
-	public void linkToParent(JComboBox<String> parent){
+	public void linkToParentComboBox(JComboBox<String> parent){
 		if (parent != null){
-			ComboBoxModel parentCB = new DefaultComboBoxModel(new String[]{"- Node Type -","Paper","Autor","Conferencia","Term"});
-			parentBox = parent;
-			parentBox.addActionListener(this);
-			parentBox.setModel(parentCB);
-			parentBox.setSelectedItem("- Node Type -");
+			ComboBoxModel parentCB = new DefaultComboBoxModel(new String[]{"Paper","Autor","Conferencia","Term"});
+			parentComboBox = parent;
+			parentComboBox.addActionListener(this);
+			parentComboBox.setModel(parentCB);
+			parentComboBox.setSelectedItem("- Node Type -");
 		}
 	}
+	
 	private void initParams(){
 		autocomplete = false;
 		
-		setPreferredSize(new Dimension(148,24));
+		setPreferredSize(new Dimension(160,24));
 		setEditable(true);
 		setEnabled(false);
 		setFocusable(true);
@@ -109,14 +111,10 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 		rawStrings = new ComboBoxModel[4];
 
 		/*
-		String[] papers = (String[]) cd.getCtrlGraph().formatNodesOfType("Paper").toArray();
-			rawStrings[0] = new DefaultComboBoxModel<String>(papers);
-		String[] autors = (String[]) cd.getCtrlGraph().formatNodesOfType("Autor").toArray();
-			rawStrings[1] = new DefaultComboBoxModel<String>(autors);
-		String[] conferencies = (String[]) cd.getCtrlGraph().formatNodesOfType("Conferencia").toArray();
-			rawStrings[2] = new DefaultComboBoxModel<String>(conferencies);
-		String[] terms = (String[]) cd.getCtrlGraph().formatNodesOfType("Terme").toArray();
-			rawStrings[3] = new DefaultComboBoxModel<String>(terms);
+		rawStrings[0] = new DefaultComboBoxModel<String>(arrayListToArray(cd.getCtrlGraph().formatNodesOfType("Paper")));
+		rawStrings[1] = new DefaultComboBoxModel<String>(arrayListToArray(cd.getCtrlGraph().formatNodesOfType("Autor")));
+		rawStrings[2] = new DefaultComboBoxModel<String>(arrayListToArray(cd.getCtrlGraph().formatNodesOfType("Conferencia")));
+		rawStrings[3] = new DefaultComboBoxModel<String>(arrayListToArray(cd.getCtrlGraph().formatNodesOfType("Terme")));
 		*/
 		
 		rawStrings[0] = new DefaultComboBoxModel<String>(
@@ -175,7 +173,7 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 				getEditor().setItem(rawStrings[index].getElementAt(0));
 			}
 		}
-		else throw new RuntimeException("\n\n ~MyComboBox exploded, List index out of bounds~ \n");
+		else throw new RuntimeException("Index out of bounds");
 	}
 	
 	/**
@@ -269,24 +267,32 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 		}
 	}
 	
-	
+	private String[] arrayListToArray(ArrayList<String> alist){
+		String[] temp = new String[alist.size()];
+		return alist.toArray(temp);
+	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (parentBox != null && e.getSource().equals(parentBox)){
-			int index = parentBox.getSelectedIndex() - 1;
+		if (parentComboBox != null && e.getSource().equals(parentComboBox)){
+			int index = parentComboBox.getSelectedIndex() - 1;
 			
-			if (index >= 0){ //List is valid
+			try{
 				setList(index);
 				setEnabled(true);
 				setSelectedItem(rawStrings[index].getElementAt(-1));
-				requestFocus();
 			}
-			else if (index == -1) { //Pick a type
-				setSelectedIndex(-1);
-				setEnabled(false);
+			catch (RuntimeException exc){
+				String errorMsg = exc.getMessage();
+				if (errorMsg== "Index out of bounds"){
+					if (index == -1) { //Pick a type
+						setSelectedIndex(-1);
+						setEnabled(false);
+					}
+					else throw new RuntimeException(errorMsg);
+				}
+				else throw new RuntimeException(errorMsg);
 			}
-			else if (index == -2) throw new RuntimeException("\n\n ~MyComboBox exploded, tried to set index -2~ \n");
 		}
 	}
 	
