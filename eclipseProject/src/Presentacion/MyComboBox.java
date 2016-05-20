@@ -223,7 +223,6 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 				++matchStart;
 			}
 			filteredStrings = new DefaultComboBoxModel(alist.toArray());
-			showPopup();
 		}
 		else if (matchStart == -1){
 			auxSetModel(rawStrings[inCase]);
@@ -232,6 +231,7 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 			if (filteredStrings == null) throw new RuntimeException("\n\n ~MyComboBox exploded, filteredStrings is null~ \n");
 			else throw new RuntimeException("\n\n ~MyComboBox exploded, matchStart out of bounds?~ \n");
 		}
+		showPopup();
 	}
 	
 	/**
@@ -281,9 +281,8 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 			if (index >= 0){ //List is valid
 				setList(index);
 				setEnabled(true);
-				setSelectedItem("");
+				setSelectedItem(rawStrings[index].getElementAt(-1));
 				requestFocus();
-				showPopup();
 			}
 			else if (index == -1) { //Pick a type
 				setSelectedIndex(-1);
