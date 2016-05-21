@@ -5,10 +5,12 @@ import javax.swing.SpringLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JList;
 
 /**
@@ -20,8 +22,10 @@ import javax.swing.JList;
 public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 
 	private JComboBox<String> node1SelectType, node2SelectType;
+	private JComboBox<String> pathSelect;
 	private MyComboBox node1Select, node2Select;
 	private JList resultList;
+	private JLabel node1Label, node2Label;
 	private static final long serialVersionUID = 1L;
 	
 
@@ -44,24 +48,39 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		SpringLayout springLayout = new SpringLayout();
 		setLayout(springLayout);
 		
-		node1SelectType = new JComboBox<String>(new String[]{" - Pick a type -","Paper", "Autor", "Conferencia", "Term"});
+		
+		pathSelect = new JComboBox<String>(arrayListToArray(cd.getCtrlPaths().getPathNames()));
+		add(pathSelect);
+		
+		/*
+		node1SelectType = new JComboBox<String>(new String[]{"Paper", "Autor", "Conferencia", "Term"});
+		node1SelectType.setEnabled(false);
 		node1SelectType.setPreferredSize(new Dimension(148,24));
 		add(node1SelectType);
+		*/
+		
+		node1Label = new JLabel();
+		node1Label.setPreferredSize(new Dimension(168,24));
+		node1Label.setText("Node type:");
+		add(node1Label);
 		
 			node1Select = new MyComboBox();
-			node1Select.linkToParent(node1SelectType);
 			node1Select.loadNodesToLists(this.cd);
 			add(node1Select);
 		
-		node2SelectType = new JComboBox<String>(new String[]{" - Pick a type -", "Paper ", "Autor ", "Conferencia ", "Term "});
-		node2SelectType.setPreferredSize(new Dimension(148,24));
+		/*
+		node2SelectType = new JComboBox<String>(new String[]{"Paper ", "Autor ", "Conferencia ", "Term "});
 		node2SelectType.setEnabled(false);
+		node2SelectType.setPreferredSize(new Dimension(148,24));
 		add(node2SelectType);
+		*/
+		node2Label = new JLabel();
+		node2Label.setPreferredSize(new Dimension(168,24));
+		node2Label.setText("Node type:");
+		add(node2Label);
 		
 			node2Select = new MyComboBox();
-			node2Select.linkToParent(node2SelectType);
 			node2Select.loadNodesToLists(this.cd);
-			node2Select.setAutocomplete(true);
 			add(node2Select);
 			
 		resultList = new MyList();
@@ -72,25 +91,53 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 	}
 	
 	private void putConstraints(SpringLayout sl){
-		sl.putConstraint(SpringLayout.WEST, node1SelectType, 50, SpringLayout.WEST, this);
-		sl.putConstraint(SpringLayout.NORTH, node1SelectType, 50, SpringLayout.NORTH, this);
-		sl.putConstraint(SpringLayout.WEST, node1Select, 20, SpringLayout.EAST, node1SelectType);
-		sl.putConstraint(SpringLayout.NORTH, node1Select, 50, SpringLayout.NORTH, this);
-		sl.putConstraint(SpringLayout.WEST, node2SelectType, 50, SpringLayout.WEST, this);
-		sl.putConstraint(SpringLayout.NORTH, node2SelectType, 20, SpringLayout.SOUTH, node1SelectType);
-		sl.putConstraint(SpringLayout.WEST, node2Select, 20, SpringLayout.EAST, node2SelectType);
-		sl.putConstraint(SpringLayout.NORTH, node2Select, 20, SpringLayout.SOUTH, node1Select);
+		sl.putConstraint(SpringLayout.NORTH, pathSelect, 20, SpringLayout.NORTH, this);
+		sl.putConstraint(SpringLayout.WEST, pathSelect, 20, SpringLayout.WEST, this);//
 		
-		sl.putConstraint(SpringLayout.NORTH, resultList, 20, SpringLayout.SOUTH, node2SelectType);
-		sl.putConstraint(SpringLayout.WEST, resultList, 50, SpringLayout.WEST, this);
+		
+		/*
+		sl.putConstraint(SpringLayout.NORTH, node1SelectType, 20, SpringLayout.SOUTH, pathSelect);
+		sl.putConstraint(SpringLayout.WEST, node1SelectType, 50, SpringLayout.WEST, this);
+		sl.putConstraint(SpringLayout.NORTH, node1Select, 20, SpringLayout.SOUTH, pathSelect);
+		sl.putConstraint(SpringLayout.WEST, node1Select, 20, SpringLayout.EAST, node1SelectType);
+		*/
+		sl.putConstraint(SpringLayout.NORTH, node1Select, 20, SpringLayout.SOUTH, pathSelect);
+		sl.putConstraint(SpringLayout.WEST, node1Select, 20, SpringLayout.WEST, this);//
+		sl.putConstraint(SpringLayout.NORTH, node1Label, 20, SpringLayout.SOUTH, pathSelect);//
+		sl.putConstraint(SpringLayout.WEST, node1Label, 20, SpringLayout.EAST, node1Select);
+		
+
+		/*
+		sl.putConstraint(SpringLayout.NORTH, node2SelectType, 20, SpringLayout.SOUTH, node1SelectType);
+		sl.putConstraint(SpringLayout.WEST, node2SelectType, 50, SpringLayout.WEST, this);
+		sl.putConstraint(SpringLayout.NORTH, node2Select, 20, SpringLayout.SOUTH, node1Select);
+		sl.putConstraint(SpringLayout.WEST, node2Select, 20, SpringLayout.EAST, node2SelectType);
+		*/
+		sl.putConstraint(SpringLayout.NORTH, node2Select, 20, SpringLayout.SOUTH, node1Select);
+		sl.putConstraint(SpringLayout.WEST, node2Select, 20, SpringLayout.WEST, this);//
+		sl.putConstraint(SpringLayout.NORTH, node2Label, 20, SpringLayout.SOUTH, node1Label);
+		sl.putConstraint(SpringLayout.WEST, node2Label, 20, SpringLayout.EAST, node2Select);
+
+		
+		
+
+		//sl.putConstraint(SpringLayout.NORTH, resultList, 20, SpringLayout.SOUTH, node2SelectType);
+		sl.putConstraint(SpringLayout.NORTH, resultList, 20, SpringLayout.SOUTH, node2Label);
+		sl.putConstraint(SpringLayout.WEST, resultList, 20, SpringLayout.WEST, this);//
 	}
 	
-	public void assignListeners(){
+	private void assignListeners(){
 		
-		node1SelectType.addActionListener(this);
+		pathSelect.addActionListener(this);
 		
 	}
 
+	private String[] arrayListToArray(ArrayList<String> alist){
+		String[] temp = new String[alist.size()];
+		return alist.toArray(temp);
+	}
+	
+	
 	@Override
 	public int closeIt() {
 		
@@ -109,28 +156,59 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e){
 		
-		/**
-		 * For the node 1 type selection
-		 * 
-		 * Has control over the first node and node 2 type selection JComboBoxes
-		 */
-		if (e.getSource().equals(node1SelectType)){
-			//If a type has been selected
-			if (node1SelectType.getSelectedIndex() > 0){
-				//If there isn't a selected type for node 2 type selector
-				if (node2SelectType.getSelectedIndex() < 1) {
-					//Enable the JComboBox for interaction
-					node2SelectType.setEnabled(true);
-					//Set default option to "Pick a type"
-					node2SelectType.setSelectedIndex(0);
-				}
+		if (e.getSource().equals(pathSelect)){
+			String text = pathSelect.getItemAt(pathSelect.getSelectedIndex()).toString();
+			switch (text.charAt(0)){
+				case 'P':
+					//node1SelectType.setSelectedItem(node1SelectType.getItemAt(0));
+					node1Label.setText("Node type: Paper");
+					node1Select.setList(0);
+					break;
+				case 'A':
+					//node1SelectType.setSelectedItem(node1SelectType.getItemAt(1));
+					node1Label.setText("Node type: Author");
+					node1Select.setList(1);
+					break;
+				case 'C':
+					//node1SelectType.setSelectedItem(node1SelectType.getItemAt(2));
+					node1Label.setText("Node type: Conference");
+					node1Select.setList(2);
+					break;
+				case 'T':
+					//node1SelectType.setSelectedItem(node1SelectType.getItemAt(3));
+					node1Label.setText("Node type: Term");
+					node1Select.setList(3);
+					break;
+				default:
+					//node1SelectType.setSelectedItem(node1SelectType.getItemAt(-1));
+					node1Label.setText("INVALID PATH");
+					break;
 			}
-			//If the selected option is "Pick a type"
-			else {
-				//Disable the JComboBox for interaction
-				node2SelectType.setEnabled(false);
-				//Set default option to "Pick a type"
-				node2SelectType.setSelectedIndex(0);
+			switch (text.charAt(text.length()-1)){
+				case 'P':
+					//node2SelectType.setSelectedItem(node2SelectType.getItemAt(0));
+					node2Label.setText("Node type: Paper");
+					node2Select.setList(0);
+					break;
+				case 'A':
+					//node2SelectType.setSelectedItem(node2SelectType.getItemAt(1));
+					node2Label.setText("Node type: Author");
+					node2Select.setList(1);
+					break;
+				case 'C':
+					//node2SelectType.setSelectedItem(node2SelectType.getItemAt(2));
+					node2Label.setText("Node type: Conference");
+					node2Select.setList(2);
+					break;
+				case 'T':
+					//node2SelectType.setSelectedItem(node2SelectType.getItemAt(3));
+					node2Label.setText("Node type: Term");
+					node2Select.setList(3);
+					break;
+				default:
+					//node2SelectType.setSelectedItem(node2SelectType.getItemAt(-1));
+					node2Label.setText("INVALID PATH");
+					break;
 			}
 		}
 		

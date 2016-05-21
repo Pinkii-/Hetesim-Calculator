@@ -11,6 +11,7 @@ import java.util.Collections;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.MutableComboBoxModel;
 
 import Dominio.CtrlDominio;
@@ -27,7 +28,7 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 
 
 	private static final long serialVersionUID = 1L;
-	private JComboBox<String> parentBox;
+	private JComboBox<String> parentComboBox;
 	
 	private CtrlDominio cd = new CtrlDominio();
 	private Boolean autocomplete;
@@ -61,19 +62,20 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 	 * @param parent
 	 * @see #actionPerformed(ActionEvent)
 	 */
-	public void linkToParent(JComboBox<String> parent){
+	public void linkToParentComboBox(JComboBox<String> parent){
 		if (parent != null){
-			ComboBoxModel parentCB = new DefaultComboBoxModel(new String[]{"- Node Type -","Paper","Autor","Conferencia","Term"});
-			parentBox = parent;
-			parentBox.addActionListener(this);
-			parentBox.setModel(parentCB);
-			parentBox.setSelectedItem("- Node Type -");
+			ComboBoxModel parentCB = new DefaultComboBoxModel(new String[]{"Paper","Autor","Conferencia","Term"});
+			parentComboBox = parent;
+			parentComboBox.addActionListener(this);
+			parentComboBox.setModel(parentCB);
+			parentComboBox.setSelectedItem("- Node Type -");
 		}
 	}
+	
 	private void initParams(){
 		autocomplete = false;
 		
-		setPreferredSize(new Dimension(148,24));
+		setPreferredSize(new Dimension(160,24));
 		setEditable(true);
 		setEnabled(false);
 		setFocusable(true);
@@ -109,26 +111,20 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 		rawStrings = new ComboBoxModel[4];
 
 		/*
-		 * Will use these once we have access to the graph
-		 * 
-		String[] papers = getNodeNames(cd.getCtrlGraph().getGraph().getPapers());
-			rawStrings[0] = new DefaultComboBoxModel<String>(papers);
-		String[] autors = getNodeNames(cd.getCtrlGraph().getGraph().getAutors());
-			rawStrings[1] = new DefaultComboBoxModel<String>(autors);
-		String[] conferencies = getNodeNames(cd.getCtrlGraph().getGraph().getConferencies());
-			rawStrings[2] = new DefaultComboBoxModel<String>(conferencies);
-		String[] terms = getNodeNames(cd.getCtrlGraph().getGraph().getTermes());
-			rawStrings[3] = new DefaultComboBoxModel<String>(terms);
+		rawStrings[0] = new DefaultComboBoxModel<String>(arrayListToArray(cd.getCtrlGraph().formatNodesOfType("Paper")));
+		rawStrings[1] = new DefaultComboBoxModel<String>(arrayListToArray(cd.getCtrlGraph().formatNodesOfType("Autor")));
+		rawStrings[2] = new DefaultComboBoxModel<String>(arrayListToArray(cd.getCtrlGraph().formatNodesOfType("Conferencia")));
+		rawStrings[3] = new DefaultComboBoxModel<String>(arrayListToArray(cd.getCtrlGraph().formatNodesOfType("Terme")));
 		*/
-			
+		
 		rawStrings[0] = new DefaultComboBoxModel<String>(
-			new String[]{" - Pick a paper -","Paper 1","Paper 2","Paper 3","Paper 4","Paper 5","Paper 6","Paper 7","Paper 8"});
+			new String[]{" - All papers -","Paper 1","Paper 2","Paper 3","Paper 4","Paper 5","Paper 6","Paper 7","Paper 8"});
 		rawStrings[1] = new DefaultComboBoxModel<String>(
-			new String[]{" - Pick an author -","Author 1","Author 2","Author 3","Autor 4","Autor 5","Autora 6","Autora 7","Autora 8","This is tooooooooooooooooooo long"});
+			new String[]{" - All authors -","Author 1","Author 2","Author 3","Autor 4","Autor 5","Autora 6","Autora 7","Autora 8","This is tooooooooooooooooooo long"});
 		rawStrings[2] = new DefaultComboBoxModel<String>(
-			new String[]{" - Pick a conf. -","Conference 1","Conference 2","Conference 3","Conferencia 4","Conferencia 5","Conferencia 6","Conferencia 7","Conferencia 8"});
+			new String[]{" - All conferences -","Conference 1","Conference 2","Conference 3","Conferencia 4","Conferencia 5","Conferencia 6","Conferencia 7","Conferencia 8"});
 		rawStrings[3] = new DefaultComboBoxModel<String>(
-			new String[]{" - Pick a term -","Term 1","Term 2","Term 3","Term 4","Term 5","Term 6","Term 7","Term 8"});
+			new String[]{" - All terms -","Term 1","Term 2","Term 3","Term 4","Term 5","Term 6","Term 7","Term 8"});
 		
 	}
 	
@@ -177,7 +173,7 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 				getEditor().setItem(rawStrings[index].getElementAt(0));
 			}
 		}
-		else throw new RuntimeException("\n\n ~MyComboBox exploded, List index out of bounds~ \n");
+		else throw new RuntimeException("Index out of bounds");
 	}
 	
 	/**
@@ -271,24 +267,32 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 		}
 	}
 	
-	
+	private String[] arrayListToArray(ArrayList<String> alist){
+		String[] temp = new String[alist.size()];
+		return alist.toArray(temp);
+	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (parentBox != null && e.getSource().equals(parentBox)){
-			int index = parentBox.getSelectedIndex() - 1;
+		if (parentComboBox != null && e.getSource().equals(parentComboBox)){
+			int index = parentComboBox.getSelectedIndex() - 1;
 			
-			if (index >= 0){ //List is valid
+			try{
 				setList(index);
 				setEnabled(true);
 				setSelectedItem(rawStrings[index].getElementAt(-1));
-				requestFocus();
 			}
-			else if (index == -1) { //Pick a type
-				setSelectedIndex(-1);
-				setEnabled(false);
+			catch (RuntimeException exc){
+				String errorMsg = exc.getMessage();
+				if (errorMsg== "Index out of bounds"){
+					if (index == -1) { //Pick a type
+						setSelectedIndex(-1);
+						setEnabled(false);
+					}
+					else throw new RuntimeException(errorMsg);
+				}
+				else throw new RuntimeException(errorMsg);
 			}
-			else if (index == -2) throw new RuntimeException("\n\n ~MyComboBox exploded, tried to set index -2~ \n");
 		}
 	}
 	
