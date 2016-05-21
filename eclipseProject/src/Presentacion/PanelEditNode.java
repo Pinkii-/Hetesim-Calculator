@@ -86,29 +86,6 @@ public class PanelEditNode extends AbstractPanel{
 		this.add(infoRelationsPanel);
 		this.add(optionsPanel);
 		
-//		JPanel infoPanel = new JPanel();
-//		JPanel relationsPanel = new JPanel();
-//		JPanel optionsPanel = new JPanel();
-//		
-//		JTable relationsTable = new JTable();
-//		
-//		JLabel nameLabel = new JLabel("Name: ");
-//		JTextField nameTextField = new JTextField();
-//		JPanel namePanel = new JPanel();
-//		
-//		JLabel typeLabel = new JLabel("Type: ");
-//		MyComboBox typeComboBox = new MyComboBox();
-//		JPanel typePanel = new JPanel();
-//
-//		JLabel labelLabel = new JLabel("Label: ");
-//		MyComboBox labelComboBox = new MyComboBox();
-//		JPanel labelPanel = new JPanel();
-//
-//		JLabel relationsLabel = new JLabel("Relations: ");
-//		
-//		JButton addRelationButton = new JButton("Add new relation");
-//		JButton saveButton = new JButton("Save");
-//		JButton exitButton = new JButton("Exit");
 		
 	}
 	
