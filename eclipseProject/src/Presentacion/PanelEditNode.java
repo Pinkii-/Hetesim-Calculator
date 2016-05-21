@@ -1,11 +1,11 @@
 package Presentacion;
 
-import java.awt.LayoutManager;
+import java.awt.Dimension;
 import java.util.ArrayList;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
@@ -61,29 +61,45 @@ public class PanelEditNode extends AbstractPanel{
 		
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		infoRelationsPanel.setLayout(new BoxLayout(infoRelationsPanel, BoxLayout.X_AXIS));
+		
 		infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
+		
 		namePanel.setLayout(new BoxLayout(namePanel, BoxLayout.X_AXIS));
 		namePanel.add(nameLabel);
+		nameTextField.setMaximumSize(new Dimension(100, 30));
 		namePanel.add(nameTextField);
 		infoPanel.add(namePanel);
+		
 		typePanel.setLayout(new BoxLayout(typePanel, BoxLayout.X_AXIS));
 		typePanel.add(typeLabel);
+		typeComboBox.setMaximumSize(typeComboBox.getPreferredSize());
 		typePanel.add(typeComboBox);
+		
 		infoPanel.add(typePanel);
+		
 		labelPanel.setLayout(new BoxLayout(labelPanel, BoxLayout.X_AXIS));
 		labelPanel.add(labelLabel);
+		labelComboBox.setMaximumSize(labelComboBox.getPreferredSize());
 		labelPanel.add(labelComboBox);
+		
 		infoPanel.add(labelPanel);
+		
 		infoRelationsPanel.add(infoPanel);
+		infoRelationsPanel.add(Box.createHorizontalGlue());
+		
 		relationsPanel.setLayout(new BoxLayout(relationsPanel, BoxLayout.Y_AXIS));
 		relationsPanel.add(relationsLabel);
 		relationsPanel.add(relationsTable);
 		relationsPanel.add(addRelationButton);
+		
 		infoRelationsPanel.add(relationsPanel);
+		
 		optionsPanel.setLayout(new BoxLayout(optionsPanel, BoxLayout.X_AXIS));
 		optionsPanel.add(saveButton);
 		optionsPanel.add(exitButton);
+		
 		this.add(infoRelationsPanel);
+		this.add(Box.createVerticalGlue());
 		this.add(optionsPanel);
 		
 		
