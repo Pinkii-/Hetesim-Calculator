@@ -24,15 +24,10 @@ import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 
-<<<<<<< HEAD
 import Dominio.Result;
 import Tests.CtrlDataTest;
-=======
-import Dominio.CtrlDataTest;
 import Dominio.CtrlResults;
-import Dominio.Result;
 import Presentacion.VistaPrincipal.Panels;
->>>>>>> origin/master
 
 public class PanelLoadResult extends AbstractPanel{
 	/**
