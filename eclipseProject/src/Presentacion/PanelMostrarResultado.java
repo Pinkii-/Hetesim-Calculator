@@ -17,6 +17,7 @@ import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 
 import Dominio.CtrlResults;
@@ -41,8 +42,9 @@ public class PanelMostrarResultado extends AbstractPanel{
 	private JTable table;
 	private JSplitPane splitpane;
 	private Result rs;
-	private JButton editar;
+	private JButton first;
 	private JButton second;
+	private JButton editar;
 	
 	public PanelMostrarResultado (VistaPrincipal v)  {
 		super(v);		
@@ -59,6 +61,7 @@ public class PanelMostrarResultado extends AbstractPanel{
 		editar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				table.setEnabled(true);
+				table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 				System.out.println("hola");
 			}
 		});
@@ -77,35 +80,21 @@ public class PanelMostrarResultado extends AbstractPanel{
 	}
 	private void setMyResultTable(ArrayList<ArrayList<String>> res) {
 		//CtrlResults cr = cd.getCtrlResults();
+		res = new ArrayList<ArrayList<String>>();
+		for (int i = 0; i < 5; ++i) {
+			res.add(new ArrayList<String>());
+			for (int j = 0; j < 5; ++j) {
+				res.get(i).add("null");
+			}
+		}
 		rst = new MyResultTable(res);
+		table = rst.getTable();
 	}
 	private void generateTable() {
-		/*Float d = 0.1f;
-		cd.importGraph("/home/albert/prop/PROP/GraphForTesting");
-		String res = cd.searchPathNodeNodeThreshhold(d, "APC", (Integer)1, (Integer)1);
-		//System.out.println(res);*/
-		/*String[] columnNames = {"Entidad A",
-                "Tipo",
-                "Entidad B",
-                "Tipo",
-                "Value",
-        };
-
-		Object[][] data = {
-			    {"null", "null",
-			     "null", "null", new Float(0.5)},
-			    {"null", "null",
-				 "null", "null", new Float(0.5)},
-			    {"null", "null",
-				 "null", "null", new Float(0.5)},
-			    {"null", "null",
-				 "null", "null", new Float(0.5)},
-			    {"null", "null",
-				 "null", "null", new Float(0.5)},
-			};*/
-		/*table = new JTable(data, columnNames);
+		ArrayList<ArrayList<String>> res = null;
+		setMyResultTable(res);
 		table.setFillsViewportHeight(true);
-		table.setEnabled(false);*/
+		table.setEnabled(false);
 		splitpane.setLeftComponent(new JScrollPane(table));
 	}
 	private void generateInfoPanel() {
@@ -134,8 +123,9 @@ public class PanelMostrarResultado extends AbstractPanel{
 		actions.setLayout(new BoxLayout(actions,BoxLayout.LINE_AXIS));
 		actions.setAlignmentX(LEFT_ALIGNMENT);
 		actions.add(Box.createHorizontalGlue());
-		actions.add(editar);
+		actions.add(first);
 		actions.add(second);
+		actions.add(editar);
 	}
 	private void generateInfoAndActionPanel() {
 		
@@ -168,8 +158,6 @@ public class PanelMostrarResultado extends AbstractPanel{
 		 * Boton editar -> set edited y activa panel;
 		 * Boton editar pasa a ser guardar -> se guarda en disco (CtrlResult)
 		 */
-		JButton edit = new JButton("Editar");
-		actions.add(edit);
 		
 	}
 	private void initComponents() {
@@ -178,8 +166,9 @@ public class PanelMostrarResultado extends AbstractPanel{
 		actions = new JPanel();
 		info = new JPanel();
 		splitpane = new JSplitPane();
-		editar = new JButton("lmao");
+		first = new JButton("lmao");
 		second = new JButton("ayy");
+		editar = new JButton("Editar");
 		
 		BoxLayout bl = new BoxLayout(this,BoxLayout.LINE_AXIS);
 		setLayout(bl);
