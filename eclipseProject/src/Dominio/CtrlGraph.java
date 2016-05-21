@@ -106,28 +106,59 @@ public class CtrlGraph {
 
 	//FORMATTING STUFF ----------------------------------------------------------------
 	
-	private ArrayList<String> formatMatrixNodes(Matrix m, Node.Type t){
+	//Returns an ArrayList with:
+	//0: String with the node's name
+	//1: String with the node's type
+	
+	private ArrayList<String> formatNode(Integer index, Node n) {
 		ArrayList<String> ret = new ArrayList<String>();
+		ret.add(n.getNom());
+		ret.add(n.getTipus().toString());
+		return ret;
+	}
+	
+	//Returns an arrayList of formatted nodes 
+	//COLUMNS:
+	//0 - Node's index
+	//1 - Node's name
+	//2 - Node's type
+	
+	private ArrayList<ArrayList<String>> formatMatrixNodes(Matrix m, Node.Type t){
+		ArrayList<ArrayList<String>> ret = new ArrayList<ArrayList<String>>();
 		for (int i = 0; i < m.getNRows(); ++i) {
-			ret.add(i + ": " + formatNode(graph.getNode(i, t)));
+			ArrayList<String> col = new ArrayList<String>();
+			col.addAll(formatNode(i, graph.getNode(i, t))); 
+			ret.add(col);
 		}
 		return ret;
 	}
 	
-	private ArrayList<String> formatPaperNodes(Matrix m){
-		ArrayList<String> ret = new ArrayList<String>();
+	private ArrayList<ArrayList<String>> formatPaperNodes(Matrix m){
+		ArrayList<ArrayList<String>> ret = new ArrayList<ArrayList<String>>();
 		try{
 			for (int i = 0; i < m.getNCols(); ++i) {
-				ret.add(i + ": " + formatNode(graph.getNode(i, Node.Type.Paper)));
+				ArrayList<String> col = new ArrayList<String>();
+				col.addAll(formatNode(i, graph.getNode(i, Node.Type.Paper))); 
+				ret.add(col);
 			}
 		}catch(Exception e){
-			//Resulta que si no hay papers peta el programa :)
+			//If there isn't any papers in a given matrix, the program crashes
 		}
 		return ret;
 
 	}
-	//Returns an arrayList of Strings of the nodes with type t formatted in strings
-	public ArrayList<String> formatNodesOfType(String nodeType){
+	/**
+	 * @param nodeType the type of nodes to be formatted
+	 * @return
+	 * Returns a matrix of all the graph's nodes of type <b>nodeType</b> formatted by the following criteria: <br><br>
+	 * <i>Multiple rows</i> containing all formatted nodes of type <b>nodeType</b> formatted like so:
+	 * <ol>
+	 * 	 <li>Node's index</li>
+	 * 	 <li>Node's name</li>
+	 * 	 <li>Node's type</li>
+	 * </ol>
+	 */
+	public ArrayList<ArrayList<String>> getformattedNodesOfType(String nodeType){
 		Matrix mauthor = graph.getMatrixAuthor();
 		Matrix mterme = graph.getMatrixTerm();
 		Matrix mconf = graph.getMatrixConf();
@@ -146,86 +177,176 @@ public class CtrlGraph {
 		}
 	}
 	
-	//Returns an arrayList of strings formatted by the following criteria:
-	/*
-	 * 0) Graph's name (size 1)
-	 * 1) A - P relations (size NCol * NRows)
-	 * 2) T - P relations (size NCol * NRows)
-	 * 3) C - P relations (size NCol * NRows)
-	 * 3) A nodes (size NRows)
-	 * 4) T nodes (size NRows)
-	 * 5) C nodes (size NRows)
-	 * 6) P nodes (size NRows) 
+	/**
+	 * Get the graph formatted like a matrix of strings of variable size.
+	 * 
+	 * @return
+	 *<p>Returns an arrayList of arrayLists of strings formatted by the following criteria:</p>
+	 *<ol>
+	 *	<li><i>A single row</i> containing:
+	 *	<ol>
+	 *		<li>Name of the graph</li>
+	 *		<li>Number of author nodes</li>
+	 *		<li>Number of term nodes</li>
+	 *		<li>Number of conference nodes</li>
+	 *	</ol>
+	 *	</li>
+	 *	<li><i>Multiple rows</i> containing formatted <b>author nodes</b> formatted like so:
+	 *	<ol>
+	 *		<li>Node's index</li>
+	 *		<li>Node's name</li>
+	 *		<li>Node's type</li>
+	 *	</ol>
+	 *	</li>
+	 *	<li><i>Multiple rows</i> containing formatted <b>term nodes</b>, formatted like the previous ones.</li>
+	 *	<li><i>Multiple rows</i> containing formatted <b>conference nodes</b>, formatted like the previous ones.</li>
+	 *	<li><i>Multiple rows</i> containing formatted <b>paper nodes</b>, formatted like the previous ones.</li>
+	 *	<li><i>Multiple rows</i> containing formatted <b>Author - Paper relations</b>, formatted like so:
+	 *	<ol>
+	 *		<li>First node's index</li>
+	 *		<li>First node's name</li>
+	 *		<li>First node's type</li>
+	 *		<li>Second node's index</li>
+	 *		<li>Second node's name</li>
+	 *		<li>Second node's type</li>
+	 *	</ol>
+	 *	</li>
+	 *	<li><i>Multiple rows</i> containing formatted <b>Term - Paper relations</b>, formatted like the previous ones.</li>
+	 *	<li><i>Multiple rows</i> containing formatted <b>Conference - Paper relations</b>, formatted like the previous ones.</li>
+	 *</ol>
 	 */
-	public ArrayList<String> getFormatted() {
-		ArrayList<String> ret = new ArrayList<String>();
-		ret.add(graph.getNom());
+	public ArrayList<ArrayList<String>> getFormatted() {
+		ArrayList<ArrayList<String>> ret = new ArrayList<ArrayList<String>>();
+		ArrayList<String> firstCol = new ArrayList<String>();
+		firstCol.add(graph.getNom());
+		//ret.add(graph.getNom());
 		Matrix mauthor = graph.getMatrixAuthor();
 		Matrix mterme = graph.getMatrixTerm();
 		Matrix mconf = graph.getMatrixConf();
-		//Adding relations
-		ret.addAll(formatMatrix(mauthor));
-		ret.addAll(formatMatrix(mterme));
-		ret.addAll(formatMatrix(mconf));
+		firstCol.add(mauthor.getNRows().toString());
+		firstCol.add(mterme.getNRows().toString());
+		firstCol.add(mconf.getNRows().toString());
+		try{
+			firstCol.add(String.valueOf(mauthor.getNCols()));
+		}
+		catch (Exception e){
+			//Program blows up if there are no papers
+			firstCol.add("0");
+		}
+		ret.add(firstCol);
 		//Adding nodes
 		ret.addAll(formatMatrixNodes(mauthor, Node.Type.Autor));
 		ret.addAll(formatMatrixNodes(mterme, Node.Type.Terme));
 		ret.addAll(formatMatrixNodes(mconf, Node.Type.Conferencia));
 		ret.addAll(formatPaperNodes(mauthor));
+		//Adding relations
+		ret.addAll(formatRelations(mauthor, Node.Type.Autor));
+		ret.addAll(formatRelations(mterme, Node.Type.Terme));
+		ret.addAll(formatRelations(mconf, Node.Type.Conferencia));
+
 		return ret;
 
 	}
-
-	public ArrayList<String> formatMatrix(Matrix m) {
-		ArrayList<String> ret = new ArrayList<String>();
-		for (int i = 0; i < m.getNRows(); ++i) {
-			for (int j = 0; j < m.getNCols(); ++j) {
-				ret.add(m.getValue(i, j) + " ");
+	/**
+	* Returns a string matrix with the nodes related to the <b><i>node</i></b> associated with <b>index</b> and <b>nodeType</b>.
+	* 
+	* @param index the node's index the relations with will be calculated.
+	* @param nodeType the node's type the relations with will be calculated.
+	* @return
+	* Returns an arrayList of arrayLists of strings formatted by the following criteria:<br><br>
+	* <i>Multiple rows</i> containing formatted nodes related with the <b><i>node</i></b>, formatted like so:
+	*  	<ol>
+	*  	    <li>Related node's index</li>
+	* 		<li>Related node's name</li>
+	* 		<li>Related node's type</li>
+	*   </ol>	      
+	*/
+	public ArrayList<ArrayList<String>> getNodeRelationsFormatted(Integer index, String nodeType){
+		Node.Type nType = Node.Type.valueOf(nodeType);
+		switch (nType) {
+		case Autor:
+			return formatNodeRelations(graph.getMatrixAuthor(), index);
+		case Conferencia:
+			return formatNodeRelations(graph.getMatrixConf(), index);
+		case Terme:
+			return formatNodeRelations(graph.getMatrixTerm(), index);
+		case Paper:
+			return formatNodeRelations(graph.getMatrixAuthor(), graph.getMatrixTerm(), graph.getMatrixConf(), index);
+		default:
+			return null;
+		}
+	}
+	
+	
+	private ArrayList<ArrayList<String>> formatRelations(Matrix matrix, Node.Type type) {
+		ArrayList<ArrayList<String>> ret = new ArrayList<ArrayList<String>>();
+		for (int i = 0; i < matrix.getNRows(); ++i) {
+			for (int j = 0; j < matrix.getNCols(); ++j) {
+				//If they are related
+				if(matrix.getValue(i, j) != 0.0f){
+					ArrayList<String> col = new ArrayList<String>();
+					col.addAll(formatNode(i, graph.getNode(i, type)));
+					col.addAll(formatNode(j, graph.getNode(j, Node.Type.Paper)));
+					ret.add(col);
+				}
+			}
+		}
+		return ret;
+	}
+	
+	private ArrayList<ArrayList<String>> formatNodeRelations(Matrix matrix, Integer index){
+		ArrayList<ArrayList<String>> ret = new ArrayList<ArrayList<String>>();
+		for (int j = 0; j < matrix.getNCols(); ++j) {
+			if(matrix.getValue(index, j) != 0.0f){
+				ArrayList<String> col = new ArrayList<String>();
+				col.addAll(formatNode(j, graph.getNode(j, Node.Type.Paper)));
+				ret.add(col);
+			}
+		}
+		return ret;
+	}
+	//USED FOR PAPERS
+	private ArrayList<ArrayList<String>> formatNodeRelations(Matrix matrixA, Matrix matrixT, Matrix matrixC, Integer index){
+		ArrayList<ArrayList<String>> ret = new ArrayList<ArrayList<String>>();
+		Matrix[] matrixArray = new Matrix[]{ matrixA, matrixT, matrixC};
+		Node.Type[] typeArray = new Node.Type[]{Node.Type.Autor, Node.Type.Terme, Node.Type.Conferencia};
+		//We are iterating over the three matrix to get all the paper's relations with other node types
+		for(int t = 0; t < 3; ++t){
+			Matrix matrix = matrixArray[t];
+			Node.Type nodeType = typeArray[t];
+			for (int i = 0; i < matrix.getNRows(); ++i) {
+				if(matrix.getValue(i, index) != 0.0f){
+					ArrayList<String> col = new ArrayList<String>();
+					col.addAll(formatNode(i, graph.getNode(i, nodeType)));
+					ret.add(col);
+				}
 			}
 		}
 		return ret;
 	}
 
-	public String formatNode(Node n) {
-		return "Name: " + n.getNom() + " Type: " + n.getTipus().toString();
-	}
 	
-	//Returns an arrayList of strings formatted by the following criteria:
-	/*
-	 * 0) Node's name (size 1)
-	 * 1) Node's type (size 1)
-	 * 2) Name of the papers it is related to (variable size)
-	 */
-	//If it's a paper:
-	//Returns an arrayList of strings formatted by the following criteria:
-	/*
-	 * 0) Node's name (size 1)
-	 * 1) Node's type (size 1)
-	 * 2) Name of the authors it is related to			(variable size)
-	 * 3) Name of the terms it is related to			(variable size)
-	 * 4) Name of the conferences it is related to	 	(variable size)
-	 */
-	public ArrayList<String> getNodeFormatted(Integer index, String nodeType){
-		ArrayList<String> ret = new ArrayList<String>();
-		//TODO
-		Node node = graph.getNode(index, Node.Type.valueOf(nodeType));
-		ret.add(node.getNom());
-		ret.add(node.getTipus().toString());
-		ArrayList<Node> relations = getNodeRelations(node);
-		for(Node n: relations){
-			ret.add(n.getNom());
-		}
-		return ret;
-	}
 	
-	public ArrayList<Node> getNodeRelations(Node node){
-		 ArrayList<Node> ret = new ArrayList<Node>();
-		 ret.add(graph.getNode(0, Node.Type.Paper));
-		 ret.add(graph.getNode(1, Node.Type.Paper));
-		 ret.add(graph.getNode(2, Node.Type.Paper));
-		 return ret;
-	}
 
+
+	
+	/**
+	* Returns an ArrayList of strings with all the information regarding the <b><i>node</i></b> associated with <b>index</b> and <b>nodeType</b>.
+	* 
+	* @param index the node's index the info of will be retrieved.
+	* @param nodeType the node's type the info of will be retrieved.
+	* @return
+	* Returns an arrayList of strings containing:<br><br>
+	* 	<ol>
+	*		<li>The <b><i>node</i></b>'s <b>Index</b></li>
+	*		<li>The <b><i>node</i></b>'s <b>Name</b></li>
+	*		<li>The <b><i>node</i></b>'s <b>Type</b></li>
+	*	</ol>	      
+	*/
+	public ArrayList<String> getNodeFormatted(Integer index, String nodeType){
+		Node node = graph.getNode(index, Node.Type.valueOf(nodeType));	
+		return formatNode(index, node);
+	}
 	public String toString() {
 		return graph.toString();
 	}
