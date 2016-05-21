@@ -1,4 +1,4 @@
-package Dominio;
+package Tests;
 
 
 
@@ -7,6 +7,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+import Dominio.Graph;
+import Dominio.HeteSim;
+import Dominio.Matrix;
+import Dominio.Node;
+import Dominio.Pair;
+import Dominio.Path;
+import Dominio.PathException;
+import Dominio.Node.Type;
 import Persistencia.GraphImporter;
 
 /**

@@ -15,8 +15,8 @@ import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 
-import Dominio.CtrlDataTest;
 import Dominio.Result;
+import Tests.CtrlDataTest;
 
 public class PanelLoadResult extends AbstractPanel{
 	/**
