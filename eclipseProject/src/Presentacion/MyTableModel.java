@@ -10,6 +10,8 @@ class MyTableModel extends AbstractTableModel{
 	private static final long serialVersionUID = 1L;
 	private String[] columnNames;
     private Object[][] data;
+    private Class[] columns = new Class[]{String.class, String.class, String.class, String.class, Float.class};
+
     
     public MyTableModel(String[] columnName, Object[][] data) {
     	this.columnNames = columnName;
@@ -37,7 +39,15 @@ class MyTableModel extends AbstractTableModel{
     	
     	return col == 4; //Only HeteSim value
     }
-
+    
+    /*Only correct data is accepted
+     */
+    
+    @Override
+    public Class getColumnClass(int column) {
+		return columns[column];
+    	
+    }
     /*
      * data change
      */
@@ -46,12 +56,5 @@ class MyTableModel extends AbstractTableModel{
         fireTableCellUpdated(row, col);
     }
 
-	
-
-	@Override
-	public void removeTableModelListener(TableModelListener l) {
-		// TODO Auto-generated method stub
-		
-	}
 
 }

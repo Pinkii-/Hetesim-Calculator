@@ -34,19 +34,19 @@ public class PanelLoadResult extends AbstractPanel{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private JSplitPane splitpane = new JSplitPane();
-	private JPanel resultsPanel = new JPanel();
-	private JPanel actionsPanel = new JPanel();
-	private JList loadedResults = new JList();
-	private DefaultListModel DLM = new DefaultListModel();
+	private JSplitPane splitpane;
+	private JPanel searchAndActionsPanel;
+	private JPanel resultsPanel;
+	private JPanel searchPanel;
+	private JPanel actionsPanel;
+	private JList loadedResults;
+	private JScrollPane scrollPane;
+	private DefaultListModel DLM;
 	private JButton mostrar;
-	private Boolean Closing = true;
 	private VistaPrincipal vp;
 	
 	public PanelLoadResult (VistaPrincipal vp)  {
 		super(vp);
-		//vp.changePanel();
-		//vp.panelMostrarResultado.
 		initComponents();
 		try {
 			//generateResult();
@@ -54,7 +54,6 @@ public class PanelLoadResult extends AbstractPanel{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//assingListeners();
 		this.vp = vp;
 	}
 	
@@ -65,15 +64,46 @@ public class PanelLoadResult extends AbstractPanel{
 		//cd.importGraph("/home/albert/PROP/PROP/GraphForTesting");
 		//cd.searchPath("AP");
 		DLM.addElement("lmao 1");
-		DLM.addElement("lmao 2");
+		for (int i = 0; i < 50; i++) {
+			DLM.addElement("lmao 2");
+		}
 		loadedResults.setModel(DLM);
-		resultsPanel.add(loadedResults);
+		scrollPane = new JScrollPane(loadedResults);
+		resultsPanel.add(scrollPane);
+        //Add the scroll pane to this panel.
+		
 	}
 	
-	private void generateActionsPanel() {
-		actionsPanel.setLayout(new BoxLayout(actionsPanel, BoxLayout.PAGE_AXIS));
+	private void generateSearchPanel() {
+		
+		searchPanel.setLayout(new BoxLayout(searchPanel, BoxLayout.PAGE_AXIS));
+		searchPanel.setAlignmentX(RIGHT_ALIGNMENT);
+		searchPanel.add(Box.createHorizontalGlue());
+		JLabel lab = new JLabel("FILTER");
+		JLabel lab2 = new JLabel("FILTER");
+		JLabel lab3 = new JLabel("FILTER");
+		searchPanel.add(lab);
+		searchPanel.add(lab2);
+		searchPanel.add(lab3);
+		
+	}
+	
+	private void generateActionPanel() {
+		actionsPanel.setLayout(new BoxLayout(actionsPanel, BoxLayout.LINE_AXIS));
 		mostrar = new JButton("Mostrar");
+		//mostrar.setAlignmentY(RIGHT_ALIGNMENT);
+		//actionsPanel.setAlignmentX(BOTTOM_ALIGNMENT);
+		actionsPanel.add(Box.createHorizontalGlue());
 		actionsPanel.add(mostrar);
+	}
+	
+	private void generateSearchAndActionsPanel() {
+		searchAndActionsPanel.setLayout(new BoxLayout(searchAndActionsPanel, BoxLayout.PAGE_AXIS));
+		generateSearchPanel();
+		searchAndActionsPanel.add(searchPanel);
+		searchAndActionsPanel.add(Box.createVerticalGlue());
+		generateActionPanel();
+		searchAndActionsPanel.add(actionsPanel);
 		
 		/*
 		 * Use only for entertaining purpose
@@ -94,9 +124,10 @@ public class PanelLoadResult extends AbstractPanel{
 	
 	private void initSubPanels() {
 		generateResultsPanel();
-		generateActionsPanel();
+		generateSearchAndActionsPanel();
+		splitpane.setAlignmentX(LEFT_ALIGNMENT);
 		splitpane.setLeftComponent(resultsPanel);
-		splitpane.setRightComponent(actionsPanel);
+		splitpane.setRightComponent(searchAndActionsPanel);
 		splitpane.resetToPreferredSizes();
 		add(splitpane);
 		
@@ -111,8 +142,17 @@ public class PanelLoadResult extends AbstractPanel{
 		});
 	}
 	private void initComponents() {
+		splitpane = new JSplitPane();
+		resultsPanel = new JPanel();
+		actionsPanel = new JPanel();
+		loadedResults = new JList();
+		searchPanel = new JPanel();
+		searchAndActionsPanel = new JPanel();
+		DLM = new DefaultListModel();
+		
 		BoxLayout bl = new BoxLayout(this,BoxLayout.LINE_AXIS);
 		setLayout(bl);
+		
 		initSubPanels();
 		assignListeners();
 		

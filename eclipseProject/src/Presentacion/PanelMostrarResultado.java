@@ -84,7 +84,8 @@ public class PanelMostrarResultado extends AbstractPanel{
 		for (int i = 0; i < 5; ++i) {
 			res.add(new ArrayList<String>());
 			for (int j = 0; j < 5; ++j) {
-				res.get(i).add("null");
+				if (j == 4) res.get(i).add("0.5f");
+				else res.get(i).add("null");
 			}
 		}
 		rst = new MyResultTable(res);

@@ -32,7 +32,8 @@ public class MyResultTable implements TableModelListener {
 		
 		for (int i = 1; i < result.size(); ++i) {
 			for (int j = 0; j < result.get(1).size(); ++j) {
-				data[i][j] = result.get(i).get(j);
+				if (j == result.get(1).size()-1) data[i][j] = new Float(Float.parseFloat(result.get(i).get(j)));
+				else data[i][j] = result.get(i).get(j);
 			}
 		}
 		
