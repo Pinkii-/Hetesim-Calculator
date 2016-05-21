@@ -149,6 +149,20 @@ public class CtrlPaths {
 			return null;
 		}
 	}
+	
+	/**
+	 * Returns an array containing all the paths' info
+	 * @return
+	 * <p>Returns an ArrayList of Strings containing the all paths' info in strings composed as such:</p>
+	 * <i>pathName</i> + " " + <i>pathContent</i>
+	 */
+	public ArrayList<String> getFormattedPaths(){
+		ArrayList<String> ret = new ArrayList<String>();
+		for (Map.Entry<String, Path> entry : paths.entrySet()) {
+			ret.add(entry.getKey() + " " + entry.getValue());
+		}
+		return ret;
+	}
 
 	private void initDefaultPaths() {
 		Path p = new Path();
