@@ -1,13 +1,22 @@
 package Presentacion;
 
+
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
@@ -15,25 +24,34 @@ import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 
+<<<<<<< HEAD
 import Dominio.Result;
 import Tests.CtrlDataTest;
+=======
+import Dominio.CtrlDataTest;
+import Dominio.CtrlResults;
+import Dominio.Result;
+import Presentacion.VistaPrincipal.Panels;
+>>>>>>> origin/master
 
 public class PanelLoadResult extends AbstractPanel{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private JPanel infoAndActions = new JPanel();
-	private JPanel actions = new JPanel();
-	private JPanel info = new JPanel();
-	private JTable table;
 	private JSplitPane splitpane = new JSplitPane();
-	private Result rs;
-	private JButton first = new JButton("lmao");
-	private JButton second = new JButton("ayy");
+	private JPanel resultsPanel = new JPanel();
+	private JPanel actionsPanel = new JPanel();
+	private JList loadedResults = new JList();
+	private DefaultListModel DLM = new DefaultListModel();
+	private JButton mostrar;
+	private Boolean Closing = true;
+	private VistaPrincipal vp;
 	
 	public PanelLoadResult (VistaPrincipal vp)  {
 		super(vp);
+		//vp.changePanel();
+		//vp.panelMostrarResultado.
 		initComponents();
 		try {
 			//generateResult();
@@ -42,92 +60,66 @@ public class PanelLoadResult extends AbstractPanel{
 			e.printStackTrace();
 		}
 		//assingListeners();
+		this.vp = vp;
 	}
 	
-	private void generateResult() throws Exception {
-		rs = CtrlDataTest.enterDataResult();
+	
+	private void generateResultsPanel() {
+		resultsPanel.setLayout(new BoxLayout(resultsPanel, BoxLayout.PAGE_AXIS));
+		
+		//cd.importGraph("/home/albert/PROP/PROP/GraphForTesting");
+		//cd.searchPath("AP");
+		DLM.addElement("lmao 1");
+		DLM.addElement("lmao 2");
+		loadedResults.setModel(DLM);
+		resultsPanel.add(loadedResults);
 	}
 	
-	private void generateTable() {
+	private void generateActionsPanel() {
+		actionsPanel.setLayout(new BoxLayout(actionsPanel, BoxLayout.PAGE_AXIS));
+		mostrar = new JButton("Mostrar");
+		actionsPanel.add(mostrar);
 		
-		String[] columnNames = {"Entidad A",
-                "Tipo",
-                "Entidad B",
-                "Tipo",
-                "Value",
-        };
-		Object[][] data = {
-			    {"null", "null",
-			     "null", "null", new Float(0.5)},
-			    {"null", "null",
-				 "null", "null", new Float(0.5)},
-			    {"null", "null",
-				 "null", "null", new Float(0.5)},
-			    {"null", "null",
-				 "null", "null", new Float(0.5)},
-			    {"null", "null",
-				 "null", "null", new Float(0.5)},
-			};
-		table = new JTable(data, columnNames);
-		table.setFillsViewportHeight(true);
-		splitpane.setLeftComponent(new JScrollPane(table));
+		/*
+		 * Use only for entertaining purpose
+		 * 
+		 * URL url = null;
+		try {
+			url = new URL("https://media.giphy.com/media/XreQmk7ETCak0/giphy.gif");
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    Icon icon = new ImageIcon(url);
+	    JLabel label = new JLabel(icon);
+	    actionsPanel.add(label);*/
+	  
+
 	}
-	private void generateInfoPanel() {
-		JLabel label = new JLabel("INFO	");
-		JLabel origen = new JLabel("Origen: ");
-		JLabel destino = new JLabel("Destino: ");
-		JLabel path = new JLabel("Path usado: ");
-		JLabel threshold = new JLabel("Threshold usado: ");
-		JLabel modificado = new JLabel("Resultado modificado: ");
-		JCheckBox cb = new JCheckBox();
-		cb.setSelected(true);
-		cb.setOpaque(true);
-		info.add(Box.createHorizontalGlue());
-		info.setLayout(new BoxLayout(info,BoxLayout.PAGE_AXIS));
-		info.setAlignmentX(RIGHT_ALIGNMENT);
-		info.add(label);
-		info.add(Box.createRigidArea(new Dimension(0,50)));
-		info.add(origen);
-		info.add(destino);
-		info.add(path);
-		info.add(threshold);
-		info.add(cb);
-	}
-	private void generateActionPanel() {
-		actions.setLayout(new BoxLayout(actions,BoxLayout.LINE_AXIS));
-		actions.setAlignmentX(LEFT_ALIGNMENT);
-		actions.add(Box.createHorizontalGlue());
-		actions.add(first);
-		actions.add(second);
-	}
-	private void generateInfoAndActionPanel() {
-		
-		infoAndActions.setLayout(new BoxLayout(infoAndActions,BoxLayout.PAGE_AXIS));
-		
-		generateInfoPanel();
-		infoAndActions.add(info);
-		
-		JSeparator seperator = new JSeparator(SwingConstants.HORIZONTAL);
-		seperator.setMaximumSize( new Dimension(Integer.MAX_VALUE, 1) );
-		infoAndActions.add(seperator);
-		
-		infoAndActions.add(Box.createVerticalGlue());
-		generateActionPanel();
-		infoAndActions.add(actions);
-		
-		splitpane.setRightComponent(infoAndActions);
+	
+	private void initSubPanels() {
+		generateResultsPanel();
+		generateActionsPanel();
+		splitpane.setLeftComponent(resultsPanel);
+		splitpane.setRightComponent(actionsPanel);
 		splitpane.resetToPreferredSizes();
 		add(splitpane);
-	}
-	private void initSubPanels() {
-		generateTable();
-		generateInfoAndActionPanel();
 		
+	}
+	
+	private void assignListeners() {
+		mostrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				vp.changePanel(Panels.PanelMostrarResultado);
+				System.out.println("hola");
+			}
+		});
 	}
 	private void initComponents() {
 		BoxLayout bl = new BoxLayout(this,BoxLayout.LINE_AXIS);
 		setLayout(bl);
 		initSubPanels();
+		assignListeners();
 		
 	}
 	
