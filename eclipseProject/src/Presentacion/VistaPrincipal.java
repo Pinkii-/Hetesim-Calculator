@@ -178,6 +178,9 @@ public class VistaPrincipal extends VistaAbstracta{
 			case NuevaBusqueda:
 				this.getContentPane().add(nuevaBusqueda);
 				break;
+			case PanelMostrarResultado:
+				this.getContentPane().add(panelMostrarResultado);
+				break;
 			case Exit:
 				dispose();
 				System.exit(0);
