@@ -21,11 +21,12 @@ import javax.swing.JList;
  */
 public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 
-	private JComboBox<String> node1SelectType, node2SelectType;
 	private JComboBox<String> pathSelect;
 	private MyComboBox node1Select, node2Select;
-	private JList resultList;
 	private JLabel node1Label, node2Label;
+	
+	private JList resultList;
+	
 	private static final long serialVersionUID = 1L;
 	
 
@@ -50,6 +51,8 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		
 		
 		pathSelect = new JComboBox<String>(arrayListToArray(cd.getCtrlPaths().getPathNames()));
+		pathSelect.setPreferredSize(new Dimension(100,20));
+		pathSelect.setSelectedIndex(-1);
 		add(pathSelect);
 		
 		/*
@@ -60,7 +63,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		*/
 		
 		node1Label = new JLabel();
-		node1Label.setPreferredSize(new Dimension(168,24));
+		node1Label.setPreferredSize(new Dimension(168,20));
 		node1Label.setText("Node type:");
 		add(node1Label);
 		
@@ -75,7 +78,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		add(node2SelectType);
 		*/
 		node2Label = new JLabel();
-		node2Label.setPreferredSize(new Dimension(168,24));
+		node2Label.setPreferredSize(new Dimension(168,20));
 		node2Label.setText("Node type:");
 		add(node2Label);
 		
@@ -92,7 +95,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 	
 	private void putConstraints(SpringLayout sl){
 		sl.putConstraint(SpringLayout.NORTH, pathSelect, 20, SpringLayout.NORTH, this);
-		sl.putConstraint(SpringLayout.WEST, pathSelect, 20, SpringLayout.WEST, this);//
+		sl.putConstraint(SpringLayout.WEST, pathSelect, 20, SpringLayout.WEST, this);
 		
 		
 		/*
@@ -101,10 +104,10 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		sl.putConstraint(SpringLayout.NORTH, node1Select, 20, SpringLayout.SOUTH, pathSelect);
 		sl.putConstraint(SpringLayout.WEST, node1Select, 20, SpringLayout.EAST, node1SelectType);
 		*/
-		sl.putConstraint(SpringLayout.NORTH, node1Select, 20, SpringLayout.SOUTH, pathSelect);
-		sl.putConstraint(SpringLayout.WEST, node1Select, 20, SpringLayout.WEST, this);//
-		sl.putConstraint(SpringLayout.NORTH, node1Label, 20, SpringLayout.SOUTH, pathSelect);//
-		sl.putConstraint(SpringLayout.WEST, node1Label, 20, SpringLayout.EAST, node1Select);
+		sl.putConstraint(SpringLayout.NORTH, node1Select, 15, SpringLayout.SOUTH, pathSelect);
+		sl.putConstraint(SpringLayout.WEST, node1Select, 20, SpringLayout.WEST, this);
+		sl.putConstraint(SpringLayout.NORTH, node1Label, 15, SpringLayout.SOUTH, pathSelect);
+		sl.putConstraint(SpringLayout.WEST, node1Label, 15, SpringLayout.EAST, node1Select);
 		
 
 		/*
@@ -113,16 +116,16 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		sl.putConstraint(SpringLayout.NORTH, node2Select, 20, SpringLayout.SOUTH, node1Select);
 		sl.putConstraint(SpringLayout.WEST, node2Select, 20, SpringLayout.EAST, node2SelectType);
 		*/
-		sl.putConstraint(SpringLayout.NORTH, node2Select, 20, SpringLayout.SOUTH, node1Select);
-		sl.putConstraint(SpringLayout.WEST, node2Select, 20, SpringLayout.WEST, this);//
-		sl.putConstraint(SpringLayout.NORTH, node2Label, 20, SpringLayout.SOUTH, node1Label);
-		sl.putConstraint(SpringLayout.WEST, node2Label, 20, SpringLayout.EAST, node2Select);
+		sl.putConstraint(SpringLayout.NORTH, node2Select, 15, SpringLayout.SOUTH, node1Select);
+		sl.putConstraint(SpringLayout.WEST, node2Select, 20, SpringLayout.WEST, this);
+		sl.putConstraint(SpringLayout.NORTH, node2Label, 15, SpringLayout.SOUTH, node1Label);
+		sl.putConstraint(SpringLayout.WEST, node2Label, 15, SpringLayout.EAST, node2Select);
 
 		
 		
 
 		//sl.putConstraint(SpringLayout.NORTH, resultList, 20, SpringLayout.SOUTH, node2SelectType);
-		sl.putConstraint(SpringLayout.NORTH, resultList, 20, SpringLayout.SOUTH, node2Label);
+		sl.putConstraint(SpringLayout.NORTH, resultList, 15, SpringLayout.SOUTH, node2Label);
 		sl.putConstraint(SpringLayout.WEST, resultList, 20, SpringLayout.WEST, this);//
 	}
 	
@@ -163,25 +166,30 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 					//node1SelectType.setSelectedItem(node1SelectType.getItemAt(0));
 					node1Label.setText("Node type: Paper");
 					node1Select.setList(0);
+					node1Select.setEnabled(true);
 					break;
 				case 'A':
 					//node1SelectType.setSelectedItem(node1SelectType.getItemAt(1));
 					node1Label.setText("Node type: Author");
 					node1Select.setList(1);
+					node1Select.setEnabled(true);
 					break;
 				case 'C':
 					//node1SelectType.setSelectedItem(node1SelectType.getItemAt(2));
 					node1Label.setText("Node type: Conference");
 					node1Select.setList(2);
+					node1Select.setEnabled(true);
 					break;
 				case 'T':
 					//node1SelectType.setSelectedItem(node1SelectType.getItemAt(3));
 					node1Label.setText("Node type: Term");
 					node1Select.setList(3);
+					node1Select.setEnabled(true);
 					break;
 				default:
 					//node1SelectType.setSelectedItem(node1SelectType.getItemAt(-1));
 					node1Label.setText("INVALID PATH");
+					node1Select.setEnabled(false);
 					break;
 			}
 			switch (text.charAt(text.length()-1)){
@@ -189,25 +197,30 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 					//node2SelectType.setSelectedItem(node2SelectType.getItemAt(0));
 					node2Label.setText("Node type: Paper");
 					node2Select.setList(0);
+					node2Select.setEnabled(true);
 					break;
 				case 'A':
 					//node2SelectType.setSelectedItem(node2SelectType.getItemAt(1));
 					node2Label.setText("Node type: Author");
 					node2Select.setList(1);
+					node2Select.setEnabled(true);
 					break;
 				case 'C':
 					//node2SelectType.setSelectedItem(node2SelectType.getItemAt(2));
 					node2Label.setText("Node type: Conference");
 					node2Select.setList(2);
+					node2Select.setEnabled(true);
 					break;
 				case 'T':
 					//node2SelectType.setSelectedItem(node2SelectType.getItemAt(3));
 					node2Label.setText("Node type: Term");
 					node2Select.setList(3);
+					node2Select.setEnabled(true);
 					break;
 				default:
 					//node2SelectType.setSelectedItem(node2SelectType.getItemAt(-1));
 					node2Label.setText("INVALID PATH");
+					node2Select.setEnabled(false);
 					break;
 			}
 		}

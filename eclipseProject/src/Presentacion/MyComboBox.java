@@ -75,7 +75,7 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 	private void initParams(){
 		autocomplete = false;
 		
-		setPreferredSize(new Dimension(160,24));
+		setPreferredSize(new Dimension(160,20));
 		setEditable(true);
 		setEnabled(false);
 		setFocusable(true);
