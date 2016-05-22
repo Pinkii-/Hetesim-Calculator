@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -23,9 +24,11 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 
 	private JComboBox<String> pathSelect;
 	private MyComboBox node1Select, node2Select;
-	private JLabel node1Label, node2Label;
+	private JLabel pathLabel, node1Label, node2Label;
 	
 	private JList resultList;
+	
+	private JButton calcHete;
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -49,89 +52,81 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		SpringLayout springLayout = new SpringLayout();
 		setLayout(springLayout);
 		
-		
+		//Path
 		pathSelect = new JComboBox<String>(arrayListToArray(cd.getCtrlPaths().getPathNames()));
 		pathSelect.setPreferredSize(new Dimension(100,20));
 		pathSelect.setSelectedIndex(-1);
 		add(pathSelect);
 		
-		/*
-		node1SelectType = new JComboBox<String>(new String[]{"Paper", "Autor", "Conferencia", "Term"});
-		node1SelectType.setEnabled(false);
-		node1SelectType.setPreferredSize(new Dimension(148,24));
-		add(node1SelectType);
-		*/
-		
+		//Node 1
 		node1Label = new JLabel();
 		node1Label.setPreferredSize(new Dimension(168,20));
 		node1Label.setText("Node type:");
 		add(node1Label);
-		
 			node1Select = new MyComboBox();
 			node1Select.loadNodesToLists(this.cd);
 			add(node1Select);
 		
-		/*
-		node2SelectType = new JComboBox<String>(new String[]{"Paper ", "Autor ", "Conferencia ", "Term "});
-		node2SelectType.setEnabled(false);
-		node2SelectType.setPreferredSize(new Dimension(148,24));
-		add(node2SelectType);
-		*/
+		//Node 2
 		node2Label = new JLabel();
 		node2Label.setPreferredSize(new Dimension(168,20));
 		node2Label.setText("Node type:");
 		add(node2Label);
-		
 			node2Select = new MyComboBox();
 			node2Select.loadNodesToLists(this.cd);
 			add(node2Select);
-			
-		resultList = new MyList();
-		resultList.setSelectionMode(0);
-		add(resultList);
+		
+		//Result list
+		pathLabel = new JLabel();
+		pathLabel.setPreferredSize(new Dimension(168,20));
+		pathLabel.setText("Path");
+		add(pathLabel);
+			resultList = new MyList();
+			resultList.setSelectionMode(0);
+			add(resultList);
+		
+		calcHete = new JButton("Calculate Hetesim");
+		calcHete.setPreferredSize(new Dimension(200,50));
+		calcHete.setEnabled(false);
+		add(calcHete);
 		
 		putConstraints(springLayout);
 	}
 	
 	private void putConstraints(SpringLayout sl){
+		//Path selection
 		sl.putConstraint(SpringLayout.NORTH, pathSelect, 20, SpringLayout.NORTH, this);
 		sl.putConstraint(SpringLayout.WEST, pathSelect, 20, SpringLayout.WEST, this);
+		sl.putConstraint(SpringLayout.NORTH, pathLabel, 20, SpringLayout.NORTH, this);
+		sl.putConstraint(SpringLayout.WEST, pathLabel, 15, SpringLayout.EAST, pathSelect);
 		
 		
-		/*
-		sl.putConstraint(SpringLayout.NORTH, node1SelectType, 20, SpringLayout.SOUTH, pathSelect);
-		sl.putConstraint(SpringLayout.WEST, node1SelectType, 50, SpringLayout.WEST, this);
-		sl.putConstraint(SpringLayout.NORTH, node1Select, 20, SpringLayout.SOUTH, pathSelect);
-		sl.putConstraint(SpringLayout.WEST, node1Select, 20, SpringLayout.EAST, node1SelectType);
-		*/
+		//Node 1
 		sl.putConstraint(SpringLayout.NORTH, node1Select, 15, SpringLayout.SOUTH, pathSelect);
 		sl.putConstraint(SpringLayout.WEST, node1Select, 20, SpringLayout.WEST, this);
 		sl.putConstraint(SpringLayout.NORTH, node1Label, 15, SpringLayout.SOUTH, pathSelect);
 		sl.putConstraint(SpringLayout.WEST, node1Label, 15, SpringLayout.EAST, node1Select);
 		
-
-		/*
-		sl.putConstraint(SpringLayout.NORTH, node2SelectType, 20, SpringLayout.SOUTH, node1SelectType);
-		sl.putConstraint(SpringLayout.WEST, node2SelectType, 50, SpringLayout.WEST, this);
-		sl.putConstraint(SpringLayout.NORTH, node2Select, 20, SpringLayout.SOUTH, node1Select);
-		sl.putConstraint(SpringLayout.WEST, node2Select, 20, SpringLayout.EAST, node2SelectType);
-		*/
+		//Node 2
 		sl.putConstraint(SpringLayout.NORTH, node2Select, 15, SpringLayout.SOUTH, node1Select);
 		sl.putConstraint(SpringLayout.WEST, node2Select, 20, SpringLayout.WEST, this);
 		sl.putConstraint(SpringLayout.NORTH, node2Label, 15, SpringLayout.SOUTH, node1Label);
 		sl.putConstraint(SpringLayout.WEST, node2Label, 15, SpringLayout.EAST, node2Select);
 
-		
-		
-
-		//sl.putConstraint(SpringLayout.NORTH, resultList, 20, SpringLayout.SOUTH, node2SelectType);
+		//List
 		sl.putConstraint(SpringLayout.NORTH, resultList, 15, SpringLayout.SOUTH, node2Label);
-		sl.putConstraint(SpringLayout.WEST, resultList, 20, SpringLayout.WEST, this);//
+		sl.putConstraint(SpringLayout.WEST, resultList, 20, SpringLayout.WEST, this);
+		
+		//Calc hetesim
+		sl.putConstraint(SpringLayout.NORTH, calcHete, 125, SpringLayout.NORTH, this);
+		sl.putConstraint(SpringLayout.WEST, calcHete, 15, SpringLayout.EAST, resultList);
+		
 	}
 	
 	private void assignListeners(){
 		
 		pathSelect.addActionListener(this);
+		calcHete.addActionListener(this);
 		
 	}
 
@@ -159,32 +154,40 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e){
 		
-		if (e.getSource().equals(pathSelect)){
+		if (e.getSource().equals(calcHete)){
+			System.out.println("hey!");
+		}
+		else if (e.getSource().equals(pathSelect)){
 			String text = pathSelect.getItemAt(pathSelect.getSelectedIndex()).toString();
+			boolean n1 = false, n2 = false;
 			switch (text.charAt(0)){
 				case 'P':
 					//node1SelectType.setSelectedItem(node1SelectType.getItemAt(0));
 					node1Label.setText("Node type: Paper");
 					node1Select.setList(0);
 					node1Select.setEnabled(true);
+					n1 = true;
 					break;
 				case 'A':
 					//node1SelectType.setSelectedItem(node1SelectType.getItemAt(1));
 					node1Label.setText("Node type: Author");
 					node1Select.setList(1);
 					node1Select.setEnabled(true);
+					n1 = true;
 					break;
 				case 'C':
 					//node1SelectType.setSelectedItem(node1SelectType.getItemAt(2));
 					node1Label.setText("Node type: Conference");
 					node1Select.setList(2);
 					node1Select.setEnabled(true);
+					n1 = true;
 					break;
 				case 'T':
 					//node1SelectType.setSelectedItem(node1SelectType.getItemAt(3));
 					node1Label.setText("Node type: Term");
 					node1Select.setList(3);
 					node1Select.setEnabled(true);
+					n1 = true;
 					break;
 				default:
 					//node1SelectType.setSelectedItem(node1SelectType.getItemAt(-1));
@@ -198,30 +201,41 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 					node2Label.setText("Node type: Paper");
 					node2Select.setList(0);
 					node2Select.setEnabled(true);
+					n2 = true;
 					break;
 				case 'A':
 					//node2SelectType.setSelectedItem(node2SelectType.getItemAt(1));
 					node2Label.setText("Node type: Author");
 					node2Select.setList(1);
 					node2Select.setEnabled(true);
+					n2 = true;
 					break;
 				case 'C':
 					//node2SelectType.setSelectedItem(node2SelectType.getItemAt(2));
 					node2Label.setText("Node type: Conference");
 					node2Select.setList(2);
 					node2Select.setEnabled(true);
+					n2 = true;
 					break;
 				case 'T':
 					//node2SelectType.setSelectedItem(node2SelectType.getItemAt(3));
 					node2Label.setText("Node type: Term");
 					node2Select.setList(3);
 					node2Select.setEnabled(true);
+					n2 = true;
 					break;
 				default:
 					//node2SelectType.setSelectedItem(node2SelectType.getItemAt(-1));
 					node2Label.setText("INVALID PATH");
 					node2Select.setEnabled(false);
 					break;
+			}
+			if (node1Select.getEditor().getItem().toString().endsWith("!") ||
+				node2Select.getEditor().getItem().toString().endsWith("!") ||
+				!(n1 && n2)){
+				
+					calcHete.setEnabled(false);
+				
 			}
 		}
 		

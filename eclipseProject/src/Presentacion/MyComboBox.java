@@ -127,10 +127,10 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 		String[] c = auxGetNodeNames(cd.getCtrlGraph().getformattedNodesOfType("Conferencia"));
 		String[] t = auxGetNodeNames(cd.getCtrlGraph().getformattedNodesOfType("Terme"));
 		
-		if (p != null ? ret.add(p) : ret.add(new String[]{"No papers"}));
-		if (a != null ? ret.add(a) : ret.add(new String[]{"No authors"}));
-		if (c != null ? ret.add(c) : ret.add(new String[]{"No conferences"}));
-		if (t != null ? ret.add(t) : ret.add(new String[]{"No terms"}));
+		if (p != null ? ret.add(p) : ret.add(new String[]{"No papers!"}));
+		if (a != null ? ret.add(a) : ret.add(new String[]{"No authors!"}));
+		if (c != null ? ret.add(c) : ret.add(new String[]{"No conferences!"}));
+		if (t != null ? ret.add(t) : ret.add(new String[]{"No terms!"}));
 		
 		return ret;
 		
