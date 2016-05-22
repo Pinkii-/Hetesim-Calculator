@@ -145,7 +145,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 	public int closeIt() {
 		
 		String[] buttons = {"Salir", "Cancelar"};
-		int result = VistaDialog.setDialog("Titulo", "¿Estas seguro que quieres salir?\n (Se perderan todo los cambios no guardados)", buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
+		int result = VistaDialog.setDialog("Titulo", "¿Estas seguro que quieres salir?\n (Se perderan todos los cambios no guardados)", buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
 		if (result == 0) vp.continueAction();
 		return result;
 		

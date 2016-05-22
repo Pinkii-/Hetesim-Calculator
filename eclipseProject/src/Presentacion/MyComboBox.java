@@ -110,22 +110,43 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 		filteredStrings = (MutableComboBoxModel<String>) new DefaultComboBoxModel();
 		rawStrings = new ComboBoxModel[4];
 
-		/*
-		rawStrings[0] = new DefaultComboBoxModel<String>(arrayListToArray(cd.getCtrlGraph().formatNodesOfType("Paper")));
-		rawStrings[1] = new DefaultComboBoxModel<String>(arrayListToArray(cd.getCtrlGraph().formatNodesOfType("Autor")));
-		rawStrings[2] = new DefaultComboBoxModel<String>(arrayListToArray(cd.getCtrlGraph().formatNodesOfType("Conferencia")));
-		rawStrings[3] = new DefaultComboBoxModel<String>(arrayListToArray(cd.getCtrlGraph().formatNodesOfType("Terme")));
-		*/
 		
-		rawStrings[0] = new DefaultComboBoxModel<String>(
-			new String[]{" - All papers -","Paper 1","Paper 2","Paper 3","Paper 4","Paper 5","Paper 6","Paper 7","Paper 8"});
-		rawStrings[1] = new DefaultComboBoxModel<String>(
-			new String[]{" - All authors -","Author 1","Author 2","Author 3","Autor 4","Autor 5","Autora 6","Autora 7","Autora 8","This is tooooooooooooooooooo long"});
-		rawStrings[2] = new DefaultComboBoxModel<String>(
-			new String[]{" - All conferences -","Conference 1","Conference 2","Conference 3","Conferencia 4","Conferencia 5","Conferencia 6","Conferencia 7","Conferencia 8"});
-		rawStrings[3] = new DefaultComboBoxModel<String>(
-			new String[]{" - All terms -","Term 1","Term 2","Term 3","Term 4","Term 5","Term 6","Term 7","Term 8"});
+		ArrayList<String[]> nodeNames = getNodeNamesFromComplexArrayList();
+		rawStrings[0] = new DefaultComboBoxModel<String>(nodeNames.get(0));
+		rawStrings[1] = new DefaultComboBoxModel<String>(nodeNames.get(1));
+		rawStrings[2] = new DefaultComboBoxModel<String>(nodeNames.get(2));
+		rawStrings[3] = new DefaultComboBoxModel<String>(nodeNames.get(3));
 		
+	}
+	
+	private ArrayList<String[]> getNodeNamesFromComplexArrayList(){
+		ArrayList<String[]> ret = new ArrayList<String[]>();
+
+		String[] p = auxGetNodeNames(cd.getCtrlGraph().getformattedNodesOfType("Paper"));
+		String[] a = auxGetNodeNames(cd.getCtrlGraph().getformattedNodesOfType("Autor"));
+		String[] c = auxGetNodeNames(cd.getCtrlGraph().getformattedNodesOfType("Conferencia"));
+		String[] t = auxGetNodeNames(cd.getCtrlGraph().getformattedNodesOfType("Terme"));
+		
+		if (p != null ? ret.add(p) : ret.add(new String[]{"No papers"}));
+		if (a != null ? ret.add(a) : ret.add(new String[]{"No authors"}));
+		if (c != null ? ret.add(c) : ret.add(new String[]{"No conferences"}));
+		if (t != null ? ret.add(t) : ret.add(new String[]{"No terms"}));
+		
+		return ret;
+		
+	}
+	private String[] auxGetNodeNames(ArrayList<ArrayList<String>> alist){
+		if (alist.isEmpty() || alist == null){
+			return null;
+		}
+		else {
+			String[] ret = new String[alist.size()+1];
+			ret[0] = " - Select all -";
+			for (int i = 0; i < alist.size(); ++i){
+				ret[i+1] = alist.get(i).get(1);
+			}
+			return ret;
+		}
 	}
 	
 	/**
@@ -177,7 +198,7 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 	}
 	
 	/**
-	 * 
+	 * Returns the number of available lists in the JComboBox
 	 * 
 	 * @return The amount of lists currently stored
 	 */
@@ -266,11 +287,7 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 			}
 		}
 	}
-	
-	private String[] arrayListToArray(ArrayList<String> alist){
-		String[] temp = new String[alist.size()];
-		return alist.toArray(temp);
-	}
+
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
