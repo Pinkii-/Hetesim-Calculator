@@ -18,7 +18,7 @@ import javax.swing.event.ListSelectionListener;
  * @author Xavier Peñalosa
  *
  */
-public class MyList extends JList implements ListSelectionListener, MouseListener {
+public class MyList extends JList implements ListSelectionListener {
 
 	
 	/*
@@ -29,12 +29,7 @@ public class MyList extends JList implements ListSelectionListener, MouseListene
 		initParams();
 		
 	}
-	
-	public MyList(ArrayList<NodePairPresentacion> alist){
-		super();
-		
-		initParams();
-	}
+
 	private void initParams(){
 		
 
@@ -44,41 +39,12 @@ public class MyList extends JList implements ListSelectionListener, MouseListene
 		setPreferredSize(new Dimension(348,208));
 		
 		addListSelectionListener(this);
-		addMouseListener(this);
 	}
-	public void setResult(ArrayList<NodePairPresentacion> alist){
+	public void setResult(ArrayList<ArrayList<String>> alist){
 		
 	}
 
 	
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
 		// TODO Auto-generated method stub

@@ -2,17 +2,25 @@ package Presentacion;
 
 
 import javax.swing.SpringLayout;
+
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
-import javax.swing.ComboBoxModel;
-import javax.swing.DefaultComboBoxModel;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
 
 /**
  * Panel para el caso de uso de nueva Búsqueda
@@ -24,11 +32,12 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 
 	private JComboBox<String> pathSelect;
 	private MyComboBox node1Select, node2Select;
-	private JLabel pathLabel, node1Label, node2Label;
+	private JLabel pathLabel, node1Label, node2Label, thresholdLabel;
 	
-	private JList resultList;
+	private JList<?> resultList;
+	private JSpinner threshold;
 	
-	private JButton calcHete;
+	private JButton calcHete, saveResult;
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -62,6 +71,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		node1Label = new JLabel();
 		node1Label.setPreferredSize(new Dimension(168,20));
 		node1Label.setText("Node type:");
+		node1Label.setForeground(Color.gray);
 		add(node1Label);
 			node1Select = new MyComboBox();
 			node1Select.loadNodesToLists(this.cd);
@@ -71,6 +81,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		node2Label = new JLabel();
 		node2Label.setPreferredSize(new Dimension(168,20));
 		node2Label.setText("Node type:");
+		node2Label.setForeground(Color.gray);
 		add(node2Label);
 			node2Select = new MyComboBox();
 			node2Select.loadNodesToLists(this.cd);
@@ -85,10 +96,42 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 			resultList.setSelectionMode(0);
 			add(resultList);
 		
-		calcHete = new JButton("Calculate Hetesim");
+		//Threshold value
+		thresholdLabel = new JLabel();
+		thresholdLabel.setPreferredSize(new Dimension(75,20));
+		thresholdLabel.setText("Threshold");
+		thresholdLabel.setForeground(Color.gray);
+		add(thresholdLabel);
+			threshold = new JSpinner();
+			SpinnerModel sm = new SpinnerNumberModel(0.5,0,1,0.05);
+			threshold.setModel(sm);
+			JComponent editor = threshold.getEditor();
+			((JSpinner.DefaultEditor) editor).getTextField().setColumns(4);
+			threshold.setEnabled(false);
+			add(threshold);
+		
+		//Hetesim button
+		Icon icon = null;
+		try {
+			icon = new ImageIcon(new URL("http://i.imgur.com/q9dfxIe.png"));
+		} catch (MalformedURLException e) {
+			
+		}
+		calcHete = new JButton("Calculate Hetesim", icon);
 		calcHete.setPreferredSize(new Dimension(200,50));
 		calcHete.setEnabled(false);
 		add(calcHete);
+		
+		Icon icon2 = null;
+		try {
+			icon2 = new ImageIcon(new URL("http://i.imgur.com/RTzXRY4.png"));
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+		saveResult = new JButton("Save this result", icon2);
+		saveResult.setPreferredSize(new Dimension(200,50));
+		saveResult.setEnabled(false);
+		add(saveResult);
 		
 		putConstraints(springLayout);
 	}
@@ -117,9 +160,19 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		sl.putConstraint(SpringLayout.NORTH, resultList, 15, SpringLayout.SOUTH, node2Label);
 		sl.putConstraint(SpringLayout.WEST, resultList, 20, SpringLayout.WEST, this);
 		
+		//Threshold
+		sl.putConstraint(SpringLayout.NORTH, threshold, 5, SpringLayout.SOUTH, resultList);
+		sl.putConstraint(SpringLayout.EAST, threshold, 0, SpringLayout.EAST, resultList);
+		sl.putConstraint(SpringLayout.NORTH, thresholdLabel, 5, SpringLayout.SOUTH, resultList);
+		sl.putConstraint(SpringLayout.EAST, thresholdLabel, 0, SpringLayout.WEST, threshold);
+		
 		//Calc hetesim
-		sl.putConstraint(SpringLayout.NORTH, calcHete, 125, SpringLayout.NORTH, this);
+		sl.putConstraint(SpringLayout.NORTH, calcHete, 0, SpringLayout.NORTH, resultList);
 		sl.putConstraint(SpringLayout.WEST, calcHete, 15, SpringLayout.EAST, resultList);
+		
+		//Save result
+		sl.putConstraint(SpringLayout.NORTH, saveResult, 15, SpringLayout.SOUTH, calcHete);
+		sl.putConstraint(SpringLayout.WEST, saveResult, 15, SpringLayout.EAST, resultList);
 		
 	}
 	
@@ -156,14 +209,19 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		
 		if (e.getSource().equals(calcHete)){
 			System.out.println("hey!");
+			threshold.setEnabled(true);
+			thresholdLabel.setForeground(Color.black);
+			saveResult.setEnabled(true);
 		}
 		else if (e.getSource().equals(pathSelect)){
+			calcHete.setEnabled(true);
 			String text = pathSelect.getItemAt(pathSelect.getSelectedIndex()).toString();
 			boolean n1 = false, n2 = false;
 			switch (text.charAt(0)){
 				case 'P':
 					//node1SelectType.setSelectedItem(node1SelectType.getItemAt(0));
 					node1Label.setText("Node type: Paper");
+					node1Label.setForeground(Color.black);
 					node1Select.setList(0);
 					node1Select.setEnabled(true);
 					n1 = true;
@@ -171,6 +229,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 				case 'A':
 					//node1SelectType.setSelectedItem(node1SelectType.getItemAt(1));
 					node1Label.setText("Node type: Author");
+					node1Label.setForeground(Color.black);
 					node1Select.setList(1);
 					node1Select.setEnabled(true);
 					n1 = true;
@@ -178,6 +237,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 				case 'C':
 					//node1SelectType.setSelectedItem(node1SelectType.getItemAt(2));
 					node1Label.setText("Node type: Conference");
+					node1Label.setForeground(Color.black);
 					node1Select.setList(2);
 					node1Select.setEnabled(true);
 					n1 = true;
@@ -185,6 +245,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 				case 'T':
 					//node1SelectType.setSelectedItem(node1SelectType.getItemAt(3));
 					node1Label.setText("Node type: Term");
+					node1Label.setForeground(Color.black);
 					node1Select.setList(3);
 					node1Select.setEnabled(true);
 					n1 = true;
@@ -192,6 +253,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 				default:
 					//node1SelectType.setSelectedItem(node1SelectType.getItemAt(-1));
 					node1Label.setText("INVALID PATH");
+					node1Label.setForeground(Color.gray);
 					node1Select.setEnabled(false);
 					break;
 			}
@@ -199,6 +261,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 				case 'P':
 					//node2SelectType.setSelectedItem(node2SelectType.getItemAt(0));
 					node2Label.setText("Node type: Paper");
+					node2Label.setForeground(Color.black);
 					node2Select.setList(0);
 					node2Select.setEnabled(true);
 					n2 = true;
@@ -206,6 +269,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 				case 'A':
 					//node2SelectType.setSelectedItem(node2SelectType.getItemAt(1));
 					node2Label.setText("Node type: Author");
+					node2Label.setForeground(Color.black);
 					node2Select.setList(1);
 					node2Select.setEnabled(true);
 					n2 = true;
@@ -213,6 +277,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 				case 'C':
 					//node2SelectType.setSelectedItem(node2SelectType.getItemAt(2));
 					node2Label.setText("Node type: Conference");
+					node2Label.setForeground(Color.black);
 					node2Select.setList(2);
 					node2Select.setEnabled(true);
 					n2 = true;
@@ -220,6 +285,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 				case 'T':
 					//node2SelectType.setSelectedItem(node2SelectType.getItemAt(3));
 					node2Label.setText("Node type: Term");
+					node2Label.setForeground(Color.black);
 					node2Select.setList(3);
 					node2Select.setEnabled(true);
 					n2 = true;
@@ -227,16 +293,17 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 				default:
 					//node2SelectType.setSelectedItem(node2SelectType.getItemAt(-1));
 					node2Label.setText("INVALID PATH");
+					node2Label.setForeground(Color.gray);
 					node2Select.setEnabled(false);
 					break;
 			}
-			if (node1Select.getEditor().getItem().toString().endsWith("!") ||
+			/*if (node1Select.getEditor().getItem().toString().endsWith("!") ||
 				node2Select.getEditor().getItem().toString().endsWith("!") ||
 				!(n1 && n2)){
-				
+					
 					calcHete.setEnabled(false);
 				
-			}
+			}*/
 		}
 		
 	}
