@@ -1,4 +1,4 @@
-package Dominio;
+package Tests;
 
 import static org.junit.Assert.assertEquals;
 
@@ -6,6 +6,11 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import org.junit.Test;
+
+import Dominio.Matrix;
+import Dominio.MatrixChainMultiplication;
+import Dominio.SparseMatrix;
+import Dominio.SparseVector;
 
 /**
  * 

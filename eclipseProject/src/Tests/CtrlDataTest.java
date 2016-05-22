@@ -1,5 +1,5 @@
 
-package Dominio;
+package Tests;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -8,6 +8,16 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+
+import Dominio.CtrlData;
+import Dominio.Graph;
+import Dominio.Matrix;
+import Dominio.Node;
+import Dominio.Pair;
+import Dominio.Path;
+import Dominio.Result;
+import Dominio.Node.Label;
+import Dominio.Node.Type;
 
 
 

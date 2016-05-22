@@ -2,12 +2,17 @@
  * @author Victor Alcazar Lopez
 **/
 
-package Dominio;
+package Tests;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+
+import Dominio.CtrlDominio;
+import Dominio.CtrlGraph;
+import Dominio.CtrlPaths;
+import Dominio.CtrlResults;
 
 public class CtrlDominioTest {
 	static CtrlDominio ctrlDominio;
