@@ -33,8 +33,8 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 	private CtrlDominio cd = new CtrlDominio();
 	private Boolean autocomplete;
 	
-	private ComboBoxModel<String>[] rawStrings;
-	private ComboBoxModel<String> filteredStrings;
+	private ComboBoxModel<String>[][] rawStrings;
+	private ComboBoxModel<String>[] filteredStrings;
 	private Integer inCase = new Integer(-1);
 	private Integer matchStart = new Integer(0);
 	
@@ -107,44 +107,100 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 	 */
 	private void initStrings(CtrlDominio cd){
 		
-		filteredStrings = (MutableComboBoxModel<String>) new DefaultComboBoxModel();
-		rawStrings = new ComboBoxModel[4];
+		filteredStrings = (MutableComboBoxModel<String>[]) new DefaultComboBoxModel[2];
+		rawStrings = new ComboBoxModel[2][4];
 
 		
-		ArrayList<String[]> nodeNames = getNodeNamesFromComplexArrayList();
-		rawStrings[0] = new DefaultComboBoxModel<String>(nodeNames.get(0));
-		rawStrings[1] = new DefaultComboBoxModel<String>(nodeNames.get(1));
-		rawStrings[2] = new DefaultComboBoxModel<String>(nodeNames.get(2));
-		rawStrings[3] = new DefaultComboBoxModel<String>(nodeNames.get(3));
+		ArrayList<ArrayList<String[]>> nodeNames = getNodeNamesFromComplexArrayList();
+		rawStrings[0][0] = new DefaultComboBoxModel<String>(nodeNames.get(0).get(0));
+		rawStrings[0][1] = new DefaultComboBoxModel<String>(nodeNames.get(0).get(1));
+		rawStrings[0][2] = new DefaultComboBoxModel<String>(nodeNames.get(0).get(2));
+		rawStrings[0][3] = new DefaultComboBoxModel<String>(nodeNames.get(0).get(3));
+		
+		
+		rawStrings[1][0] = new DefaultComboBoxModel<String>(nodeNames.get(1).get(0));
+		rawStrings[1][1] = new DefaultComboBoxModel<String>(nodeNames.get(1).get(1));
+		rawStrings[1][2] = new DefaultComboBoxModel<String>(nodeNames.get(1).get(2));
+		rawStrings[1][3] = new DefaultComboBoxModel<String>(nodeNames.get(1).get(3));
 		
 	}
 	
-	private ArrayList<String[]> getNodeNamesFromComplexArrayList(){
-		ArrayList<String[]> ret = new ArrayList<String[]>();
+	private ArrayList<ArrayList<String[]>> getNodeNamesFromComplexArrayList(){
+		ArrayList<ArrayList<String[]>> ret = new ArrayList<ArrayList<String[]>>();
 
-		String[] p = auxGetNodeNames(cd.getCtrlGraph().getformattedNodesOfType("Paper"));
-		String[] a = auxGetNodeNames(cd.getCtrlGraph().getformattedNodesOfType("Autor"));
-		String[] c = auxGetNodeNames(cd.getCtrlGraph().getformattedNodesOfType("Conferencia"));
-		String[] t = auxGetNodeNames(cd.getCtrlGraph().getformattedNodesOfType("Terme"));
+		ArrayList<String[]> p = auxGetNodeNames(cd.getCtrlGraph().getformattedNodesOfType("Paper"));
+		ArrayList<String[]> a = auxGetNodeNames(cd.getCtrlGraph().getformattedNodesOfType("Autor"));
+		ArrayList<String[]> c = auxGetNodeNames(cd.getCtrlGraph().getformattedNodesOfType("Conferencia"));
+		ArrayList<String[]> t = auxGetNodeNames(cd.getCtrlGraph().getformattedNodesOfType("Terme"));
 		
-		if (p != null ? ret.add(p) : ret.add(new String[]{"No papers!"}));
-		if (a != null ? ret.add(a) : ret.add(new String[]{"No authors!"}));
-		if (c != null ? ret.add(c) : ret.add(new String[]{"No conferences!"}));
-		if (t != null ? ret.add(t) : ret.add(new String[]{"No terms!"}));
 		
+		ArrayList<String[]> mainIndex = new ArrayList<String[]>();
+		ArrayList<String[]> mainString = new ArrayList<String[]>();
+		
+		if (p != null) {
+			mainIndex.add(p.get(0));
+			mainString.add(p.get(1));
+		}
+		else{
+			String[] strings = new String[]{"None found!"};
+			String[] indexs = new String[]{"-2"};
+			mainString.add(strings);
+			mainIndex.add(indexs);
+		}
+		if (a != null){
+			mainIndex.add(a.get(0));
+			mainString.add(a.get(1));
+		}
+		else{
+			String[] strings = new String[]{"None found!"};
+			String[] indexs = new String[]{"-2"};
+			mainString.add(strings);
+			mainIndex.add(indexs);
+		}
+		if (c != null){
+			mainIndex.add(c.get(0));
+			mainString.add(c.get(1));
+		}
+		else{
+			String[] strings = new String[]{"None found!"};
+			String[] indexs = new String[]{"-2"};
+			mainString.add(strings);
+			mainIndex.add(indexs);
+		}
+		if (t != null){
+			mainIndex.add(t.get(0));
+			mainString.add(t.get(1));
+		}
+		else{
+			String[] strings = new String[]{"None found!"};
+			String[] indexs = new String[]{"-2"};
+			mainString.add(strings);
+			mainIndex.add(indexs);
+		}
+		
+		ret.add(mainIndex);
+		ret.add(mainString);
 		return ret;
 		
 	}
-	private String[] auxGetNodeNames(ArrayList<ArrayList<String>> alist){
+	private ArrayList<String[]> auxGetNodeNames(ArrayList<ArrayList<String>> alist){
 		if (alist.isEmpty() || alist == null){
 			return null;
 		}
 		else {
-			String[] ret = new String[alist.size()+1];
-			ret[0] = " - Select all -";
+			ArrayList<String[]> ret = new ArrayList<String[]>();
+			String[] strings = new String[alist.size()+1];
+			String[] indexs = new String[alist.size()+1];
+			strings[0] = " - Select all -";
+			indexs[0] = "-1";
 			for (int i = 0; i < alist.size(); ++i){
-				ret[i+1] = alist.get(i).get(1);
+				strings[i+1] = alist.get(i).get(0);
+				indexs[i+1] = alist.get(i).get(1);
 			}
+
+			ret.add(indexs);
+			ret.add(strings);
+			
 			return ret;
 		}
 	}
@@ -155,17 +211,22 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 	 * @param name - Name to identify the item
 	 * @param newItem - Array of strings to add
 	 */
-	public void addList(String[] newItem){
+	public void addList(String[][] newItem){
 		if (newItem != null){
-			ComboBoxModel<String>[] newRawStrings = new ComboBoxModel[rawStrings.length+1];
-			for (int i = 0; i < rawStrings.length; ++i){
-				String[] tempString = new String[rawStrings[i].getSize()];
-				for(int j = 0; j < rawStrings[i].getSize(); ++j){
-					tempString[j] = rawStrings[i].getElementAt(j);
+			ComboBoxModel<String>[][] newRawStrings = new ComboBoxModel[2][rawStrings[1].length+1];
+			for (int i = 0; i < rawStrings[1].length; ++i){
+				String[] tempIndex = new String[rawStrings[0][i].getSize()];
+				String[] tempString = new String[rawStrings[1][i].getSize()];
+				for(int j = 0; j < rawStrings[1][i].getSize(); ++j){
+					tempIndex[j] = rawStrings[0][i].getElementAt(j);
+					tempString[j] = rawStrings[1][i].getElementAt(j);
 				}
-				newRawStrings[i] = new DefaultComboBoxModel<String>(tempString);
+				newRawStrings[0][i] = new DefaultComboBoxModel<String>(tempString);
+				newRawStrings[1][i] = new DefaultComboBoxModel<String>(tempString);
 			}
-			newRawStrings[newRawStrings.length-1] = new DefaultComboBoxModel<String>(newItem);
+			
+			newRawStrings[0][newRawStrings[1].length-1] = new DefaultComboBoxModel<String>(newItem[0]);
+			newRawStrings[1][newRawStrings[1].length-1] = new DefaultComboBoxModel<String>(newItem[1]);
 			rawStrings = newRawStrings;
 		}
 	}
@@ -175,8 +236,11 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 	 * @param newItem - ArrayList of strings to add
 	 * @see #addList(String[])
 	 */
-	public void addList(ArrayList<String> newItem){
-		addList((String[]) newItem.toArray());
+	public void addList(ArrayList<String[]> newItem){
+		String[][] thing = new String[2][newItem.size()];
+		thing[0] = newItem.get(0);
+		thing[1] = newItem.get(1);
+		addList(thing);
 	}
 	
 	/**
@@ -186,12 +250,12 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 	 * @param index - Index of the ComboBoxModel to set
 	 */
 	public void setList(Integer index){
-		if (index < rawStrings.length && index >= 0){
+		if (index < rawStrings[1].length && index >= 0){
 			if (inCase != index){
 				inCase = index;
-				setModel(rawStrings[index]);
+				setModel(rawStrings[1][index]);
 				setSelectedIndex(0);
-				getEditor().setItem(rawStrings[index].getElementAt(0));
+				getEditor().setItem(rawStrings[1][index].getElementAt(0));
 			}
 		}
 		else throw new RuntimeException("Index out of bounds");
@@ -203,7 +267,7 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 	 * @return The amount of lists currently stored
 	 */
 	public Integer getListAmount(){
-		return rawStrings.length;
+		return rawStrings[1].length;
 	}
 	
 	
@@ -232,17 +296,22 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 	 * @see #findStart(ComboBoxModel, String, int, int)
 	 */
 	private void updateSubstrings(){
-		matchStart = findStart(rawStrings[inCase], getEditor().getItem().toString().toLowerCase(), 0, rawStrings[inCase].getSize()-1);
-		if (matchStart >= 0 && matchStart < rawStrings[inCase].getSize() && filteredStrings != null){
+		matchStart = findStart(rawStrings[1][inCase], getEditor().getItem().toString().toLowerCase(), 0, rawStrings[1][inCase].getSize()-1);
+		if (matchStart >= 0 && matchStart < rawStrings[1][inCase].getSize() && filteredStrings != null){
 			ArrayList<String> alist = new ArrayList<String>();
-			while (matchStart < rawStrings[inCase].getSize() && rawStrings[inCase].getElementAt(matchStart).toLowerCase().startsWith(getEditor().getItem().toString().toLowerCase())){
-				alist.add(rawStrings[inCase].getElementAt(matchStart));
+			ArrayList<String> indexs = new ArrayList<String>();
+			
+			while (matchStart < rawStrings[1][inCase].getSize() && rawStrings[1][inCase].getElementAt(matchStart).toLowerCase().startsWith(getEditor().getItem().toString().toLowerCase())){
+				alist.add(rawStrings[1][inCase].getElementAt(matchStart));
+				indexs.add(rawStrings[0][inCase].getElementAt(matchStart));
 				++matchStart;
 			}
-			filteredStrings = new DefaultComboBoxModel(alist.toArray());
+			filteredStrings[0] = new DefaultComboBoxModel(indexs.toArray());
+			filteredStrings[1] = new DefaultComboBoxModel(alist.toArray());
+			
 		}
 		else if (matchStart == -1){
-			auxSetModel(rawStrings[inCase]);
+			auxSetModel(rawStrings[1][inCase]);
 		}
 		else {
 			if (filteredStrings == null) throw new RuntimeException("\n\n ~MyComboBox exploded, filteredStrings is null~ \n");
@@ -297,7 +366,7 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 			try{
 				setList(index);
 				setEnabled(true);
-				setSelectedItem(rawStrings[index].getElementAt(-1));
+				setSelectedItem(rawStrings[1][index].getElementAt(-1));
 			}
 			catch (RuntimeException exc){
 				String errorMsg = exc.getMessage();
@@ -335,20 +404,20 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 		if (code != KeyEvent.VK_ENTER && code != KeyEvent.VK_UP && code != KeyEvent.VK_DOWN){
 			if (getEditor().getItem().toString().length() > 0){
 				updateSubstrings();
-				auxSetModel(filteredStrings);
-				if (autocomplete && filteredStrings.getSize()==1){
+				auxSetModel(filteredStrings[1]);
+				if (autocomplete && filteredStrings[1].getSize()==1){
 					getEditor().setItem(getSelectedItem());
 				}
 			}
 			else {
-				auxSetModel(rawStrings[inCase]);
+				auxSetModel(rawStrings[1][inCase]);
 			}
 			
 			showPopup();
 		}
 		else if (code == KeyEvent.VK_ENTER){
-			if (getSelectedIndex() >= 0 && getModel() == filteredStrings){
-				setSelectedItem(filteredStrings.getElementAt(getSelectedIndex()));
+			if (getSelectedIndex() >= 0 && getModel() == filteredStrings[1]){
+				setSelectedItem(filteredStrings[1].getElementAt(getSelectedIndex()));
 				getEditor().setItem(getSelectedItem());
 			}
 		}

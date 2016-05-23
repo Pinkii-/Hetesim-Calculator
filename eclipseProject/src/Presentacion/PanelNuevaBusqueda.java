@@ -4,6 +4,7 @@ package Presentacion;
 import javax.swing.SpringLayout;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -119,9 +120,12 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		}
 		calcHete = new JButton("Calculate Hetesim", icon);
 		calcHete.setPreferredSize(new Dimension(200,50));
+		calcHete.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		calcHete.setFocusable(false);
 		calcHete.setEnabled(false);
 		add(calcHete);
 		
+		//Save result button
 		Icon icon2 = null;
 		try {
 			icon2 = new ImageIcon(new URL("http://i.imgur.com/RTzXRY4.png"));
@@ -130,6 +134,8 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		}
 		saveResult = new JButton("Save this result", icon2);
 		saveResult.setPreferredSize(new Dimension(200,50));
+		saveResult.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		saveResult.setFocusable(false);
 		saveResult.setEnabled(false);
 		add(saveResult);
 		
@@ -209,9 +215,36 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		
 		if (e.getSource().equals(calcHete)){
 			System.out.println("hey!");
-			threshold.setEnabled(true);
-			thresholdLabel.setForeground(Color.black);
-			saveResult.setEnabled(true);
+			boolean n1 = true, n2 = true;
+			if (node1Select.getEditor().getItem().toString().equals(" - Select all -")) n1 = false;
+			if (node2Select.getEditor().getItem().toString().equals(" - Select all -")) n2 = false;
+			if (n1 && n2){
+				//Two nodes
+				//Integer i1 = cd.getCtrlGraph().getGraph().get
+				//cd.searchPathNodeNode(pathSelect.getEditor().getItem().toString(), node1Select.getEditor().getItem().toString(), node2Index)
+			}
+			else if (n1){
+				//One node
+				
+			}
+			else if (n2){
+				//One node, reverse
+				
+			}
+			else {
+				//No nodes
+				
+			}
+			
+			//if (result.exists()){
+				//Cargar resultado ya existente
+				
+			//}
+			//else {
+				threshold.setEnabled(true);
+				thresholdLabel.setForeground(Color.black);
+				saveResult.setEnabled(true);
+			//}
 		}
 		else if (e.getSource().equals(pathSelect)){
 			calcHete.setEnabled(true);
@@ -219,7 +252,6 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 			boolean n1 = false, n2 = false;
 			switch (text.charAt(0)){
 				case 'P':
-					//node1SelectType.setSelectedItem(node1SelectType.getItemAt(0));
 					node1Label.setText("Node type: Paper");
 					node1Label.setForeground(Color.black);
 					node1Select.setList(0);
@@ -227,7 +259,6 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 					n1 = true;
 					break;
 				case 'A':
-					//node1SelectType.setSelectedItem(node1SelectType.getItemAt(1));
 					node1Label.setText("Node type: Author");
 					node1Label.setForeground(Color.black);
 					node1Select.setList(1);
@@ -235,7 +266,6 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 					n1 = true;
 					break;
 				case 'C':
-					//node1SelectType.setSelectedItem(node1SelectType.getItemAt(2));
 					node1Label.setText("Node type: Conference");
 					node1Label.setForeground(Color.black);
 					node1Select.setList(2);
@@ -243,7 +273,6 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 					n1 = true;
 					break;
 				case 'T':
-					//node1SelectType.setSelectedItem(node1SelectType.getItemAt(3));
 					node1Label.setText("Node type: Term");
 					node1Label.setForeground(Color.black);
 					node1Select.setList(3);
@@ -251,7 +280,6 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 					n1 = true;
 					break;
 				default:
-					//node1SelectType.setSelectedItem(node1SelectType.getItemAt(-1));
 					node1Label.setText("INVALID PATH");
 					node1Label.setForeground(Color.gray);
 					node1Select.setEnabled(false);
@@ -259,7 +287,6 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 			}
 			switch (text.charAt(text.length()-1)){
 				case 'P':
-					//node2SelectType.setSelectedItem(node2SelectType.getItemAt(0));
 					node2Label.setText("Node type: Paper");
 					node2Label.setForeground(Color.black);
 					node2Select.setList(0);
@@ -267,7 +294,6 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 					n2 = true;
 					break;
 				case 'A':
-					//node2SelectType.setSelectedItem(node2SelectType.getItemAt(1));
 					node2Label.setText("Node type: Author");
 					node2Label.setForeground(Color.black);
 					node2Select.setList(1);
@@ -275,7 +301,6 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 					n2 = true;
 					break;
 				case 'C':
-					//node2SelectType.setSelectedItem(node2SelectType.getItemAt(2));
 					node2Label.setText("Node type: Conference");
 					node2Label.setForeground(Color.black);
 					node2Select.setList(2);
@@ -283,7 +308,6 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 					n2 = true;
 					break;
 				case 'T':
-					//node2SelectType.setSelectedItem(node2SelectType.getItemAt(3));
 					node2Label.setText("Node type: Term");
 					node2Label.setForeground(Color.black);
 					node2Select.setList(3);
@@ -291,19 +315,20 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 					n2 = true;
 					break;
 				default:
-					//node2SelectType.setSelectedItem(node2SelectType.getItemAt(-1));
 					node2Label.setText("INVALID PATH");
 					node2Label.setForeground(Color.gray);
 					node2Select.setEnabled(false);
 					break;
 			}
-			/*if (node1Select.getEditor().getItem().toString().endsWith("!") ||
-				node2Select.getEditor().getItem().toString().endsWith("!") ||
+			System.out.print(n1);
+			System.out.print(n2);
+			if (//node1Select.getEditor().getItem().toString().endsWith("!") ||
+				//node2Select.getEditor().getItem().toString().endsWith("!") ||
 				!(n1 && n2)){
 					
 					calcHete.setEnabled(false);
 				
-			}*/
+			}
 		}
 		
 	}
