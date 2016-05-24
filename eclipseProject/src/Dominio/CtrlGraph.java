@@ -112,6 +112,7 @@ public class CtrlGraph {
 	
 	private ArrayList<String> formatNode(Integer index, Node n) {
 		ArrayList<String> ret = new ArrayList<String>();
+		ret.add(String.valueOf(index));
 		ret.add(n.getNom());
 		ret.add(n.getTipus().toString());
 		return ret;
