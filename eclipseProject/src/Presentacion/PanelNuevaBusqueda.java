@@ -38,7 +38,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 	private JList<?> resultList;
 	private JSpinner threshold;
 	
-	private JButton calcHete, saveResult;
+	private JButton calcHete, saveResult, editResult;
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -88,14 +88,17 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 			node2Select.loadNodesToLists(this.cd);
 			add(node2Select);
 		
-		//Result list
+		//Path label
 		pathLabel = new JLabel();
 		pathLabel.setPreferredSize(new Dimension(168,20));
 		pathLabel.setText("Path");
 		add(pathLabel);
-			resultList = new MyList();
-			resultList.setSelectionMode(0);
-			add(resultList);
+		
+		//ResultList
+		resultList = new MyList();
+		resultList.setSelectionMode(0);
+		System.out.println(resultList.getSize().toString());
+		add(resultList);
 		
 		//Threshold value
 		thresholdLabel = new JLabel();
@@ -132,12 +135,28 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
-		saveResult = new JButton("Save this result", icon2);
-		saveResult.setPreferredSize(new Dimension(200,50));
+		saveResult = new JButton("Save", icon2);
+		saveResult.setPreferredSize(new Dimension(92,30));
 		saveResult.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		saveResult.setFocusable(false);
 		saveResult.setEnabled(false);
 		add(saveResult);
+		
+		//Save result button
+		Icon icon3 = null;
+		try {
+			icon3 = new ImageIcon(new URL("http://i.imgur.com/RTzXRY4.png"));
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+		editResult = new JButton("Edit", icon3);
+		editResult.setPreferredSize(new Dimension(92,30));
+		editResult.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		editResult.setToolTipText("You must save the result before editing");
+		editResult.setFocusable(false);
+		editResult.setEnabled(false);
+		add(editResult);
+		
 		
 		putConstraints(springLayout);
 	}
@@ -164,6 +183,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 
 		//List
 		sl.putConstraint(SpringLayout.NORTH, resultList, 15, SpringLayout.SOUTH, node2Label);
+		sl.putConstraint(SpringLayout.SOUTH, resultList, -35, SpringLayout.SOUTH, this);
 		sl.putConstraint(SpringLayout.WEST, resultList, 20, SpringLayout.WEST, this);
 		
 		//Threshold
@@ -176,9 +196,18 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		sl.putConstraint(SpringLayout.NORTH, calcHete, 0, SpringLayout.NORTH, resultList);
 		sl.putConstraint(SpringLayout.WEST, calcHete, 15, SpringLayout.EAST, resultList);
 		
+		
+		//Edit result
+		//sl.putConstraint(SpringLayout.NORTH, editResult, 1000, SpringLayout.SOUTH, calcHete);
+		sl.putConstraint(SpringLayout.SOUTH, editResult, -35, SpringLayout.SOUTH, this);
+		sl.putConstraint(SpringLayout.WEST, editResult, 15, SpringLayout.EAST, resultList);
+		
 		//Save result
-		sl.putConstraint(SpringLayout.NORTH, saveResult, 15, SpringLayout.SOUTH, calcHete);
-		sl.putConstraint(SpringLayout.WEST, saveResult, 15, SpringLayout.EAST, resultList);
+		//sl.putConstraint(SpringLayout.NORTH, saveResult, 50, SpringLayout.SOUTH, calcHete);
+		sl.putConstraint(SpringLayout.SOUTH, saveResult, -35, SpringLayout.SOUTH, this);
+		sl.putConstraint(SpringLayout.WEST, saveResult, 15, SpringLayout.EAST, editResult);
+		
+		
 		
 	}
 	
@@ -186,6 +215,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		
 		pathSelect.addActionListener(this);
 		calcHete.addActionListener(this);
+		saveResult.addActionListener(this);
 		
 	}
 
@@ -215,25 +245,37 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		
 		if (e.getSource().equals(calcHete)){
 			System.out.println("hey!");
-			boolean n1 = true, n2 = true;
-			if (node1Select.getEditor().getItem().toString().equals(" - Select all -")) n1 = false;
-			if (node2Select.getEditor().getItem().toString().equals(" - Select all -")) n2 = false;
-			if (n1 && n2){
-				//Two nodes
-				//Integer i1 = cd.getCtrlGraph().getGraph().get
-				//cd.searchPathNodeNode(pathSelect.getEditor().getItem().toString(), node1Select.getEditor().getItem().toString(), node2Index)
+			String path = pathSelect.getSelectedItem().toString();
+			int n1 = -1, n2 = -1;
+			if (!node1Select.getEditor().getItem().toString().equals(" - Select all -")) n1 = node1Select.getSelectedNodeIndex();
+			if (!node2Select.getEditor().getItem().toString().equals(" - Select all -")) n2 = node2Select.getSelectedNodeIndex();
+			if (n1 == -1 && n2 == -1){
+				//No nodes
+				System.out.println("Searching P");
+				System.out.println(cd.searchPath(path));
+				System.out.println("Done");
 			}
-			else if (n1){
+			else if (n1 == -1 && n2 >= 0){
 				//One node
+				System.out.println("Searching PN1");
+				System.out.println(cd.searchPathNode(path,n1));
+				System.out.println("Done");
 				
 			}
-			else if (n2){
+			else if (n2 == -1 && n1 >= 0){
 				//One node, reverse
-				
+				System.out.println("Searching PN2");
+				System.out.println(cd.searchPathNode(path,n2));
+				System.out.println("Done");
+			}
+			else if (n1 >= 0 && n2 >= 0){
+				//Two
+				System.out.println("Searching PNN");
+				System.out.println(cd.searchPathNodeNode(path,n1,n2));
+				System.out.println("Done");
 			}
 			else {
-				//No nodes
-				
+				System.out.println("Either node is invalid");
 			}
 			
 			//if (result.exists()){
@@ -245,6 +287,10 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 				thresholdLabel.setForeground(Color.black);
 				saveResult.setEnabled(true);
 			//}
+		}
+		else if (e.getSource().equals(saveResult)){
+			cd.saveLastSearchResult();
+			editResult.setEnabled(true);
 		}
 		else if (e.getSource().equals(pathSelect)){
 			calcHete.setEnabled(true);

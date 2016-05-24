@@ -270,6 +270,19 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 		return rawStrings[1].length;
 	}
 	
+	/**
+	 * Returns the node index for the selected Node
+	 * 
+	 * @return Integer value for the node Index
+	 */
+	public Integer getSelectedNodeIndex(){
+		if (getModel() == filteredStrings[1]){
+			return Integer.valueOf(filteredStrings[0].getElementAt(getSelectedIndex()));
+		}
+		else {
+			return Integer.valueOf(rawStrings[0][inCase].getElementAt(getSelectedIndex()));
+		}
+	}
 	
 	/**
 	 * <b>Stub:</b> Gets an <code>ArrayList</code> of <code>String</code>s which corresponds to
