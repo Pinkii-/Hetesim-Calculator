@@ -48,7 +48,7 @@ public class PanelEditNode extends AbstractPanel{
 	private static final long serialVersionUID = 1L;
 	CtrlGraph ctrlGraph;
 	ArrayList<String> nodeInfo;
-	private final JTextPane textPane = new JTextPane();
+	//private final JTextPane textPane = new JTextPane();
 	private final Component horizontalStrut = Box.createHorizontalStrut(40);
 	private final Component horizontalStrut_1 = Box.createHorizontalStrut(20);
 	private final Component horizontalStrut_2 = Box.createHorizontalStrut(20);
@@ -106,7 +106,7 @@ public class PanelEditNode extends AbstractPanel{
 		relationsPanel.add(relationsLabel);
 		relationsPanel.add(relationsTable);
 
-		relationsPanel.add(textPane);
+		//relationsPanel.add(textPane);
 		relationsPanel.add(addRelationButton);
 
 		splitPanel.add(relationsPanel, BorderLayout.EAST);		
@@ -138,21 +138,30 @@ public class PanelEditNode extends AbstractPanel{
 				nodeInfo.get(2));
 		int dataRows = data.size();
 		int dataCols = 3;
-		Object[][] relationsTableData = new Object[dataRows][dataCols];
+		Object[][] relationsTableData = new Object[dataRows][dataCols - 1];
 		int i,j;
-		i = j = 0;
+		i = 0;
 		for(ArrayList<String> arr: data){
-			j = 0;
+			j = -1;
 			System.out.println(i);
 			for(String s: arr){
 				System.out.println(j);
-				relationsTableData[i][j] = s;
+				if(j >= 0)
+					relationsTableData[i][j] = s;
 				++j;
 			}
 			++i;
 		}
-		String[] columnNames = {"Index", "Name", "Type"};
+		String[] columnNames = {"Name", "Type"};
 		relationsTable = new JTable(relationsTableData, columnNames);
+		relationsPanel.remove(relationsTable);
+		relationsPanel.remove(addRelationButton);
+		relationsPanel.add(relationsTable);
+		relationsPanel.add(addRelationButton);
+		//relationsTable.repaint();
+		//relationsTable.revalidate();
+		//this.repaint();
+		//this.revalidate();
 	}
 
 

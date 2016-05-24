@@ -5,7 +5,8 @@
 
 package Dominio;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Utils {
 	public static Node.Type getNodeType(Integer i) {
@@ -92,11 +93,15 @@ public class Utils {
 	}
 
 	public static void printMatrix(Matrix m) {
+		System.out.println("Number of Rows: " + m.getNRows());
+		System.out.println("Number of Columns: " + m.getNCols());
 		for (int i = 0; i < m.getNRows(); ++i) {
-			for (int j = 0; j < m.getNCols(); ++j) {
-				System.out.print(m.getValue(i, j) + " ");
+			HashMap<Integer, Float> aRow = new HashMap<Integer, Float>();
+			aRow = m.getRow(i);
+			for(Map.Entry<Integer, Float> entry: aRow.entrySet()){
+				System.out.println(i + " -> " + entry.getKey() + " (" + entry.getValue() + ")");
 			}
-			System.out.println("");
+			System.out.println();
 		}
 	}
 
