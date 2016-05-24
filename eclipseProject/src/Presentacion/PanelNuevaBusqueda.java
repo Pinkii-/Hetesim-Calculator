@@ -3,6 +3,8 @@ package Presentacion;
 
 import javax.swing.SpringLayout;
 
+import Presentacion.VistaPrincipal.Panels;
+
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -40,11 +42,14 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 	
 	private JButton calcHete, saveResult, editResult;
 	
+	private VistaPrincipal vp;
 	private static final long serialVersionUID = 1L;
 	
 
-	PanelNuevaBusqueda(VistaAbstracta vp) {
+	PanelNuevaBusqueda(VistaPrincipal vp) {
 		super(vp);
+		
+		this.vp = vp;
 		initComponents();
 		assignListeners();
 	}
@@ -142,10 +147,10 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		saveResult.setEnabled(false);
 		add(saveResult);
 		
-		//Save result button
+		//Edit result button
 		Icon icon3 = null;
 		try {
-			icon3 = new ImageIcon(new URL("http://i.imgur.com/RTzXRY4.png"));
+			icon3 = new ImageIcon(new URL("http://i.imgur.com/iA8cG7Q.jpg"));
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
@@ -216,6 +221,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		pathSelect.addActionListener(this);
 		calcHete.addActionListener(this);
 		saveResult.addActionListener(this);
+		editResult.addActionListener(this);
 		
 	}
 
@@ -291,6 +297,9 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		else if (e.getSource().equals(saveResult)){
 			cd.saveLastSearchResult();
 			editResult.setEnabled(true);
+		}
+		else if (e.getSource().equals(editResult)){
+			vp.changePanel(Panels.PanelMostrarResultado);
 		}
 		else if (e.getSource().equals(pathSelect)){
 			calcHete.setEnabled(true);
