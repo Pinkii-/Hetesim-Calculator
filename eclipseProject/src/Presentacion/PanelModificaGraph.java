@@ -90,7 +90,7 @@ public class PanelModificaGraph extends AbstractPanel {
 		PanelModificaGraph aux = this;
 		buttonAddNode.addActionListener( new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				aux.addVista(PanelEditNode.class, true); // Cambiar al panel que agrega nodos
+				aux.addVista(PanelModificaGraph.class, true); // Cambiar al panel que agrega nodos
 			}
 		});
 		comboBoxTypeOfNode.addActionListener(new ActionListener() {
@@ -106,8 +106,7 @@ public class PanelModificaGraph extends AbstractPanel {
 	public int closeIt() {
 		// Preguntar si estas seguro de que te pueden cerrar desde un sitio externo
 		String[] buttons = {"Salir", "Cancelar"};
-		int result = VistaDialog.setDialog("Titulo", "¿Estas seguro que quieres salir?\n (Se perderan todo los cambios no guardados)", buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
-		if (result == 0) vp.continueAction();
+		int result = VistaDialog.setDialog("Titulo", "¿Estas seguro que quieres salir?\n (Se perderan todo los cambios no guardados)", buttons, VistaDialog.DialogType.WARNING_MESSAGE);
 		return result;
 	}
 

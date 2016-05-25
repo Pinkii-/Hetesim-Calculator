@@ -163,7 +163,7 @@ public class PanelLoadResult extends AbstractPanel{
 		// TODO Auto-generated method stub
 		String[] buttons = {"Salir", "Cancelar"};
 		int result = VistaDialog.setDialog("Titulo", "¿Estas seguro que quieres salir?\n (No se va a perder nada, no has hecho nada, vete.)", buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
-		if (result == 0) vp.continueAction();
+//		if (result == 0) vp.continueAction();
 		return result;
 	}
 	@Override

@@ -12,6 +12,12 @@ abstract public class VistaAbstracta extends JFrame {
 		this.cd = cd;
 	}
 	
+	/**
+	 * No llameis a esto pl0x lo llama el AbstractPanel.
+	 * @see Presentacion.VistaAbstracta#continueAction()
+	 */
+	
+	@Deprecated
 	abstract void continueAction();
 //	abstract public void setEnabledEverything(Boolean b);
 	public CtrlDominio getCtrlDominio() {

@@ -25,7 +25,7 @@ public class VistaDialog {
 		JOptionPane optionPane = new JOptionPane(strTexto,iTipo.value);
 		optionPane.setOptions(strBotones);
 		JDialog dialogOptionPane = optionPane.createDialog(new JFrame(),strTitulo);
-		dialogOptionPane.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+		dialogOptionPane.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		dialogOptionPane.pack();
 		dialogOptionPane.setVisible(true);
 

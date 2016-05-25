@@ -22,7 +22,7 @@ public class VistaPrincipal extends VistaAbstracta{
 	
 	// Panels;
 	enum Panels {ModificaGraph, LoadResult, PanelMostrarResultado, NuevaBusqueda, Test, Exit};
-	private Panels nextPanel;
+	private Panels nextPanel, currentPanel;
 	
 	private JPanel content = new JPanel();
 	PanelModificaGraph modificaGraph = new PanelModificaGraph(this);
@@ -34,22 +34,27 @@ public class VistaPrincipal extends VistaAbstracta{
 	private JMenuBar menuBar = new JMenuBar();
 	
 	  	// File
-	private JMenu menuFile = new JMenu("File");
-	private JMenuItem menuitemFileNewGraph = new JMenuItem("New Graph");
-	private JMenuItem menuitemFileLoadGraf = new JMenuItem("Load Graph");
-	private JMenuItem menuitemFileImportGraf = new JMenuItem("Import Graph");
-	private JMenuItem menuitemFileLoadResult = new JMenuItem("Load Result");
-
-	private JMenuItem menuitemFileExit = new JMenuItem("Exit");
 	
-
-	private JMenuItem menuitemNuevaBusqueda = new JMenuItem("New Search");
-		// Edit
-	private JMenu menuEdit = new JMenu("Edit");
-	private JMenu menuEditModify = new JMenu("Modify");
-	private JMenuItem menuitemEditGraph = new JMenuItem("Graph");
-	private JMenuItem menuitemEditPath = new JMenuItem("Paths");
-	private JMenuItem menuitemEditResult = new JMenuItem("Result");
+	// Graph
+	private JMenu menuGraph = new JMenu("Graph");	
+	private JMenuItem menuitemGraphNew = new JMenuItem("New");
+	private JMenuItem menuitemGraphImport = new JMenuItem("Import");
+	private JMenuItem menuitemGraphLoad = new JMenuItem("Load");
+	private JMenuItem menuitemGraphModify = new JMenuItem("Modify Current");
+	
+	// Paths
+	private JMenu menuPath = new JMenu("Path");
+	private JMenuItem menuitemPathNew = new JMenuItem("New");
+	private JMenuItem menuitemPathShow = new JMenuItem("Show and Modify"); // Hacer vista (listar, modificar, eliminar)
+	
+	// Search and Results
+	private JMenu menuSearch = new JMenu("Search and Results");
+	private JMenuItem menuitemSearchNew = new JMenuItem("New Search");
+	private JMenuItem menuitemResultShow = new JMenuItem("Show Results");
+	
+	private JMenu menuFile = new JMenu("File");
+	
+	private JMenuItem menuitemFileExit = new JMenuItem("Exit");
 	
 	
 	// Constructor and public stuff
@@ -75,6 +80,8 @@ public class VistaPrincipal extends VistaAbstracta{
 	// listeners de los menus
 	
 	private void asign_listeners() {
+		
+		VistaPrincipal p = this;
 	
 		menuitemFileExit.addActionListener
 		( new ActionListener() {
@@ -84,39 +91,54 @@ public class VistaPrincipal extends VistaAbstracta{
 			}
 		});
 		
-		menuitemEditGraph.addActionListener
+		menuitemGraphModify.addActionListener
 	    (new ActionListener() {
 	      public void actionPerformed (ActionEvent event) {
 	        changePanel(Panels.ModificaGraph);
 	      }
 	    });
 		
-		menuitemFileLoadResult.addActionListener
+		menuitemResultShow.addActionListener
 		(new ActionListener() {
 			public void actionPerformed (ActionEvent event) {
 				changePanel(Panels.LoadResult);
 			}
 		});
 		
-		menuitemNuevaBusqueda.addActionListener
+		menuitemSearchNew.addActionListener
 		(new ActionListener() {
 			public void actionPerformed (ActionEvent event) {
 				changePanel(Panels.NuevaBusqueda);
 			}
 		});
 		
-		menuitemFileImportGraf.addActionListener
+		menuitemGraphImport.addActionListener
 		(new ActionListener() {
 			public void actionPerformed (ActionEvent event) {
-//				JFileChooser f  = new JFileChooser();
-//				f.showOpenDialog(f);
-//				f.setCurrentDirectory(new File(""));
-//				f.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-//				String s = f.getSelectedFile().getAbsolutePath();
-					
-//				System.out.println(System.getProperty("user.dir"));
-				if (cd == null) System.out.println("asdasdas");
-				cd.importGraph(System.getProperty("user.dir")+"/../DBLP_four_area/");
+				try {
+					cd.importGraph(System.getProperty("user.dir")+"/../DBLP_four_area/");
+					VistaDialog.setDialog("", "Grafo importado correctamente", new String[] {"Continue"}, VistaDialog.DialogType.INFORMATION_MESSAGE);
+					if (currentPanel != null) p.changePanel(currentPanel);
+				}
+				catch (Exception e) {
+					VistaDialog.setDialog("", "No se ha podido importar el grafo.\n(El diretorio de la abse de datos no está en su sitio) ", new String[]{"Continue"}, VistaDialog.DialogType.ERROR_MESSAGE);
+				}
+//				VistaDialog.setDialog("Titulo", "¿Estas seguro que quieres salir?\n (Se perderan todo los cambios no guardados)", buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
+			}
+		});
+		
+		menuitemGraphLoad.addActionListener
+		(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser f  = new JFileChooser();
+				f.setCurrentDirectory(new File(System.getProperty("user.dir")));
+				f.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+				f.showOpenDialog(f);
+				try {
+					String s = f.getSelectedFile().getAbsolutePath();
+					cd.loadGraph(s);
+				}
+				catch (NullPointerException exception) {}
 			}
 		});
 		
@@ -145,23 +167,25 @@ public class VistaPrincipal extends VistaAbstracta{
 	}
 	
 	private void initMenuBar() {
+		
+		menuFile.add(this.menuitemFileExit);
 
-		menuFile.add(menuitemFileNewGraph);
-		menuFile.add(menuitemFileLoadGraf);
-		menuFile.add(menuitemFileImportGraf);
-		menuFile.add(menuitemFileLoadResult);
-		menuFile.add(menuitemFileExit);
-		menuFile.add(menuitemNuevaBusqueda);
+		menuGraph.add(this.menuitemGraphNew);
+		menuGraph.add(this.menuitemGraphImport);
+		menuGraph.add(this.menuitemGraphLoad);
+		menuGraph.add(this.menuitemGraphModify);
 		
-		menuEditModify.add(menuitemEditGraph);
-		menuEditModify.add(menuitemEditPath);
-		menuEditModify.add(menuitemEditResult);
+		menuPath.add(this.menuitemPathNew);
+		menuPath.add(this.menuitemPathShow);
 		
-		menuEdit.add(menuEditModify);
+		menuSearch.add(this.menuitemSearchNew);
+		menuSearch.add(this.menuitemResultShow);
 		
-		menuBar.add(menuFile);
-		menuBar.add(menuEdit);
-		
+		menuBar.add(this.menuFile);
+		menuBar.add(this.menuGraph);
+		menuBar.add(this.menuPath);
+		menuBar.add(this.menuSearch);
+
 		this.setJMenuBar(menuBar);
 	}
 	
@@ -172,15 +196,24 @@ public class VistaPrincipal extends VistaAbstracta{
 		nextPanel = p;
 		try {
 			AbstractPanel currentPanel = (AbstractPanel) this.getContentPane().getComponent(0);
-			currentPanel.close();
+			if (0 == currentPanel.close()) {
+				continueAction();
+			}
 		}
 		catch (Exception e) {
 			continueAction();
 		}
 	}
 	
+	/**
+	 * No llameis a esto pl0x lo llama el AbstractPanel.
+	 * @see Presentacion.VistaAbstracta#continueAction()
+	 */
+	
+	@Deprecated
 	void continueAction() {
 		this.getContentPane().removeAll();
+		currentPanel = nextPanel;
 		switch (nextPanel) {
 			case ModificaGraph:
 				modificaGraph.init();
@@ -213,8 +246,8 @@ public class VistaPrincipal extends VistaAbstracta{
 	
 	void setEnabledPrincipal(Boolean b) {
 		System.out.println("lalala");
-		menuFile.setEnabled(b);
-		menuEdit.setEnabled(b);
+//		menuFile.setEnabled(b);
+//		menuEdit.setEnabled(b);
 	}
 
 }

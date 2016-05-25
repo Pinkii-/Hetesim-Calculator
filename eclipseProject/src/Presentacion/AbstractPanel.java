@@ -45,8 +45,10 @@ abstract public class AbstractPanel extends JPanel {
 		
 	}
 	
-	// Preguntar si estás seguro de querer cerrarlo. Devolver un 0 cuando si.
-	abstract public int closeIt(); 
+	/**
+	 * If you can close, return 0. If not, return watever;
+	 */
+	abstract int closeIt(); 
 	
 	abstract public void setEnabledEverything(Boolean b);
 	
