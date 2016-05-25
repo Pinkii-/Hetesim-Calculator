@@ -5,6 +5,7 @@
 package Dominio;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -162,22 +163,27 @@ public class CtrlGraph {
 	 * </ol>
 	 */
 	public ArrayList<ArrayList<String>> getformattedNodesOfType(String nodeType){
+		ArrayList<ArrayList<String>> ret = new ArrayList<ArrayList<String>>();
+		
 		Matrix mauthor = graph.getMatrixAuthor();
 		Matrix mterme = graph.getMatrixTerm();
 		Matrix mconf = graph.getMatrixConf();
 		Node.Type t = Node.Type.valueOf(nodeType);
 		if(t == Node.Type.Autor){
-			return formatMatrixNodes(mauthor, t);			
+			ret = formatMatrixNodes(mauthor, t);			
 		}else if(t == Node.Type.Conferencia){
-			return formatMatrixNodes(mconf, t);
+			ret = formatMatrixNodes(mconf, t);
 		}else if(t == Node.Type.Terme){
-			return formatMatrixNodes(mterme, t);
+			ret = formatMatrixNodes(mterme, t);
 		}else if(t == Node.Type.Paper){
-			return formatPaperNodes(mauthor);
+			ret = formatPaperNodes(mauthor);
 		}else{
 			System.out.println("Node type not found " + t);
 			return null;
 		}
+		
+		Collections.sort(ret, new formatedNodeComparator());
+		return ret;
 	}
 	
 	/**

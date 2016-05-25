@@ -43,6 +43,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 	private JButton calcHete, saveResult, editResult;
 	
 	private VistaPrincipal vp;
+	private boolean hasResult = false;
 	private static final long serialVersionUID = 1L;
 	
 
@@ -53,6 +54,9 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 	}
 	
 	public void init(){
+		this.removeAll();
+		hasResult = false;
+		
 		initComponents();
 		assignListeners();
 	}
@@ -236,11 +240,16 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 	
 	@Override
 	public int closeIt() {
-		
-		String[] buttons = {"Salir", "Cancelar"};
-		int result = VistaDialog.setDialog("Titulo", "¿Estas seguro que quieres salir?\n (Se perderan todos los cambios no guardados)", buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
-		if (result == 0) vp.continueAction();
-		return result;
+		if (hasResult){
+			String[] buttons = {"Salir", "Cancelar"};
+			int result = VistaDialog.setDialog("Titulo", "¿Estas seguro que quieres salir?\n (Se perderan todos los cambios no guardados)", buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
+			if (result == 0) vp.continueAction();
+			return -1;
+		}
+		else {
+			vp.continueAction();
+			return 0;
+		}
 		
 	}
 
@@ -261,26 +270,26 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 			if (n1 == -1 && n2 == -1){
 				//No nodes
 				System.out.println("Searching P");
-				System.out.println(cd.searchPath(path));
+				//System.out.println(cd.searchPath(path));
 				System.out.println("Done");
 			}
 			else if (n1 == -1 && n2 >= 0){
 				//One node
 				System.out.println("Searching PN1");
-				System.out.println(cd.searchPathNode(path,n1));
+				//System.out.println(cd.searchPathNode(path,n1));
 				System.out.println("Done");
 				
 			}
 			else if (n2 == -1 && n1 >= 0){
 				//One node, reverse
 				System.out.println("Searching PN2");
-				System.out.println(cd.searchPathNode(path,n2));
+				//System.out.println(cd.searchPathNode(path,n2));
 				System.out.println("Done");
 			}
 			else if (n1 >= 0 && n2 >= 0){
 				//Two
 				System.out.println("Searching PNN");
-				System.out.println(cd.searchPathNodeNode(path,n1,n2));
+				//System.out.println(cd.searchPathNodeNode(path,n1,n2));
 				System.out.println("Done");
 			}
 			else {
@@ -295,6 +304,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 				threshold.setEnabled(true);
 				thresholdLabel.setForeground(Color.black);
 				saveResult.setEnabled(true);
+				hasResult = true;
 			//}
 		}
 		else if (e.getSource().equals(saveResult)){

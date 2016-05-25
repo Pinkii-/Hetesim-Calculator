@@ -12,7 +12,6 @@ import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.MutableComboBoxModel;
 
 import Dominio.CtrlDominio;
 import Dominio.Node;
@@ -117,12 +116,14 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 		rawStrings[0][2] = new DefaultComboBoxModel<String>(nodeNames.get(0).get(2));
 		rawStrings[0][3] = new DefaultComboBoxModel<String>(nodeNames.get(0).get(3));
 		
-		System.out.println("asdf" + rawStrings[0][0].getSize());
 		
 		rawStrings[1][0] = new DefaultComboBoxModel<String>(nodeNames.get(1).get(0));
 		rawStrings[1][1] = new DefaultComboBoxModel<String>(nodeNames.get(1).get(1));
 		rawStrings[1][2] = new DefaultComboBoxModel<String>(nodeNames.get(1).get(2));
 		rawStrings[1][3] = new DefaultComboBoxModel<String>(nodeNames.get(1).get(3));
+		
+
+		System.out.println("asdf" + rawStrings[1][0].getElementAt(0));
 		
 	}
 	
@@ -145,8 +146,8 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 		else{
 			String[] strings = new String[]{"None found!"};
 			String[] indexs = new String[]{"-2"};
-			mainString.add(strings);
 			mainIndex.add(indexs);
+			mainString.add(strings);
 		}
 		if (a != null){
 			mainIndex.add(a.get(0));
@@ -155,8 +156,8 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 		else{
 			String[] strings = new String[]{"None found!"};
 			String[] indexs = new String[]{"-2"};
-			mainString.add(strings);
 			mainIndex.add(indexs);
+			mainString.add(strings);
 		}
 		if (c != null){
 			mainIndex.add(c.get(0));
@@ -165,8 +166,8 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 		else{
 			String[] strings = new String[]{"None found!"};
 			String[] indexs = new String[]{"-2"};
-			mainString.add(strings);
 			mainIndex.add(indexs);
+			mainString.add(strings);
 		}
 		if (t != null){
 			mainIndex.add(t.get(0));
@@ -175,8 +176,8 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 		else{
 			String[] strings = new String[]{"None found!"};
 			String[] indexs = new String[]{"-2"};
-			mainString.add(strings);
 			mainIndex.add(indexs);
+			mainString.add(strings);
 		}
 		
 		ret.add(mainIndex);
@@ -195,8 +196,8 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 			strings[0] = " - Select all -";
 			indexs[0] = "-1";
 			for (int i = 0; i < alist.size(); ++i){
-				strings[i+1] = alist.get(i).get(0);
-				indexs[i+1] = alist.get(i).get(1);
+				strings[i+1] = alist.get(i).get(1);
+				indexs[i+1] = alist.get(i).get(0);
 			}
 
 			ret.add(indexs);
@@ -421,7 +422,7 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 	@Override
 	public void keyReleased(KeyEvent e) {
 		int code = e.getKeyCode();
-		if (code != KeyEvent.VK_ENTER && code != KeyEvent.VK_UP && code != KeyEvent.VK_DOWN){
+		if (code != KeyEvent.VK_ENTER && code != KeyEvent.VK_UP && code != KeyEvent.VK_DOWN && code != KeyEvent.VK_LEFT && code != KeyEvent.VK_RIGHT){
 			if (getEditor().getItem().toString().length() > 0){
 				updateSubstrings();
 				auxSetModel(filteredStrings[1]);
