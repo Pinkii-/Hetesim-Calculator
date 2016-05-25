@@ -28,7 +28,7 @@ public class VistaPrincipal extends VistaAbstracta{
 	AbstractPanel modificaGraph = new PanelModificaGraph(this);
 	AbstractPanel loadResult = new PanelLoadResult(this);
 	AbstractPanel nuevaBusqueda = new PanelNuevaBusqueda(this);
-	AbstractPanel panelMostrarResultado = new PanelMostrarResultado(this);
+	PanelMostrarResultado panelMostrarResultado = new PanelMostrarResultado(this);
 
 	// Menus
 	private JMenuBar menuBar = new JMenuBar();
