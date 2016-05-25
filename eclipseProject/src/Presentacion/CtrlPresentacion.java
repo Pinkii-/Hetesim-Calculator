@@ -4,6 +4,11 @@ import Dominio.CtrlDominio;
 
 public class CtrlPresentacion {
 	
-	CtrlDominio ctrlDominio = new CtrlDominio();
-	VistaPrincipal vp = new VistaPrincipal(ctrlDominio);
+	CtrlDominio ctrlDominio;
+	VistaPrincipal vp;
+	
+	public CtrlPresentacion() {
+		ctrlDominio = new CtrlDominio();
+		vp = new VistaPrincipal(ctrlDominio);
+	}
 }

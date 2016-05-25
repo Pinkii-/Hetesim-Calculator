@@ -2,6 +2,7 @@ package Presentacion;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
 
 import javax.swing.*;
 import javax.swing.JPanel;
@@ -13,8 +14,6 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 
 public class VistaPrincipal extends VistaAbstracta{
-
-	private CtrlDominio cd;
 	
 	private String APPLICATION_NAME = "ola k ase lol";
 	
@@ -55,8 +54,10 @@ public class VistaPrincipal extends VistaAbstracta{
 	
 	// Constructor and public stuff
 	
-	public VistaPrincipal(CtrlDominio cd) {
-		super(cd);
+	public VistaPrincipal(CtrlDominio cdd) {
+		super(cdd);
+		if (cdd == null) System.out.println("mal");
+		else System.out.println("bien");
 		initComponents();
 		this.setEnabled(true);
 		this.pack();
@@ -104,6 +105,21 @@ public class VistaPrincipal extends VistaAbstracta{
 			}
 		});
 		
+		menuitemFileImportGraf.addActionListener
+		(new ActionListener() {
+			public void actionPerformed (ActionEvent event) {
+//				JFileChooser f  = new JFileChooser();
+//				f.showOpenDialog(f);
+//				f.setCurrentDirectory(new File(""));
+//				f.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+//				String s = f.getSelectedFile().getAbsolutePath();
+					
+//				System.out.println(System.getProperty("user.dir"));
+				if (cd == null) System.out.println("asdasdas");
+				cd.importGraph(System.getProperty("user.dir")+"/../DBLP_four_area/");
+			}
+		});
+		
 	}
 	
 	// private metods
@@ -129,7 +145,7 @@ public class VistaPrincipal extends VistaAbstracta{
 	}
 	
 	private void initMenuBar() {
-		
+
 		menuFile.add(menuitemFileNewGraph);
 		menuFile.add(menuitemFileLoadGraf);
 		menuFile.add(menuitemFileImportGraf);

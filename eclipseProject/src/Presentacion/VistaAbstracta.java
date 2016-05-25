@@ -4,8 +4,9 @@ import javax.swing.JFrame;
 
 import Dominio.CtrlDominio;
 
+@SuppressWarnings("serial")
 abstract public class VistaAbstracta extends JFrame {
-	private CtrlDominio cd;
+	protected CtrlDominio cd;
 	
 	VistaAbstracta(CtrlDominio cd) {
 		this.cd = cd;
