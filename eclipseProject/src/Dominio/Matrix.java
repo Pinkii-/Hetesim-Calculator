@@ -45,7 +45,7 @@ public class Matrix {
         return m.get(index).size();
     }
 
-    public Integer getNRows(){
+    public int getNRows(){
         return m.size();
     }
 

@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+//import gnu.trove.map.hash.THashMap;
+
 /**
  * 
  * @author Gonzalo Diez
@@ -12,14 +14,28 @@ import java.util.Set;
  */
 
 @SuppressWarnings("serial")
-public class SparseVector extends HashMap<Integer,Float> {
+public class SparseVector extends /*T*/HashMap<Integer,Float> {
+	
+//	float total = 0;
+	
+//	public Float put(Integer key, Float value) {
+//		total += Math.pow(value, 2);
+//		return super.put(key, value);
+//	}
 	
 	static Float multiply(SparseVector sv1, SparseVector sv2) {
 		Float ret = 0.f;
-		Set<Integer> aux = new HashSet<Integer>(sv1.keySet());
-		aux.retainAll(sv2.keySet());
+//		Set<Integer> aux = new HashSet<Integer>(sv1.keySet());
+//		System.out.println("first " + sv1.keySet() + " " + sv2.keySet());
+//		aux.retainAll(sv2.keySet());
+//		System.out.println(aux);
 		
-		for (Integer k : aux) ret += sv1.get(k) * sv2.get(k);
+		if (sv1.keySet().size() < sv2.keySet().size()) {		
+			for (Integer k : sv1.keySet()) if (sv2.containsKey(k)) ret += sv1.get(k) * sv2.get(k);
+		}
+		else {
+			for (Integer k : sv2.keySet()) if (sv1.containsKey(k)) ret += sv1.get(k) * sv2.get(k);
+		}
 		
 		return ret;
 	}
@@ -44,11 +60,11 @@ public class SparseVector extends HashMap<Integer,Float> {
 	
 	
 	float norm() {
-		Float total = 0.f;
+		double total = 0.0;
 		for (Integer i : keySet()) {
-			total += (float) Math.pow(get(i), 2);
+			total += Math.pow(get(i), 2);
 		}
-		
 		return (float) Math.sqrt(total);
 	}
+
 }

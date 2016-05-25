@@ -2,6 +2,7 @@ package Dominio;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
 /**
@@ -63,26 +64,60 @@ public class HeteSanic {
 	 * @param right is the trasposarMatriu of the multiplications of the U matrix from T to M (PMpr-1') (actually, is not trasposed, because row*row instead row*col)
 	 * @return Matrix of Hetesims
 	 */
-	private SparseMatrix normaliceHeteSim(SparseMatrix left, SparseMatrix right) {
-		SparseMatrix result = new SparseMatrix(left.getNRows(),right.getNRows());
+	private Matrix normaliceHeteSim(SparseMatrix left, SparseMatrix right) {
+		System.out.println("Normalizando");
+		Matrix result = new Matrix();
+		result.setTamany(left.getNRows(),right.getNRows());
+		System.out.println(result.getNRows() + " " + result.getNCols());
+		float res;
+		Float top;
+		float bot;
+//		long t = System.currentTimeMillis();
+		
+		float[] leftNorms = new float[result.getNRows()];
+		for (int i = 0; i < result.getNRows(); ++i) leftNorms[i] = left.getRow(i).norm();
+//		long t2 = System.currentTimeMillis();
+//		System.out.println(t2-t);
+//		t = System.currentTimeMillis();
+		float[] rightNorms = new float[result.getNCols()];
+		for (int i = 0; i < result.getNCols(); ++i) rightNorms[i] = right.getRow(i).norm();
+//		t2 = System.currentTimeMillis();
+//		System.out.println(t2-t);
+		
+//		System.out.println(Arrays.toString(leftNorms));
+//		System.out.println(Arrays.toString(rightNorms));
+		
+//		long tt1 = 0, tt2 = 0;
+		
+		
 		
 		for (int i = 0; i < result.getNRows(); ++i) {
+//			if (leftNorms[i] == 0.f) continue;
 			for (int j = 0; j < result.getNCols(); ++j) {
-				double top = SparseVector.multiply(left.getRow(i),right.getRow(j));
-				double bot = left.getRow(i).norm()*right.getRow(j).norm();
+//				if (rightNorms[j] == 0.f) continue;
+				bot = leftNorms[i]*rightNorms[j];
+//				t = System.currentTimeMillis();
+				top = SparseVector.multiply(left.getRow(i),right.getRow(j));
+//				t2 = System.currentTimeMillis();
+//				tt1 += t2-t;
 				
 //				System.out.println(top + " " + bot + " " + top/bot);
-				
-				Float res;
-				if (bot == 0) res = 0.f;
-				else res = (float) (top/bot);
-				result.set(i,j,(float) (Math.floor(res*1e5)/1e5));
-				
-//				System.out.println(result.getValue(i, j));
+//				t = System.currentTimeMillis();
+				if (top != 0) {
+//					res = (top/bot);
+
+//					System.out.println(i + " " +j + " bug " + top + " " + bot);
+					result.setRelevance(i,j,(float)(Math.round((top/bot)*1e5)*0.00001));
+				}
+//				t2 = System.currentTimeMillis();
+//				tt2 += t2-t;
 				
 			}
+			left.getRow(i).clear();
+//			if (i % 500 == 0) System.out.println(i + "\t" + (System.currentTimeMillis() - t));
 		}
-		
+//		System.out.println(tt1 + " " + tt2 +"\n done");
+//		System.err.println(System.currentTimeMillis() - t +" done");
 		return result;
 	}
 	
@@ -91,17 +126,29 @@ public class HeteSanic {
 	public void setGraph(Graph g) {
 		graph = g;
 		paperAuthor = paperConf = paperTerm = authorMid = confMid = termMid = false;
+		paper2author = author2paper = paper2conf = conf2paper = paper2term=term2paper=author2mid
+				=paper2authorMid=conf2mid=paper2confMid=term2mid=paper2termMid = null;
 	}
 	
 	// pre: no puede haber un paper que no este conectado a un autor, una conferencia y un tema como minimo
-	public SparseMatrix getHeteSim(Path p) throws PathException {
+	public Matrix getHeteSim(Path p) throws PathException {
+		long t = System.currentTimeMillis();
 		ArrayList<Node.Type> left, right;
 		Pair<ArrayList<Node.Type>, ArrayList<Node.Type>> aux = p.getPath();
 		left = aux.first;
 		right = aux.second;
 		if (left.size() < 2 || right.size() < 2) throw new PathException("The path is too short");
 		Collections.reverse(right);
-		return normaliceHeteSim(mutiplyMatrixes(getMatrixesToMultiply(left,right)),mutiplyMatrixes(getMatrixesToMultiply(right,left)));
+		
+		SparseMatrix mleft = mutiplyMatrixes(getMatrixesToMultiply(left,right));
+		setGraph(graph);
+		System.gc();
+		SparseMatrix mright = mutiplyMatrixes(getMatrixesToMultiply(right,left));
+		setGraph(graph);
+		System.gc();
+		Matrix ret =  normaliceHeteSim(mleft,mright);
+		System.err.println(System.currentTimeMillis() - t +" done");
+		return ret;
 	}
 	
 	// pre: no puede haber un paper que no este conectado a un autor, una conferencia y un tema como minimo
@@ -113,7 +160,7 @@ public class HeteSanic {
 		if (left.size() < 2 || right.size() < 2) throw new PathException("The path is too short");
 		if (n.getTipus() != p.getContingut().get(0)) throw new RuntimeException("The first node is not of the same type that the path");
 		Collections.reverse(right);
-		SparseMatrix hete = normaliceHeteSim(multiplyVectorMatrix(n,getMatrixesToMultiply(left,right)),mutiplyMatrixes(getMatrixesToMultiply(right,left)));
+		Matrix hete = normaliceHeteSim(multiplyVectorMatrix(n,getMatrixesToMultiply(left,right)),mutiplyMatrixes(getMatrixesToMultiply(right,left)));
 		ArrayList<Pair<Integer,Float>> ret = new ArrayList<Pair<Integer,Float>>();
 		if (hete.getNRows() != 1) {
 			throw new RuntimeException("getHeteSim(Path p, Node n), el resultado no tiene un solo arraylist. Baia");
@@ -149,7 +196,7 @@ public class HeteSanic {
 	}
 	
 	private SparseMatrix multiplyVectorMatrix(Node n, ArrayList<SparseMatrix> matrixesToMultiply) {
-//		System.out.println("multiplying matrixes");
+		System.out.println("multiplying matrixes");
 		if (matrixesToMultiply.size() < 1) {
 			System.out.println("BROKEN");// Throw Exception ("The path cant be this short dude, or maybe this whole shit is bugged. Dunno")
 		}
@@ -166,12 +213,13 @@ public class HeteSanic {
 		if (matrixesToMultiply.size() < 1) {
 			System.out.println("BROKEN");// Throw Exception ("The path cant be this short dude, or maybe this whole shit is bugged. Dunno")
 		}
-		return MatrixChainMultiplication.compute(matrixesToMultiply);
-//		SparseMatrix ret = matrixesToMultiply.get(0);
-//		for (int i = 1; i < matrixesToMultiply.size(); ++i) {
-//			ret = SparseMatrix.multiply(ret,matrixesToMultiply.get(i));
-//		}
-//		return ret;
+//		return MatrixChainMultiplication.compute(matrixesToMultiply);
+		SparseMatrix ret = new SparseMatrix(matrixesToMultiply.get(0));
+		ret.cols = null;
+		for (int i = 1; i < matrixesToMultiply.size(); ++i) {
+			ret = SparseMatrix.multiplyHalf(ret,matrixesToMultiply.get(i));
+		}
+		return ret;
 	}
 	
 
@@ -185,10 +233,10 @@ public class HeteSanic {
 	 */
 	
 	private ArrayList<SparseMatrix> getMatrixesToMultiply(ArrayList<Node.Type> path,ArrayList<Node.Type> aux) throws PathException {
-//		System.out.println("Getting matrixes to multiply");
+		System.out.println("Getting matrixes to multiply");
 		ArrayList<SparseMatrix> matrixesToMultiply = new ArrayList<SparseMatrix>();
 		ArrayList<WhatMatrix> whatMatrixes = getPairs(path, aux);
-//		System.out.println(whatMatrixes);
+		System.out.println(whatMatrixes);
 		for (int i = 0; i < whatMatrixes.size(); ++i) {
 			WhatMatrix w = whatMatrixes.get(i);
 			switch (w.pathType) {

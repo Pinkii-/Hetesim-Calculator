@@ -15,7 +15,7 @@ import Persistencia.MatrixManager;
 public class CtrlSearch {
 
 	Graph g = null;
-	HeteSim het = new HeteSim();
+	HeteSanic het = new HeteSanic();
 	MatrixManager mm;
 	Matrix lastMatrix;
 	String lastMatrixWanted;
