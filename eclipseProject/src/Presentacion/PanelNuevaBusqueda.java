@@ -117,7 +117,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		
 		//Threshold value
 		checkbox = new JCheckBox();
-		checkbox.setSelected(true);
+		checkbox.setSelected(false);
 		checkbox.setEnabled(false);
 		add(checkbox);
 		
@@ -273,7 +273,6 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 	public void actionPerformed(ActionEvent e){
 		
 		if (e.getSource().equals(calcHete)){
-			System.out.println("hey!");
 			String path = pathSelect.getSelectedItem().toString();
 			int n1 = -1, n2 = -1;
 			if (!node1Select.getEditor().getItem().toString().equals(" - Select all -")) n1 = node1Select.getSelectedNodeIndex();
@@ -281,44 +280,50 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 			if (n1 == -1 && n2 == -1){
 				//No nodes
 				System.out.println("Searching P");
-				if (!checkbox.isSelected()){
-					//System.out.println(cd.searchPath(path));
+				if (checkbox.isSelected()){
+					System.out.println("All n1, All n2 + threshold");
+					//System.out.println(cd.searchPathNodeThreshhold((Float)threshold.getValue(), path));
 				}
 				else {
-					//System.out.println(cd.searchPathNodeThreshhold((Float)threshold.getValue(), path));
+					System.out.println("All n1, All n2");
+					//System.out.println(cd.searchPath(path));
 				}
 				System.out.println("Done");
 			}
 			else if (n1 == -1 && n2 >= 0){
 				//One node
-				System.out.println("Searching PN1");
-				if (!checkbox.isSelected()){
-					//System.out.println(cd.searchPathNode(path,n1));
+				if (checkbox.isSelected()){
+					System.out.println("All n1, Select n2 + threshold");
+					//System.out.println(cd.searchPathNodeThreshhold((Float)threshold.getValue(), path, n1));
 				}
 				else {
-					//System.out.println(cd.searchPathNodeThreshhold((Float)threshold.getValue(), path, n1));
+					System.out.println("All n1, Select n2");
+					//System.out.println(cd.searchPathNode(path,n1));
 				}
 				System.out.println("Done");
 				
 			}
 			else if (n2 == -1 && n1 >= 0){
 				//One node, reverse
-				System.out.println("Searching PN2");if (checkbox.isSelected()){
-					//System.out.println(cd.searchPathNode(path,n2));
+				if (checkbox.isSelected()){
+					System.out.println("Select n1, all n2 + threshold");
+					//System.out.println(cd.searchPathNodeThreshhold((Float)threshold.getValue(), path, n2));
 				}
 				else {
-					//System.out.println(cd.searchPathNodeThreshhold((Float)threshold.getValue(), path, n2));
+					System.out.println("Select n1, all n2");
+					//System.out.println(cd.searchPathNode(path,n2));
 				}
 				System.out.println("Done");
 			}
 			else if (n1 >= 0 && n2 >= 0){
 				//Two
-				System.out.println("Searching PNN");
 				if (checkbox.isSelected()){
-					//System.out.println(cd.searchPathNodeNode(path,n1,n2));
+					System.out.println("Select n1, Select n2 + threshold");
+					//System.out.println(cd.searchPathNodeNodeThreshhold((Float)threshold.getValue(), path, n1, n2));
 				}
 				else {
-					//System.out.println(cd.searchPathNodeNodeThreshhold((Float)threshold.getValue(), path, n1, n2));
+					System.out.println("Select n1, Select n2 PNN");
+					//System.out.println(cd.searchPathNodeNode(path,n1,n2));
 				}
 				System.out.println("Done");
 			}
