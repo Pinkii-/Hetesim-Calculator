@@ -117,6 +117,7 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 		rawStrings[0][2] = new DefaultComboBoxModel<String>(nodeNames.get(0).get(2));
 		rawStrings[0][3] = new DefaultComboBoxModel<String>(nodeNames.get(0).get(3));
 		
+		System.out.println("asdf" + rawStrings[0][0].getSize());
 		
 		rawStrings[1][0] = new DefaultComboBoxModel<String>(nodeNames.get(1).get(0));
 		rawStrings[1][1] = new DefaultComboBoxModel<String>(nodeNames.get(1).get(1));

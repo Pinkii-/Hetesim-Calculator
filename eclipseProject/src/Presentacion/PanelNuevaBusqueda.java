@@ -50,6 +50,9 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		super(vp);
 		
 		this.vp = vp;
+	}
+	
+	public void init(){
 		initComponents();
 		assignListeners();
 	}
