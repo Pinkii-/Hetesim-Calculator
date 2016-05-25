@@ -50,6 +50,9 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		super(vp);
 		
 		this.vp = vp;
+	}
+	
+	public void init(){
 		initComponents();
 		assignListeners();
 	}
@@ -102,7 +105,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		//ResultList
 		resultList = new MyList();
 		resultList.setSelectionMode(0);
-		System.out.println(resultList.getSize().toString());
+		//System.out.println(resultList.getSize().toString());
 		add(resultList);
 		
 		//Threshold value
@@ -375,10 +378,10 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 					node2Select.setEnabled(false);
 					break;
 			}
-			System.out.print(n1);
-			System.out.print(n2);
-			if (//node1Select.getEditor().getItem().toString().endsWith("!") ||
-				//node2Select.getEditor().getItem().toString().endsWith("!") ||
+			//System.out.print(n1);
+			//System.out.print(n2);
+			if (node1Select.getEditor().getItem().toString().equals("None found!") ||
+				node2Select.getEditor().getItem().toString().equals("None found!") ||
 				!(n1 && n2)){
 					
 					calcHete.setEnabled(false);
