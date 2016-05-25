@@ -12,7 +12,6 @@ import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.MutableComboBoxModel;
 
 import Dominio.CtrlDominio;
 import Dominio.Node;
@@ -107,7 +106,7 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 	 */
 	private void initStrings(CtrlDominio cd){
 		
-		filteredStrings = (MutableComboBoxModel<String>[]) new DefaultComboBoxModel[2];
+		filteredStrings = new DefaultComboBoxModel[2];
 		rawStrings = new ComboBoxModel[2][4];
 
 		
@@ -144,8 +143,8 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 		else{
 			String[] strings = new String[]{"None found!"};
 			String[] indexs = new String[]{"-2"};
-			mainString.add(strings);
 			mainIndex.add(indexs);
+			mainString.add(strings);
 		}
 		if (a != null){
 			mainIndex.add(a.get(0));
@@ -154,8 +153,8 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 		else{
 			String[] strings = new String[]{"None found!"};
 			String[] indexs = new String[]{"-2"};
-			mainString.add(strings);
 			mainIndex.add(indexs);
+			mainString.add(strings);
 		}
 		if (c != null){
 			mainIndex.add(c.get(0));
@@ -164,8 +163,8 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 		else{
 			String[] strings = new String[]{"None found!"};
 			String[] indexs = new String[]{"-2"};
-			mainString.add(strings);
 			mainIndex.add(indexs);
+			mainString.add(strings);
 		}
 		if (t != null){
 			mainIndex.add(t.get(0));
@@ -174,8 +173,8 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 		else{
 			String[] strings = new String[]{"None found!"};
 			String[] indexs = new String[]{"-2"};
-			mainString.add(strings);
 			mainIndex.add(indexs);
+			mainString.add(strings);
 		}
 		
 		ret.add(mainIndex);
@@ -194,8 +193,8 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 			strings[0] = " - Select all -";
 			indexs[0] = "-1";
 			for (int i = 0; i < alist.size(); ++i){
-				strings[i+1] = alist.get(i).get(0);
-				indexs[i+1] = alist.get(i).get(1);
+				strings[i+1] = alist.get(i).get(1);
+				indexs[i+1] = alist.get(i).get(0);
 			}
 
 			ret.add(indexs);
@@ -270,6 +269,19 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 		return rawStrings[1].length;
 	}
 	
+	/**
+	 * Returns the node index for the selected Node
+	 * 
+	 * @return Integer value for the node Index
+	 */
+	public Integer getSelectedNodeIndex(){
+		if (getModel() == filteredStrings[1]){
+			return Integer.valueOf(filteredStrings[0].getElementAt(getSelectedIndex()));
+		}
+		else {
+			return Integer.valueOf(rawStrings[0][inCase].getElementAt(getSelectedIndex()));
+		}
+	}
 	
 	/**
 	 * <b>Stub:</b> Gets an <code>ArrayList</code> of <code>String</code>s which corresponds to
@@ -327,7 +339,13 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 	 */
 	private void auxSetModel(ComboBoxModel<String> model){
 		String temp = getEditor().getItem().toString();
-		setModel(model);
+		try{
+			setModel(model);
+		}
+		catch (NullPointerException e){
+			setModel(rawStrings[1][inCase]);
+			//System.out.println(e.getMessage() + " exception happened");
+		}
 		getEditor().setItem(temp);
 	}
 	
@@ -401,7 +419,7 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 	@Override
 	public void keyReleased(KeyEvent e) {
 		int code = e.getKeyCode();
-		if (code != KeyEvent.VK_ENTER && code != KeyEvent.VK_UP && code != KeyEvent.VK_DOWN){
+		if (code != KeyEvent.VK_ENTER && code != KeyEvent.VK_UP && code != KeyEvent.VK_DOWN && code != KeyEvent.VK_LEFT && code != KeyEvent.VK_RIGHT){
 			if (getEditor().getItem().toString().length() > 0){
 				updateSubstrings();
 				auxSetModel(filteredStrings[1]);

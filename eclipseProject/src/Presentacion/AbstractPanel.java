@@ -21,6 +21,12 @@ abstract public class AbstractPanel extends JPanel {
 		cd = vp.getCtrlDominio();
 	}
 	
+	/** 
+	 * Esta funcion se llama desde la vista principal 
+	 * por si se quiere inicializar algo nuevo cuando se va a llamar al panel
+	 */
+	public void init() {}
+	
 	public int close() {
 		int ret = 0;
 		int currentChild = 0;

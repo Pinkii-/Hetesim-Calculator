@@ -82,12 +82,34 @@ public class CtrlResults {
 		return ret;
 	}
 	
-	//Returns an arrayList of strings formatted by the following criteria:
-	/*
-	 * 0) 0) Result's Id id 1)Name of the path used 2) GraphId
-	 * 1) 0) First Node's name 1) First Node's type 2) Second Node's name 3) Second Node's type
-	 * 1) 4) HeteSim value
-	 * Number of rows is of variable size, depends on the size of the result
+	public ArrayList<String> getAllResultIds(){		
+		ArrayList<String> ret = new ArrayList<String>();
+		for (Map.Entry<String, Result> entry : results.entrySet()) {
+			ret.add(entry.getValue().toString());
+		}
+		return ret; 
+	}
+	
+	/**
+	 * @param resultId The id of the result to be formatted.
+	 * @return
+	 * Returns a matrix containing the info associated with the <b><i>result</i></b> with id <b>resultId</b>
+	 * formatted by the following criteria: <br><br>
+	 * <i>A single row</i> composed of:
+	 * <ol>
+	 *		<li>The <b><i>result</i></b>'s Id</li>
+	 *		<li>The used path's name</li>
+	 *		<li>The used graph's Id</li>
+	 * </ol>
+	 * <i>Multiple rows</i> containing all the info of the node pairs associated with the <b><i>result</i></b>
+	 * formatted like so:
+	 * <ol>
+	 * 	 <li>First Node's name</li>
+	 * 	 <li>First Node's type</li>
+	 * 	 <li>Second Node's name</li>
+	 * 	 <li>Second Node's type</li>
+	 *	 <li>HeteSim value of its relatedness</li>
+	 * </ol>
 	 */
 	
 	public ArrayList<ArrayList<String>> getFormatted(String resultId){

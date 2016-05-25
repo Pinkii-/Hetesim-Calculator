@@ -5,6 +5,9 @@
 package Dominio;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CtrlGraph {
 	private Graph graph;
@@ -112,6 +115,7 @@ public class CtrlGraph {
 	
 	private ArrayList<String> formatNode(Integer index, Node n) {
 		ArrayList<String> ret = new ArrayList<String>();
+		ret.add(String.valueOf(index));
 		ret.add(n.getNom());
 		ret.add(n.getTipus().toString());
 		return ret;
@@ -159,22 +163,27 @@ public class CtrlGraph {
 	 * </ol>
 	 */
 	public ArrayList<ArrayList<String>> getformattedNodesOfType(String nodeType){
+		ArrayList<ArrayList<String>> ret = new ArrayList<ArrayList<String>>();
+		
 		Matrix mauthor = graph.getMatrixAuthor();
 		Matrix mterme = graph.getMatrixTerm();
 		Matrix mconf = graph.getMatrixConf();
 		Node.Type t = Node.Type.valueOf(nodeType);
 		if(t == Node.Type.Autor){
-			return formatMatrixNodes(mauthor, t);			
+			ret = formatMatrixNodes(mauthor, t);			
 		}else if(t == Node.Type.Conferencia){
-			return formatMatrixNodes(mconf, t);
+			ret = formatMatrixNodes(mconf, t);
 		}else if(t == Node.Type.Terme){
-			return formatMatrixNodes(mterme, t);
+			ret = formatMatrixNodes(mterme, t);
 		}else if(t == Node.Type.Paper){
-			return formatPaperNodes(mauthor);
+			ret = formatPaperNodes(mauthor);
 		}else{
 			System.out.println("Node type not found " + t);
 			return null;
 		}
+		
+		Collections.sort(ret, new formatedNodeComparator());
+		return ret;
 	}
 	
 	/**
@@ -279,26 +288,32 @@ public class CtrlGraph {
 	
 	
 	private ArrayList<ArrayList<String>> formatRelations(Matrix matrix, Node.Type type) {
-		ArrayList<ArrayList<String>> ret = new ArrayList<ArrayList<String>>();
+		ArrayList<ArrayList<String>> ret = new ArrayList<ArrayList<String>>();		
 		for (int i = 0; i < matrix.getNRows(); ++i) {
-			for (int j = 0; j < matrix.getNCols(); ++j) {
-				//If they are related
-				if(matrix.getValue(i, j) != 0.0f){
+			HashMap<Integer, Float> aRow = new HashMap<Integer, Float>();
+			aRow = matrix.getRow(i);
+			for(Map.Entry<Integer, Float> entry: aRow.entrySet()){
+				if(entry.getValue() != 0.0f){
 					ArrayList<String> col = new ArrayList<String>();
 					col.addAll(formatNode(i, graph.getNode(i, type)));
+					int j = entry.getKey();
 					col.addAll(formatNode(j, graph.getNode(j, Node.Type.Paper)));
 					ret.add(col);
 				}
 			}
 		}
+		
 		return ret;
 	}
 	
 	private ArrayList<ArrayList<String>> formatNodeRelations(Matrix matrix, Integer index){
 		ArrayList<ArrayList<String>> ret = new ArrayList<ArrayList<String>>();
-		for (int j = 0; j < matrix.getNCols(); ++j) {
-			if(matrix.getValue(index, j) != 0.0f){
+		HashMap<Integer, Float> aRow = new HashMap<Integer, Float>();
+		aRow = matrix.getRow(index);
+		for(Map.Entry<Integer, Float> entry: aRow.entrySet()){
+			if(entry.getValue() != 0.0f){
 				ArrayList<String> col = new ArrayList<String>();
+				int j = entry.getKey();
 				col.addAll(formatNode(j, graph.getNode(j, Node.Type.Paper)));
 				ret.add(col);
 			}
