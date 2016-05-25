@@ -107,7 +107,7 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 	 */
 	private void initStrings(CtrlDominio cd){
 		
-		filteredStrings = (MutableComboBoxModel<String>[]) new DefaultComboBoxModel[2];
+		filteredStrings = new DefaultComboBoxModel[2];
 		rawStrings = new ComboBoxModel[2][4];
 
 		
@@ -340,7 +340,13 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 	 */
 	private void auxSetModel(ComboBoxModel<String> model){
 		String temp = getEditor().getItem().toString();
-		setModel(model);
+		try{
+			setModel(model);
+		}
+		catch (NullPointerException e){
+			setModel(rawStrings[1][inCase]);
+			//System.out.println(e.getMessage() + " exception happened");
+		}
 		getEditor().setItem(temp);
 	}
 	
