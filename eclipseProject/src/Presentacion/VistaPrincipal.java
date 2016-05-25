@@ -25,9 +25,9 @@ public class VistaPrincipal extends VistaAbstracta{
 	private Panels nextPanel;
 	
 	private JPanel content = new JPanel();
-	AbstractPanel modificaGraph = new PanelModificaGraph(this);
-	AbstractPanel loadResult = new PanelLoadResult(this);
-	AbstractPanel nuevaBusqueda = new PanelNuevaBusqueda(this);
+	PanelModificaGraph modificaGraph = new PanelModificaGraph(this);
+	PanelLoadResult loadResult = new PanelLoadResult(this);
+	PanelNuevaBusqueda nuevaBusqueda = new PanelNuevaBusqueda(this);
 	PanelMostrarResultado panelMostrarResultado = new PanelMostrarResultado(this);
 
 	// Menus
@@ -183,18 +183,22 @@ public class VistaPrincipal extends VistaAbstracta{
 		this.getContentPane().removeAll();
 		switch (nextPanel) {
 			case ModificaGraph:
+				modificaGraph.init();
 				this.getContentPane().add(modificaGraph);
 				break;
 			case Test:
 				this.getContentPane().add(content);
 				break;
 			case LoadResult:
+				loadResult.init();
 				this.getContentPane().add(loadResult);
 				break;
 			case NuevaBusqueda:
+				nuevaBusqueda.init();
 				this.getContentPane().add(nuevaBusqueda);
 				break;
 			case PanelMostrarResultado:
+				panelMostrarResultado.init();
 				this.getContentPane().add(panelMostrarResultado);
 				break;
 			case Exit:
