@@ -252,16 +252,13 @@ public class CtrlDominio {
 		saveResults();
 	}
 
-	public void importGraph(String filePath) {
+	public void importGraph(String filePath) throws IOException {
 		ctrlImport = new CtrlImport(filePath);
-		try {
+		
 			ctrlImport.loadGraphInfo();
 			ctrlGraph.setGraph(ctrlImport.getGraph());
 			ctrlSearch.setGraph(ctrlGraph.getGraph());
-		} catch (Exception e) {
-			System.out.println("Error importing Graph");
-			e.printStackTrace();
-		}
+		
 	}
 
 }
