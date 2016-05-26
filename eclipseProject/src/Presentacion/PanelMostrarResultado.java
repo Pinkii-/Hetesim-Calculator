@@ -45,18 +45,14 @@ public class PanelMostrarResultado extends AbstractPanel{
 	private JButton first;
 	private JButton second;
 	private JButton editar;
+	private PanelLoadResult plr;
+	private ArrayList<ArrayList<String>> showedResult;
 	
 	public PanelMostrarResultado (VistaPrincipal v)  {
-		super(v);		
-		initComponents();
-		try {
-			//generateResult();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		//assingListeners();
+		
+		super(v);
 	}
+	
 	private void asignListeners() {
 		editar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
@@ -66,34 +62,21 @@ public class PanelMostrarResultado extends AbstractPanel{
 			}
 		});
 	}
-	private void generateResult() throws Exception {
-		Graph g = new Graph();
-		ArrayList<Pair<Integer,Float>> m = new ArrayList<>();
-		for (int i = 0; i < 10; ++i){
-			m.add(new Pair<Integer,Float>(i,i*0.1f));
-		}
-		Path p = new Path();
-		Node n1 = new Node();
-			n1.initialize(Node.Type.Autor, 25, "NodeOrigin");
-		Float f = 0.1f;
-		rs = new Result(g,f,m,p,n1);
+	
+	public void init() {
+		initComponents();
 	}
+	
+	public void setShowedResult(ArrayList<ArrayList<String>> res) {
+		this.showedResult = res;
+	}
+	
 	private void setMyResultTable(ArrayList<ArrayList<String>> res) {
-		//CtrlResults cr = cd.getCtrlResults();
-		res = new ArrayList<ArrayList<String>>();
-		for (int i = 0; i < 5; ++i) {
-			res.add(new ArrayList<String>());
-			for (int j = 0; j < 5; ++j) {
-				if (j == 4) res.get(i).add("0.5f");
-				else res.get(i).add("null");
-			}
-		}
 		rst = new MyResultTable(res);
 		table = rst.getTable();
 	}
-	private void generateTable() {
-		ArrayList<ArrayList<String>> res = null;
-		setMyResultTable(res);
+	private void generateTable()  {
+		setMyResultTable(showedResult);
 		table.setFillsViewportHeight(true);
 		table.setEnabled(false);
 		splitpane.setLeftComponent(new JScrollPane(table));
