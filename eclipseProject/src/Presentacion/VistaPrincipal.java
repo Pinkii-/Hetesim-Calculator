@@ -197,7 +197,7 @@ public class VistaPrincipal extends VistaAbstracta{
 		try {
 			AbstractPanel currentPanel = (AbstractPanel) this.getContentPane().getComponent(0);
 			if (0 == currentPanel.close()) {
-				continueAction();
+//				continueAction();
 			}
 		}
 		catch (Exception e) {

@@ -19,7 +19,7 @@ public class VistaSecundaria extends VistaAbstracta {
 			public void windowClosing(WindowEvent e) {
 				System.out.println("windowClosing");
 				AbstractPanel currentPanel = (AbstractPanel) vs.getContentPane().getComponent(0);
-				currentPanel.close();
+				if (0 == currentPanel.close()) continueAction();
 			}
 		});
 	}

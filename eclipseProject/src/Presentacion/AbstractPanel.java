@@ -32,7 +32,7 @@ abstract public class AbstractPanel extends JPanel {
 		int currentChild = 0;
 		System.out.println("Childs :" + childs.size());
 		
-		while (ret == 0 && currentChild < childs.size()) {
+		while (0 == ret && currentChild < childs.size()) {
 			childs.get(currentChild).toFront();
 			// En windows el toFront no te pone la ventana deltante.
 			childs.get(currentChild).setAlwaysOnTop(true);
@@ -40,8 +40,11 @@ abstract public class AbstractPanel extends JPanel {
 			AbstractPanel panel = (AbstractPanel) childs.get(0).getContentPane().getComponent(0);
 			ret = panel.close();
 		}
-		if (ret == 0) return closeIt();
-		else return ret;
+		if (0 == ret) {
+			ret = closeIt();
+			if (0 == ret) vp.continueAction();
+		}
+		return ret;
 		
 	}
 	
