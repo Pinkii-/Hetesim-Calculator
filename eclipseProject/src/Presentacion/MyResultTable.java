@@ -24,6 +24,12 @@ public class MyResultTable implements TableModelListener {
 
 	private Object[][] data;
 	
+	public MyResultTable (ArrayList<ArrayList<String>> result) {
+		this.result = result;
+		generateData();
+		generateTable();
+	}
+	
 	private void generateData() {
 		/*	1) 0) First Node's name 1) First Node's type 2) Second Node's name 3) Second Node's type
 		 * 1) 4) HeteSim value*/
@@ -46,12 +52,7 @@ public class MyResultTable implements TableModelListener {
 		table.setFillsViewportHeight(true);
 		table.setEnabled(false);
 	}
-	
-	public MyResultTable (ArrayList<ArrayList<String>> result) {
-		this.result = result;
-		generateData();
-		generateTable();
-	}
+
 	public JTable getTable() {
 		return table;
 	}

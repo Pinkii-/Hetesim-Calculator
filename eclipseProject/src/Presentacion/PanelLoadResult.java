@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -22,11 +23,18 @@ import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 
 import Dominio.Result;
 import Tests.CtrlDataTest;
+import Tests.CtrlDominioTest;
 import Dominio.CtrlResults;
+import Dominio.Graph;
+import Dominio.Node;
+import Dominio.Pair;
+import Dominio.Path;
 import Presentacion.VistaPrincipal.Panels;
 
 public class PanelLoadResult extends AbstractPanel{
@@ -39,16 +47,23 @@ public class PanelLoadResult extends AbstractPanel{
 	private JPanel resultsPanel;
 	private JPanel searchPanel;
 	private JPanel actionsPanel;
-	private JList loadedResults;
+	private MyResultsList loadedResults;
+	private JTextArea resultResume;
 	private JScrollPane scrollPane;
 	private DefaultListModel DLM;
+	private ListSelectionModel LSM;
 	private JButton mostrar;
 	private VistaPrincipal vp;
+	private CtrlResults cr;
+	private ArrayList<ArrayList<String>> formattedSelectedResult;
+	ArrayList<String> idResults= new ArrayList<String>();
 	
-	public PanelLoadResult (VistaPrincipal vp)  {
+	public PanelLoadResult (VistaPrincipal vp)   {
+		
 		super(vp);
-		initComponents();
 		try {
+		initComponents();
+		
 			//generateResult();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -57,23 +72,58 @@ public class PanelLoadResult extends AbstractPanel{
 		this.vp = vp;
 	}
 	
+	public ArrayList<ArrayList<String>> getFormattedSelectedResult() {
+		return formattedSelectedResult;
+	}
 	
-	private void generateResultsPanel() {
-		resultsPanel.setLayout(new BoxLayout(resultsPanel, BoxLayout.PAGE_AXIS));
+	private Result generateResult(int j)  {
+		ArrayList<String> idresults = new ArrayList<String>();
+		idresults = cr.getAllResultIds();
+		Graph g = new Graph();
+		ArrayList<Pair<Integer,Float>> m = new ArrayList<>();
+		for (int i = 0; i < 10; ++i){
+			m.add(new Pair<Integer,Float>(i,i*0.1f));
+		}
+		Path p = new Path();
+		p.setContingut("AA");
+		p.setNom("AA"+Integer.toString(j));
+		p.setDescripcio("AA");
+		Node n1 = new Node();
+			n1.initialize(Node.Type.Autor, 25, "NodeOrigin");
+		Float f = 0.1f;
+		Result rs;
+		rs = new Result(g,f,f,p,n1,n1);
+		return rs;
+	}
+	
+	private void generateResults() {
+		for (int i = 0; i < 5; i++) {
+			Result r = generateResult(i);
+			idResults.add(r.getIdResult());
+			cr.addResult(r.getIdResult(),r);
+		}
 		
-		//cd.importGraph("/home/albert/PROP/PROP/GraphForTesting");
-		//cd.searchPath("AP");
-		DLM.addElement("lmao 1");
-		for (int i = 0; i < 50; i++) {
-			DLM.addElement("lmao 2");
+	}
+	
+	
+	
+	private void generateResultsPanel(){
+		generateResults();
+		
+		resultsPanel.setLayout(new BoxLayout(resultsPanel, BoxLayout.PAGE_AXIS));
+		for(int i = 0; i < idResults.size(); ++i) {
+			DLM.addElement(cr.getFormatted(idResults.get(i)));
 		}
 		loadedResults.setModel(DLM);
 		scrollPane = new JScrollPane(loadedResults);
 		resultsPanel.add(scrollPane);
+		
         //Add the scroll pane to this panel.
 		
 	}
 	
+	
+
 	private void generateSearchPanel() {
 		
 		searchPanel.setLayout(new BoxLayout(searchPanel, BoxLayout.PAGE_AXIS));
@@ -89,8 +139,8 @@ public class PanelLoadResult extends AbstractPanel{
 	}
 	
 	private void generateActionPanel() {
-		actionsPanel.setLayout(new BoxLayout(actionsPanel, BoxLayout.LINE_AXIS));
-		mostrar = new JButton("Mostrar");
+		actionsPanel.setLayout(new BoxLayout(actionsPanel, BoxLayout.PAGE_AXIS));
+		actionsPanel.add(resultResume);
 		//mostrar.setAlignmentY(RIGHT_ALIGNMENT);
 		//actionsPanel.setAlignmentX(BOTTOM_ALIGNMENT);
 		actionsPanel.add(Box.createHorizontalGlue());
@@ -136,19 +186,31 @@ public class PanelLoadResult extends AbstractPanel{
 	private void assignListeners() {
 		mostrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				vp.changePanel(Panels.PanelMostrarResultado);
-				System.out.println("hola");
+				if (loadedResults.indexSelected()) {
+					int index = loadedResults.getSelectedIndex();
+					String idResultSelected = idResults.get(index);
+					//Hay que pasar el result formatted a atributo y hacer un getter para lanzarlo desde initcomponents de panelMostrarResultado
+					formattedSelectedResult = cr.getFormatted(idResultSelected);
+					vp.panelMostrarResultado.setShowedResult(formattedSelectedResult);
+					vp.changePanel(Panels.PanelMostrarResultado);
+					System.out.println("hola");
+				}
+				else { System.out.println("Selecciona un resultado");
+					/*generar cosa o habilitar al seleccionar*/}
 			}
 		});
 	}
-	private void initComponents() {
+	private void initComponents(){
 		splitpane = new JSplitPane();
 		resultsPanel = new JPanel();
 		actionsPanel = new JPanel();
-		loadedResults = new JList();
+		resultResume = new JTextArea("lel");
+		loadedResults = new MyResultsList(resultResume);
 		searchPanel = new JPanel();
 		searchAndActionsPanel = new JPanel();
 		DLM = new DefaultListModel();
+		mostrar = new JButton("Mostrar");
+		cr = cd.getCtrlResults();
 		
 		BoxLayout bl = new BoxLayout(this,BoxLayout.LINE_AXIS);
 		setLayout(bl);

@@ -1,7 +1,9 @@
 package Presentacion;
 
+import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableModel;
 
 class MyTableModel extends AbstractTableModel{
     /**
@@ -55,6 +57,5 @@ class MyTableModel extends AbstractTableModel{
         data[row][col] = value;
         fireTableCellUpdated(row, col);
     }
-
 
 }
