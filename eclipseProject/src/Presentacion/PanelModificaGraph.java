@@ -32,13 +32,19 @@ public class PanelModificaGraph extends AbstractPanel {
 		super(vp);
 		setBackground(Color.green);
 		
-		initComponents();
-		asignListeners();
+//		initComponents();
+//		asignListeners();
 		
 		
 	}
 	
+	public void init() {
+		initComponents();
+		asignListeners();
+	}
+	
 	private void initComponents() {
+		this.removeAll();
 		// DisplayNodes
 		comboBoxTypeOfNode = new JComboBox<String>();
 		comboBoxTypeOfNode.setSelectedIndex(-1);
@@ -47,6 +53,7 @@ public class PanelModificaGraph extends AbstractPanel {
 		findingNode = new MyComboBox();
 		findingNode.loadNodesToLists(cd);
 		findingNode.linkToParentComboBox(comboBoxTypeOfNode);
+		
 			//equisde no se como hacer lo que quiero que haga
 		findingNode.setMaximumSize(new Dimension(buttonAddNode.getMinimumSize().width*2, buttonAddNode.getMinimumSize().height));
 		findingNode.setMinimumSize(new Dimension(buttonAddNode.getMinimumSize().width*2, buttonAddNode.getMinimumSize().height));
@@ -90,7 +97,7 @@ public class PanelModificaGraph extends AbstractPanel {
 		PanelModificaGraph aux = this;
 		buttonAddNode.addActionListener( new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				aux.addVista(PanelModificaGraph.class, true); // Cambiar al panel que agrega nodos
+				aux.addVista(PanelEditNode.class, true); // Cambiar al panel que agrega nodos
 			}
 		});
 		comboBoxTypeOfNode.addActionListener(new ActionListener() {

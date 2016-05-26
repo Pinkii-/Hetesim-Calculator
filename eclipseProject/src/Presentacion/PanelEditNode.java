@@ -55,7 +55,6 @@ public class PanelEditNode extends AbstractPanel{
 	private final Component verticalStrut = Box.createVerticalStrut(20);
 	@Override
 	public int closeIt() {
-		vp.continueAction();
 		return 0;
 	}
 
@@ -68,7 +67,7 @@ public class PanelEditNode extends AbstractPanel{
 	public PanelEditNode(VistaAbstracta vp) {
 		super(vp);
 		ctrlGraph = cd.getCtrlGraph();
-		cd.importGraph("C:/Users/Usuari/Desktop/PROP/GraphForTesting");
+//		cd.importGraph("C:/Users/Usuari/Desktop/PROP/GraphForTesting");
 		this.setLayout(new BorderLayout(20, 20));
 		infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
 		namePanel.setAlignmentX(Component.LEFT_ALIGNMENT);
