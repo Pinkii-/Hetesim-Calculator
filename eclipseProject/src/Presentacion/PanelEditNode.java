@@ -58,6 +58,7 @@ public class PanelEditNode extends AbstractPanel{
 	//	super(vp);
 	public PanelEditNode(VistaAbstracta vp){
 		super(vp);
+		ctrlGraph = cd.getCtrlGraph();
 		this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
 		this.add(nodeInfoPanel);

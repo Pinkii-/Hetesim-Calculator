@@ -27,15 +27,11 @@ public class PanelModificaGraph extends AbstractPanel {
 	private JPanel displayNode;
 	private JComboBox<String> comboBoxTypeOfNode;
 	private MyComboBox findingNode; // JComboBox que te muestra solo los nodos posibles segun lo que has escrito.
+	Boolean changed = false;
 	
 	public PanelModificaGraph(VistaAbstracta vp) {
 		super(vp);
 		setBackground(Color.green);
-		
-//		initComponents();
-//		asignListeners();
-		
-		
 	}
 	
 	public void init() {
@@ -46,32 +42,21 @@ public class PanelModificaGraph extends AbstractPanel {
 	private void initComponents() {
 		this.removeAll();
 		// DisplayNodes
-		comboBoxTypeOfNode = new JComboBox<String>();
+		comboBoxTypeOfNode = new JComboBox<String>(new String[]{"Paper","Autor","Conferencia","Term"});
 		comboBoxTypeOfNode.setSelectedIndex(-1);
+		comboBoxTypeOfNode.setToolTipText("Select Type of node");
 		comboBoxTypeOfNode.setMaximumSize(buttonAddNode.getPreferredSize());
 		
 		findingNode = new MyComboBox();
+//		findingNode.linkToParentComboBox(comboBoxTypeOfNode);
 		findingNode.loadNodesToLists(cd);
-		findingNode.linkToParentComboBox(comboBoxTypeOfNode);
+//		findingNode.linkToParentComboBox(comboBoxTypeOfNode);
 		
 			//equisde no se como hacer lo que quiero que haga
 		findingNode.setMaximumSize(new Dimension(buttonAddNode.getMinimumSize().width*2, buttonAddNode.getMinimumSize().height));
 		findingNode.setMinimumSize(new Dimension(buttonAddNode.getMinimumSize().width*2, buttonAddNode.getMinimumSize().height));
-		findingNode.addKeyListener(new KeyListener() {
-			@Override
-			public void keyTyped(KeyEvent e){}
-			@Override
-			public void keyPressed(KeyEvent e) {}
-
-			@Override
-			public void keyReleased(KeyEvent e){
-				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					//findingNode.getLis
-					
-				}
-			}
-			
-		});
+		
+		
 		
 		displayNode = new JPanel();
 		displayNode.setLayout(new BoxLayout(displayNode, BoxLayout.X_AXIS));
@@ -103,18 +88,36 @@ public class PanelModificaGraph extends AbstractPanel {
 		comboBoxTypeOfNode.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JComboBox<String> cb = (JComboBox<String>) e.getSource();
-				cb.getSelectedIndex(); // Get selected index to call to the Dominio and get the information of the node
+				findingNode.setList(comboBoxTypeOfNode.getSelectedIndex());
+				findingNode.setEnabled(true);
 			}
+		});
+		findingNode.addKeyListener(new KeyListener() {
+			@Override
+			public void keyTyped(KeyEvent e){}
+			@Override
+			public void keyPressed(KeyEvent e) {}
+
+			@Override
+			public void keyReleased(KeyEvent e){
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					//findingNode.getLis
+					
+				}
+			}
+			
 		});
 	}
 
 	@Override
 	public int closeIt() {
-		// Preguntar si estas seguro de que te pueden cerrar desde un sitio externo
-		String[] buttons = {"Salir", "Cancelar"};
-		int result = VistaDialog.setDialog("Titulo", "¿Estas seguro que quieres salir?\n (Se perderan todo los cambios no guardados)", buttons, VistaDialog.DialogType.WARNING_MESSAGE);
-		return result;
+		if (changed) {
+			// Preguntar si estas seguro de que te pueden cerrar desde un sitio externo
+			String[] buttons = {"Salir", "Cancelar"};
+			int result = VistaDialog.setDialog("Titulo", "¿Estas seguro que quieres salir?\n (Se perderan todo los cambios no guardados)", buttons, VistaDialog.DialogType.WARNING_MESSAGE);
+			return result;
+		}
+		else return 0;
 	}
 
 	@Override
