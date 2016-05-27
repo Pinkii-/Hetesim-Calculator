@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -35,6 +36,7 @@ import Dominio.Graph;
 import Dominio.Node;
 import Dominio.Pair;
 import Dominio.Path;
+import Presentacion.FormattedResultsManager.FormattedResult;
 import Presentacion.VistaPrincipal.Panels;
 
 public class PanelLoadResult extends AbstractPanel{
@@ -42,6 +44,8 @@ public class PanelLoadResult extends AbstractPanel{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private VistaPrincipal vp;
+	private CtrlResults cr;
 	private JSplitPane splitpane;
 	private JPanel searchAndActionsPanel;
 	private JPanel resultsPanel;
@@ -52,33 +56,20 @@ public class PanelLoadResult extends AbstractPanel{
 	private JScrollPane scrollPane;
 	private DefaultListModel DLM;
 	private ListSelectionModel LSM;
-	private JButton mostrar;
-	private VistaPrincipal vp;
-	private CtrlResults cr;
-	private ArrayList<ArrayList<String>> formattedSelectedResult;
-	ArrayList<String> idResults= new ArrayList<String>();
+	private JButton show;
+	private JButton delete;
+	private FormattedResultsManager frm;
+	private HashMap<String,Integer> entries;
+	ArrayList<FormattedResult> formattedResults;
 	
 	public PanelLoadResult (VistaPrincipal vp)   {
-		
 		super(vp);
-		try {
 		initComponents();
-		
-			//generateResult();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		this.vp = vp;
 	}
 	
-	public ArrayList<ArrayList<String>> getFormattedSelectedResult() {
-		return formattedSelectedResult;
-	}
 	
 	private Result generateResult(int j)  {
-		ArrayList<String> idresults = new ArrayList<String>();
-		idresults = cr.getAllResultIds();
 		Graph g = new Graph();
 		ArrayList<Pair<Integer,Float>> m = new ArrayList<>();
 		for (int i = 0; i < 10; ++i){
@@ -99,7 +90,7 @@ public class PanelLoadResult extends AbstractPanel{
 	private void generateResults() {
 		for (int i = 0; i < 5; i++) {
 			Result r = generateResult(i);
-			idResults.add(r.getIdResult());
+			System.out.println(r.getIdResult());
 			cr.addResult(r.getIdResult(),r);
 		}
 		
@@ -108,18 +99,16 @@ public class PanelLoadResult extends AbstractPanel{
 	
 	
 	private void generateResultsPanel(){
-		generateResults();
-		
 		resultsPanel.setLayout(new BoxLayout(resultsPanel, BoxLayout.PAGE_AXIS));
-		for(int i = 0; i < idResults.size(); ++i) {
-			DLM.addElement(cr.getFormatted(idResults.get(i)));
-		}
+		generateResults();
+		formattedResults = frm.getFormattedResults();
+		
+		for(int i = 0; i < formattedResults.size(); ++i)
+			DLM.addElement(formattedResults.get(i));
+			
 		loadedResults.setModel(DLM);
 		scrollPane = new JScrollPane(loadedResults);
-		resultsPanel.add(scrollPane);
-		
-        //Add the scroll pane to this panel.
-		
+		resultsPanel.add(scrollPane);		
 	}
 	
 	
@@ -141,10 +130,10 @@ public class PanelLoadResult extends AbstractPanel{
 	private void generateActionPanel() {
 		actionsPanel.setLayout(new BoxLayout(actionsPanel, BoxLayout.PAGE_AXIS));
 		actionsPanel.add(resultResume);
-		//mostrar.setAlignmentY(RIGHT_ALIGNMENT);
+		//show.setAlignmentY(RIGHT_ALIGNMENT);
 		//actionsPanel.setAlignmentX(BOTTOM_ALIGNMENT);
 		actionsPanel.add(Box.createHorizontalGlue());
-		actionsPanel.add(mostrar);
+		actionsPanel.add(show);
 	}
 	
 	private void generateSearchAndActionsPanel() {
@@ -154,21 +143,6 @@ public class PanelLoadResult extends AbstractPanel{
 		searchAndActionsPanel.add(Box.createVerticalGlue());
 		generateActionPanel();
 		searchAndActionsPanel.add(actionsPanel);
-		
-		/*
-		 * Use only for entertaining purpose
-		 * 
-		 * URL url = null;
-		try {
-			url = new URL("https://media.giphy.com/media/XreQmk7ETCak0/giphy.gif");
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	    Icon icon = new ImageIcon(url);
-	    JLabel label = new JLabel(icon);
-	    actionsPanel.add(label);*/
-	  
 
 	}
 	
@@ -184,14 +158,11 @@ public class PanelLoadResult extends AbstractPanel{
 	}
 	
 	private void assignListeners() {
-		mostrar.addActionListener(new ActionListener() {
+		show.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				if (loadedResults.indexSelected()) {
 					int index = loadedResults.getSelectedIndex();
-					String idResultSelected = idResults.get(index);
-					//Hay que pasar el result formatted a atributo y hacer un getter para lanzarlo desde initcomponents de panelMostrarResultado
-					formattedSelectedResult = cr.getFormatted(idResultSelected);
-					vp.panelMostrarResultado.setShowedResult(formattedSelectedResult);
+					vp.panelMostrarResultado.setShowedResult(formattedResults.get(index).getFormattedResult());
 					vp.changePanel(Panels.PanelMostrarResultado);
 					System.out.println("hola");
 				}
@@ -199,6 +170,19 @@ public class PanelLoadResult extends AbstractPanel{
 					/*generar cosa o habilitar al seleccionar*/}
 			}
 		});
+		
+		delete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				if (loadedResults.indexSelected()) {
+					int index = loadedResults.getSelectedIndex();
+					frm.addToDelete(index);
+					loadedResults.remove(index);
+				}
+				else { System.out.println("Selecciona un resultado");
+					/*generar cosa o habilitar al seleccionar*/}
+			}
+		});
+		
 	}
 	private void initComponents(){
 		splitpane = new JSplitPane();
@@ -209,20 +193,28 @@ public class PanelLoadResult extends AbstractPanel{
 		searchPanel = new JPanel();
 		searchAndActionsPanel = new JPanel();
 		DLM = new DefaultListModel();
-		mostrar = new JButton("Mostrar");
+		show = new JButton("Show");
+		delete = new JButton("Delete");
 		cr = cd.getCtrlResults();
+		frm = new FormattedResultsManager(cd);
+		formattedResults = new ArrayList<FormattedResult>();
 		
 		BoxLayout bl = new BoxLayout(this,BoxLayout.LINE_AXIS);
 		setLayout(bl);
-		
 		initSubPanels();
 		assignListeners();
 		
 	}
+	private void deleteResults() {
+		frm.commitDeletions();
+	}
+	private void saveChanges() {
+		deleteResults();
+	}
 	
 	@Override
 	public int closeIt() {
-		// TODO Auto-generated method stub
+		saveChanges();
 		String[] buttons = {"Salir", "Cancelar"};
 		int result = VistaDialog.setDialog("Titulo", "¿Estas seguro que quieres salir?\n (No se va a perder nada, no has hecho nada, vete.)", buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
 //		if (result == 0) vp.continueAction();
