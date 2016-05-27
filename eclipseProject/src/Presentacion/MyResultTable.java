@@ -23,6 +23,8 @@ public class MyResultTable extends JTable implements TableModelListener {
 
 	private Object[][] data;
 	
+	public MyResultTable() {}
+	
 	public MyResultTable (ArrayList<ArrayList<String>> result) {
 		this.result = result;
 		generateData();
@@ -58,11 +60,14 @@ public class MyResultTable extends JTable implements TableModelListener {
 
 	@Override
 	public void tableChanged(TableModelEvent e) {
-		int row = e.getFirstRow();
-        int column = e.getColumn();
+		System.out.println(e.getSource());
+		Integer row = e.getFirstRow();
+        Integer column = e.getColumn();
         TableModel model = (TableModel)e.getSource();
         String columnName = model.getColumnName(column);
         Object data = model.getValueAt(row, column);
+        System.out.println("row nu");
+        if (column == null) System.out.println("column nulo");
         //Guardar datos modificados.
         System.out.println("Change");
 		
