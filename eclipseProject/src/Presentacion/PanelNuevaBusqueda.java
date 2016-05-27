@@ -281,7 +281,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 				System.out.println("Searching P");
 				if (checkbox.isSelected()){
 					System.out.println("All n1, All n2 + threshold");
-					//System.out.println(cd.searchPathNodeThreshhold((Float)threshold.getValue(), path));
+					System.out.println(cd.searchPathThreshhold((Float)threshold.getValue(), path));
 				}
 				else {
 					System.out.println("All n1, All n2");

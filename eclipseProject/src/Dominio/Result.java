@@ -24,6 +24,11 @@ public class Result implements Cloneable, Serializable {
 	private Node lastN; //Search destination node
 	private Path usedP; //Search Path
 
+	public enum ResultType{
+		Path, PathThreshold, PathNode, PathNodeThreshold, PathNodeNode, PathNodeNodeThreshold
+	}
+	private ResultType resultType;
+	
 	private Float threshold; //Lowest heteSim value which will be displayed on screen 
 	
 	private String idResult; //Unique result id
@@ -51,6 +56,13 @@ public class Result implements Cloneable, Serializable {
 		idGraph = String.valueOf(g.id);
 		modified = false;
 		this.threshold = threshold;
+		
+		if (threshold == 0){
+			resultType = ResultType.Path;
+		}
+		else {
+			resultType = ResultType.PathThreshold;
+		}
 		
 		resultList = new ArrayList<NodePair>();
 		for (Integer i = 0; i < resultHete.getNRows(); ++i){
@@ -92,7 +104,13 @@ public class Result implements Cloneable, Serializable {
 		idResult = new String(g.getNom() + " " + p.getNom() + " " + n1.getNom());
 		idGraph = String.valueOf(g.id);
 
-
+		if (threshold == 0){
+			resultType = ResultType.PathNode;
+		}
+		else {
+			resultType = ResultType.PathNodeThreshold;
+		}
+		
 		resultList = new ArrayList<NodePair>();
 		for(Integer i = 0; i < resultHete.size(); ++i){
 			Node n2 = g.getNode(resultHete.get(i).first, p.getContingut().get(p.getLength()-1)); //Get second node (we already have the first)
@@ -126,6 +144,13 @@ public class Result implements Cloneable, Serializable {
 		usedP = p;
 		modified = false;
 		this.threshold = threshold;
+		
+		if (threshold == 0){
+			resultType = ResultType.PathNodeNode;
+		}
+		else {
+			resultType = ResultType.PathNodeNodeThreshold;
+		}
 
 		idResult = new String(g.getNom() + " " + p.getNom() + " " + n1.getNom() + " " + n2.getNom());
 		idGraph = String.valueOf(g.id);
@@ -215,6 +240,9 @@ public class Result implements Cloneable, Serializable {
 		return usedP.getNom();
 	}
 	
+	public ResultType getResultType(){
+		return resultType;
+	}
 	
 	/**
 	 * Modify the value of the HeteSim for the NodePair stored in line i
