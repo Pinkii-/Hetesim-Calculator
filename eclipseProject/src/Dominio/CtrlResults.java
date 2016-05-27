@@ -103,6 +103,7 @@ public class CtrlResults {
 	 * <i>A single row</i> composed of:
 	 * <ol>
 	 *		<li>The <b><i>result</i></b>'s Id</li>
+	 *		<li>The <b><i>result</i></b>'s Type</li>
 	 *		<li>The used path's name</li>
 	 *		<li>The used graph's Id</li>
 	 * </ol>
@@ -122,6 +123,7 @@ public class CtrlResults {
 		ArrayList<ArrayList<String>> ret = new ArrayList<ArrayList<String>>();
 		ArrayList<String> firstCol = new ArrayList<String>();
 		firstCol.add(resultId);
+		firstCol.add(res.getResultType().toString());
 		firstCol.add(res.getUsedPath());
 		firstCol.add(res.getIdGraf());
 		ret.add(firstCol);

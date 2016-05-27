@@ -1,44 +1,33 @@
 package Presentacion;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.util.ArrayList;
 
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
 import Dominio.CtrlGraph;
-import Dominio.Node;
 
-import java.awt.Component;
-import javax.swing.JTextPane;
 import javax.swing.SpringLayout;
+import javax.swing.JList;
 
 //public class PanelEditNode extends AbstractPanel{
-public class PanelEditNode extends JFrame{
-	JPanel relationsPanel = new JPanel();
-	JPanel optionsPanel = new JPanel();
-	JPanel splitPanel = new JPanel();
+public class PanelEditNode extends AbstractPanel{
+
 
 	JTable relationsTable = new JTable();
 
 	JLabel nameLabel = new JLabel("Name: ");
 	JTextField nameTextField = new JTextField();
-	JPanel namePanel = new JPanel();
 
 	JLabel typeLabel = new JLabel("Type: ");
 	MyComboBox typeComboBox = new MyComboBox();
-	JPanel typePanel = new JPanel();
 
 	JLabel labelLabel = new JLabel("Label: ");
 	MyComboBox labelComboBox = new MyComboBox();
-	JPanel labelPanel = new JPanel();
 
 	JLabel relationsLabel = new JLabel("Relations: ");
 
@@ -49,13 +38,11 @@ public class PanelEditNode extends JFrame{
 	private static final long serialVersionUID = 1L;
 	CtrlGraph ctrlGraph;
 	ArrayList<String> nodeInfo;
+	private final JPanel nodeInfoPanel = new JPanel();
+	private final JPanel nodeRelationsPanel = new JPanel();
+	private final JLabel mainInfoLabel = new JLabel("Node Info:");
 	//private final JTextPane textPane = new JTextPane();
-	private final Component horizontalStrut = Box.createHorizontalStrut(40);
-	private final Component horizontalStrut_1 = Box.createHorizontalStrut(20);
-	private final Component horizontalStrut_2 = Box.createHorizontalStrut(20);
-	private final Component verticalStrut = Box.createVerticalStrut(20);
-	private final Component verticalGlue = Box.createVerticalGlue();
-	private final Component horizontalStrut_4 = Box.createHorizontalStrut(20);
+
 	//@Override
 	public int closeIt() {
 		return 0;
@@ -69,75 +56,66 @@ public class PanelEditNode extends JFrame{
 
 	//public PanelEditNode(VistaAbstracta vp) {
 	//	super(vp);
-	public PanelEditNode(){
+	public PanelEditNode(VistaAbstracta vp){
+		super(vp);
+		this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+
+		this.add(nodeInfoPanel);
 		SpringLayout springLayout = new SpringLayout();
-		springLayout.putConstraint(SpringLayout.NORTH, splitPanel, 3, SpringLayout.SOUTH, verticalStrut);
-		springLayout.putConstraint(SpringLayout.SOUTH, splitPanel, 202, SpringLayout.NORTH, getContentPane());
-		springLayout.putConstraint(SpringLayout.NORTH, verticalStrut, 0, SpringLayout.NORTH, getContentPane());
-		springLayout.putConstraint(SpringLayout.WEST, verticalStrut, 0, SpringLayout.WEST, getContentPane());
-		springLayout.putConstraint(SpringLayout.EAST, verticalStrut, 434, SpringLayout.WEST, getContentPane());
-		springLayout.putConstraint(SpringLayout.NORTH, optionsPanel, 239, SpringLayout.NORTH, getContentPane());
-		springLayout.putConstraint(SpringLayout.WEST, optionsPanel, 0, SpringLayout.WEST, getContentPane());
-		springLayout.putConstraint(SpringLayout.EAST, optionsPanel, 434, SpringLayout.WEST, getContentPane());
-		springLayout.putConstraint(SpringLayout.WEST, splitPanel, 0, SpringLayout.WEST, getContentPane());
-		springLayout.putConstraint(SpringLayout.EAST, splitPanel, 434, SpringLayout.WEST, getContentPane());
-		getContentPane().setLayout(springLayout);
-		splitPanel.setLayout(new BoxLayout(splitPanel, BoxLayout.X_AXIS));
-
-		splitPanel.add(horizontalStrut_1);
-		splitPanel.add(nameTextField);
-		nameTextField.setMinimumSize(new Dimension(100, 30));
-		nameTextField.setMaximumSize(new Dimension(100, 30));
-		nameTextField.setAlignmentX(LEFT_ALIGNMENT);
-		splitPanel.add(labelComboBox);
-		labelComboBox.setMaximumSize(labelComboBox.getPreferredSize());
-		splitPanel.add(typeComboBox);
+		springLayout.putConstraint(SpringLayout.NORTH, nameLabel, 10, SpringLayout.SOUTH, mainInfoLabel);
+		springLayout.putConstraint(SpringLayout.WEST, nameLabel, 0, SpringLayout.WEST, mainInfoLabel);
+		springLayout.putConstraint(SpringLayout.NORTH, mainInfoLabel, 10, SpringLayout.NORTH, nodeInfoPanel);
+		springLayout.putConstraint(SpringLayout.WEST, mainInfoLabel, 10, SpringLayout.WEST, nodeInfoPanel);
+		springLayout.putConstraint(SpringLayout.WEST, typeComboBox, 0, SpringLayout.WEST, nameTextField);
+		springLayout.putConstraint(SpringLayout.SOUTH, typeComboBox, 0, SpringLayout.SOUTH, typeLabel);
+		springLayout.putConstraint(SpringLayout.NORTH, typeLabel, 10, SpringLayout.SOUTH, labelLabel);
+		springLayout.putConstraint(SpringLayout.WEST, typeLabel, 0, SpringLayout.WEST, labelLabel);
+		springLayout.putConstraint(SpringLayout.WEST, labelComboBox, 0, SpringLayout.WEST, nameTextField);
+		springLayout.putConstraint(SpringLayout.SOUTH, labelComboBox, 0, SpringLayout.SOUTH, labelLabel);
+		springLayout.putConstraint(SpringLayout.NORTH, labelLabel, 10, SpringLayout.SOUTH, nameLabel);
+		springLayout.putConstraint(SpringLayout.WEST, labelLabel, 0, SpringLayout.WEST, nameLabel);
+		springLayout.putConstraint(SpringLayout.WEST, nameTextField, 10, SpringLayout.EAST, nameLabel);
+		springLayout.putConstraint(SpringLayout.SOUTH, nameTextField, 0, SpringLayout.SOUTH, nameLabel);
+		springLayout.putConstraint(SpringLayout.SOUTH, saveButton, 0, SpringLayout.SOUTH, exitButton);
+		springLayout.putConstraint(SpringLayout.EAST, saveButton, -10, SpringLayout.WEST, exitButton);
+		springLayout.putConstraint(SpringLayout.SOUTH, exitButton, -10, SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.EAST, exitButton, -10, SpringLayout.EAST, this);
+		nodeInfoPanel.setLayout(springLayout);
+		nodeInfoPanel.add(mainInfoLabel);
+		nodeInfoPanel.add(nameLabel);
+		nameTextField.setColumns(19);
+		nodeInfoPanel.add(nameTextField);
+		nodeInfoPanel.add(typeLabel);
+		nodeInfoPanel.add(typeComboBox);
 		typeComboBox.setMaximumSize(typeComboBox.getPreferredSize());
+		nodeInfoPanel.add(labelLabel);
+		nodeInfoPanel.add(labelComboBox);
+		labelComboBox.setMaximumSize(labelComboBox.getPreferredSize());
 
-		splitPanel.add(horizontalStrut);
-
-		relationsPanel.setLayout(new BoxLayout(relationsPanel, BoxLayout.Y_AXIS));
-		relationsPanel.add(relationsLabel);
-		relationsPanel.add(relationsTable);
+		this.add(nodeRelationsPanel);
+		SpringLayout sl_nodeRelationsPanel = new SpringLayout();
+		sl_nodeRelationsPanel.putConstraint(SpringLayout.WEST, addRelationButton, 20, SpringLayout.WEST, nodeRelationsPanel);
+		sl_nodeRelationsPanel.putConstraint(SpringLayout.SOUTH, addRelationButton, -10, SpringLayout.NORTH, exitButton);
+		sl_nodeRelationsPanel.putConstraint(SpringLayout.SOUTH, exitButton, -10, SpringLayout.SOUTH, nodeRelationsPanel);
+		sl_nodeRelationsPanel.putConstraint(SpringLayout.EAST, saveButton, -10, SpringLayout.WEST, exitButton);
+		sl_nodeRelationsPanel.putConstraint(SpringLayout.EAST, exitButton, -10, SpringLayout.EAST, nodeRelationsPanel);
+		sl_nodeRelationsPanel.putConstraint(SpringLayout.SOUTH, saveButton, -10, SpringLayout.SOUTH, nodeRelationsPanel);
+		sl_nodeRelationsPanel.putConstraint(SpringLayout.NORTH, relationsLabel, 10, SpringLayout.NORTH, nodeRelationsPanel);
+		sl_nodeRelationsPanel.putConstraint(SpringLayout.WEST, relationsLabel, 10, SpringLayout.WEST, nodeRelationsPanel);
+		nodeRelationsPanel.setLayout(sl_nodeRelationsPanel);
+		nodeRelationsPanel.add(relationsLabel);
+		nodeRelationsPanel.add(addRelationButton);
+		nodeRelationsPanel.add(saveButton);
+		nodeRelationsPanel.add(exitButton);
 		
-		relationsPanel.add(verticalGlue);
-
-		//relationsPanel.add(textPane);
-		relationsPanel.add(addRelationButton);
-
-		splitPanel.add(relationsPanel, BorderLayout.EAST);		
-		getContentPane().add(splitPanel);
-
-		splitPanel.add(horizontalStrut_2);
-		getContentPane().add(namePanel);
-		namePanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-		
-				namePanel.setLayout(new BoxLayout(namePanel, BoxLayout.X_AXIS));
-				namePanel.add(nameLabel);
-		getContentPane().add(typePanel);
-		typePanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-		typePanel.setLayout(new BoxLayout(typePanel, BoxLayout.X_AXIS));
-		typePanel.add(typeLabel);
-		getContentPane().add(labelPanel);
-		labelPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-		
-				labelPanel.setLayout(new BoxLayout(labelPanel, BoxLayout.X_AXIS));
-				labelPanel.add(labelLabel);
-
-		optionsPanel.setLayout(new BoxLayout(optionsPanel, BoxLayout.X_AXIS));
-		
-		optionsPanel.add(horizontalStrut_4);
-		optionsPanel.add(saveButton);
-		
-		Component horizontalStrut_3 = Box.createHorizontalStrut(20);
-		optionsPanel.add(horizontalStrut_3);
-		optionsPanel.add(exitButton);
-
-		getContentPane().add(optionsPanel);
-		
-		getContentPane().add(verticalStrut);
+		@SuppressWarnings("rawtypes")
+		JList list = new JList();
+		sl_nodeRelationsPanel.putConstraint(SpringLayout.NORTH, list, 20, SpringLayout.SOUTH, relationsLabel);
+		sl_nodeRelationsPanel.putConstraint(SpringLayout.WEST, list, 0, SpringLayout.WEST, relationsLabel);
+		sl_nodeRelationsPanel.putConstraint(SpringLayout.SOUTH, list, -10, SpringLayout.NORTH, addRelationButton);
+		sl_nodeRelationsPanel.putConstraint(SpringLayout.EAST, list, -10, SpringLayout.EAST, nodeRelationsPanel);
+		nodeRelationsPanel.add(list);
 		setNodeToEdit(0, "Autor");
-
 	}
 
 	public void setNodeToEdit(Integer index, String nodeType){
@@ -169,10 +147,10 @@ public class PanelEditNode extends JFrame{
 		}
 		String[] columnNames = {"Name", "Type"};
 		relationsTable = new JTable(relationsTableData, columnNames);
-		relationsPanel.remove(relationsTable);
-		relationsPanel.remove(addRelationButton);
-		relationsPanel.add(relationsTable);
-		relationsPanel.add(addRelationButton);
+		//relationsPanel.remove(relationsTable);
+		//relationsPanel.remove(addRelationButton);
+		//relationsPanel.add(relationsTable);
+		//relationsPanel.add(addRelationButton);
 		//relationsTable.repaint();
 		//relationsTable.revalidate();
 		//this.repaint();
