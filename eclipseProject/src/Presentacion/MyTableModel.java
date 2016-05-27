@@ -5,7 +5,7 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
-class MyTableModel extends AbstractTableModel{
+class MyTableModel extends AbstractTableModel implements TableModelListener{
     /**
 	 * @author Albert Lopez Alcacer
 	 */
@@ -18,6 +18,7 @@ class MyTableModel extends AbstractTableModel{
     public MyTableModel(String[] columnName, Object[][] data) {
     	this.columnNames = columnName;
     	this.data = data;
+    	addTableModelListener(this);
     	
     }
     
@@ -57,5 +58,19 @@ class MyTableModel extends AbstractTableModel{
         data[row][col] = value;
         fireTableCellUpdated(row, col);
     }
+
+	@Override
+	public void tableChanged(TableModelEvent e) {
+			System.out.println(e.getSource());
+			Integer row = e.getFirstRow();
+	        Integer column = e.getColumn();
+	        TableModel model = (TableModel)e.getSource();
+	        String columnName = model.getColumnName(column);
+	        Object data = model.getValueAt(row, column);
+	        if (column == null) System.out.println("column nulo");
+	        //Guardar datos modificados.
+	        System.out.println("Change");
+		
+	}
 
 }

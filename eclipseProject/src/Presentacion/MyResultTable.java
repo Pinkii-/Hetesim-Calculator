@@ -10,7 +10,7 @@ import javax.swing.table.TableModel;
  * @author Albert Lopez Alcacer
 **/
 
-public class MyResultTable extends JTable implements TableModelListener {
+public class MyResultTable extends JTable {
 	
 	private ArrayList<ArrayList<String>> result;
 	private MyTableModel mtm;
@@ -48,29 +48,11 @@ public class MyResultTable extends JTable implements TableModelListener {
 	
 	private void generateTable() {
 		mtm = new MyTableModel(columnNames,data);
+		mtm.addTableModelListener(this);
 		setModel(mtm);
-		getModel().addTableModelListener(this);
 		setFillsViewportHeight(true);
 		setEnabled(false);
 	}
 
-	/*public JTable getTable() {
-		return table;
-	}*/
-
-	@Override
-	public void tableChanged(TableModelEvent e) {
-		System.out.println(e.getSource());
-		Integer row = e.getFirstRow();
-        Integer column = e.getColumn();
-        TableModel model = (TableModel)e.getSource();
-        String columnName = model.getColumnName(column);
-        Object data = model.getValueAt(row, column);
-        System.out.println("row nu");
-        if (column == null) System.out.println("column nulo");
-        //Guardar datos modificados.
-        System.out.println("Change");
-		
-	}
 	
 }
