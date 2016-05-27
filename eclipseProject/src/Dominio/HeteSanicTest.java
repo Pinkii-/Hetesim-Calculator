@@ -70,6 +70,7 @@ public class HeteSanicTest {
 //							}
 //							System.out.println();
 //						}
+
 					} catch (PathException e) {
 						System.out.println("El path era incorrecto: " + e.getMessage());
 					}					
