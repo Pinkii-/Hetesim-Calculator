@@ -64,9 +64,19 @@ public class FormattedResultsManager {
 	
 	public static class FormattedResult  {
 		private ArrayList<ArrayList<String>> formattedResult;
+		private String listedResult;
+		private String resultType;
+		private String searchPath;
+		private String searchGraphId;
+		private String searchGraphName;
 		
 		public FormattedResult(ArrayList<ArrayList<String>> res) {
 			this.formattedResult = res;
+			resultType = res.get(resultTypePosition.first).get(resultTypePosition.second);
+			searchPath = res.get(searchPathPosition.first).get(searchPathPosition.second);
+			searchGraphId = res.get(searchGraphIdPosition.first).get(searchGraphIdPosition.second);
+			//searchGraphName = res.get(searchGraphNamePosition.first).get(searchGraphNamePosition.second);
+			
 		}
 		
 		public ArrayList<ArrayList<String>> getFormattedResult() {
@@ -77,11 +87,28 @@ public class FormattedResultsManager {
 			return formattedResult.get(resultIdPosition.first).get(resultIdPosition.second);
 		}
 		
+		//Insertar más getters innecesarios aquí.
 		public void commitChanges() {
 			
 		}
 		
-		public static final Pair<Integer,Integer> resultIdPosition = new Pair<Integer, Integer>(0, 0);
+		public void revertChanges() {
+			
+		}
+		
+		public String getListedResult() {
+			listedResult = "Search Type: " + resultType + ", Search Path: ";
+		    listedResult += searchPath + ", Associated Graph: " + searchGraphId;
+		    return listedResult;
+		}
+		
+		//Insertar mas pairs innecesarios aqui
+		public static final Pair<Integer,Integer> resultIdPosition = new Pair<Integer,Integer>(0,0);
+		public static final Pair<Integer,Integer> resultTypePosition = new Pair<Integer,Integer>(0,1);
+		public static final Pair<Integer,Integer> searchPathPosition = new Pair<Integer,Integer>(0,2);
+		public static final Pair<Integer,Integer> searchGraphIdPosition = new Pair<Integer,Integer>(0,3);
+		//public static final Pair<Integer,Integer> searchGraphNamePosition = new Pair<Integer, Integer>(0,3);
+		
 		/*
 		controlar las modificaciones que se hacen a un resultado en concreto: devolver que indices se 
 		han modificado y su nuevo valor de HeteSim*/

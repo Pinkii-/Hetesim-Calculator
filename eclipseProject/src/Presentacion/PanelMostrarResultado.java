@@ -15,7 +15,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
-import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
@@ -39,7 +38,6 @@ public class PanelMostrarResultado extends AbstractPanel{
 	private JPanel infoAndActions;
 	private JPanel actions;
 	private JPanel info;
-	private JTable table;
 	private JSplitPane splitpane;
 	private Result rs;
 	private JButton editar;
@@ -55,8 +53,8 @@ public class PanelMostrarResultado extends AbstractPanel{
 	private void asignListeners() {
 		editar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				table.setEnabled(true);
-				table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+				rst.setEnabled(true);
+				rst.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 				System.out.println("hola");
 			}
 		});
@@ -73,13 +71,12 @@ public class PanelMostrarResultado extends AbstractPanel{
 	
 	private void setMyResultTable(ArrayList<ArrayList<String>> res) {
 		rst = new MyResultTable(res);
-		table = rst.getTable();
 	}
 	private void generateTable()  {
 		setMyResultTable(showedResult);
-		table.setFillsViewportHeight(true);
-		table.setEnabled(false);
-		splitpane.setLeftComponent(new JScrollPane(table));
+		rst.setFillsViewportHeight(true);
+		rst.setEnabled(false);
+		splitpane.setLeftComponent(new JScrollPane(rst));
 	}
 	private void generateInfoPanel() {
 		JLabel label = new JLabel("INFO	");
@@ -149,6 +146,7 @@ public class PanelMostrarResultado extends AbstractPanel{
 		info = new JPanel();
 		splitpane = new JSplitPane();
 		editar = new JButton("Editar");
+		rst = new MyResultTable();
 		
 		BoxLayout bl = new BoxLayout(this,BoxLayout.LINE_AXIS);
 		setLayout(bl);
@@ -161,12 +159,15 @@ public class PanelMostrarResultado extends AbstractPanel{
 		
 	}
 	
+	private void saveChanges() {
+	
+	}
+	
 	@Override
 	public int closeIt() {
-		// TODO Auto-generated method stub
+		saveChanges();
 		String[] buttons = {"Salir", "Cancelar"};
 		int result = VistaDialog.setDialog("Titulo", "¿Estas seguro que quieres salir?\n ", buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
-		if (result == 0) vp.continueAction();
 		return result;
 	}
 	@Override

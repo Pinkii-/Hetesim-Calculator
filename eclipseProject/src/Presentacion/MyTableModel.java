@@ -1,26 +1,50 @@
 package Presentacion;
 
+import java.util.ArrayList;
+
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
+
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 class MyTableModel extends AbstractTableModel implements TableModelListener{
     /**
 	 * @author Albert Lopez Alcacer
 	 */
 	private static final long serialVersionUID = 1L;
-	private String[] columnNames;
+	private String[] columnNames = {"Entidad A",
+            "Tipo",
+            "Entidad B",
+            "Tipo",
+            "Value",
+    };
+	private Class[] columns = new Class[]{String.class, String.class, String.class, String.class, Float.class};
+	private ArrayList<ArrayList<String>> result;
     private Object[][] data;
-    private Class[] columns = new Class[]{String.class, String.class, String.class, String.class, Float.class};
+  
 
-    
-    public MyTableModel(String[] columnName, Object[][] data) {
-    	this.columnNames = columnName;
-    	this.data = data;
+    public MyTableModel(ArrayList<ArrayList<String>> result) {
+    	this.result = result;
+    	generateData();
     	addTableModelListener(this);
     	
     }
+    
+    private void generateData() {
+		
+		data = new Object[result.size()-1][5];
+		
+		for (int i = 1; i < result.size(); ++i) {
+			for (int j = 0; j < result.get(1).size(); ++j) {
+				if (j == result.get(1).size()-1) data[i-1][j] = new Float(Float.parseFloat(result.get(i).get(j)));
+				else data[i-1][j] = result.get(i).get(j);
+			}
+		}
+		
+	}
+
     
     public int getColumnCount() {
         return columnNames.length;
@@ -51,9 +75,7 @@ class MyTableModel extends AbstractTableModel implements TableModelListener{
 		return columns[column];
     	
     }
-    /*
-     * data change
-     */
+   
     public void setValueAt(Object value, int row, int col) {
         data[row][col] = value;
         fireTableCellUpdated(row, col);
