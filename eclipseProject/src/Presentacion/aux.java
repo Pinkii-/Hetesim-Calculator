@@ -12,6 +12,10 @@ import javax.swing.Box;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.Color;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class aux extends JPanel {
 	private JTextField textFieldName;
@@ -64,6 +68,11 @@ public class aux extends JPanel {
 		panelContent.setLayout(new GridLayout(5, 3, 0, 5));
 		
 		JButton buttonAuthor = new RoundButton("Author");
+		buttonAuthor.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			}
+		});
 		buttonAuthor.setBackground(new Color(230, 230, 250));
 //		buttonAuthor.setBackground(bg);
 		panelContent.add(buttonAuthor);
@@ -79,6 +88,11 @@ public class aux extends JPanel {
 		panelContent.add(label_1);
 		
 		JButton buttonPaper = new RoundButton("Paper");
+		buttonPaper.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			}
+		});
 		panelContent.add(buttonPaper);
 		
 		JLabel label_2 = new JLabel("");
@@ -89,6 +103,11 @@ public class aux extends JPanel {
 		panelContent.add(label_3);
 		
 		JButton buttonTerm = new RoundButton("Term");
+		buttonTerm.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			}
+		});
 		panelContent.add(buttonTerm);
 		
 		JLabel label_4 = new JLabel("");
@@ -117,15 +136,42 @@ public class aux extends JPanel {
 		panel.add(label_9);
 		
 		textField = new JTextField();
+		textField.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		panel.add(textField);
 		textField.setColumns(10);
 		
 		JLabel label_10 = new JLabel("");
 		panelContent.add(label_10);
 		
+		Component verticalGlue = Box.createVerticalGlue();
+		add(verticalGlue);
 		
+		Component verticalStrut_3 = Box.createVerticalStrut(20);
+		add(verticalStrut_3);
 		
+		JPanel panelSaveCancel = new JPanel();
+		add(panelSaveCancel);
+		panelSaveCancel.setLayout(new BoxLayout(panelSaveCancel, BoxLayout.X_AXIS));
 		
+		JButton btnSave = new JButton("Save and Return");
+		btnSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		panelSaveCancel.add(btnSave);
+		
+		Component horizontalStrut = Box.createHorizontalStrut(20);
+		panelSaveCancel.add(horizontalStrut);
+		
+		JButton btnCancel = new JButton("Cancel");
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		panelSaveCancel.add(btnCancel);		
 
 	}
 

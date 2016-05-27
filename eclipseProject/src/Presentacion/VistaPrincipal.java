@@ -21,7 +21,7 @@ public class VistaPrincipal extends VistaAbstracta{
 //	private JFrame this = new JFrame(APPLICATION_NAME);
 	
 	// Panels;
-	enum Panels {ModificaGraph, LoadResult, PanelMostrarResultado, NuevaBusqueda, Test, Exit};
+	enum Panels {ModificaGraph, LoadResult, PanelMostrarResultado, NuevaBusqueda, NewPath, Test, Exit};
 	private Panels nextPanel, currentPanel;
 	
 	private JPanel content = new JPanel();
@@ -29,6 +29,7 @@ public class VistaPrincipal extends VistaAbstracta{
 	PanelLoadResult loadResult = new PanelLoadResult(this);
 	PanelNuevaBusqueda nuevaBusqueda = new PanelNuevaBusqueda(this);
 	PanelMostrarResultado panelMostrarResultado = new PanelMostrarResultado(this);
+	PanelNewPath panelNewPath = new PanelNewPath(this);
 
 	// Menus
 	private JMenuBar menuBar = new JMenuBar();
@@ -62,9 +63,11 @@ public class VistaPrincipal extends VistaAbstracta{
 	
 	public VistaPrincipal(CtrlDominio cdd) {
 		super(cdd);
-		if (cdd == null) System.out.println("mal");
-		else System.out.println("bien");
 		initComponents();
+		this.setSize(800, 600);
+		this.setMinimumSize(new Dimension(800,600));
+		this.setMaximumSize(new Dimension(800,600));
+		this.setResizable(true);
 		this.setEnabled(true);
 		this.pack();
 		this.setVisible(true);
@@ -89,6 +92,14 @@ public class VistaPrincipal extends VistaAbstracta{
 			public void actionPerformed(ActionEvent event) {
 				changePanel(Panels.Exit);
 				
+			}
+		});
+		
+		menuitemPathNew.addActionListener
+		(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				changePanel(Panels.NewPath);
 			}
 		});
 		
@@ -280,13 +291,18 @@ public class VistaPrincipal extends VistaAbstracta{
 				panelMostrarResultado.init();
 				this.getContentPane().add(panelMostrarResultado);
 				break;
+			case NewPath:
+				panelNewPath.init();
+				this.getContentPane().add(panelNewPath);
+				break;
 			case Exit:
 				dispose();
 				System.exit(0);
 			default:
 				throw new RuntimeException("Ese panel no existe h3h3h3h3h3h3h3h3h3h3h3h3h3h3h3");
 		}
-		this.pack();
+//		this.pack();
+		this.show();
 		this.repaint();
 	}
 	

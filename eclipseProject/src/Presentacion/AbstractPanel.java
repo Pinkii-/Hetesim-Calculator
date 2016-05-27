@@ -15,7 +15,7 @@ abstract public class AbstractPanel extends JPanel {
 	ArrayList<VistaAbstracta> childs;
 	CtrlDominio cd;
 	
-	AbstractPanel(VistaAbstracta vp) {
+	public AbstractPanel(VistaAbstracta vp) {
 		this.vp = vp;
 		childs = new ArrayList<VistaAbstracta>();
 		cd = vp.getCtrlDominio();
