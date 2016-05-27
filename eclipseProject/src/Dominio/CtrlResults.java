@@ -12,8 +12,8 @@ public class CtrlResults {
 	private Map<String, Result> results;
 	private Result lastResult;
 	private Map<String, Boolean> modifiedResults;
-
-	public CtrlResults() {
+	
+	public CtrlResults() {		
 		lastResult = null;
 		results = new HashMap<String, Result>();
 		modifiedResults = new HashMap<String, Boolean>();
@@ -62,8 +62,9 @@ public class CtrlResults {
 		return ret;
 	}
 
-	public void setLastResult(Result lastResult) {
+	public String setLastResult(Result lastResult) {
 		this.lastResult = lastResult;
+		return lastResult.getIdResult();
 	}
 	
 	public ArrayList<ArrayList<String>> getLastResultFormatted(String resultId){
@@ -71,9 +72,9 @@ public class CtrlResults {
 	}
 
 	public String addLastResult() {
-		String resultId = String.valueOf(System.currentTimeMillis());
-		addResult(resultId, lastResult);
-		return resultId;
+		//String resultId = String.valueOf(System.currentTimeMillis());
+		addResult(lastResult.getIdResult(), lastResult);
+		return lastResult.getIdResult();
 	}
 
 	public ArrayList<Result> getModifiedResults() {
