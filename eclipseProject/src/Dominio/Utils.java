@@ -75,11 +75,11 @@ public class Utils {
 		Matrix mauthor = g.getMatrixAuthor();
 		Matrix mterme = g.getMatrixTerm();
 		Matrix mconf = g.getMatrixConf();
-		System.out.println("|||Matriz Adyaciencia AutorPaper|||");
+		System.out.println("|||Matriz Adyacencia AutorPaper|||");
 		printMatrix(mauthor);
-		System.out.println("|||Matriz Adyaciencia TemaPaper|||");
+		System.out.println("|||Matriz Adyacencia TemaPaper|||");
 		printMatrix(mterme);
-		System.out.println("|||Matriz Adyaciencia ConferenciaPaper|||");
+		System.out.println("|||Matriz Adyacencia ConferenciaPaper|||");
 		printMatrix(mconf);
 		System.out.println("Nodos Autor:\n");
 		printMatrixNodes(g, mauthor, Node.Type.Autor);
