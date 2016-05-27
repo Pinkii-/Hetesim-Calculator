@@ -36,7 +36,6 @@ public class CtrlGraph {
 	}
 
 	public void modifyNode(Integer nodeIndex, String nodeType, String newName) {
-		// TODO maybe there's an error here who knows, only God
 		isModified = true;
 		Node n = graph.getNode(nodeIndex, Utils.getNodeType(nodeType));
 		Node.Label label = Utils.getNodeLabel(0);
@@ -73,7 +72,6 @@ public class CtrlGraph {
 			} else
 				System.out.println("Relation already exists");
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -98,7 +96,6 @@ public class CtrlGraph {
 				System.out.println("Relation does not exist");
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -232,9 +229,9 @@ public class CtrlGraph {
 		Matrix mauthor = graph.getMatrixAuthor();
 		Matrix mterme = graph.getMatrixTerm();
 		Matrix mconf = graph.getMatrixConf();
-		firstCol.add(mauthor.getNRows().toString());
-		firstCol.add(mterme.getNRows().toString());
-		firstCol.add(mconf.getNRows().toString());
+		firstCol.add(String.valueOf(mauthor.getNRows()));
+		firstCol.add(String.valueOf(mterme.getNRows()));
+		firstCol.add(String.valueOf(mconf.getNRows()));
 		try{
 			firstCol.add(String.valueOf(mauthor.getNCols()));
 		}

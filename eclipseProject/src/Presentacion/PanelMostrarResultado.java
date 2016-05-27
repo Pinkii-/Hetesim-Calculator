@@ -42,9 +42,8 @@ public class PanelMostrarResultado extends AbstractPanel{
 	private JTable table;
 	private JSplitPane splitpane;
 	private Result rs;
-	private JButton first;
-	private JButton second;
 	private JButton editar;
+	private JButton guardar;
 	private PanelLoadResult plr;
 	private ArrayList<ArrayList<String>> showedResult;
 	
@@ -64,6 +63,7 @@ public class PanelMostrarResultado extends AbstractPanel{
 	}
 	
 	public void init() {
+		removeAll();
 		initComponents();
 	}
 	
@@ -107,8 +107,6 @@ public class PanelMostrarResultado extends AbstractPanel{
 		actions.setLayout(new BoxLayout(actions,BoxLayout.LINE_AXIS));
 		actions.setAlignmentX(LEFT_ALIGNMENT);
 		actions.add(Box.createHorizontalGlue());
-		actions.add(first);
-		actions.add(second);
 		actions.add(editar);
 	}
 	private void generateInfoAndActionPanel() {
@@ -150,8 +148,6 @@ public class PanelMostrarResultado extends AbstractPanel{
 		actions = new JPanel();
 		info = new JPanel();
 		splitpane = new JSplitPane();
-		first = new JButton("lmao");
-		second = new JButton("ayy");
 		editar = new JButton("Editar");
 		
 		BoxLayout bl = new BoxLayout(this,BoxLayout.LINE_AXIS);

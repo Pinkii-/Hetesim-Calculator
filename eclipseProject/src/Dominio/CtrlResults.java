@@ -65,6 +65,10 @@ public class CtrlResults {
 	public void setLastResult(Result lastResult) {
 		this.lastResult = lastResult;
 	}
+	
+	public ArrayList<ArrayList<String>> getLastResultFormatted(String resultId){
+		return getFormatted(resultId);
+	}
 
 	public String addLastResult() {
 		String resultId = String.valueOf(System.currentTimeMillis());
@@ -85,7 +89,7 @@ public class CtrlResults {
 	public ArrayList<String> getAllResultIds(){		
 		ArrayList<String> ret = new ArrayList<String>();
 		for (Map.Entry<String, Result> entry : results.entrySet()) {
-			ret.add(entry.getValue().toString());
+			ret.add(entry.getKey().toString());
 		}
 		return ret; 
 	}

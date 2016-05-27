@@ -34,12 +34,12 @@ public class MyResultTable implements TableModelListener {
 		/*	1) 0) First Node's name 1) First Node's type 2) Second Node's name 3) Second Node's type
 		 * 1) 4) HeteSim value*/
 		
-		data = new Object[result.size()][5];
+		data = new Object[result.size()-1][5];
 		
 		for (int i = 1; i < result.size(); ++i) {
 			for (int j = 0; j < result.get(1).size(); ++j) {
-				if (j == result.get(1).size()-1) data[i][j] = new Float(Float.parseFloat(result.get(i).get(j)));
-				else data[i][j] = result.get(i).get(j);
+				if (j == result.get(1).size()-1) data[i-1][j] = new Float(Float.parseFloat(result.get(i).get(j)));
+				else data[i-1][j] = result.get(i).get(j);
 			}
 		}
 		
