@@ -46,6 +46,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 	
 	private VistaPrincipal vp;
 	private boolean hasResult = false;
+	private String idResult = "";
 	private static final long serialVersionUID = 1L;
 	
 
@@ -341,11 +342,12 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 			//}
 		}
 		else if (e.getSource().equals(saveResult)){
-			cd.saveLastSearchResult();
+			idResult = cd.getCtrlResults().addLastResult();
 			editResult.setEnabled(true);
 		}
 		else if (e.getSource().equals(editResult)){
-			vp.changePanel(Panels.PanelMostrarResultado);
+			this.vp.panelMostrarResultado.setShowedResult(cd.getCtrlResults().getFormatted(idResult));
+			this.vp.changePanel(Panels.PanelMostrarResultado);
 		}
 		else if (e.getSource().equals(checkbox)){
 			if (checkbox.isSelected()){
