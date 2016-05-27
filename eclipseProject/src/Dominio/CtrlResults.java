@@ -65,6 +65,10 @@ public class CtrlResults {
 	public void setLastResult(Result lastResult) {
 		this.lastResult = lastResult;
 	}
+	
+	public ArrayList<ArrayList<String>> getLastResultFormatted(String resultId){
+		return getFormatted(resultId);
+	}
 
 	public String addLastResult() {
 		String resultId = String.valueOf(System.currentTimeMillis());
