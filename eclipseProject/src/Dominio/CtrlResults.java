@@ -85,7 +85,7 @@ public class CtrlResults {
 	public ArrayList<String> getAllResultIds(){		
 		ArrayList<String> ret = new ArrayList<String>();
 		for (Map.Entry<String, Result> entry : results.entrySet()) {
-			ret.add(entry.getValue().toString());
+			ret.add(entry.getKey().toString());
 		}
 		return ret; 
 	}
