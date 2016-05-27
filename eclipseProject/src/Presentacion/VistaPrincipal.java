@@ -38,7 +38,8 @@ public class VistaPrincipal extends VistaAbstracta{
 	// Graph
 	private JMenu menuGraph = new JMenu("Graph");	
 	private JMenuItem menuitemGraphNew = new JMenuItem("New");
-	private JMenuItem menuitemGraphImport = new JMenuItem("Import");
+	private JMenuItem menuitemGraphImport = new JMenuItem("Import Default");
+	private JMenuItem menuitemGraphImportPath = new JMenuItem("Import...");
 	private JMenuItem menuitemGraphLoad = new JMenuItem("Load");
 	private JMenuItem menuitemGraphModify = new JMenuItem("Modify Current");
 	
@@ -115,15 +116,46 @@ public class VistaPrincipal extends VistaAbstracta{
 		menuitemGraphImport.addActionListener
 		(new ActionListener() {
 			public void actionPerformed (ActionEvent event) {
-				try {
-					cd.importGraph(System.getProperty("user.dir")+"/../DBLP_four_area/");
-					VistaDialog.setDialog("", "Grafo importado correctamente", new String[] {"Continue"}, VistaDialog.DialogType.INFORMATION_MESSAGE);
-					if (currentPanel != null) p.changePanel(currentPanel);
-				}
-				catch (Exception e) {
-					VistaDialog.setDialog("", "No se ha podido importar el grafo.\n(El diretorio de la abse de datos no está en su sitio) ", new String[]{"Continue"}, VistaDialog.DialogType.ERROR_MESSAGE);
+				int response = VistaDialog.setDialog("Hi!", "Are you sure that you want to import a new graph?\n"
+						+ "You will lose all the change of the old graph if you didnt save it to file", new String[]{"Continue", "Cancel"}, VistaDialog.DialogType.QUESTION_MESSAGE);
+				if (0 == response) {
+					try {
+						cd.importGraph(System.getProperty("user.dir")+"/../DBLP_four_area/");
+						VistaDialog.setDialog("",  "            Grafo importado correctamente.\n Es posible que la accion actual se tenga que reiniciar. \n Si te pregunta, se recomienda aceptar, ya que puede llevar a estados incoherentes del programa", new String[] {"Continue"}, VistaDialog.DialogType.INFORMATION_MESSAGE);
+						if (currentPanel != null) p.changePanel(currentPanel);
+					}
+					catch (Exception e) {
+						VistaDialog.setDialog("", "No se ha podido importar el grafo.\n(El diretorio de la base de datos no está en su sitio) ", new String[]{"Continue"}, VistaDialog.DialogType.ERROR_MESSAGE);
+					}
 				}
 //				VistaDialog.setDialog("Titulo", "¿Estas seguro que quieres salir?\n (Se perderan todo los cambios no guardados)", buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
+			}
+		});
+		
+		menuitemGraphImportPath.addActionListener
+		(new ActionListener() {
+			public void actionPerformed (ActionEvent event) {
+				int response = VistaDialog.setDialog("Hi!", "Are you sure that you want to import a new graph?\n"
+						+ "You will lose all the change of the old graph if you didnt save it to file", new String[]{"Continue", "Cancel"}, VistaDialog.DialogType.QUESTION_MESSAGE);
+				if (0 == response) {
+					try {
+						JFileChooser f  = new JFileChooser();
+						f.setCurrentDirectory(new File(System.getProperty("user.dir")));
+						f.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+						f.showOpenDialog(f);
+						try {
+							String s = f.getSelectedFile().getAbsolutePath();
+							cd.importGraph(s);
+							VistaDialog.setDialog("", "            Grafo importado correctamente.\n Es posible que la accion actual se tenga que reiniciar. \n Si te pregunta, se recomienda aceptar, ya que puede llevar a estados incoherentes del programa", new String[] {"Continue"}, VistaDialog.DialogType.INFORMATION_MESSAGE);
+							if (currentPanel != null) p.changePanel(currentPanel);
+						}
+						catch (NullPointerException exception) {}
+					}
+					catch (Exception e) {
+						VistaDialog.setDialog("", "No se ha detectado que sea un grafo.", new String[]{"Continue", "2", "3"}, VistaDialog.DialogType.ERROR_MESSAGE);
+					}
+				}
+	//				VistaDialog.setDialog("Titulo", "¿Estas seguro que quieres salir?\n (Se perderan todo los cambios no guardados)", buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
 			}
 		});
 		
@@ -139,6 +171,19 @@ public class VistaPrincipal extends VistaAbstracta{
 					cd.loadGraph(s);
 				}
 				catch (NullPointerException exception) {}
+			}
+		});
+		
+		menuitemGraphNew.addActionListener
+		(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int response = VistaDialog.setDialog("Hi!", "Are you sure that you want to create a new graph?\n"
+						+ "You will lose all the change of the old graph if you didnt save it to file", new String[]{"Continue", "Cancel"}, VistaDialog.DialogType.QUESTION_MESSAGE);
+				if (0 == response) {
+					cd.createGraph();
+					VistaDialog.setDialog("", "Nuevo grafo creado correctamente.", new String[]{"Continue"}, VistaDialog.DialogType.INFORMATION_MESSAGE);
+				}
 			}
 		});
 		
@@ -172,6 +217,7 @@ public class VistaPrincipal extends VistaAbstracta{
 
 		menuGraph.add(this.menuitemGraphNew);
 		menuGraph.add(this.menuitemGraphImport);
+		menuGraph.add(this.menuitemGraphImportPath);
 		menuGraph.add(this.menuitemGraphLoad);
 		menuGraph.add(this.menuitemGraphModify);
 		

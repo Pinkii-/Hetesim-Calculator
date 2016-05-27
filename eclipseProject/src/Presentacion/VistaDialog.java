@@ -1,5 +1,12 @@
 package Presentacion;
 
+import java.awt.AWTKeyStroke;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -24,16 +31,28 @@ public class VistaDialog {
 		// Crea y viisualiza el dialogo
 		JOptionPane optionPane = new JOptionPane(strTexto,iTipo.value);
 		optionPane.setOptions(strBotones);
-		JDialog dialogOptionPane = optionPane.createDialog(new JFrame(),strTitulo);
+		JFrame frame = new JFrame();
+		JDialog dialogOptionPane = optionPane.createDialog(frame,strTitulo);
 		dialogOptionPane.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		dialogOptionPane.pack();
+		
+		Set<AWTKeyStroke> focusTraversalKeys = new HashSet<AWTKeyStroke>(dialogOptionPane.getFocusTraversalKeys(0));
+	    focusTraversalKeys.add(AWTKeyStroke.getAWTKeyStroke(KeyEvent.VK_RIGHT, KeyEvent.VK_UNDEFINED));
+	    dialogOptionPane.setFocusTraversalKeys(0, focusTraversalKeys);
+	    
+
 		dialogOptionPane.setVisible(true);
 
 		// Captura la opcion elegida
-		String vsel = (String) optionPane.getValue();
-		int isel;
-		for (isel = 0;
-				isel < strBotones.length && !strBotones[isel].equals(vsel); isel++);
-		return isel;
+		try {
+			String vsel = (String) optionPane.getValue();
+			int isel;
+			for (isel = 0;
+					isel < strBotones.length && !strBotones[isel].equals(vsel); isel++);
+			return isel;
+		}
+		catch (Exception e) {
+			return 0;
+		}
 	}
 }
