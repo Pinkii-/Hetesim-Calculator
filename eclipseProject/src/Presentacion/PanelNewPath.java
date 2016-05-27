@@ -30,6 +30,7 @@ public class PanelNewPath extends AbstractPanel { //Abstract
 	
 	public void init() {
 //	PanelNewPath() {
+		this.removeAll();
 		this.setSize(vp.getSize());
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
