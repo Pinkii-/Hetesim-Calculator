@@ -10,10 +10,9 @@ import javax.swing.table.TableModel;
  * @author Albert Lopez Alcacer
 **/
 
-public class MyResultTable implements TableModelListener {
+public class MyResultTable extends JTable implements TableModelListener {
 	
 	private ArrayList<ArrayList<String>> result;
-	private JTable table;
 	private MyTableModel mtm;
 	private String[] columnNames = {"Entidad A",
             "Tipo",
@@ -47,15 +46,15 @@ public class MyResultTable implements TableModelListener {
 	
 	private void generateTable() {
 		mtm = new MyTableModel(columnNames,data);
-		table = new JTable(mtm);
-		table.getModel().addTableModelListener(this);
-		table.setFillsViewportHeight(true);
-		table.setEnabled(false);
+		setModel(mtm);
+		getModel().addTableModelListener(this);
+		setFillsViewportHeight(true);
+		setEnabled(false);
 	}
 
-	public JTable getTable() {
+	/*public JTable getTable() {
 		return table;
-	}
+	}*/
 
 	@Override
 	public void tableChanged(TableModelEvent e) {
