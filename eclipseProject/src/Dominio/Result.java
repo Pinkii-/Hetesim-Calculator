@@ -77,7 +77,7 @@ public class Result implements Cloneable, Serializable {
 			}
 		}
 		
-		//sortResult(); //Sort result list
+		sortResult(); //Sort result list
 	}
 	
 	
@@ -285,6 +285,12 @@ public class Result implements Cloneable, Serializable {
 	
 	
 	private void sortResult(){ //Sort the result list by hetesim value
-		Collections.sort(resultList,new NodePairComparator());
+		System.out.println(resultList.size());
+		try {
+			Collections.sort(resultList,new NodePairComparator());
+		}
+		catch (IllegalArgumentException e){
+			System.out.println("Something went wrong when sorting the result");
+		}
 	}
 }

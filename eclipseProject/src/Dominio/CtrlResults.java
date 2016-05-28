@@ -29,10 +29,14 @@ public class CtrlResults {
 	}
 
 	public Result getResult(String resultId) {
-		if (results.containsKey(resultId))
+		if (results.containsKey(resultId)){
 			return results.get(resultId);
+		}
+		else if (lastResult.getIdResult() == resultId){
+			return lastResult;
+		}
 		else {
-			System.out.println("Result not found");
+			System.out.println("Result not found - Get");
 			return null;
 		}
 	}
@@ -42,7 +46,7 @@ public class CtrlResults {
 			results.replace(resultId, result);
 			modifiedResults.put(resultId, true);
 		} else {
-			System.out.println("Result not found");
+			System.out.println("Result not found - Set");
 		}
 	}
 
@@ -67,8 +71,13 @@ public class CtrlResults {
 		return lastResult.getIdResult();
 	}
 	
-	public ArrayList<ArrayList<String>> getLastResultFormatted(String resultId){
-		return getFormatted(resultId);
+	public ArrayList<ArrayList<String>> getLastResultFormatted(){
+		if (lastResult != null){	
+			return formatResult(lastResult);
+		}
+		else {
+			throw new RuntimeException("Last result is null");
+		}
 	}
 
 	public String addLastResult() {
@@ -120,14 +129,23 @@ public class CtrlResults {
 	
 	public ArrayList<ArrayList<String>> getFormatted(String resultId){
 		Result res =  getResult(resultId);
+		if (res != null){
+			return formatResult(res);
+		}
+		else {
+			throw new RuntimeException("Result not found - Getformatted");
+		}
+	}
+	
+	private ArrayList<ArrayList<String>> formatResult(Result res){
 		ArrayList<ArrayList<String>> ret = new ArrayList<ArrayList<String>>();
 		ArrayList<String> firstCol = new ArrayList<String>();
-		firstCol.add(resultId);
+		firstCol.add(res.getIdResult());
 		firstCol.add(res.getResultType().toString());
 		firstCol.add(res.getUsedPath());
 		firstCol.add(res.getIdGraf());
 		ret.add(firstCol);
-		ArrayList<NodePair> nodes = getResult(resultId).getResult();
+		ArrayList<NodePair> nodes = res.getResult();
 		for (NodePair np: nodes){
 			ArrayList<String> col = new ArrayList<String>();
 			col.add(np.pairN.first.getNom());
@@ -137,6 +155,7 @@ public class CtrlResults {
 			col.add(String.valueOf(np.getHetesim()));
 			ret.add(col);
 		}
+		
 		return ret;
 	}
 	
