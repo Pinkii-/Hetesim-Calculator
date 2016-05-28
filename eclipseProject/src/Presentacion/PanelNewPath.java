@@ -1,10 +1,14 @@
 package Presentacion;
 
+import java.awt.AWTException;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridLayout;
+import java.awt.Robot;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -15,6 +19,16 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
+
+import Presentacion.VistaPrincipal.Panels;
+
+
 
 public class PanelNewPath extends AbstractPanel { //Abstract
 //	public PanelNewPath() {
@@ -23,6 +37,15 @@ public class PanelNewPath extends AbstractPanel { //Abstract
 	private JTextField textFieldName;
 	private JTextField textFieldDescription;
 	private JTextField textField;
+	
+	JButton buttonConf;
+	JButton buttonAuthor;
+	JButton buttonPaper;
+	JButton buttonTerm;
+	JButton btnSave;
+	JButton btnCancel;
+	
+	boolean finished = false;
 	
 	PanelNewPath(VistaAbstracta vp) {
 		super(vp);
@@ -82,13 +105,8 @@ public class PanelNewPath extends AbstractPanel { //Abstract
 		add(panelContent);
 		panelContent.setLayout(new GridLayout(5, 3, 0, 5));
 		
-		JButton buttonAuthor = new RoundButton("Author");
-		buttonAuthor.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				textField.setText(textField.getText()+'A');
-			}
-		});
+		buttonAuthor = new JButton("Author");
+		
 		buttonAuthor.setBackground(new Color(230, 230, 250));
 //			buttonAuthor.setBackground(bg);
 		panelContent.add(buttonAuthor);
@@ -96,19 +114,18 @@ public class PanelNewPath extends AbstractPanel { //Abstract
 		JLabel label = new JLabel("");
 		panelContent.add(label);
 		
-		JButton buttonConf = new RoundButton("Conference");
+		buttonConf = new RoundButton("Conference");
+		
+		buttonConf.setBackground(new Color(230, 230, 250));
 		panelContent.add(buttonConf);
 		
 		
 		JLabel label_1 = new JLabel("");
 		panelContent.add(label_1);
 		
-		JButton buttonPaper = new RoundButton("Paper");
-		buttonPaper.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-			}
-		});
+		buttonPaper = new RoundButton("Paper");
+		
+		buttonPaper.setBackground(new Color(230, 230, 250));
 		panelContent.add(buttonPaper);
 		
 		JLabel label_2 = new JLabel("");
@@ -118,12 +135,9 @@ public class PanelNewPath extends AbstractPanel { //Abstract
 		JLabel label_3 = new JLabel("");
 		panelContent.add(label_3);
 		
-		JButton buttonTerm = new RoundButton("Term");
-		buttonTerm.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-			}
-		});
+		buttonTerm = new RoundButton("Term");
+		
+		buttonTerm.setBackground(new Color(230, 230, 250));
 		panelContent.add(buttonTerm);
 		
 		JLabel label_4 = new JLabel("");
@@ -152,10 +166,9 @@ public class PanelNewPath extends AbstractPanel { //Abstract
 		panel.add(label_9);
 		
 		textField = new JTextField();
-		textField.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+		DocumentFilter df = new PathDocumentFilter();
+		((AbstractDocument) textField.getDocument()).setDocumentFilter(df);
+		
 		panel.add(textField);
 		textField.setColumns(10);
 		
@@ -172,27 +185,25 @@ public class PanelNewPath extends AbstractPanel { //Abstract
 		add(panelSaveCancel);
 		panelSaveCancel.setLayout(new BoxLayout(panelSaveCancel, BoxLayout.X_AXIS));
 		
-		JButton btnSave = new JButton("Save and Return");
-		btnSave.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+		btnSave = new JButton("Save and Return");
 		panelSaveCancel.add(btnSave);
 		
 		Component horizontalStrut = Box.createHorizontalStrut(20);
 		panelSaveCancel.add(horizontalStrut);
 		
-		JButton btnCancel = new JButton("Cancel");
-		btnCancel.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+		btnCancel = new JButton("Cancel");
 		panelSaveCancel.add(btnCancel);		
+		
+		addListeners();
 	}
 
 //	@Override
 	int closeIt() {
-		// TODO Auto-generated method stub
+		if (!finished) {
+			String[] buttons = {"Yes", "Cancel"};
+			int result = VistaDialog.setDialog("Titulo", "Are you sure you want to exit without save?", buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
+			return result;
+		}
 		return 0;
 	}
 
@@ -201,5 +212,152 @@ public class PanelNewPath extends AbstractPanel { //Abstract
 		// TODO Auto-generated method stub
 
 	}
+	
+	private void addListeners() {
+		buttonAuthor.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				DocumentFilter aux = ((AbstractDocument) textField.getDocument()).getDocumentFilter();
+				((AbstractDocument) textField.getDocument()).setDocumentFilter(new DocumentFilter());
+				textField.setText(textField.getText()+'A');
+				((AbstractDocument) textField.getDocument()).setDocumentFilter(aux);
+				
+				buttonConf.setEnabled(false);
+				buttonAuthor.setEnabled(false);
+				buttonTerm.setEnabled(false);
+				buttonPaper.setEnabled(true);
+			}
+		});
+		buttonConf.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				DocumentFilter aux = ((AbstractDocument) textField.getDocument()).getDocumentFilter();
+				((AbstractDocument) textField.getDocument()).setDocumentFilter(new DocumentFilter());
+				textField.setText(textField.getText()+'C');
+				((AbstractDocument) textField.getDocument()).setDocumentFilter(aux);
+				
+				buttonConf.setEnabled(false);
+				buttonAuthor.setEnabled(false);
+				buttonTerm.setEnabled(false);
+				buttonPaper.setEnabled(true);
+			}
+		});
+		buttonPaper.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				DocumentFilter aux = ((AbstractDocument) textField.getDocument()).getDocumentFilter();
+				((AbstractDocument) textField.getDocument()).setDocumentFilter(new DocumentFilter());
+				textField.setText(textField.getText()+'P');
+				((AbstractDocument) textField.getDocument()).setDocumentFilter(aux);
+				
+				buttonConf.setEnabled(true);
+				buttonAuthor.setEnabled(true);
+				buttonTerm.setEnabled(true);
+				buttonPaper.setEnabled(false);
+			}
+		});
+		
+		buttonTerm.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				DocumentFilter aux = ((AbstractDocument) textField.getDocument()).getDocumentFilter();
+				((AbstractDocument) textField.getDocument()).setDocumentFilter(new DocumentFilter());
+				textField.setText(textField.getText()+'T');
+				((AbstractDocument) textField.getDocument()).setDocumentFilter(aux);
+				
+				buttonConf.setEnabled(false);
+				buttonAuthor.setEnabled(false);
+				buttonTerm.setEnabled(false);
+				buttonPaper.setEnabled(true);
+				
+			}
+		});
+		textField.addKeyListener(new KeyListener() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				boolean good = isGoodPath();
+				if (!good) {
+					textField.setToolTipText("The path is worng formated");
+					textField.setBackground(new Color(246,100,100));
+				}
+				else {
+					textField.setToolTipText("");
+					textField.setBackground(Color.white);
+				}
+				
+			}
+			public void keyTyped(KeyEvent e) {}
+			public void keyPressed(KeyEvent e) {}
+			
+		});
+		
+		btnSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				boolean hasName = (textFieldName.getText().length()>0);
+				boolean hasDes = (textFieldDescription.getText().length()>0);
+				boolean goodPath = isGoodPath() && textField.getText().length() >= 2;
+				String name = "The path needs a Name\n";
+				String des = "The path needs a Description\n";
+				String cont = "The path needs to be at least of leght 2 and good formated\n";
+				if (hasName && hasDes && goodPath){
+					cd.getCtrlPaths().addPath(textField.getText(), textFieldName.getText(), textFieldDescription.getText());
+					VistaDialog.setDialog("New Path", "The path was created correctly", null, VistaDialog.DialogType.INFORMATION_MESSAGE);
+					finished = true;
+					try {
+						((VistaPrincipal)vp).changePanel(Panels.LoadPaths);
+					}
+					catch(Exception ex) {
+						vp.dispose();
+					}
+				}
+				else {
+					String response = "We have the next errors:\n";
+					if (!hasName) response += name;
+					if (!hasDes) response += des;
+					if (!goodPath) response += cont;
+					VistaDialog.setDialog("New Path", response, null, VistaDialog.DialogType.ERROR_MESSAGE);
+				}
+			}
+		});
+		
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+	}
+	
+	boolean isGoodPath() {
+		String s = textField.getText();
+		boolean good = true;
+		for (int i = 1; i < s.length(); ++i) {
+			switch (s.charAt(i-1)){
+				case 'T':
+				case 'C':
+				case 'A':
+					if (s.charAt(i) != 'P') good = false;
+					break;
+				case 'P':
+					if (s.charAt(i) == 'P') good = false;
+				default:
+					break;
+				
+			}
+			if (!good) break;
+		}
+		return good;
+	}
 
+}
+
+
+
+class PathDocumentFilter extends DocumentFilter {
+	@Override
+	public void replace(FilterBypass fb, int i, int i1, String string, AttributeSet as) throws BadLocationException {
+		 for (int n = string.length(); n > 0; n--) {
+            char c = Character.toUpperCase(string.charAt(n - 1));
+            if (c == 'A' || c == 'T' || c == 'P' || c == 'C')
+                super.replace(fb, i, i1, String.valueOf(c), as);
+        }
+	}
 }
