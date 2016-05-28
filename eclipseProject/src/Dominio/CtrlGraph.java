@@ -115,6 +115,13 @@ public class CtrlGraph {
 		ret.add(String.valueOf(index));
 		ret.add(n.getNom());
 		ret.add(n.getTipus().toString());
+		try{
+			ret.add(n.getLabel().toString());
+		}
+		catch(Exception e){
+			//Default Label
+			ret.add(Node.Label.AI.toString());
+		}
 		return ret;
 	}
 	
@@ -353,10 +360,11 @@ public class CtrlGraph {
 	*		<li>The <b><i>node</i></b>'s <b>Index</b></li>
 	*		<li>The <b><i>node</i></b>'s <b>Name</b></li>
 	*		<li>The <b><i>node</i></b>'s <b>Type</b></li>
+	*		<li>The <b><i>node</i></b>'s <b>Label</b></li>
 	*	</ol>	      
 	*/
 	public ArrayList<String> getNodeFormatted(Integer index, String nodeType){
-		Node node = graph.getNode(index, Node.Type.valueOf(nodeType));	
+		Node node = graph.getNode(index, Node.Type.valueOf(nodeType));
 		return formatNode(index, node);
 	}
 	public String toString() {

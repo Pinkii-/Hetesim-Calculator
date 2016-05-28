@@ -153,13 +153,20 @@ public class CtrlPaths {
 	/**
 	 * Returns an array containing all the paths' info
 	 * @return
-	 * <p>Returns an ArrayList of Strings containing the all paths' info in strings composed as such:</p>
-	 * <i>pathName</i> + " " + <i>pathContent</i>
+	 * <p>Returns an ArrayList of ArrayLists of Strings containing the all paths' info in formatted as such</p>
+	 * <i>Multiple rows</i> containing all the info associated with a path formatted like so:
+	 * <ol>
+	 * 	 <li>Path's name</li>
+	 * 	 <li>Path's description</li>
+	 * 	 <li>Path's Content</li>
 	 */
-	public ArrayList<String> getFormattedPaths(){
-		ArrayList<String> ret = new ArrayList<String>();
+	public ArrayList<ArrayList<String>> getFormattedPaths(){
+		ArrayList<ArrayList<String>> ret = new ArrayList<ArrayList<String>>();
 		for (Map.Entry<String, Path> entry : paths.entrySet()) {
-			ret.add(entry.getKey() + " " + entry.getValue());
+			ArrayList<String> col = new ArrayList<String>();
+			col.add(entry.getKey());
+			col.add(entry.getValue().getDescripcio());
+			col.add(entry.getValue().getContingut().toString());
 		}
 		return ret;
 	}

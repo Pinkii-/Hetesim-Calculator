@@ -254,5 +254,34 @@ public class CtrlDominio {
 			ctrlSearch.setGraph(ctrlGraph.getGraph());
 		
 	}
+	
+	static public ArrayList<String> getLabels(){
+		ArrayList<String> ret = new ArrayList<String>();
+		for (Node.Label label : Node.Label.values()) {
+			ret.add(label.toString());
+		}
+		return ret;
+	}
+
+	static public ArrayList<String> getTypes(){
+		ArrayList<String> ret = new ArrayList<String>();
+		for (Node.Type type: Node.Type.values()){
+			if(!type.equals(Node.Type.MidElement))
+				ret.add(type.toString());
+		}
+		return ret;
+	}
+	
+	static public int getNodeTypeIndex(String nodeType){
+		int n = Node.Type.valueOf(nodeType).ordinal();
+		if(n >= Node.Type.MidElement.ordinal())
+			++n;
+		return n;
+	}
+	
+	static public int getNodeLabelIndex(String nodeLabel){
+		int n = Node.Label.valueOf(nodeLabel).ordinal();
+		return n;
+	}
 
 }

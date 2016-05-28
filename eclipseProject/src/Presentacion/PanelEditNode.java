@@ -1,15 +1,23 @@
 package Presentacion;
 
+import java.awt.event.ActionEvent;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ListModel;
 
+import Dominio.CtrlDominio;
 import Dominio.CtrlGraph;
+import Dominio.Node;
 
 import javax.swing.SpringLayout;
 import javax.swing.JList;
@@ -18,16 +26,17 @@ import javax.swing.JList;
 public class PanelEditNode extends AbstractPanel{
 
 
-	JTable relationsTable = new JTable();
+	DefaultListModel<String> model = new DefaultListModel<String>();
+	JList<String> relationsList;
 
 	JLabel nameLabel = new JLabel("Name: ");
 	JTextField nameTextField = new JTextField();
 
 	JLabel typeLabel = new JLabel("Type: ");
-	MyComboBox typeComboBox = new MyComboBox();
+	JComboBox<String> typeComboBox;
 
 	JLabel labelLabel = new JLabel("Label: ");
-	MyComboBox labelComboBox = new MyComboBox();
+	JComboBox<String> labelComboBox;
 
 	JLabel relationsLabel = new JLabel("Relations: ");
 
@@ -41,17 +50,24 @@ public class PanelEditNode extends AbstractPanel{
 	private final JPanel nodeInfoPanel = new JPanel();
 	private final JPanel nodeRelationsPanel = new JPanel();
 	private final JLabel mainInfoLabel = new JLabel("Node Info:");
+	
+	private boolean unsavedChanges = false;
+	
 	//private final JTextPane textPane = new JTextPane();
 
 	//@Override
 	public int closeIt() {
-		return 0;
+		String[] buttons = {"Salir", "Cancelar"};
+		int result = VistaDialog.setDialog("Titulo", "¿Estas seguro que quieres salir?\n"
+				+ "Todos los cambion no guardados seran perdidos",
+				buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
+		return result;
 	}
 
 
 	//@Override
 	public void setEnabledEverything(Boolean b) {
-
+		
 	}
 
 	//public PanelEditNode(VistaAbstracta vp) {
@@ -59,6 +75,7 @@ public class PanelEditNode extends AbstractPanel{
 	public PanelEditNode(VistaAbstracta vp){
 		super(vp);
 		ctrlGraph = cd.getCtrlGraph();
+		initDefaultValues();
 		this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
 		this.add(nodeInfoPanel);
@@ -109,14 +126,37 @@ public class PanelEditNode extends AbstractPanel{
 		nodeRelationsPanel.add(saveButton);
 		nodeRelationsPanel.add(exitButton);
 		
-		@SuppressWarnings("rawtypes")
-		JList list = new JList();
-		sl_nodeRelationsPanel.putConstraint(SpringLayout.NORTH, list, 20, SpringLayout.SOUTH, relationsLabel);
-		sl_nodeRelationsPanel.putConstraint(SpringLayout.WEST, list, 0, SpringLayout.WEST, relationsLabel);
-		sl_nodeRelationsPanel.putConstraint(SpringLayout.SOUTH, list, -10, SpringLayout.NORTH, addRelationButton);
-		sl_nodeRelationsPanel.putConstraint(SpringLayout.EAST, list, -10, SpringLayout.EAST, nodeRelationsPanel);
-		nodeRelationsPanel.add(list);
+		relationsList = new JList<String>(model);
+		sl_nodeRelationsPanel.putConstraint(SpringLayout.NORTH, relationsList, 20, SpringLayout.SOUTH, relationsLabel);
+		sl_nodeRelationsPanel.putConstraint(SpringLayout.WEST, relationsList, 0, SpringLayout.WEST, relationsLabel);
+		sl_nodeRelationsPanel.putConstraint(SpringLayout.SOUTH, relationsList, -10, SpringLayout.NORTH, addRelationButton);
+		sl_nodeRelationsPanel.putConstraint(SpringLayout.EAST, relationsList, -10, SpringLayout.EAST, nodeRelationsPanel);
+		nodeRelationsPanel.add(relationsList);
+		//TODO erase!
+		try {
+			cd.importGraph("C:/Users/Usuari/Desktop/PROP/GraphForTesting");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		setNodeToEdit(0, "Autor");
+	}
+	
+	private void initDefaultValues(){
+		saveButton.setEnabled(false);
+		ArrayList<String> typeData = new ArrayList<String>();
+		typeData.add("None");
+		typeData.addAll(CtrlDominio.getTypes());
+		String[] typeDataArray = typeData.toArray(new String[typeData.size()]); 
+		typeComboBox = new JComboBox<String>(typeDataArray);
+		typeComboBox.setEnabled(false);
+		
+		labelComboBox = new JComboBox<String>();
+		ArrayList<String> labelData = new ArrayList<String>();
+		labelData.add("None");
+		labelData.addAll(CtrlDominio.getLabels());
+		String[] labelDataArray = labelData.toArray(new String[labelData.size()]);
+		labelComboBox = new JComboBox<String>(labelDataArray);
+
 	}
 
 	public void setNodeToEdit(Integer index, String nodeType){
@@ -125,36 +165,30 @@ public class PanelEditNode extends AbstractPanel{
 	}
 
 	private void updatePanel(){
-		drawRelations();		
+		drawRelations();
+		updateNodeInfo();
 	}
+	
+	private void updateNodeInfo(){
+		nameTextField.setText(nodeInfo.get(1));
+		int n = CtrlDominio.getNodeTypeIndex(nodeInfo.get(2)) + 1;
+		typeComboBox.setSelectedIndex(n);
+		int m = CtrlDominio.getNodeLabelIndex(nodeInfo.get(3)) + 1;
+		labelComboBox.setSelectedIndex(m);
+	}
+	
 	private void drawRelations(){
 		ArrayList<ArrayList<String>> data = ctrlGraph.getNodeRelationsFormatted(Integer.parseInt(nodeInfo.get(0)),
 				nodeInfo.get(2));
-		int dataRows = data.size();
-		int dataCols = 3;
-		Object[][] relationsTableData = new Object[dataRows][dataCols - 1];
-		int i,j;
-		i = 0;
+		int i = 0;
 		for(ArrayList<String> arr: data){
-			j = -1;
 			System.out.println(i);
+			String columnData = new String();
 			for(String s: arr){
-				System.out.println(j);
-				if(j >= 0)
-					relationsTableData[i][j] = s;
-				++j;
+				columnData += s + " ";
 			}
+			model.addElement(columnData);
 			++i;
 		}
-		String[] columnNames = {"Name", "Type"};
-		relationsTable = new JTable(relationsTableData, columnNames);
-		//relationsPanel.remove(relationsTable);
-		//relationsPanel.remove(addRelationButton);
-		//relationsPanel.add(relationsTable);
-		//relationsPanel.add(addRelationButton);
-		//relationsTable.repaint();
-		//relationsTable.revalidate();
-		//this.repaint();
-		//this.revalidate();
 	}
 }
