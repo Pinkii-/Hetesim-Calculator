@@ -44,7 +44,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 	private MyResultTable resultTable;
 	private JSpinner threshold;
 	
-	private JButton calcHete, saveResult, editResult;
+	private JButton calcHete, reuseSearch, saveResult, editResult;
 	
 	private VistaPrincipal vp;
 	private boolean hasResult = false;
@@ -117,7 +117,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 				String temp2 = "";
 			temp1.add(temp2);
 		temp.add(temp1);
-		resultTable = new MyResultTable(temp);
+		resultTable = new MyResultTable();
 		resultTable.setBorder(BorderFactory.createLineBorder(Color.gray));
 		resultTable.setPreferredSize(new Dimension(350,200));
 		add(resultTable);
@@ -161,6 +161,19 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		calcHete.setFocusable(false);
 		calcHete.setEnabled(false);
 		add(calcHete);
+		
+		Icon icon4 = null;
+		try {
+			icon4 = new ImageIcon(new URL("http://i.imgur.com/q9dfxIe.png"));
+		} catch (MalformedURLException e) {
+			
+		}
+		reuseSearch = new JButton("Use fields", icon4);
+		reuseSearch.setPreferredSize(new Dimension(200,50));
+		reuseSearch.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		reuseSearch.setFocusable(false);
+		reuseSearch.setEnabled(false);
+		add(reuseSearch);
 		
 		//Save result button
 		Icon icon2 = null;
@@ -219,6 +232,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		sl.putConstraint(SpringLayout.NORTH, resultTable, 15, SpringLayout.SOUTH, node2Label);
 		sl.putConstraint(SpringLayout.SOUTH, resultTable, -35, SpringLayout.SOUTH, this);
 		sl.putConstraint(SpringLayout.WEST, resultTable, 20, SpringLayout.WEST, this);
+		sl.putConstraint(SpringLayout.EAST, resultTable, -15, SpringLayout.WEST, calcHete);
 		//sl.putConstraint(SpringLayout.NORTH, resultList, 15, SpringLayout.SOUTH, node2Label);
 		//sl.putConstraint(SpringLayout.SOUTH, resultList, -35, SpringLayout.SOUTH, this);
 		//sl.putConstraint(SpringLayout.WEST, resultList, 20, SpringLayout.WEST, this);
@@ -226,22 +240,31 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		//Threshold
 		sl.putConstraint(SpringLayout.NORTH, checkbox, 5, SpringLayout.SOUTH, resultTable);
 		sl.putConstraint(SpringLayout.EAST, checkbox, 0, SpringLayout.WEST, thresholdLabel);
+		
 		sl.putConstraint(SpringLayout.NORTH, threshold, 5, SpringLayout.SOUTH, resultTable);
 		sl.putConstraint(SpringLayout.EAST, threshold, 0, SpringLayout.EAST, resultTable);
+		
 		sl.putConstraint(SpringLayout.NORTH, thresholdLabel, 5, SpringLayout.SOUTH, resultTable);
 		sl.putConstraint(SpringLayout.EAST, thresholdLabel, 0, SpringLayout.WEST, threshold);
 		//sl.putConstraint(SpringLayout.NORTH, checkbox, 5, SpringLayout.SOUTH, resultList);
 		//sl.putConstraint(SpringLayout.EAST, checkbox, 0, SpringLayout.WEST, thresholdLabel);
+		
 		//sl.putConstraint(SpringLayout.NORTH, threshold, 5, SpringLayout.SOUTH, resultList);
 		//sl.putConstraint(SpringLayout.EAST, threshold, 0, SpringLayout.EAST, resultList);
+		
 		//sl.putConstraint(SpringLayout.NORTH, thresholdLabel, 5, SpringLayout.SOUTH, resultList);
 		//sl.putConstraint(SpringLayout.EAST, thresholdLabel, 0, SpringLayout.WEST, threshold);
 		
 		//Calc hetesim
 		sl.putConstraint(SpringLayout.NORTH, calcHete, 0, SpringLayout.NORTH, resultTable);
-		sl.putConstraint(SpringLayout.WEST, calcHete, 15, SpringLayout.EAST, resultTable);
+		sl.putConstraint(SpringLayout.EAST, calcHete, -15, SpringLayout.EAST, this);
 		//sl.putConstraint(SpringLayout.NORTH, calcHete, 0, SpringLayout.NORTH, resultList);
 		//sl.putConstraint(SpringLayout.WEST, calcHete, 15, SpringLayout.EAST, resultList);
+		
+		//Reuse search
+		sl.putConstraint(SpringLayout.NORTH, reuseSearch, 15, SpringLayout.SOUTH, calcHete);
+		sl.putConstraint(SpringLayout.WEST, reuseSearch, 15, SpringLayout.EAST, resultTable);
+		sl.putConstraint(SpringLayout.EAST, reuseSearch, -15, SpringLayout.EAST, this);
 		
 		
 		//Edit result
@@ -306,12 +329,12 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 				//No nodes
 				System.out.println("Searching P");
 				if (checkbox.isSelected()){
-					System.out.println("All n1, All n2 + threshold");
+					System.out.println("P threshold");
 					idResult = cd.searchPathThreshhold((Float)threshold.getValue(), path);
 					resultTable = new MyResultTable(cd.getCtrlResults().getLastResultFormatted(idResult));
 				}
 				else {
-					System.out.println("All n1, All n2");
+					System.out.println("P");
 					idResult = cd.searchPath(path);
 					resultTable = new MyResultTable(cd.getCtrlResults().getLastResultFormatted(idResult));
 				}
@@ -320,12 +343,12 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 			else if (n1 == -1 && n2 >= 0){
 				//One node
 				if (checkbox.isSelected()){
-					System.out.println("All n1, Select n2 + threshold");
+					System.out.println("PN1 threshold");
 					idResult = cd.searchPathNodeThreshhold((Float)threshold.getValue(), path, n1);
 					resultTable = new MyResultTable(cd.getCtrlResults().getLastResultFormatted(idResult));
 				}
 				else {
-					System.out.println("All n1, Select n2");
+					System.out.println("PN1");
 					idResult = cd.searchPathNode(path,n1);
 				}
 				System.out.println("Done");
@@ -334,12 +357,12 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 			else if (n2 == -1 && n1 >= 0){
 				//One node, reverse
 				if (checkbox.isSelected()){
-					System.out.println("Select n1, all n2 + threshold");
+					System.out.println("PN2 threshold");
 					path = new StringBuilder(path).reverse().toString();
 					idResult = cd.searchPathNodeThreshhold((Float)threshold.getValue(), path, n2);
 				}
 				else {
-					System.out.println("Select n1, all n2");
+					System.out.println("PN2");
 					path = new StringBuilder(path).reverse().toString();
 					idResult = cd.searchPathNode(path,n2);
 				}
@@ -348,11 +371,11 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 			else if (n1 >= 0 && n2 >= 0){
 				//Two
 				if (checkbox.isSelected()){
-					System.out.println("Select n1, Select n2 + threshold");
+					System.out.println("PNN threshold");
 					idResult = cd.searchPathNodeNodeThreshhold((Float)threshold.getValue(), path, n1, n2);
 				}
 				else {
-					System.out.println("Select n1, Select n2 PNN");
+					System.out.println("PNN");
 					idResult = cd.searchPathNodeNode(path,n1,n2);
 				}
 				System.out.println("Done");
@@ -368,7 +391,8 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 			//else {
 			System.out.println(idResult);
 			
-				resultTable = new MyResultTable(cd.getCtrlResults().getFormatted(idResult));
+			if (cd.getCtrlResults().getResult(idResult) != null){
+				resultTable = new MyResultTable(cd.getCtrlResults().getLastResultFormatted(idResult));
 				resultTable.setPreferredSize(new Dimension(350,200));
 				resultTable.setBorder(BorderFactory.createLineBorder(Color.black));
 				
@@ -376,7 +400,14 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 				thresholdLabel.setForeground(Color.black);
 				saveResult.setEnabled(true);
 				hasResult = true;
+			}
 			//}
+		}
+		else if (e.getSource().equals(reuseSearch)){
+			if (resultTable.getSelectedRowCount() == 1){
+				node1Select.setSelectedItem(resultTable.getModel().getValueAt(resultTable.getSelectedRow(),0));
+				node2Select.setSelectedItem(resultTable.getModel().getValueAt(resultTable.getSelectedRow(),2));
+			}	
 		}
 		else if (e.getSource().equals(saveResult)){
 			idResult = cd.getCtrlResults().addLastResult();
