@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class Utils {
 	public static Node.Type getNodeType(Integer i) {
-		return Node.Type.values()[i];;
+		return Node.Type.values()[i];
 	}
 
 	public static Node.Type getNodeType(String s) {

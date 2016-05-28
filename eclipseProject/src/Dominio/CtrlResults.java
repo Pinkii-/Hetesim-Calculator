@@ -32,9 +32,6 @@ public class CtrlResults {
 		if (results.containsKey(resultId)){
 			return results.get(resultId);
 		}
-		else if (lastResult.getIdResult() == resultId){
-			return lastResult;
-		}
 		else {
 			System.out.println("Result not found - Get");
 			return null;
@@ -66,9 +63,10 @@ public class CtrlResults {
 		return ret;
 	}
 
-	public String setLastResult(Result lastResult) {
+	//public String setLastResult(Result lastResult) {
+	public void setLastResult(Result lastResult) {
 		this.lastResult = lastResult;
-		return lastResult.getIdResult();
+		//return lastResult.getIdResult();
 	}
 	
 	public ArrayList<ArrayList<String>> getLastResultFormatted(){
@@ -81,9 +79,11 @@ public class CtrlResults {
 	}
 
 	public String addLastResult() {
-		//String resultId = String.valueOf(System.currentTimeMillis());
-		addResult(lastResult.getIdResult(), lastResult);
-		return lastResult.getIdResult();
+		String resultId = String.valueOf(System.currentTimeMillis());
+		addResult(resultId, lastResult);
+		return resultId;
+		//addResult(lastResult.getIdResult(), lastResult);
+		//return lastResult.getIdResult();
 	}
 
 	public ArrayList<Result> getModifiedResults() {

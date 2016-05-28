@@ -94,7 +94,9 @@ public class CtrlDominio {
 			ctrlSearch.setGraph(ctrlGraph.getGraph());
 		try {
 			Result r = ctrlSearch.searchPathThreshhold(threshold, ctrlPaths.getPath(pathName));
-			return ctrlResults.setLastResult(r);
+			//return ctrlResults.setLastResult(r);
+			ctrlResults.setLastResult(r);
+			return null;
 		} catch (PathException e) {
 			e.printStackTrace();
 			return null;
@@ -108,7 +110,9 @@ public class CtrlDominio {
 			ctrlSearch.setGraph(ctrlGraph.getGraph());
 		try {
 			Result r = ctrlSearch.searchPath(ctrlPaths.getPath(pathName));
-			return ctrlResults.setLastResult(r);
+			//return ctrlResults.setLastResult(r);
+			ctrlResults.setLastResult(r);
+			return null;
 		} catch (PathException e) {
 			System.out.println("Path exception generated");
 			e.printStackTrace();
@@ -125,7 +129,9 @@ public class CtrlDominio {
 			ArrayList<Node.Type> pathTypes= path.getContingut();
 			Result r = ctrlSearch.searchPathNodeThreshhold(threshold, ctrlPaths.getPath(pathName),
 					graf.getNode(nodeIndex, pathTypes.get(0)));
-			return ctrlResults.setLastResult(r);
+			//return ctrlResults.setLastResult(r);
+			ctrlResults.setLastResult(r);
+			return null;
 		} catch (PathException e) {
 			e.printStackTrace();
 			return null;
@@ -142,7 +148,9 @@ public class CtrlDominio {
 			ArrayList<Node.Type> pathTypes= path.getContingut();
 			Result r = ctrlSearch.searchPathNode(ctrlPaths.getPath(pathName),
 					graf.getNode(nodeIndex, pathTypes.get(0)));
-			return ctrlResults.setLastResult(r);
+			//return ctrlResults.setLastResult(r);
+			ctrlResults.setLastResult(r);
+			return null;
 		} catch (PathException e) {
 			e.printStackTrace();
 			return null;
@@ -161,7 +169,9 @@ public class CtrlDominio {
 			Result r = ctrlSearch.searchPathNodeNodeThreshhold(threshold, ctrlPaths.getPath(pathName),
 					graf.getNode(node1Index, pathTypes.get(0)),
 					graf.getNode(node2Index, pathTypes.get(pathTypes.size() - 1)));
-			return ctrlResults.setLastResult(r);
+			//return ctrlResults.setLastResult(r);
+			ctrlResults.setLastResult(r);
+			return null;
 		} catch (PathException e) {
 			e.printStackTrace();
 			return null;
@@ -179,7 +189,9 @@ public class CtrlDominio {
 			Result r = ctrlSearch.searchPathNodeNode(ctrlPaths.getPath(pathName),
 					graf.getNode(node1Index, pathTypes.get(0)),
 					graf.getNode(node2Index, pathTypes.get(pathTypes.size() - 1)));
-			return ctrlResults.setLastResult(r);
+			//return ctrlResults.setLastResult(r);
+			ctrlResults.setLastResult(r);
+			return null;
 		} catch (PathException e) {
 			e.printStackTrace();
 			return null;

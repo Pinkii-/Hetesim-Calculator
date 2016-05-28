@@ -393,14 +393,9 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 				System.out.println("Either node is invalid");
 			}
 			
-			//if (result.exists()){
-				//Cargar resultado ya existente
-				
-			//}
-			//else {
-			System.out.println(idResult);
+			//System.out.println(idResult);
 			
-			if (cd.getCtrlResults().getResult(idResult) != null){
+			if (cd.getCtrlResults().getLastResultFormatted() != null){
 				try {
 					resultTable = new MyResultTable(cd.getCtrlResults().getLastResultFormatted());
 					resultTable.setPreferredSize(new Dimension(350,200));
@@ -411,6 +406,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 					hasResult = true;
 				}
 				catch (NullPointerException p){
+					System.out.println("ARASDF");
 					VistaDialog.setDialog("Error", "No se ha podido acceder al resultado\n"
 											     + "@Victor fix your shit", new String[]{"Continue"}, VistaDialog.DialogType.ERROR_MESSAGE);
 				}
@@ -426,6 +422,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		}
 		else if (e.getSource().equals(saveResult)){
 			idResult = cd.getCtrlResults().addLastResult();
+			//cd.getCtrlResults().addLastResult();
 			resultTable = new MyResultTable(cd.getCtrlResults().getFormatted(idResult));
 			editResult.setEnabled(true);
 		}
