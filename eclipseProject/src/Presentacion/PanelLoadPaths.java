@@ -32,6 +32,7 @@ public class PanelLoadPaths extends AbstractPanel{
 	private JScrollPane scrollPane;
 	private JButton editar;
 	private JButton añadir;
+	private JButton precalculate;
 
 	public PanelLoadPaths(VistaPrincipal vp) {
 		super(vp);
@@ -49,6 +50,7 @@ public class PanelLoadPaths extends AbstractPanel{
 		pathsList = new MyResultsAndPathsList(paths);
 		editar = new JButton("Edit");
 		añadir = new JButton("Add");
+		precalculate = new JButton("Precalculate");
 		BoxLayout bl = new BoxLayout(this,BoxLayout.LINE_AXIS);
 		setLayout(bl);
 		
@@ -63,7 +65,7 @@ public class PanelLoadPaths extends AbstractPanel{
 		splitpane.setRightComponent(actionsPanel);
 		splitpane.resetToPreferredSizes();
 		add(splitpane);
-		splitpane.setDividerLocation(650);
+		splitpane.setDividerLocation(520);
 	}
 	
 	
@@ -79,6 +81,7 @@ public class PanelLoadPaths extends AbstractPanel{
 		actionsPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		actionsPanel.add(editar);
 		actionsPanel.add(añadir);
+		actionsPanel.add(precalculate);
 		editar.setAlignmentY(BOTTOM_ALIGNMENT);
 		añadir.setAlignmentY(BOTTOM_ALIGNMENT);
 		
@@ -96,6 +99,17 @@ public class PanelLoadPaths extends AbstractPanel{
 	
 	private void assignListeners() {
 		
+		precalculate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				if (pathsList.indexSelected()) {
+					int index = pathsList.getSelectedIndex();
+					cd.getCtrlSearch().precalculePath(paths.get(index).get(0));
+					System.out.println("hola");
+				}
+				else { System.out.println("Selecciona un resultado");
+					/*generar cosa o habilitar al seleccionar*/}
+			}
+		});
 		editar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				if (pathsList.indexSelected()) {
