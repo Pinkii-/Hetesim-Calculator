@@ -39,10 +39,8 @@ public class PanelMostrarResultado extends AbstractPanel{
 	private JPanel actions;
 	private JPanel info;
 	private JSplitPane splitpane;
-	private Result rs;
 	private JButton editar;
 	private JButton guardar;
-	private PanelLoadResult plr;
 	private ArrayList<ArrayList<String>> showedResult;
 	
 	public PanelMostrarResultado (VistaPrincipal v)  {

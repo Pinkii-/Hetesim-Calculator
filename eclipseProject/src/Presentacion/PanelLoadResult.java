@@ -51,7 +51,7 @@ public class PanelLoadResult extends AbstractPanel{
 	private JPanel resultsPanel;
 	private JPanel searchPanel;
 	private JPanel actionsPanel;
-	private MyResultsList loadedResults;
+	private MyResultsAndPathsList loadedResults;
 	private JTextArea resultResume;
 	private JScrollPane scrollPane;
 	private DefaultListModel DLM;
@@ -104,7 +104,7 @@ public class PanelLoadResult extends AbstractPanel{
 		formattedResults = frm.getFormattedResults();
 		
 		for(int i = 0; i < formattedResults.size(); ++i)
-			DLM.addElement(formattedResults.get(i));
+			DLM.addElement(formattedResults.get(i).getListedResult());
 			
 		loadedResults.setModel(DLM);
 		scrollPane = new JScrollPane(loadedResults);
@@ -128,6 +128,7 @@ public class PanelLoadResult extends AbstractPanel{
 	}
 	
 	private void generateActionPanel() {
+		
 		actionsPanel.setLayout(new BoxLayout(actionsPanel, BoxLayout.PAGE_AXIS));
 		actionsPanel.add(resultResume);
 		//show.setAlignmentY(RIGHT_ALIGNMENT);
@@ -137,6 +138,7 @@ public class PanelLoadResult extends AbstractPanel{
 	}
 	
 	private void generateSearchAndActionsPanel() {
+		
 		searchAndActionsPanel.setLayout(new BoxLayout(searchAndActionsPanel, BoxLayout.PAGE_AXIS));
 		generateSearchPanel();
 		searchAndActionsPanel.add(searchPanel);
@@ -147,6 +149,7 @@ public class PanelLoadResult extends AbstractPanel{
 	}
 	
 	private void initSubPanels() {
+		
 		generateResultsPanel();
 		generateSearchAndActionsPanel();
 		splitpane.setAlignmentX(LEFT_ALIGNMENT);
@@ -154,7 +157,7 @@ public class PanelLoadResult extends AbstractPanel{
 		splitpane.setRightComponent(searchAndActionsPanel);
 		splitpane.resetToPreferredSizes();
 		add(splitpane);
-		
+
 	}
 	
 	private void assignListeners() {
@@ -184,12 +187,16 @@ public class PanelLoadResult extends AbstractPanel{
 		});
 		
 	}
+	public void init() {
+		removeAll();
+		initComponents();
+	}
 	private void initComponents(){
 		splitpane = new JSplitPane();
 		resultsPanel = new JPanel();
 		actionsPanel = new JPanel();
 		resultResume = new JTextArea("lel");
-		loadedResults = new MyResultsList(resultResume);
+		loadedResults = new MyResultsAndPathsList(resultResume);
 		searchPanel = new JPanel();
 		searchAndActionsPanel = new JPanel();
 		DLM = new DefaultListModel();
@@ -217,7 +224,6 @@ public class PanelLoadResult extends AbstractPanel{
 		saveChanges();
 		String[] buttons = {"Salir", "Cancelar"};
 		int result = VistaDialog.setDialog("Titulo", "¿Estas seguro que quieres salir?\n (No se va a perder nada, no has hecho nada, vete.)", buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
-//		if (result == 0) vp.continueAction();
 		return result;
 	}
 	@Override
