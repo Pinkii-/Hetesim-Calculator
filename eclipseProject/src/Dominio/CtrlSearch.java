@@ -65,7 +65,8 @@ public class CtrlSearch {
 				result.add(new Pair<Integer, Float>(i, matrix.getRow(n.getId()).get(i)));
 			}
 		}catch (ClassNotFoundException | IOException e) {
-			e.printStackTrace(); // Debug hasta saber que funciona
+//			e.printStackTrace(); // Debug hasta saber que funciona
+			System.out.println("DEBUG: no ha podido cargar la matrix y la va a generar");
 			result = het.getHeteSim(p, n);
 		}
 
