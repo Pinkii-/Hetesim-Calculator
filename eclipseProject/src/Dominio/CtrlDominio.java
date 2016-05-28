@@ -279,9 +279,13 @@ public class CtrlDominio {
 		return n;
 	}
 	
-	static public int getNodeLabelIndex(String nodeLabel){
+	static public int getIndexOfNodeLabel(String nodeLabel){
 		int n = Node.Label.valueOf(nodeLabel).ordinal();
 		return n;
+	}
+	
+	static public String getNodeLabelOfIndex(int index){
+		return Node.Label.values()[index].toString();
 	}
 
 }

@@ -1,6 +1,7 @@
 package Presentacion;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -57,11 +58,14 @@ public class PanelEditNode extends AbstractPanel{
 
 	//@Override
 	public int closeIt() {
-		String[] buttons = {"Salir", "Cancelar"};
-		int result = VistaDialog.setDialog("Titulo", "¿Estas seguro que quieres salir?\n"
-				+ "Todos los cambion no guardados seran perdidos",
-				buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
-		return result;
+		if(unsavedChanges){
+			String[] buttons = {"Salir", "Cancelar"};
+			int result = VistaDialog.setDialog("Titulo", "¿Estas seguro que quieres salir?\n"
+					+ "Todos los cambion no guardados seran perdidos",
+					buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
+			return result;
+		}
+		return 0;
 	}
 
 
@@ -156,7 +160,47 @@ public class PanelEditNode extends AbstractPanel{
 		labelData.addAll(CtrlDominio.getLabels());
 		String[] labelDataArray = labelData.toArray(new String[labelData.size()]);
 		labelComboBox = new JComboBox<String>(labelDataArray);
+		labelComboBox.addActionListener(
+				new ActionListener(){
+                    public void actionPerformed(ActionEvent e){
+                    	if(!(labelComboBox.getSelectedIndex() == (CtrlDominio.getIndexOfNodeLabel(nodeInfo.get(3)) + 1))){
+                    		System.out.println(labelComboBox.getSelectedIndex());
+                    		System.out.println(CtrlDominio.getIndexOfNodeLabel(nodeInfo.get(3)) + 1);
+                        	unsavedChanges = true;
+                    		saveButton.setEnabled(true);
+                    	}
 
+                    }
+				}
+				);
+		nameTextField.addActionListener(
+				new ActionListener(){
+                    public void actionPerformed(ActionEvent e){
+                    	if(!nameTextField.getText().equals(nodeInfo.get(1))){
+                        	unsavedChanges = true;
+                    		saveButton.setEnabled(true);
+                    	}
+
+                    }
+				}
+				);
+		saveButton.addActionListener(
+				new ActionListener(){
+					public void actionPerformed(ActionEvent e){
+						unsavedChanges = false;
+						saveButton.setEnabled(false);
+						nodeInfo.set(3, CtrlDominio.getNodeLabelOfIndex(labelComboBox.getSelectedIndex() + 1) );
+						nodeInfo.set(1, nameTextField.getText());
+					}
+				}
+				);
+		exitButton.addActionListener(
+				new ActionListener(){
+					public void actionPerformed(ActionEvent e){
+						close();
+					}
+				}
+				);
 	}
 
 	public void setNodeToEdit(Integer index, String nodeType){
@@ -173,7 +217,7 @@ public class PanelEditNode extends AbstractPanel{
 		nameTextField.setText(nodeInfo.get(1));
 		int n = CtrlDominio.getNodeTypeIndex(nodeInfo.get(2)) + 1;
 		typeComboBox.setSelectedIndex(n);
-		int m = CtrlDominio.getNodeLabelIndex(nodeInfo.get(3)) + 1;
+		int m = CtrlDominio.getIndexOfNodeLabel(nodeInfo.get(3)) + 1;
 		labelComboBox.setSelectedIndex(m);
 	}
 	

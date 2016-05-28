@@ -167,6 +167,7 @@ public class CtrlPaths {
 			col.add(entry.getKey());
 			col.add(entry.getValue().getDescripcio());
 			col.add(entry.getValue().getContingut().toString());
+			ret.add(col);
 		}
 		return ret;
 	}
