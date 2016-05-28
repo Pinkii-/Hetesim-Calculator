@@ -45,7 +45,7 @@ public class PanelNewPath extends AbstractPanel { //Abstract
 	JButton btnSave;
 	JButton btnCancel;
 	
-	boolean finished = false;
+	boolean finished;
 	
 	PanelNewPath(VistaAbstracta vp) {
 		super(vp);
@@ -54,6 +54,7 @@ public class PanelNewPath extends AbstractPanel { //Abstract
 	public void init() {
 //	PanelNewPath() {
 		this.removeAll();
+		finished = false;
 		this.setSize(vp.getSize());
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
