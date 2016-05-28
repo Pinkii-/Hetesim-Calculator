@@ -77,7 +77,7 @@ public class Result implements Cloneable, Serializable {
 			}
 		}
 		
-		sortResult(); //Sort result list
+		//sortResult(); //Sort result list
 	}
 	
 	
