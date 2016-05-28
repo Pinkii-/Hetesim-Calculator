@@ -103,6 +103,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		add(node2Label);
 			node2Select = new MyComboBox();
 			node2Select.loadNodesToLists(this.cd);
+			node2Select.setEnabled(false);
 			add(node2Select);
 		
 		//Path label
@@ -286,6 +287,8 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 	private void assignListeners(){
 		
 		pathSelect.addActionListener(this);
+		node1Select.addActionListener(this);
+		
 		calcHete.addActionListener(this);
 		saveResult.addActionListener(this);
 		editResult.addActionListener(this);
@@ -324,28 +327,28 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 			String path = pathSelect.getSelectedItem().toString();
 			int n1 = -1, n2 = -1;
 			if (!node1Select.getEditor().getItem().toString().equals(" - Select all -")) n1 = node1Select.getSelectedNodeIndex();
-			if (!node2Select.getEditor().getItem().toString().equals(" - Select all -")) n2 = node2Select.getSelectedNodeIndex();
+			if (!node2Select.getEditor().getItem().toString().equals(" - Select all -") && node2Select.isEnabled()) n2 = node2Select.getSelectedNodeIndex();
 			if (n1 == -1 && n2 == -1){
 				//No nodes
 				System.out.println("Searching");
 				if (checkbox.isSelected()){
 					System.out.println("P threshold");
 					idResult = cd.searchPathThreshhold((float)((double)threshold.getValue()), path);
-					resultTable = new MyResultTable(cd.getCtrlResults().getLastResultFormatted(idResult));
+					resultTable = new MyResultTable(cd.getCtrlResults().getLastResultFormatted());
 				}
 				else {
 					System.out.println("P");
 					idResult = cd.searchPath(path);
-					resultTable = new MyResultTable(cd.getCtrlResults().getLastResultFormatted(idResult));
+					resultTable = new MyResultTable(cd.getCtrlResults().getLastResultFormatted());
 				}
 				System.out.println("Done");
 			}
-			else if (n1 == -1 && n2 >= 0){
+			else if (n1 >= 0 && n2 == -1){
 				//One node
 				if (checkbox.isSelected()){
 					System.out.println("PN1 threshold");
 					idResult = cd.searchPathNodeThreshhold((float)((double)threshold.getValue()), path, n1);
-					resultTable = new MyResultTable(cd.getCtrlResults().getLastResultFormatted(idResult));
+					resultTable = new MyResultTable(cd.getCtrlResults().getLastResultFormatted());
 				}
 				else {
 					System.out.println("PN1");
@@ -354,7 +357,10 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 				System.out.println("Done");
 				
 			}
-			else if (n2 == -1 && n1 >= 0){
+			/*
+			 * We can't reverse the paths
+			 * 
+			else if (n1 == -1 && n2 >= 0){
 				//One node, reverse
 				if (checkbox.isSelected()){
 					System.out.println("PN2 threshold");
@@ -363,11 +369,14 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 				}
 				else {
 					System.out.println("PN2");
+					System.out.println(path);
 					path = new StringBuilder(path).reverse().toString();
+					System.out.println(path);
 					idResult = cd.searchPathNode(path,n2);
 				}
 				System.out.println("Done");
 			}
+			*/
 			else if (n1 >= 0 && n2 >= 0){
 				//Two
 				if (checkbox.isSelected()){
@@ -393,7 +402,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 			
 			if (cd.getCtrlResults().getResult(idResult) != null){
 				try {
-					resultTable = new MyResultTable(cd.getCtrlResults().getLastResultFormatted(idResult));
+					resultTable = new MyResultTable(cd.getCtrlResults().getLastResultFormatted());
 					resultTable.setPreferredSize(new Dimension(350,200));
 					resultTable.setBorder(BorderFactory.createLineBorder(Color.black));
 					threshold.setEnabled(true);
@@ -433,6 +442,15 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 				threshold.setValue(0.5);
 				threshold.setEnabled(false);
 				thresholdLabel.setForeground(Color.gray);
+			}
+		}
+		else if (e.getSource().equals(node1Select)){
+			//System.out.println(node1Select.getSelectedItem().toString());
+			if (node1Select.getSelectedNodeIndex() != -1){
+				node2Select.setEnabled(true);
+			}
+			else {
+				node2Select.setEnabled(false);
 			}
 		}
 		else if (e.getSource().equals(pathSelect)){
@@ -480,28 +498,28 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 					node2Label.setText("Node type: Paper");
 					node2Label.setForeground(Color.black);
 					node2Select.setList(0);
-					node2Select.setEnabled(true);
+					//node2Select.setEnabled(true);
 					n2 = true;
 					break;
 				case 'A':
 					node2Label.setText("Node type: Author");
 					node2Label.setForeground(Color.black);
 					node2Select.setList(1);
-					node2Select.setEnabled(true);
+					//node2Select.setEnabled(true);
 					n2 = true;
 					break;
 				case 'C':
 					node2Label.setText("Node type: Conference");
 					node2Label.setForeground(Color.black);
 					node2Select.setList(2);
-					node2Select.setEnabled(true);
+					//node2Select.setEnabled(true);
 					n2 = true;
 					break;
 				case 'T':
 					node2Label.setText("Node type: Term");
 					node2Label.setForeground(Color.black);
 					node2Select.setList(3);
-					node2Select.setEnabled(true);
+					//node2Select.setEnabled(true);
 					n2 = true;
 					break;
 				default:
@@ -513,6 +531,11 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 			if (node1Select.getEditor().getItem().toString().equals("None found!") ||
 				node2Select.getEditor().getItem().toString().equals("None found!") ||
 				!(n1 && n2)){
+					
+					node1Select.setEnabled(false);
+					node2Select.setEnabled(false);
+					node1Label.setForeground(Color.gray);
+					node2Label.setForeground(Color.gray);
 					
 					calcHete.setEnabled(false);
 					checkbox.setEnabled(false);
