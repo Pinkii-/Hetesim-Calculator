@@ -70,10 +70,10 @@ public class PanelLoadPaths extends AbstractPanel{
 	}
 	
 	private void loadAndAddPaths() {
-		ArrayList<String> formattedPaths = cp.getFormattedPaths();
-		for (String s: formattedPaths) {
-			dlm.addElement(s);
-		}
+		//ArrayList<String> formattedPaths = cp.getFormattedPaths();
+		//for (String s: formattedPaths) {
+		//	dlm.addElement(s);
+		//}
 	}
 	
 	private void generatePathsPanel() {
