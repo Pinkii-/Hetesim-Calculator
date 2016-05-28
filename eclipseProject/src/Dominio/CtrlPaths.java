@@ -176,16 +176,28 @@ public class CtrlPaths {
 		Path p = new Path();
 		p.setNom("APA");
 		p.setContingut("APA");
+		p.setDescripcio("Lorem ipsum dolor sit amet, consectetur adipiscing "
+				+ "elit, sed do eiusmod tempor incididunt ut labore et"
+				+ " dolore magna aliqua. Ut enim ad minim veniam, quis"
+				+ " nostrud");
 		paths.put("APA", p);
 		modifiedPaths.put("APA", false);
 		p = new Path();
 		p.setNom("APC");
 		p.setContingut("APC");
+		p.setDescripcio("Lorem ipsum dolor sit amet, consectetur adipiscing "
+				+ "elit, sed do eiusmod tempor incididunt ut labore et"
+				+ " dolore magna aliqua. Ut enim ad minim veniam, quis"
+				+ " nostrud");
 		paths.put("APC", p);
 		modifiedPaths.put("APC", false);
 		p = new Path();
 		p.setNom("APT");
 		p.setContingut("APT");
+		p.setDescripcio("Lorem ipsum dolor sit amet, consectetur adipiscing "
+				+ "elit, sed do eiusmod tempor incididunt ut labore et"
+				+ " dolore magna aliqua. Ut enim ad minim veniam, quis"
+				+ " nostrud");
 		paths.put("APT", p);
 		modifiedPaths.put("APT", false);
 	}
