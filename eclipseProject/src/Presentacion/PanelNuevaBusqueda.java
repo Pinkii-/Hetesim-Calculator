@@ -330,7 +330,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 				System.out.println("Searching P");
 				if (checkbox.isSelected()){
 					System.out.println("P threshold");
-					idResult = cd.searchPathThreshhold((Float)threshold.getValue(), path);
+					idResult = cd.searchPathThreshhold((float)((double)threshold.getValue()), path);
 					resultTable = new MyResultTable(cd.getCtrlResults().getLastResultFormatted(idResult));
 				}
 				else {
@@ -344,7 +344,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 				//One node
 				if (checkbox.isSelected()){
 					System.out.println("PN1 threshold");
-					idResult = cd.searchPathNodeThreshhold((Float)threshold.getValue(), path, n1);
+					idResult = cd.searchPathNodeThreshhold((float)((double)threshold.getValue()), path, n1);
 					resultTable = new MyResultTable(cd.getCtrlResults().getLastResultFormatted(idResult));
 				}
 				else {
@@ -359,7 +359,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 				if (checkbox.isSelected()){
 					System.out.println("PN2 threshold");
 					path = new StringBuilder(path).reverse().toString();
-					idResult = cd.searchPathNodeThreshhold((Float)threshold.getValue(), path, n2);
+					idResult = cd.searchPathNodeThreshhold((float)((double)threshold.getValue()), path, n2);
 				}
 				else {
 					System.out.println("PN2");
@@ -372,7 +372,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 				//Two
 				if (checkbox.isSelected()){
 					System.out.println("PNN threshold");
-					idResult = cd.searchPathNodeNodeThreshhold((Float)threshold.getValue(), path, n1, n2);
+					idResult = cd.searchPathNodeNodeThreshhold((float)((double)threshold.getValue()), path, n1, n2);
 				}
 				else {
 					System.out.println("PNN");
@@ -395,12 +395,12 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 				resultTable = new MyResultTable(cd.getCtrlResults().getLastResultFormatted(idResult));
 				resultTable.setPreferredSize(new Dimension(350,200));
 				resultTable.setBorder(BorderFactory.createLineBorder(Color.black));
-				
+			}
+			
 				threshold.setEnabled(true);
 				thresholdLabel.setForeground(Color.black);
 				saveResult.setEnabled(true);
 				hasResult = true;
-			}
 			//}
 		}
 		else if (e.getSource().equals(reuseSearch)){
@@ -411,6 +411,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		}
 		else if (e.getSource().equals(saveResult)){
 			idResult = cd.getCtrlResults().addLastResult();
+			resultTable = new MyResultTable(cd.getCtrlResults().getFormatted(idResult));
 			editResult.setEnabled(true);
 		}
 		else if (e.getSource().equals(editResult)){
