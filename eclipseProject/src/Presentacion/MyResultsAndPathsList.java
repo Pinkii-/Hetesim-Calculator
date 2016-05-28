@@ -8,7 +8,7 @@ import javax.swing.event.ListSelectionListener;
 
 //Custom JList which shows results and is attached to a text area which shows a resume of a selected result.
 
-public class MyResultsList extends JList implements ListSelectionListener{
+public class MyResultsAndPathsList extends JList implements ListSelectionListener{
 	
 	
 	private static final long serialVersionUID = 1L;
@@ -16,7 +16,12 @@ public class MyResultsList extends JList implements ListSelectionListener{
 	private JTextArea resultResume;
 	private Integer selectedIndex;
 	
-	public MyResultsList(JTextArea resultResulme ) {
+	public MyResultsAndPathsList() {
+		super();
+		initListHandler();
+	}
+	
+	public MyResultsAndPathsList(JTextArea resultResulme ) {
 		super();
 		this.resultResume = resultResulme;
 		initListHandler();
@@ -36,9 +41,10 @@ public class MyResultsList extends JList implements ListSelectionListener{
 	
 	public void valueChanged(ListSelectionEvent e) {
     	if (!e.getValueIsAdjusting()) {
-    	//resultResume.setText("");
-		System.out.println("lel");
-    	resultResume.append("kek");
+    	if (resultResume != null) {
+    		resultResume.setText("");
+        	resultResume.append("kek");
+    	}
         ListSelectionModel lsm = (ListSelectionModel)e.getSource();
         if (!lsm.isSelectionEmpty()) {
         	 int minIndex = lsm.getMinSelectionIndex();

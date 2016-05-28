@@ -1,6 +1,7 @@
 package Presentacion;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 import Dominio.CtrlDominio;
@@ -27,12 +28,13 @@ public class FormattedResultsManager {
 	
 	
 	public FormattedResultsManager(CtrlDominio cd) {
+		
 		this.cd = cd;
 		idResults = new ArrayList<String>();
 		results = new ArrayList<FormattedResult>();
 		toDelete = new HashMap<Integer,String>();
 		cr = this.cd.getCtrlResults();
-		//obtainFormattedResults();
+		
 	}
 	
 	private void obtainFormattedResults() {
@@ -60,25 +62,53 @@ public class FormattedResultsManager {
 	}
 	
 	public void commitDeletions() {
+		
 	}
 	
 	public static class FormattedResult  {
+		
+		//Insertar mas pairs innecesarios aqui
+		public static final Pair<Integer,Integer> resultIdPosition = new Pair<Integer,Integer>(0,0);
+		public static final Pair<Integer,Integer> resultTypePosition = new Pair<Integer,Integer>(0,1);
+		public static final Pair<Integer,Integer> searchPathPosition = new Pair<Integer,Integer>(0,2);
+		public static final Pair<Integer,Integer> searchGraphIdPosition = new Pair<Integer,Integer>(0,3);
+		
 		private ArrayList<ArrayList<String>> formattedResult;
 		private String listedResult;
 		private String resultType;
 		private String searchPath;
 		private String searchGraphId;
 		private String searchGraphName;
+		private Integer numberOfValues;
+		private Integer numberOfColumns;
+		private Object[][] resultData;
+		
+		private ArrayList<Boolean> modifiedResultValues;
 		
 		public FormattedResult(ArrayList<ArrayList<String>> res) {
+			
 			this.formattedResult = res;
 			resultType = res.get(resultTypePosition.first).get(resultTypePosition.second);
 			searchPath = res.get(searchPathPosition.first).get(searchPathPosition.second);
 			searchGraphId = res.get(searchGraphIdPosition.first).get(searchGraphIdPosition.second);
-			//searchGraphName = res.get(searchGraphNamePosition.first).get(searchGraphNamePosition.second);
-			
+			numberOfValues = res.size()-1;
+			numberOfColumns = res.get(1).size();
+			modifiedResultValues = new ArrayList<Boolean>(numberOfValues);
+			Collections.fill(modifiedResultValues, false);
+			generateData();			
 		}
 		
+		private void generateData() {
+			
+			resultData = new Object[numberOfValues][numberOfColumns];
+			
+			for (int i = 1; i <= numberOfValues; ++i) {
+				for (int j = 0; j < numberOfColumns; ++j) {
+					if (j == numberOfColumns-1) resultData[i-1][j] = new Float(Float.parseFloat(formattedResult.get(i).get(j)));
+					else resultData[i-1][j] = formattedResult.get(i).get(j);
+				}
+			}
+		}
 		public ArrayList<ArrayList<String>> getFormattedResult() {
 			return formattedResult;
 		}
@@ -87,6 +117,13 @@ public class FormattedResultsManager {
 			return formattedResult.get(resultIdPosition.first).get(resultIdPosition.second);
 		}
 		
+		public int getNumberOfValues() {
+			return numberOfValues;
+		}
+		
+		public Object[][] getResultData() {
+			return resultData;
+		}
 		//Insertar más getters innecesarios aquí.
 		public void commitChanges() {
 			
@@ -101,17 +138,6 @@ public class FormattedResultsManager {
 		    listedResult += searchPath + ", Associated Graph: " + searchGraphId;
 		    return listedResult;
 		}
-		
-		//Insertar mas pairs innecesarios aqui
-		public static final Pair<Integer,Integer> resultIdPosition = new Pair<Integer,Integer>(0,0);
-		public static final Pair<Integer,Integer> resultTypePosition = new Pair<Integer,Integer>(0,1);
-		public static final Pair<Integer,Integer> searchPathPosition = new Pair<Integer,Integer>(0,2);
-		public static final Pair<Integer,Integer> searchGraphIdPosition = new Pair<Integer,Integer>(0,3);
-		//public static final Pair<Integer,Integer> searchGraphNamePosition = new Pair<Integer, Integer>(0,3);
-		
-		/*
-		controlar las modificaciones que se hacen a un resultado en concreto: devolver que indices se 
-		han modificado y su nuevo valor de HeteSim*/
 		
 	}
 }

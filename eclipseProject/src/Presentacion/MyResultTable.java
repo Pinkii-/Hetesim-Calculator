@@ -3,24 +3,30 @@ package Presentacion;
 import java.util.ArrayList;
 
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
+
+import Presentacion.FormattedResultsManager.FormattedResult;
 /**
  * @author Albert Lopez Alcacer
 **/
 
 public class MyResultTable extends JTable {
 	
-	private ArrayList<ArrayList<String>> result;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private FormattedResult result;
 	private MyTableModel mtm;
-	private String[] columnNames;
-	private Object[][] data;
 	
-	public MyResultTable() {}
+	public MyResultTable() {
+	}
 	
 	public MyResultTable (ArrayList<ArrayList<String>> result) {
-		this.result = result;
+		this.result = new FormattedResult(result);
 		generateTable();
 	}
 	
