@@ -1,6 +1,5 @@
 package Presentacion;
 
-import java.util.ArrayList;
 
 import javax.swing.JTextArea;
 import javax.swing.event.TableModelEvent;
@@ -8,7 +7,6 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 import Presentacion.FormattedResultsManager.FormattedResult;
 

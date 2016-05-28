@@ -1,36 +1,21 @@
 package Presentacion;
 
 
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.DefaultListModel;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
+import javax.swing.JEditorPane;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
-import javax.swing.JTable;
-import javax.swing.JTextArea;
-import javax.swing.ListSelectionModel;
-import javax.swing.SwingConstants;
 
 import Dominio.Result;
-import Tests.CtrlDataTest;
-import Tests.CtrlDominioTest;
 import Dominio.CtrlResults;
 import Dominio.Graph;
 import Dominio.Node;
@@ -52,19 +37,16 @@ public class PanelLoadResult extends AbstractPanel{
 	private JPanel searchPanel;
 	private JPanel actionsPanel;
 	private MyResultsAndPathsList loadedResults;
-	private JTextArea resultResume;
+	private JEditorPane resultResume;
 	private JScrollPane scrollPane;
-	private DefaultListModel DLM;
-	private ListSelectionModel LSM;
 	private JButton show;
 	private JButton delete;
+	private JLabel title;
 	private FormattedResultsManager frm;
-	private HashMap<String,Integer> entries;
 	ArrayList<FormattedResult> formattedResults;
 	
 	public PanelLoadResult (VistaPrincipal vp)   {
 		super(vp);
-		initComponents();
 		this.vp = vp;
 	}
 	
@@ -90,7 +72,6 @@ public class PanelLoadResult extends AbstractPanel{
 	private void generateResults() {
 		for (int i = 0; i < 5; i++) {
 			Result r = generateResult(i);
-			System.out.println(r.getIdResult());
 			cr.addResult(r.getIdResult(),r);
 		}
 		
@@ -100,13 +81,6 @@ public class PanelLoadResult extends AbstractPanel{
 	
 	private void generateResultsPanel(){
 		resultsPanel.setLayout(new BoxLayout(resultsPanel, BoxLayout.PAGE_AXIS));
-		generateResults();
-		formattedResults = frm.getFormattedResults();
-		
-		for(int i = 0; i < formattedResults.size(); ++i)
-			DLM.addElement(formattedResults.get(i).getListedResult());
-			
-		loadedResults.setModel(DLM);
 		scrollPane = new JScrollPane(loadedResults);
 		resultsPanel.add(scrollPane);		
 	}
@@ -118,23 +92,21 @@ public class PanelLoadResult extends AbstractPanel{
 		searchPanel.setLayout(new BoxLayout(searchPanel, BoxLayout.PAGE_AXIS));
 		searchPanel.setAlignmentX(RIGHT_ALIGNMENT);
 		searchPanel.add(Box.createHorizontalGlue());
-		JLabel lab = new JLabel("FILTER");
-		JLabel lab2 = new JLabel("FILTER");
-		JLabel lab3 = new JLabel("FILTER");
-		searchPanel.add(lab);
-		searchPanel.add(lab2);
-		searchPanel.add(lab3);
 		
 	}
 	
 	private void generateActionPanel() {
 		
 		actionsPanel.setLayout(new BoxLayout(actionsPanel, BoxLayout.PAGE_AXIS));
+		actionsPanel.add(Box.createHorizontalGlue());
+		actionsPanel.add(title);
+		title.setAlignmentX(CENTER_ALIGNMENT);
 		actionsPanel.add(resultResume);
 		//show.setAlignmentY(RIGHT_ALIGNMENT);
 		//actionsPanel.setAlignmentX(BOTTOM_ALIGNMENT);
 		actionsPanel.add(Box.createHorizontalGlue());
 		actionsPanel.add(show);
+		show.setAlignmentX(CENTER_ALIGNMENT);
 	}
 	
 	private void generateSearchAndActionsPanel() {
@@ -157,6 +129,7 @@ public class PanelLoadResult extends AbstractPanel{
 		splitpane.setRightComponent(searchAndActionsPanel);
 		splitpane.resetToPreferredSizes();
 		add(splitpane);
+		splitpane.setDividerLocation(450);
 
 	}
 	
@@ -165,7 +138,7 @@ public class PanelLoadResult extends AbstractPanel{
 			public void actionPerformed(ActionEvent event) {
 				if (loadedResults.indexSelected()) {
 					int index = loadedResults.getSelectedIndex();
-					vp.panelMostrarResultado.setShowedResult(formattedResults.get(index).getFormattedResult());
+					vp.panelMostrarResultado.setShowedResult(formattedResults.get(index));
 					vp.changePanel(Panels.PanelMostrarResultado);
 					System.out.println("hola");
 				}
@@ -177,34 +150,39 @@ public class PanelLoadResult extends AbstractPanel{
 		delete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				if (loadedResults.indexSelected()) {
+					
+					String[] buttons = {"Salir", "Cancelar"};
+					int result = VistaDialog.setDialog("Titulo", "¿Estas seguro que quieres borrar) \n", buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
+					
 					int index = loadedResults.getSelectedIndex();
 					frm.addToDelete(index);
 					loadedResults.remove(index);
 				}
-				else { System.out.println("Selecciona un resultado");
-					/*generar cosa o habilitar al seleccionar*/}
 			}
 		});
-		
 	}
 	public void init() {
 		removeAll();
 		initComponents();
 	}
 	private void initComponents(){
+		
 		splitpane = new JSplitPane();
 		resultsPanel = new JPanel();
 		actionsPanel = new JPanel();
-		resultResume = new JTextArea("lel");
-		loadedResults = new MyResultsAndPathsList(resultResume);
+		resultResume = new JEditorPane();
 		searchPanel = new JPanel();
 		searchAndActionsPanel = new JPanel();
-		DLM = new DefaultListModel();
+		title = new JLabel("Result Informartion:");
+		title.setFont(new Font("Serif",Font.BOLD,12));
 		show = new JButton("Show");
 		delete = new JButton("Delete");
+		
 		cr = cd.getCtrlResults();
 		frm = new FormattedResultsManager(cd);
-		formattedResults = new ArrayList<FormattedResult>();
+		generateResults();
+		formattedResults = frm.getFormattedResults();
+		loadedResults = new MyResultsAndPathsList(resultResume,formattedResults);
 		
 		BoxLayout bl = new BoxLayout(this,BoxLayout.LINE_AXIS);
 		setLayout(bl);

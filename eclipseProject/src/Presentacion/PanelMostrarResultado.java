@@ -41,6 +41,7 @@ public class PanelMostrarResultado extends AbstractPanel{
 	private JSplitPane splitpane;
 	private JButton editar;
 	private JButton guardar;
+	private JButton cancelar;
 	private ArrayList<ArrayList<String>> showedResult;
 	
 	public PanelMostrarResultado (VistaPrincipal v)  {
@@ -53,7 +54,6 @@ public class PanelMostrarResultado extends AbstractPanel{
 			public void actionPerformed(ActionEvent event) {
 				rst.setEnabled(true);
 				rst.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-				System.out.println("hola");
 			}
 		});
 	}
@@ -75,34 +75,23 @@ public class PanelMostrarResultado extends AbstractPanel{
 		rst.setFillsViewportHeight(true);
 		rst.setEnabled(false);
 		splitpane.setLeftComponent(new JScrollPane(rst));
+		
 	}
 	private void generateInfoPanel() {
-		JLabel label = new JLabel("INFO	");
-		JLabel origen = new JLabel("Origen: ");
-		JLabel destino = new JLabel("Destino: ");
-		JLabel path = new JLabel("Path usado: ");
-		JLabel threshold = new JLabel("Threshold usado: ");
-		JLabel modificado = new JLabel("Resultado modificado: ");
-		JTextArea text = new JTextArea("text");
-		JCheckBox cb = new JCheckBox();
-		cb.setSelected(true);
-		cb.setOpaque(true);
+		info.add(new JLabel("Registro Cambios.."));
 		info.add(Box.createHorizontalGlue());
 		info.setLayout(new BoxLayout(info,BoxLayout.PAGE_AXIS));
 		info.setAlignmentX(RIGHT_ALIGNMENT);
-		info.add(label);
 		info.add(Box.createRigidArea(new Dimension(0,50)));
-		info.add(origen);
-		info.add(destino);
-		info.add(path);
-		info.add(threshold);
-		info.add(cb);
+	
 	}
 	private void generateActionPanel() {
 		actions.setLayout(new BoxLayout(actions,BoxLayout.LINE_AXIS));
 		actions.setAlignmentX(LEFT_ALIGNMENT);
 		actions.add(Box.createHorizontalGlue());
 		actions.add(editar);
+		actions.add(guardar);
+		actions.add(cancelar);
 	}
 	private void generateInfoAndActionPanel() {
 		
@@ -122,6 +111,7 @@ public class PanelMostrarResultado extends AbstractPanel{
 		splitpane.setRightComponent(infoAndActions);
 		splitpane.resetToPreferredSizes();
 		add(splitpane);
+		splitpane.setDividerLocation(450);
 	}
 	private void initSubPanels() {
 		generateTable();
@@ -143,7 +133,9 @@ public class PanelMostrarResultado extends AbstractPanel{
 		actions = new JPanel();
 		info = new JPanel();
 		splitpane = new JSplitPane();
-		editar = new JButton("Editar");
+		editar = new JButton("Edit");
+		guardar = new JButton("Save");
+		cancelar = new JButton("Cancel");
 		rst = new MyResultTable();
 		
 		BoxLayout bl = new BoxLayout(this,BoxLayout.LINE_AXIS);
