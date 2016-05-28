@@ -201,7 +201,7 @@ public class PanelNewPath extends AbstractPanel { //Abstract
 	int closeIt() {
 		if (!finished) {
 			String[] buttons = {"Yes", "Cancel"};
-			int result = VistaDialog.setDialog("Titulo", "Are you sure you want to exit without save?", buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
+			int result = VistaDialog.setDialog("New Path", "Are you sure you want to exit without save?", buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
 			return result;
 		}
 		return 0;
@@ -322,6 +322,12 @@ public class PanelNewPath extends AbstractPanel { //Abstract
 		
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					((VistaPrincipal)vp).changePanel(Panels.LoadPaths);
+				}
+				catch(Exception ex) {
+					vp.dispose();
+				}
 			}
 		});
 	}
