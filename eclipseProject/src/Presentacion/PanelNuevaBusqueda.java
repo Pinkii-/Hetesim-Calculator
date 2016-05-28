@@ -327,7 +327,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 			if (!node2Select.getEditor().getItem().toString().equals(" - Select all -")) n2 = node2Select.getSelectedNodeIndex();
 			if (n1 == -1 && n2 == -1){
 				//No nodes
-				System.out.println("Searching P");
+				System.out.println("Searching");
 				if (checkbox.isSelected()){
 					System.out.println("P threshold");
 					idResult = cd.searchPathThreshhold((float)((double)threshold.getValue()), path);
@@ -392,15 +392,21 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 			System.out.println(idResult);
 			
 			if (cd.getCtrlResults().getResult(idResult) != null){
-				resultTable = new MyResultTable(cd.getCtrlResults().getLastResultFormatted(idResult));
-				resultTable.setPreferredSize(new Dimension(350,200));
-				resultTable.setBorder(BorderFactory.createLineBorder(Color.black));
+				try {
+					resultTable = new MyResultTable(cd.getCtrlResults().getLastResultFormatted(idResult));
+					resultTable.setPreferredSize(new Dimension(350,200));
+					resultTable.setBorder(BorderFactory.createLineBorder(Color.black));
+					threshold.setEnabled(true);
+					thresholdLabel.setForeground(Color.black);
+					saveResult.setEnabled(true);
+					hasResult = true;
+				}
+				catch (NullPointerException p){
+					VistaDialog.setDialog("Error", "No se ha podido acceder al resultado\n"
+											     + "@Victor fix your shit", new String[]{"Continue"}, VistaDialog.DialogType.ERROR_MESSAGE);
+				}
 			}
 			
-				threshold.setEnabled(true);
-				thresholdLabel.setForeground(Color.black);
-				saveResult.setEnabled(true);
-				hasResult = true;
 			//}
 		}
 		else if (e.getSource().equals(reuseSearch)){
