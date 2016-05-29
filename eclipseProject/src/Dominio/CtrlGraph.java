@@ -294,13 +294,13 @@ public class CtrlGraph {
 	private ArrayList<ArrayList<String>> formatRelations(Matrix matrix, Node.Type type) {
 		ArrayList<ArrayList<String>> ret = new ArrayList<ArrayList<String>>();		
 		for (int i = 0; i < matrix.getNRows(); ++i) {
-			HashMap<Integer, Float> aRow = new HashMap<Integer, Float>();
+			ArrayList<Float> aRow = new ArrayList<Float>();
 			aRow = matrix.getRow(i);
-			for(Map.Entry<Integer, Float> entry: aRow.entrySet()){
-				if(entry.getValue() != 0.0f){
+			for (int j = 0; j < aRow.size(); j++) {
+				Float relatedness = aRow.get(i);
+				if(relatedness != 0.0f){
 					ArrayList<String> col = new ArrayList<String>();
 					col.addAll(formatNode(i, graph.getNode(i, type)));
-					int j = entry.getKey();
 					col.addAll(formatNode(j, graph.getNode(j, Node.Type.Paper)));
 					ret.add(col);
 				}
@@ -312,15 +312,16 @@ public class CtrlGraph {
 	
 	private ArrayList<ArrayList<String>> formatNodeRelations(Matrix matrix, Integer index){
 		ArrayList<ArrayList<String>> ret = new ArrayList<ArrayList<String>>();
-		HashMap<Integer, Float> aRow = new HashMap<Integer, Float>();
+		ArrayList<Float> aRow = new ArrayList<Float>();
 		aRow = matrix.getRow(index);
-		for(Map.Entry<Integer, Float> entry: aRow.entrySet()){
-			if(entry.getValue() != 0.0f){
+		for (int i = 0; i < aRow.size(); i++) {
+			Float relatedness = aRow.get(i);
+			if(relatedness != 0.0f){
 				ArrayList<String> col = new ArrayList<String>();
-				int j = entry.getKey();
-				col.addAll(formatNode(j, graph.getNode(j, Node.Type.Paper)));
+				col.addAll(formatNode(i, graph.getNode(i, Node.Type.Paper)));
 				ret.add(col);
 			}
+			
 		}
 		return ret;
 	}
