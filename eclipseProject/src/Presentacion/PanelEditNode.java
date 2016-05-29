@@ -214,6 +214,13 @@ public class PanelEditNode extends AbstractPanel{
 					}
 				}
 				);
+		PanelEditNode aux = this;
+		addRelationButton.addActionListener(
+				new ActionListener(){
+					public void actionPerformed(ActionEvent e){
+						aux.addVista(PanelSelectNode.class, true);
+					}
+				});
 		eraseRelationButton.addActionListener(
 				new ActionListener(){
 					public void actionPerformed(ActionEvent e){
