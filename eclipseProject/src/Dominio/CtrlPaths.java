@@ -166,7 +166,7 @@ public class CtrlPaths {
 			ArrayList<String> col = new ArrayList<String>();
 			col.add(entry.getKey());
 			col.add(entry.getValue().getDescripcio());
-			col.add(entry.getValue().getContingut().toString());
+			col.add(entry.getValue().getStringPath());
 			ret.add(col);
 		}
 		return ret;
