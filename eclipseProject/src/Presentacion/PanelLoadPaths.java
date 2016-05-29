@@ -13,6 +13,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
 import Dominio.CtrlPaths;
+import Dominio.CtrlSearch;
 import Presentacion.VistaPrincipal.Panels;
 
 public class PanelLoadPaths extends AbstractPanel{
@@ -46,8 +47,7 @@ public class PanelLoadPaths extends AbstractPanel{
 		pathsAndActionsPanel = new JPanel();
 		pathsPanel = new JPanel();
 		actionsPanel = new JPanel();
-		paths = cp.getFormattedPaths();
-		pathsList = new MyResultsAndPathsList(paths);
+		pathsList = new MyResultsAndPathsList(cp);
 		editar = new JButton("Edit");
 		añadir = new JButton("Add");
 		precalculate = new JButton("Precalculate");
@@ -103,7 +103,9 @@ public class PanelLoadPaths extends AbstractPanel{
 			public void actionPerformed(ActionEvent event) {
 				if (pathsList.indexSelected()) {
 					int index = pathsList.getSelectedIndex();
-					cd.getCtrlSearch().precalculePath(paths.get(index).get(0));
+					CtrlSearch cs = cd.getCtrlSearch();
+					ArrayList<String> fp = pathsList.getFormattedPath();
+					cs.precalculePath(fp.get(0));
 					System.out.println("hola");
 				}
 				else { System.out.println("Selecciona un resultado");
@@ -113,7 +115,7 @@ public class PanelLoadPaths extends AbstractPanel{
 		editar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				if (pathsList.indexSelected()) {
-					int index = pathsList.getSelectedIndex();
+					//int index = pathsList.getSelectedIndex();
 					//Llamar a panelEditPath
 					System.out.println("hola");
 				}

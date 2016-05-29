@@ -212,6 +212,10 @@ public class CtrlDominio {
 	public CtrlPaths getCtrlPaths() {
 		return ctrlPaths;
 	}
+	
+	public CtrlSearch getCtrlSearch() {
+		return ctrlSearch;
+	}
 
 	public CtrlResults getCtrlResults() {
 		return ctrlResults;
