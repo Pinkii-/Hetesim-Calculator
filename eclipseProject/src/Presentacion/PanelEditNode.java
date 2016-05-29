@@ -27,7 +27,7 @@ import javax.swing.JList;
 public class PanelEditNode extends AbstractPanel{
 
 
-	DefaultListModel<String> model = new DefaultListModel<String>();
+	DefaultListModel<String> relationsListModel = new DefaultListModel<String>();
 	JList<String> relationsList;
 
 	JLabel nameLabel = new JLabel("Name: ");
@@ -53,6 +53,7 @@ public class PanelEditNode extends AbstractPanel{
 	
 	ArrayList<String> nodeInfo;
 	ArrayList<String> newNodeInfo;
+	ArrayList<ArrayList<String>> nodeRelationsData;
 	ArrayList<ArrayList<String>> relationsToErase;
 	ArrayList<ArrayList<String>> relationsToAdd;
 	private static final long serialVersionUID = 1L;
@@ -147,7 +148,7 @@ public class PanelEditNode extends AbstractPanel{
 		nodeRelationsPanel.add(saveButton);
 		nodeRelationsPanel.add(exitButton);
 		
-		relationsList = new JList<String>(model);
+		relationsList = new JList<String>(relationsListModel);
 		sl_nodeRelationsPanel.putConstraint(SpringLayout.NORTH, relationsList, 20, SpringLayout.SOUTH, relationsLabel);
 		sl_nodeRelationsPanel.putConstraint(SpringLayout.WEST, relationsList, 0, SpringLayout.WEST, relationsLabel);
 		sl_nodeRelationsPanel.putConstraint(SpringLayout.SOUTH, relationsList, -10, SpringLayout.NORTH, addRelationButton);
@@ -216,7 +217,12 @@ public class PanelEditNode extends AbstractPanel{
 		eraseRelationButton.addActionListener(
 				new ActionListener(){
 					public void actionPerformed(ActionEvent e){
-						//TODO
+						ArrayList<String> erasedRelation = nodeRelationsData.get(relationsList.getSelectedIndex());
+						relationsToErase.add(
+								ctrlGraph.getNodeFormatted(
+								Integer.valueOf(erasedRelation.get(0)),
+								erasedRelation.get(2)
+								));
 					}
 				});
 		resetValuesButton.addActionListener(
@@ -272,16 +278,16 @@ public class PanelEditNode extends AbstractPanel{
 	}
 	
 	private void drawRelations(){
-		ArrayList<ArrayList<String>> data = ctrlGraph.getNodeRelationsFormatted(Integer.parseInt(nodeInfo.get(0)),
+		 nodeRelationsData = ctrlGraph.getNodeRelationsFormatted(Integer.parseInt(nodeInfo.get(0)),
 				nodeInfo.get(2));
 		int i = 0;
-		for(ArrayList<String> arr: data){
+		for(ArrayList<String> arr: nodeRelationsData){
 			System.out.println(i);
 			String columnData = new String();
 			for(String s: arr){
 				columnData += s + " ";
 			}
-			model.addElement(columnData);
+			relationsListModel.addElement(columnData);
 			++i;
 		}
 	}
