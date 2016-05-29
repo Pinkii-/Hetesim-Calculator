@@ -31,7 +31,7 @@ public class PanelLoadPaths extends AbstractPanel{
 	private ArrayList<ArrayList<String>> paths;
 	private JScrollPane scrollPane;
 	private JButton editar;
-	private JButton añadir;
+	private JButton anadir;
 	private JButton precalculate;
 
 	public PanelLoadPaths(VistaPrincipal vp) {
@@ -49,7 +49,7 @@ public class PanelLoadPaths extends AbstractPanel{
 		paths = cp.getFormattedPaths();
 		pathsList = new MyResultsAndPathsList(paths);
 		editar = new JButton("Edit");
-		añadir = new JButton("Add");
+		anadir = new JButton("Add");
 		precalculate = new JButton("Precalculate");
 		BoxLayout bl = new BoxLayout(this,BoxLayout.LINE_AXIS);
 		setLayout(bl);
@@ -80,10 +80,10 @@ public class PanelLoadPaths extends AbstractPanel{
 		
 		actionsPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		actionsPanel.add(editar);
-		actionsPanel.add(añadir);
+		actionsPanel.add(anadir);
 		actionsPanel.add(precalculate);
 		editar.setAlignmentY(BOTTOM_ALIGNMENT);
-		añadir.setAlignmentY(BOTTOM_ALIGNMENT);
+		anadir.setAlignmentY(BOTTOM_ALIGNMENT);
 		
 
 	}
@@ -122,7 +122,7 @@ public class PanelLoadPaths extends AbstractPanel{
 			}
 		});
 		
-		añadir.addActionListener(new ActionListener() {
+		anadir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				vp.changePanel(Panels.NewPath);
 			}

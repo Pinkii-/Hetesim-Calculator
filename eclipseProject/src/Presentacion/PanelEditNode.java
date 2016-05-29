@@ -44,6 +44,7 @@ public class PanelEditNode extends AbstractPanel{
 	JButton addRelationButton = new JButton("Add new relation");
 	JButton saveButton = new JButton("Save");
 	JButton exitButton = new JButton("Exit");
+	JButton eraseRelationButton = new JButton("Erase Relation");
 
 	private static final long serialVersionUID = 1L;
 	CtrlGraph ctrlGraph;
@@ -118,6 +119,8 @@ public class PanelEditNode extends AbstractPanel{
 		SpringLayout sl_nodeRelationsPanel = new SpringLayout();
 		sl_nodeRelationsPanel.putConstraint(SpringLayout.WEST, addRelationButton, 20, SpringLayout.WEST, nodeRelationsPanel);
 		sl_nodeRelationsPanel.putConstraint(SpringLayout.SOUTH, addRelationButton, -10, SpringLayout.NORTH, exitButton);
+		sl_nodeRelationsPanel.putConstraint(SpringLayout.WEST, eraseRelationButton, 20, SpringLayout.EAST, addRelationButton);
+		sl_nodeRelationsPanel.putConstraint(SpringLayout.SOUTH, eraseRelationButton, 0, SpringLayout.SOUTH, addRelationButton);
 		sl_nodeRelationsPanel.putConstraint(SpringLayout.SOUTH, exitButton, -10, SpringLayout.SOUTH, nodeRelationsPanel);
 		sl_nodeRelationsPanel.putConstraint(SpringLayout.EAST, saveButton, -10, SpringLayout.WEST, exitButton);
 		sl_nodeRelationsPanel.putConstraint(SpringLayout.EAST, exitButton, -10, SpringLayout.EAST, nodeRelationsPanel);
@@ -127,6 +130,7 @@ public class PanelEditNode extends AbstractPanel{
 		nodeRelationsPanel.setLayout(sl_nodeRelationsPanel);
 		nodeRelationsPanel.add(relationsLabel);
 		nodeRelationsPanel.add(addRelationButton);
+		nodeRelationsPanel.add(eraseRelationButton);
 		nodeRelationsPanel.add(saveButton);
 		nodeRelationsPanel.add(exitButton);
 		
