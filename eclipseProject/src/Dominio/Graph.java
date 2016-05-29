@@ -3,11 +3,6 @@ package Dominio;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 /**
  *
@@ -21,7 +16,7 @@ public class Graph implements Serializable {
     int id;
     private Matrix autorPaper;
     private Matrix temaPaper;
-    private Matrix confPaper; 
+    private Matrix confPaper;
     private ArrayList<Node> autors;
     private ArrayList<Node> conferencies;
     private ArrayList<Node> papers;
@@ -54,7 +49,7 @@ public class Graph implements Serializable {
     public String getNom() {
         return nom;
     }
-    
+     
     public void setNom(String s) {
         this.nom = s;
     }
@@ -65,154 +60,217 @@ public class Graph implements Serializable {
         switch(tipus) {
             case Autor: 
                 res = autors.size();
-                aux.initialize(tipus,res ,nom);
+                aux.initialize(tipus,res,nom);
                 autors.add(aux);
-                autorPaper.addNodeRow();
+                autorPaper.addNode();
                 break;
             case Conferencia:
                 res = conferencies.size();
                 aux.initialize(tipus,res,nom);
                 conferencies.add(aux);
-                confPaper.addNodeRow();
+                confPaper.addNode();
                 break;
             case Paper:
                 res = papers.size();
                 aux.initialize(tipus,res,nom);
                 papers.add(aux);
-                autorPaper.addNodeCol();
-                confPaper.addNodeCol();
-                temaPaper.addNodeCol();
+                autorPaper.addPapers();
+                confPaper.addPapers();
+                temaPaper.addPapers();
                 break;
             case Terme:
                 res = termes.size();
                 aux.initialize(tipus,res,nom);
                 termes.add(aux);
-                temaPaper.addNodeRow();
+                temaPaper.addNode();
                 break;
-            default: res = -1;
+            default: 
+                System.out.println ("Tipo incorrecto");
+                res = -1;
                 break;
         }
         return res;
     }
     
     public void addLabel(int index, Node.Label label, Node.Type tipus) {
-        switch(tipus) {
-            case Autor: autors.get(index).setLabel(label);
-                break; 
-            case Conferencia: conferencies.get(index).setLabel(label);
-                break;
-            case Paper: papers.get(index).setLabel(label);
-                break;
-            default: break;
+        if (label == Node.Label.AI || label == Node.Label.DataMining || label == Node.Label.Database || label == Node.Label.InformationRetrieval) {
+            Node aux;
+            switch(tipus) {
+                case Autor: aux = autors.get(index);
+                    if (aux != null) autors.get(index).setLabel(label);
+                    else System.out.println ("Nodo borrado");
+                    break; 
+                case Conferencia: aux = conferencies.get(index);
+                    if (aux != null) conferencies.get(index).setLabel(label);
+                    else System.out.println ("Nodo borrado");
+                    break;
+                case Paper: aux = papers.get(index);
+                    if (aux != null) papers.get(index).setLabel(label);
+                    else System.out.println ("Nodo borrado");
+                    break;
+                default: 
+                    System.out.println ("Tipo incorrecto");
+                    break;
+            }
         }
+        else System.out.println ("Label incorrecta");
     }
     
-    public boolean existsNode(Node n) {
+    public Integer existsNode(Node n) {
+    	Integer i = 0;
+        boolean trob = false;
         switch(n.getTipus()) {
-            case Autor: if(autors.contains(n)) return true;
-            case Conferencia: if(conferencies.contains(n)) return true;
-            case Paper: if(papers.contains(n)) return true;
-            case Terme: if (termes.contains(n)) return true;
-            default: return false;
+            case Autor:         
+                while (i < autors.size() && !trob) {
+                    if (autors.get(i) != null) trob = (autors.get(i).equals(n));
+                    if (!trob) ++i;
+                }
+                if (!trob) i = -1;
+                return i;
+            case Conferencia:
+                while (i < conferencies.size() && !trob) { 
+                    if (conferencies.get(i) != null) trob = (conferencies.get(i).equals(n));
+                    if (!trob) ++i;
+                }
+                if (!trob) i = -1;
+                return i;
+            case Paper:
+                while (i < papers.size() && !trob) {
+                    if (papers.get(i) != null) trob = (papers.get(i).equals(n));
+                    if (!trob) ++i;
+                }
+                if (!trob) i = -1;
+                return i;
+            case Terme: 
+                while (i < termes.size() && !trob) {
+                    if (termes.get(i) != null) trob = (termes.get(i).equals(n));
+                    if (!trob) ++i;
+                }
+                if (!trob) i = -1;
+                return i;
+            default:
+                System.out.println ("Tipo incorrecto");
+                return -1;            
         }
     }
     
     public Node getNode(int index, Node.Type tipus) {
         switch(tipus) {
-            case Autor: return autors.get(index);
-            case Conferencia: return conferencies.get(index);
-            case Paper: return papers.get(index);
-            case Terme: return termes.get(index);
-            default: return null;
+            case Autor: if (autors.get(index) != null) return autors.get(index);
+                else return null;
+            case Conferencia: if (conferencies.get(index) != null) return conferencies.get(index);
+                else return null;
+            case Paper: if (papers.get(index) != null) return papers.get(index);
+                else return null; 
+            case Terme: if (termes.get(index) != null) return termes.get(index);
+                else return null;
+            default: 
+                System.out.println ("Tipo incorrecto");
+                return null;
         }
     }
     
-    public boolean existsArc(Node a, Node b) {
+    public boolean existsArc(Node a, Node b) throws Exception {
         int i, j;
-        j = papers.indexOf(b);
+        j = existsNode(b);
         switch(a.getTipus()) {
-            case Autor: i = autors.indexOf(a);
-                return autorPaper.existeixArc(i,j);
-            case Conferencia: i = conferencies.indexOf(a);
-                return confPaper.existeixArc(i,j);
-            case Terme: i = termes.indexOf(a);
-                return temaPaper.existeixArc(i,j);
-            default: return false;
+            case Autor: 
+                i = existsNode(a);
+                if (i != -1 && j != -1) return autorPaper.existeixArc(i,j);
+                else throw new RuntimeException("Graph::existsArc() : No existe alguno de los nodos");
+            case Conferencia: 
+                i = existsNode(a);
+                if (i != -1 && j != -1) return confPaper.existeixArc(i,j);
+                else throw new RuntimeException("Graph::existsArc() : No existe alguno de los nodos");
+            case Terme: 
+                i = existsNode(a);
+                if (i != -1 && j != -1) return temaPaper.existeixArc(i,j);
+                else throw new RuntimeException("Graph::existsArc() : No existe alguno de los nodos");
+            default: 
+                System.out.println ("Tipo incorrecto");
+                return false;
         }
     } 
     
     public void deleteNode(Node a) {
-        int pos;
-        switch(a.getTipus()) {
-            case Autor:
-                if(autors.contains(a)) {
-                    pos = autors.indexOf(a);
-                    autorPaper.borraFila(pos);
-                    autors.set(pos,null);
-                }
-                break;
-            case Conferencia: 
-                if(conferencies.contains(a)) {
-                    pos = conferencies.indexOf(a);
-                    confPaper.borraFila(pos);
-                    conferencies.set(pos,null);
-                } 
-                break;
-            case Paper: 
-                if(papers.contains(a)) {
-                    pos = papers.indexOf(a);
-                    autorPaper.borraCol(pos);
-                    confPaper.borraCol(pos);
-                    temaPaper.borraCol(pos);
-                    papers.set(pos,null);
-                }
-                break;
-            case Terme: 
-                if (termes.contains(a)) {
-                    pos = termes.indexOf(a);
-                    temaPaper.borraFila(pos);
-                    termes.set(pos,null);
-                }
-                break;
-            default: break;
+        int i = existsNode(a);
+        if (i != -1) {
+            switch(a.getTipus()) {
+                case Autor:
+                    autorPaper.borraFila(i);
+                    autors.set(i,null);
+                    System.out.println("haber estudiao" + autors.get(5625)+ "");
+                    break;
+                case Conferencia:
+                    confPaper.borraFila(i);
+                    conferencies.set(i,null); 
+                    break;
+                case Paper: 
+                    autorPaper.borraCol(i);
+                    confPaper.borraCol(i);
+                    temaPaper.borraCol(i);
+                    papers.set(i,null);
+                    break;
+                case Terme: 
+                    temaPaper.borraFila(i);
+                    termes.set(i,null);
+                    break;
+                default: 
+                    System.out.println ("Tipo incorrecto");
+                    break;
+            }
         }
     }
     
     public void deleteArc(Node a, Node b) {
         int i, j;
-        j = papers.indexOf(b);
+        j = existsNode(b);
         switch(a.getTipus()) {
             case Autor: 
-                i = autors.indexOf(a);
-                autorPaper.esborrarArc(i,j);
+                i = existsNode(a);
+                if (i != -1 && j != -1) autorPaper.esborrarArc(i,j);
+                else System.out.println ("No existeix el Node/s");
                 break;
             case Conferencia: 
-                i = conferencies.indexOf(a);
-                confPaper.esborrarArc(i,j);
+                i = existsNode(a);
+                if (i != -1 && j != -1) confPaper.esborrarArc(i,j);
+                else System.out.println ("No existeix el Node/s");
                 break;
-            case Terme: 
-                i = termes.indexOf(a);
-                temaPaper.esborrarArc(i,j);
+            case Terme:
+                i = existsNode(a);
+                if (i != -1 && j != -1) temaPaper.esborrarArc(i,j);
+                else System.out.println ("No existeix el Node/s");
                 break;
-            default: break;
+            default:
+                System.out.println ("Tipo incorrecto");
+                break;
         }
     }
     
     public void setNode(Node a, String s) {
+        Integer aux;
         switch(a.getTipus()) {
-            case Autor: 
-                autors.get(autors.indexOf(a)).setNom(s);
+            case Autor:
+                aux = existsNode(a);
+                System.out.println("ojo cuiao");
+                if (aux != -1) autors.get(aux).setNom(s);
+                else System.out.println("funca mal");
                 break;
-            case Conferencia: 
-                conferencies.get(conferencies.indexOf(a)).setNom(s);
+            case Conferencia:
+                aux = existsNode(a);
+                if (aux != -1) conferencies.get(aux).setNom(s);
                 break;
-            case Paper:
-                papers.get(papers.indexOf(a)).setNom(s);
+             case Paper:
+                aux = existsNode(a);
+                if (aux != -1) papers.get(aux).setNom(s);
                 break;
-            case Terme: 
-                termes.get(termes.indexOf(a)).setNom(s);
+            case Terme:
+                aux = existsNode(a);
+                if (aux != -1) termes.get(aux).setNom(s);
                 break;
-            default: break;
+            default: 
+                System.out.println ("Tipo incorrecto");
+                break;
         }
     }
     
@@ -224,7 +282,9 @@ public class Graph implements Serializable {
                 break;
             case Terme: temaPaper.afegirArc(index2, indexpaper);
                 break;
-            default: break;
+            default: 
+                System.out.println ("Tipo incorrecto");
+                break;
         }
     }
     
@@ -239,5 +299,57 @@ public class Graph implements Serializable {
     public Matrix getMatrixConf() {
         return confPaper;
     }
+    
+    public ArrayList<Node> getAutors() {
+        return autors;
+    }
+    
+    public ArrayList<Node> getConferencies() {
+        return conferencies;
+    }
+    
+    public ArrayList<Node> getPapers() {
+        return papers;
+    }
+    
+    public ArrayList<Node> getTermes() {
+        return termes;
+    }
+    
+    public void escriuArray(Node.Type tipus) {
+        switch(tipus) {
+            case Autor: 
+                for (int i = 0; i < autors.size(); ++i) {
+                    if (autors.get(i) != null) System.out.println ("Autor " + i + ": " + autors.get(i).getNom() + "");
+                    else System.out.println ("Autor " + i + ": esborrat");
+                }
+                break;
+            case Conferencia: 
+                for (int i = 0; i < conferencies.size(); ++i) { 
+                    if (conferencies.get(i) != null) System.out.println ("Conferencia " + i + ": " + conferencies.get(i).getNom() + ""); 
+                    else System.out.println ("Conferencia " + i + ": esborrada");
+                }
+                break;
+            case Paper: 
+                for (int i = 0; i < papers.size(); ++i) {
+                    if (papers.get(i) != null) System.out.println ("Paper " + i + ": " + papers.get(i).getNom() + "");
+                    else System.out.println ("Paper " + i + ": esborrat");
+                }
+                break;
+            case Terme: 
+                for (int i = 0; i < termes.size(); ++i) {
+                    if (termes.get(i) != null) System.out.println ("Terme " + i + ": " + termes.get(i).getNom() + "");
+                    else System.out.println ("Terme " + i + ": esborrat");
+                }
+                break;
+            default: 
+                System.out.println ("Tipo incorrecto");
+                break;
+        }
+    }
+        
+    public int numPapers() {
+    	return papers.size();
+    }
 }
- 
+  
