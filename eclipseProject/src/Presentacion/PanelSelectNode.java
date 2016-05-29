@@ -19,11 +19,18 @@ public class PanelSelectNode extends AbstractPanel{
 
 	DefaultListModel<String> relationsListModel = new DefaultListModel<String>();
 	JComboBox<String> typeComboBox = new JComboBox<String>();
+	SpringLayout springLayout = new SpringLayout();
+
+	JLabel lblSelectANode = new JLabel("Select a Node: ");
+	JLabel lblNodeType = new JLabel("Node Type: ");
+	JLabel lblNodePaper = new JLabel("Paper");
+	
+	ArrayList<ArrayList<String>> nodesInfo;
+	INodeNeeder nodeNeeder; 
 
 
 	public PanelSelectNode(VistaAbstracta vp) {
 		super(vp);
-		SpringLayout springLayout = new SpringLayout();
 		this.setLayout(springLayout);
 
 		JButton btnCancel = new JButton("Cancel");
@@ -34,14 +41,14 @@ public class PanelSelectNode extends AbstractPanel{
 		JButton btnGetNode = new JButton("Get node");
 		springLayout.putConstraint(SpringLayout.NORTH, btnGetNode, 0, SpringLayout.NORTH, btnCancel);
 		springLayout.putConstraint(SpringLayout.EAST, btnGetNode, -10, SpringLayout.WEST, btnCancel);
+		
+
 		this.add(btnGetNode);
 
-		JLabel lblSelectANode = new JLabel("Select a Node:");
 		springLayout.putConstraint(SpringLayout.NORTH, lblSelectANode, 10, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, lblSelectANode, 10, SpringLayout.WEST, this);
 		this.add(lblSelectANode);
 
-		JLabel lblNodeType = new JLabel("Node Type:");
 		springLayout.putConstraint(SpringLayout.NORTH, lblNodeType, 10, SpringLayout.SOUTH, lblSelectANode);
 		springLayout.putConstraint(SpringLayout.WEST, lblNodeType, 10, SpringLayout.WEST, lblSelectANode);
 		this.add(lblNodeType);
@@ -52,9 +59,64 @@ public class PanelSelectNode extends AbstractPanel{
 		this.add(lblNodeList);
 		
 		
+
+		
+
+
+		JList<String> list = new JList<String>(relationsListModel);
+		springLayout.putConstraint(SpringLayout.NORTH, list, 10, SpringLayout.SOUTH, lblNodeList);
+		springLayout.putConstraint(SpringLayout.WEST, list, 0, SpringLayout.WEST, lblNodeList);
+		springLayout.putConstraint(SpringLayout.SOUTH, list, -10, SpringLayout.NORTH, btnCancel);
+		springLayout.putConstraint(SpringLayout.EAST, list, -10, SpringLayout.EAST, this);
+		this.add(list);
+		
+		
+		btnGetNode.addActionListener(
+				new ActionListener(){
+					public void actionPerformed(ActionEvent e){
+						ArrayList<String> node = nodesInfo.get(list.getSelectedIndex());
+						nodeNeeder.setNode(node);
+						close();
+					}
+				}
+				);		
+	}
+	
+	private void setNodesList(String nodeType){
+		relationsListModel.clear();
+		nodesInfo = cd.getCtrlGraph().getformattedNodesOfType(nodeType);
+		for (int i = 0; i < nodesInfo.size(); i++) {
+			ArrayList<String> nodesInfoRow = nodesInfo.get(i);
+			String listString = new String();
+			listString = nodesInfoRow.get(1);
+			relationsListModel.addElement(listString);
+		}
+	}
+	
+	public void setNeeder(INodeNeeder daddy, boolean isAPaper){
+		if(isAPaper){
+			initTypeComboBox();
+			setNodesList(CtrlDominio.getNodeTypeOfIndex(typeComboBox.getSelectedIndex()));
+		}
+		else{
+			initTypeLabel();
+			setNodesList("Paper");
+		}
+		nodeNeeder = daddy;
+	}
+	
+	private void initTypeLabel(){
+		springLayout.putConstraint(SpringLayout.NORTH, lblNodePaper, 10, SpringLayout.SOUTH, lblSelectANode);
+		springLayout.putConstraint(SpringLayout.WEST, lblNodePaper, 10, SpringLayout.EAST, lblNodeType);
+		this.add(lblNodePaper);
+	}
+	
+	private void initTypeComboBox(){
 		//Initializing the type combo box
 		ArrayList<String> typeData = new ArrayList<String>();
 		typeData.addAll(CtrlDominio.getTypes());
+		//Remove Paper type nodes, because we'll only use the combo box w/ papers
+		typeData.remove(CtrlDominio.getNodeTypeIndex("Paper"));
 		String[] typeDataArray = typeData.toArray(new String[typeData.size()]); 
 		typeComboBox = new JComboBox<String>(typeDataArray);
 		typeComboBox.setEnabled(true);
@@ -65,32 +127,12 @@ public class PanelSelectNode extends AbstractPanel{
 						setNodesList(CtrlDominio.getNodeTypeOfIndex(typeComboBox.getSelectedIndex()));
 					}
 				});
-		
 		springLayout.putConstraint(SpringLayout.NORTH, typeComboBox, 10, SpringLayout.SOUTH, lblSelectANode);
 		springLayout.putConstraint(SpringLayout.WEST, typeComboBox, 10, SpringLayout.EAST, lblNodeType);
 		this.add(typeComboBox);
-
-		JList<String> list = new JList<String>(relationsListModel);
-		springLayout.putConstraint(SpringLayout.NORTH, list, 10, SpringLayout.SOUTH, lblNodeList);
-		springLayout.putConstraint(SpringLayout.WEST, list, 0, SpringLayout.WEST, lblNodeList);
-		springLayout.putConstraint(SpringLayout.SOUTH, list, -10, SpringLayout.NORTH, btnCancel);
-		springLayout.putConstraint(SpringLayout.EAST, list, -10, SpringLayout.EAST, this);
-		this.add(list);
 		
-		//Initializing the node's list
-		setNodesList(CtrlDominio.getNodeTypeOfIndex(typeComboBox.getSelectedIndex()));
 	}
 	
-	private void setNodesList(String nodeType){
-		relationsListModel.clear();
-		ArrayList<ArrayList<String>> nodesInfo = cd.getCtrlGraph().getformattedNodesOfType(nodeType);
-		for (int i = 0; i < nodesInfo.size(); i++) {
-			ArrayList<String> nodesInfoRow = nodesInfo.get(i);
-			String listString = new String();
-			listString = nodesInfoRow.get(1);
-			relationsListModel.addElement(listString);
-		}
-	}
 	/**
 	 * 
 	 */

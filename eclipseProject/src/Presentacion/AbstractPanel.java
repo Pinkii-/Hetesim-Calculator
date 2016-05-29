@@ -80,7 +80,8 @@ abstract public class AbstractPanel extends JPanel {
 		
 		
 		newView.setEnabled(true);
-		newView.pack();
+//		newView.pack();
+		newView.show();
 		newView.setVisible(true);
 		
 		childs.add(newView);
