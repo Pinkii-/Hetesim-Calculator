@@ -21,6 +21,8 @@ import Dominio.CtrlGraph;
 import Dominio.Node;
 
 import javax.swing.SpringLayout;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.JList;
 
 //public class PanelEditNode extends AbstractPanel{
@@ -149,18 +151,33 @@ public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 		nodeRelationsPanel.add(exitButton);
 		
 		relationsList = new JList<String>(relationsListModel);
+		
+		relationsList.addListSelectionListener(
+				new ListSelectionListener(){
+					@Override
+					public void valueChanged(ListSelectionEvent arg0) {
+						if(!relationsList.isSelectionEmpty()){
+							eraseRelationButton.setEnabled(true);
+						}
+						
+					}
+					
+				}
+				);
+		
 		sl_nodeRelationsPanel.putConstraint(SpringLayout.NORTH, relationsList, 20, SpringLayout.SOUTH, relationsLabel);
 		sl_nodeRelationsPanel.putConstraint(SpringLayout.WEST, relationsList, 0, SpringLayout.WEST, relationsLabel);
 		sl_nodeRelationsPanel.putConstraint(SpringLayout.SOUTH, relationsList, -10, SpringLayout.NORTH, addRelationButton);
 		sl_nodeRelationsPanel.putConstraint(SpringLayout.EAST, relationsList, -10, SpringLayout.EAST, nodeRelationsPanel);
 		nodeRelationsPanel.add(relationsList);
+		System.out.println(CtrlDominio.getTypes());
 		//TODO erase!
 		try {
 			cd.importGraph("C:/Users/Usuari/Desktop/PROP/GraphForTesting");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		setNodeToEdit(0, "Autor");
+		setNodeToEdit(0, "Paper");
 	}
 	
 	private void initTypeInfo(){
@@ -227,6 +244,7 @@ public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 						aux2.setNeeder(aux, false);
 						}
 				});
+		eraseRelationButton.setEnabled(false);
 		eraseRelationButton.addActionListener(
 				new ActionListener(){
 					public void actionPerformed(ActionEvent e){
@@ -236,6 +254,7 @@ public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 								Integer.valueOf(erasedRelation.get(0)),
 								erasedRelation.get(2)
 								));
+						drawRelations();
 					}
 				});
 		resetValuesButton.addActionListener(

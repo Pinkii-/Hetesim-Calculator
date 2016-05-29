@@ -70,6 +70,7 @@ public class PanelSelectNode extends AbstractPanel{
 		springLayout.putConstraint(SpringLayout.EAST, list, -10, SpringLayout.EAST, this);
 		this.add(list);
 		
+		
 		btnGetNode.addActionListener(
 				new ActionListener(){
 					public void actionPerformed(ActionEvent e){
@@ -78,10 +79,7 @@ public class PanelSelectNode extends AbstractPanel{
 						close();
 					}
 				}
-				);
-		
-		
-		//Initializing the node's list
+				);		
 	}
 	
 	private void setNodesList(String nodeType){
@@ -118,7 +116,7 @@ public class PanelSelectNode extends AbstractPanel{
 		ArrayList<String> typeData = new ArrayList<String>();
 		typeData.addAll(CtrlDominio.getTypes());
 		//Remove Paper type nodes, because we'll only use the combo box w/ papers
-		typeData.remove(1);
+		typeData.remove(CtrlDominio.getNodeTypeIndex("Paper"));
 		String[] typeDataArray = typeData.toArray(new String[typeData.size()]); 
 		typeComboBox = new JComboBox<String>(typeDataArray);
 		typeComboBox.setEnabled(true);
