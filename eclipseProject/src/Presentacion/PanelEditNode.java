@@ -24,7 +24,7 @@ import javax.swing.SpringLayout;
 import javax.swing.JList;
 
 //public class PanelEditNode extends AbstractPanel{
-public class PanelEditNode extends AbstractPanel{
+public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 
 
 	DefaultListModel<String> relationsListModel = new DefaultListModel<String>();
@@ -218,8 +218,14 @@ public class PanelEditNode extends AbstractPanel{
 		addRelationButton.addActionListener(
 				new ActionListener(){
 					public void actionPerformed(ActionEvent e){
-						aux.addVista(PanelSelectNode.class, true);
-					}
+						aux.addVista(PanelSelectNode.class, false);
+						PanelSelectNode aux2 = (PanelSelectNode) childs.get(0).getContentPane().getComponent(0);
+						//If the node we are treating is a paper, we'll ask differently for a node, y'know?
+						if(nodeInfo.get(2).equals("Paper")){
+							aux2.setNeeder(aux, true);
+						}
+						aux2.setNeeder(aux, false);
+						}
 				});
 		eraseRelationButton.addActionListener(
 				new ActionListener(){
@@ -297,5 +303,11 @@ public class PanelEditNode extends AbstractPanel{
 			relationsListModel.addElement(columnData);
 			++i;
 		}
+	}
+
+
+	@Override
+	public void setNode(ArrayList<String> nodeInfo) {
+		relationsListModel.addElement(nodeInfo.get(1));		
 	}
 }
