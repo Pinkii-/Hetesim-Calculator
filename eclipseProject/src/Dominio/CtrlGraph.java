@@ -27,16 +27,19 @@ public class CtrlGraph {
 
 	public void setGraph(Graph graph) {
 		isModified = true;
+		graph.id = (int) System.currentTimeMillis();
 		this.graph = graph;
 	}
 
 	public int addNode(String nodeType, String nodeName) {
 		isModified = true;
+		graph.id = (int) System.currentTimeMillis();
 		return graph.addNode(Utils.getNodeType(nodeType), nodeName);
 	}
 
 	public void modifyNode(Integer nodeIndex, String nodeType, String newName) {
 		isModified = true;
+		graph.id = (int) System.currentTimeMillis();
 		Node n = graph.getNode(nodeIndex, Utils.getNodeType(nodeType));
 		Node.Label label = Utils.getNodeLabel(0);
 		n.setLabel(label);
@@ -45,6 +48,7 @@ public class CtrlGraph {
 
 	public void eraseNode(Integer nodeIndex, String nodeType) {
 		isModified = true;
+		graph.id = (int) System.currentTimeMillis();
 		Node n = graph.getNode(nodeIndex, Utils.getNodeType(nodeType));
 		graph.deleteNode(n);
 	}
@@ -52,6 +56,7 @@ public class CtrlGraph {
 	// PRE: node1 MUST be a paper
 	public void addNodeRelation(Integer node1Index, Integer node2Index, String node2Type) {
 		isModified = true;
+		graph.id = (int) System.currentTimeMillis();
 		Node n1 = null;
 		Node n2 = null;
 		try {
@@ -87,6 +92,7 @@ public class CtrlGraph {
 	// PRE: node1 MUST be a paper
 	public void eraseNodeRelation(Integer node1IndexPaper, Integer node2Index, String node2Type) {
 		isModified = true;
+		graph.id = (int) System.currentTimeMillis();
 		Node n1 = graph.getNode(node1IndexPaper, Node.Type.Paper);
 		Node n2 = graph.getNode(node2Index, Utils.getNodeType(node2Type));
 		try {
