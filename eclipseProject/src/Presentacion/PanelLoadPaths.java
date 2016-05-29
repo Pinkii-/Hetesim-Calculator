@@ -105,7 +105,7 @@ public class PanelLoadPaths extends AbstractPanel{
 					int index = pathsList.getSelectedIndex();
 					CtrlSearch cs = cd.getCtrlSearch();
 					ArrayList<String> fp = pathsList.getFormattedPath();
-					cs.precalculePath(fp.get(0));
+					cs.precalculePath(fp.get(2));
 					System.out.println("hola");
 				}
 				else { System.out.println("Selecciona un resultado");
