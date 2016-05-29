@@ -45,13 +45,18 @@ public class PanelEditNode extends AbstractPanel{
 	JButton saveButton = new JButton("Save");
 	JButton exitButton = new JButton("Exit");
 	JButton eraseRelationButton = new JButton("Erase Relation");
-
+	JButton resetValuesButton = new JButton("Revert changes");
+	
+	JPanel nodeInfoPanel = new JPanel();
+	JPanel nodeRelationsPanel = new JPanel();
+	JLabel mainInfoLabel = new JLabel("Node Info:");
+	
+	ArrayList<String> nodeInfo;
+	ArrayList<String> newNodeInfo;
+	ArrayList<ArrayList<String>> relationsToErase;
+	ArrayList<ArrayList<String>> relationsToAdd;
 	private static final long serialVersionUID = 1L;
 	CtrlGraph ctrlGraph;
-	ArrayList<String> nodeInfo;
-	private final JPanel nodeInfoPanel = new JPanel();
-	private final JPanel nodeRelationsPanel = new JPanel();
-	private final JLabel mainInfoLabel = new JLabel("Node Info:");
 	
 	private boolean unsavedChanges = false;
 	
@@ -85,24 +90,31 @@ public class PanelEditNode extends AbstractPanel{
 
 		this.add(nodeInfoPanel);
 		SpringLayout springLayout = new SpringLayout();
+		
 		springLayout.putConstraint(SpringLayout.NORTH, nameLabel, 10, SpringLayout.SOUTH, mainInfoLabel);
 		springLayout.putConstraint(SpringLayout.WEST, nameLabel, 0, SpringLayout.WEST, mainInfoLabel);
+		
 		springLayout.putConstraint(SpringLayout.NORTH, mainInfoLabel, 10, SpringLayout.NORTH, nodeInfoPanel);
 		springLayout.putConstraint(SpringLayout.WEST, mainInfoLabel, 10, SpringLayout.WEST, nodeInfoPanel);
+		
 		springLayout.putConstraint(SpringLayout.WEST, typeComboBox, 0, SpringLayout.WEST, nameTextField);
 		springLayout.putConstraint(SpringLayout.SOUTH, typeComboBox, 0, SpringLayout.SOUTH, typeLabel);
+		
 		springLayout.putConstraint(SpringLayout.NORTH, typeLabel, 10, SpringLayout.SOUTH, labelLabel);
 		springLayout.putConstraint(SpringLayout.WEST, typeLabel, 0, SpringLayout.WEST, labelLabel);
+		
 		springLayout.putConstraint(SpringLayout.WEST, labelComboBox, 0, SpringLayout.WEST, nameTextField);
 		springLayout.putConstraint(SpringLayout.SOUTH, labelComboBox, 0, SpringLayout.SOUTH, labelLabel);
+		
 		springLayout.putConstraint(SpringLayout.NORTH, labelLabel, 10, SpringLayout.SOUTH, nameLabel);
 		springLayout.putConstraint(SpringLayout.WEST, labelLabel, 0, SpringLayout.WEST, nameLabel);
+		
 		springLayout.putConstraint(SpringLayout.WEST, nameTextField, 10, SpringLayout.EAST, nameLabel);
 		springLayout.putConstraint(SpringLayout.SOUTH, nameTextField, 0, SpringLayout.SOUTH, nameLabel);
-		springLayout.putConstraint(SpringLayout.SOUTH, saveButton, 0, SpringLayout.SOUTH, exitButton);
-		springLayout.putConstraint(SpringLayout.EAST, saveButton, -10, SpringLayout.WEST, exitButton);
-		springLayout.putConstraint(SpringLayout.SOUTH, exitButton, -10, SpringLayout.SOUTH, this);
-		springLayout.putConstraint(SpringLayout.EAST, exitButton, -10, SpringLayout.EAST, this);
+		
+		springLayout.putConstraint(SpringLayout.WEST, resetValuesButton, 10, SpringLayout.WEST, nodeInfoPanel);
+		springLayout.putConstraint(SpringLayout.SOUTH, resetValuesButton, -10, SpringLayout.SOUTH, nodeInfoPanel);
+		
 		nodeInfoPanel.setLayout(springLayout);
 		nodeInfoPanel.add(mainInfoLabel);
 		nodeInfoPanel.add(nameLabel);
@@ -114,6 +126,7 @@ public class PanelEditNode extends AbstractPanel{
 		nodeInfoPanel.add(labelLabel);
 		nodeInfoPanel.add(labelComboBox);
 		labelComboBox.setMaximumSize(labelComboBox.getPreferredSize());
+		nodeInfoPanel.add(resetValuesButton);
 
 		this.add(nodeRelationsPanel);
 		SpringLayout sl_nodeRelationsPanel = new SpringLayout();
@@ -149,15 +162,16 @@ public class PanelEditNode extends AbstractPanel{
 		setNodeToEdit(0, "Autor");
 	}
 	
-	private void initDefaultValues(){
-		saveButton.setEnabled(false);
+	private void initTypeInfo(){
 		ArrayList<String> typeData = new ArrayList<String>();
 		typeData.add("None");
 		typeData.addAll(CtrlDominio.getTypes());
 		String[] typeDataArray = typeData.toArray(new String[typeData.size()]); 
 		typeComboBox = new JComboBox<String>(typeDataArray);
 		typeComboBox.setEnabled(false);
-		
+	}
+
+	private void initLabelInfo(){
 		labelComboBox = new JComboBox<String>();
 		ArrayList<String> labelData = new ArrayList<String>();
 		labelData.add("None");
@@ -166,28 +180,21 @@ public class PanelEditNode extends AbstractPanel{
 		labelComboBox = new JComboBox<String>(labelDataArray);
 		labelComboBox.addActionListener(
 				new ActionListener(){
-                    public void actionPerformed(ActionEvent e){
-                    	if(!(labelComboBox.getSelectedIndex() == (CtrlDominio.getIndexOfNodeLabel(nodeInfo.get(3)) + 1))){
-                    		System.out.println(labelComboBox.getSelectedIndex());
-                    		System.out.println(CtrlDominio.getIndexOfNodeLabel(nodeInfo.get(3)) + 1);
-                        	unsavedChanges = true;
-                    		saveButton.setEnabled(true);
-                    	}
+					public void actionPerformed(ActionEvent e){
+						if(!(labelComboBox.getSelectedIndex() == (CtrlDominio.getIndexOfNodeLabel(nodeInfo.get(3)) + 1))){
+							//System.out.println(labelComboBox.getSelectedIndex());
+							//System.out.println(CtrlDominio.getIndexOfNodeLabel(nodeInfo.get(3)) + 1);
+							newNodeInfo.set(3, String.valueOf(labelComboBox.getSelectedIndex()));
+							unsavedChanges = true;
+							saveButton.setEnabled(true);
+						}
 
-                    }
-				}
-				);
-		nameTextField.addActionListener(
-				new ActionListener(){
-                    public void actionPerformed(ActionEvent e){
-                    	if(!nameTextField.getText().equals(nodeInfo.get(1))){
-                        	unsavedChanges = true;
-                    		saveButton.setEnabled(true);
-                    	}
-
-                    }
-				}
-				);
+					}
+				});
+	}
+	
+	private void initButtons(){
+		
 		saveButton.addActionListener(
 				new ActionListener(){
 					public void actionPerformed(ActionEvent e){
@@ -198,6 +205,7 @@ public class PanelEditNode extends AbstractPanel{
 					}
 				}
 				);
+		
 		exitButton.addActionListener(
 				new ActionListener(){
 					public void actionPerformed(ActionEvent e){
@@ -205,10 +213,48 @@ public class PanelEditNode extends AbstractPanel{
 					}
 				}
 				);
+		eraseRelationButton.addActionListener(
+				new ActionListener(){
+					public void actionPerformed(ActionEvent e){
+						//TODO
+					}
+				});
+		resetValuesButton.addActionListener(
+				new ActionListener(){
+					public void actionPerformed(ActionEvent e){
+						//TODO
+					}
+				});
+	}
+
+
+	private void initDefaultValues(){
+		
+		saveButton.setEnabled(false);		
+		initTypeInfo();		
+		initLabelInfo();			
+		initButtons();
+
+		nameTextField.addActionListener(
+				new ActionListener(){
+                    public void actionPerformed(ActionEvent e){
+                    	String newText = nameTextField.getText();
+                    	if(!newText.equals(nodeInfo.get(1))){
+                    		newNodeInfo.set(1, newText);
+                        	unsavedChanges = true;
+                    		saveButton.setEnabled(true);
+                    	}
+
+                    }
+				}
+				);
+
+		
 	}
 
 	public void setNodeToEdit(Integer index, String nodeType){
 		nodeInfo = ctrlGraph.getNodeFormatted(index, nodeType);
+		newNodeInfo = nodeInfo;
 		updatePanel();
 	}
 
