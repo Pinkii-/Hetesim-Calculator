@@ -22,7 +22,7 @@ import Dominio.Graph;
 import Dominio.Node;
 import Dominio.Pair;
 import Dominio.Path;
-import Presentacion.FormattedResultsManager.FormattedResult;
+import Presentacion.FormattedResult;
 import Presentacion.VistaPrincipal.Panels;
 
 public class PanelLoadResult extends AbstractPanel{
@@ -108,6 +108,7 @@ public class PanelLoadResult extends AbstractPanel{
 		actionsPanel.add(show);
 		actionsPanel.add(delete);
 		show.setAlignmentX(CENTER_ALIGNMENT);
+		delete.setAlignmentX(CENTER_ALIGNMENT);
 	}
 	
 	private void generateSearchAndActionsPanel() {
@@ -152,6 +153,10 @@ public class PanelLoadResult extends AbstractPanel{
 					String[] buttons = {"Si", "Cancelar"};
 					int result = VistaDialog.setDialog("Titulo", "¿Estas seguro que quieres borrar? \n", buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
 					if (result == 0) loadedResults.deleteResult();
+					if (loadedResults.getListSize() == 0)  {
+						delete.setEnabled(false);
+						show.setEnabled(false);
+					}
 				}
 				else System.out.println("Selecciona un resultado");
 			}
