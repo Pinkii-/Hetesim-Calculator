@@ -45,7 +45,7 @@ public class PanelModificaGraph extends AbstractPanel {
 	
 	public PanelModificaGraph(VistaAbstracta vp) {
 		super(vp);
-		setBackground(Color.green);
+//		setBackground(Color.green);
 	}
 	
 	public void init() {
@@ -80,21 +80,25 @@ public class PanelModificaGraph extends AbstractPanel {
 		displayNode.add(Box.createRigidArea(new Dimension(5,0)));
 		displayNode.add(textField);
 		displayNode.add(Box.createHorizontalGlue());
+		displayNode.setMaximumSize(new Dimension(99000,comboBoxTypeOfNode.getHeight()));
 		
 		// next
 		
 //		JLabel l;
 		
-		
-		
+		JPanel btnPanel = new JPanel();
+		btnPanel.setLayout(new BoxLayout(btnPanel, BoxLayout.X_AXIS));
+		btnPanel.add(buttonEditNode);
+		btnPanel.add(buttonAddNode);
 		
 		BoxLayout main = new BoxLayout(this, BoxLayout.Y_AXIS);
 		setLayout(main);
-		add(buttonAddNode);
 		add(Box.createRigidArea(new Dimension(0,5)));
 		add(displayNode);
 		add(scrollPane);
-		add(buttonEditNode);
+		add(btnPanel);
+		
+		
 	}
 	
 	private void createList() {
