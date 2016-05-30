@@ -23,6 +23,9 @@ import Dominio.Node;
 import javax.swing.SpringLayout;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
+
 import javax.swing.JList;
 
 //public class PanelEditNode extends AbstractPanel{
@@ -48,21 +51,21 @@ public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 	JButton exitButton = new JButton("Exit");
 	JButton eraseRelationButton = new JButton("Erase Relation");
 	JButton resetValuesButton = new JButton("Revert changes");
-	
+
 	JPanel nodeInfoPanel = new JPanel();
 	JPanel nodeRelationsPanel = new JPanel();
 	JLabel mainInfoLabel = new JLabel("Node Info:");
-	
+
 	ArrayList<String> nodeInfo;
 	ArrayList<String> newNodeInfo;
 	ArrayList<ArrayList<String>> nodeRelationsData;
-	ArrayList<ArrayList<String>> relationsToErase;
-	ArrayList<ArrayList<String>> relationsToAdd;
+	ArrayList<ArrayList<String>> relationsToErase = new ArrayList<ArrayList<String>>();
+	ArrayList<ArrayList<String>> relationsToAdd = new ArrayList<ArrayList<String>>();
 	private static final long serialVersionUID = 1L;
 	CtrlGraph ctrlGraph;
-	
+
 	private boolean unsavedChanges = false;
-	
+
 	//private final JTextPane textPane = new JTextPane();
 
 	//@Override
@@ -80,7 +83,7 @@ public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 
 	//@Override
 	public void setEnabledEverything(Boolean b) {
-		
+
 	}
 
 	//public PanelEditNode(VistaAbstracta vp) {
@@ -93,31 +96,31 @@ public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 
 		this.add(nodeInfoPanel);
 		SpringLayout springLayout = new SpringLayout();
-		
+
 		springLayout.putConstraint(SpringLayout.NORTH, nameLabel, 10, SpringLayout.SOUTH, mainInfoLabel);
 		springLayout.putConstraint(SpringLayout.WEST, nameLabel, 0, SpringLayout.WEST, mainInfoLabel);
-		
+
 		springLayout.putConstraint(SpringLayout.NORTH, mainInfoLabel, 10, SpringLayout.NORTH, nodeInfoPanel);
 		springLayout.putConstraint(SpringLayout.WEST, mainInfoLabel, 10, SpringLayout.WEST, nodeInfoPanel);
-		
+
 		springLayout.putConstraint(SpringLayout.WEST, typeComboBox, 0, SpringLayout.WEST, nameTextField);
 		springLayout.putConstraint(SpringLayout.SOUTH, typeComboBox, 0, SpringLayout.SOUTH, typeLabel);
-		
+
 		springLayout.putConstraint(SpringLayout.NORTH, typeLabel, 10, SpringLayout.SOUTH, labelLabel);
 		springLayout.putConstraint(SpringLayout.WEST, typeLabel, 0, SpringLayout.WEST, labelLabel);
-		
+
 		springLayout.putConstraint(SpringLayout.WEST, labelComboBox, 0, SpringLayout.WEST, nameTextField);
 		springLayout.putConstraint(SpringLayout.SOUTH, labelComboBox, 0, SpringLayout.SOUTH, labelLabel);
-		
+
 		springLayout.putConstraint(SpringLayout.NORTH, labelLabel, 10, SpringLayout.SOUTH, nameLabel);
 		springLayout.putConstraint(SpringLayout.WEST, labelLabel, 0, SpringLayout.WEST, nameLabel);
-		
+
 		springLayout.putConstraint(SpringLayout.WEST, nameTextField, 10, SpringLayout.EAST, nameLabel);
 		springLayout.putConstraint(SpringLayout.SOUTH, nameTextField, 0, SpringLayout.SOUTH, nameLabel);
-		
+
 		springLayout.putConstraint(SpringLayout.WEST, resetValuesButton, 10, SpringLayout.WEST, nodeInfoPanel);
 		springLayout.putConstraint(SpringLayout.SOUTH, resetValuesButton, -10, SpringLayout.SOUTH, nodeInfoPanel);
-		
+
 		nodeInfoPanel.setLayout(springLayout);
 		nodeInfoPanel.add(mainInfoLabel);
 		nodeInfoPanel.add(nameLabel);
@@ -149,9 +152,9 @@ public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 		nodeRelationsPanel.add(eraseRelationButton);
 		nodeRelationsPanel.add(saveButton);
 		nodeRelationsPanel.add(exitButton);
-		
+
 		relationsList = new JList<String>(relationsListModel);
-		
+
 		relationsList.addListSelectionListener(
 				new ListSelectionListener(){
 					@Override
@@ -159,12 +162,12 @@ public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 						if(!relationsList.isSelectionEmpty()){
 							eraseRelationButton.setEnabled(true);
 						}
-						
+
 					}
-					
+
 				}
 				);
-		
+
 		sl_nodeRelationsPanel.putConstraint(SpringLayout.NORTH, relationsList, 20, SpringLayout.SOUTH, relationsLabel);
 		sl_nodeRelationsPanel.putConstraint(SpringLayout.WEST, relationsList, 0, SpringLayout.WEST, relationsLabel);
 		sl_nodeRelationsPanel.putConstraint(SpringLayout.SOUTH, relationsList, -10, SpringLayout.NORTH, addRelationButton);
@@ -172,14 +175,14 @@ public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 		nodeRelationsPanel.add(relationsList);
 		System.out.println(CtrlDominio.getTypes());
 		//TODO erase!
-		try {
-			cd.importGraph("C:/Users/Usuari/Desktop/PROP/GraphForTesting");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		setNodeToEdit(0, "Paper");
+		//try {
+		//	cd.importGraph("C:/Users/Usuari/Desktop/PROP/GraphForTesting");
+		//} catch (IOException e) {
+		//	e.printStackTrace();
+		//}
+		//setNodeToEdit(0, "Paper");
 	}
-	
+
 	private void initTypeInfo(){
 		ArrayList<String> typeData = new ArrayList<String>();
 		typeData.add("None");
@@ -210,9 +213,9 @@ public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 					}
 				});
 	}
-	
+
 	private void initButtons(){
-		
+
 		saveButton.addActionListener(
 				new ActionListener(){
 					public void actionPerformed(ActionEvent e){
@@ -223,7 +226,7 @@ public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 					}
 				}
 				);
-		
+
 		exitButton.addActionListener(
 				new ActionListener(){
 					public void actionPerformed(ActionEvent e){
@@ -242,19 +245,14 @@ public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 							aux2.setNeeder(aux, true);
 						}
 						aux2.setNeeder(aux, false);
-						}
+					}
 				});
 		eraseRelationButton.setEnabled(false);
 		eraseRelationButton.addActionListener(
 				new ActionListener(){
 					public void actionPerformed(ActionEvent e){
 						ArrayList<String> erasedRelation = nodeRelationsData.get(relationsList.getSelectedIndex());
-						relationsToErase.add(
-								ctrlGraph.getNodeFormatted(
-								Integer.valueOf(erasedRelation.get(0)),
-								erasedRelation.get(2)
-								));
-						drawRelations();
+						softEraseRelation(relationsList.getSelectedIndex(), erasedRelation);
 					}
 				});
 		resetValuesButton.addActionListener(
@@ -267,7 +265,7 @@ public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 
 
 	private void initDefaultValues(){
-		
+
 		saveButton.setEnabled(false);		
 		initTypeInfo();		
 		initLabelInfo();			
@@ -275,19 +273,19 @@ public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 
 		nameTextField.addActionListener(
 				new ActionListener(){
-                    public void actionPerformed(ActionEvent e){
-                    	String newText = nameTextField.getText();
-                    	if(!newText.equals(nodeInfo.get(1))){
-                    		newNodeInfo.set(1, newText);
-                        	unsavedChanges = true;
-                    		saveButton.setEnabled(true);
-                    	}
+					public void actionPerformed(ActionEvent e){
+						String newText = nameTextField.getText();
+						if(!newText.equals(nodeInfo.get(1))){
+							newNodeInfo.set(1, newText);
+							unsavedChanges = true;
+							saveButton.setEnabled(true);
+						}
 
-                    }
+					}
 				}
 				);
 
-		
+
 	}
 
 	public void setNodeToEdit(Integer index, String nodeType){
@@ -300,7 +298,7 @@ public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 		drawRelations();
 		updateNodeInfo();
 	}
-	
+
 	private void updateNodeInfo(){
 		nameTextField.setText(nodeInfo.get(1));
 		int n = CtrlDominio.getNodeTypeIndex(nodeInfo.get(2)) + 1;
@@ -309,16 +307,36 @@ public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 		labelComboBox.setSelectedIndex(m);
 	}
 	
+	private void softEraseRelation(int index, ArrayList<String> node){
+		nodeRelationsData.remove(index);
+		relationsListModel.remove(index);
+		relationsToErase.add(node);
+	}
+	
+	private void softAddRelation(ArrayList<String> node){
+		String columnData = new String();
+		columnData = node.get(1) + " - " + node.get(2);
+		nodeRelationsData.add(node);
+		int modelSize = relationsListModel.getSize();
+		int relationIndex = (modelSize - 1) < 0 ? 0 : modelSize;
+		relationsListModel.add(relationIndex, columnData);
+		relationsToAdd.add(node);
+	}
+	
+	private void saveAll(){
+		
+	}
+
 	private void drawRelations(){
-		 nodeRelationsData = ctrlGraph.getNodeRelationsFormatted(Integer.parseInt(nodeInfo.get(0)),
+		nodeRelationsData = ctrlGraph.getNodeRelationsFormatted(Integer.parseInt(nodeInfo.get(0)),
 				nodeInfo.get(2));
+
+		relationsListModel.clear();
 		int i = 0;
 		for(ArrayList<String> arr: nodeRelationsData){
 			System.out.println(i);
 			String columnData = new String();
-			for(String s: arr){
-				columnData += s + " ";
-			}
+			columnData = arr.get(1) + " - " + arr.get(2);
 			relationsListModel.addElement(columnData);
 			++i;
 		}
@@ -327,6 +345,6 @@ public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 
 	@Override
 	public void setNode(ArrayList<String> nodeInfo) {
-		relationsListModel.addElement(nodeInfo.get(1));		
+		softAddRelation(nodeInfo);	
 	}
 }
