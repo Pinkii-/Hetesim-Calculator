@@ -8,6 +8,8 @@ import Dominio.CtrlDominio;
 import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
@@ -16,6 +18,7 @@ import javax.swing.JLabel;
 import javax.swing.JComboBox;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 
 public class PanelSelectNode extends AbstractPanel{
 
@@ -29,7 +32,8 @@ public class PanelSelectNode extends AbstractPanel{
 	
 	ArrayList<ArrayList<String>> nodesInfo;
 	INodeNeeder nodeNeeder; 
-
+	JTextField searchTextField;
+	ArrayList<Integer> indexOfNodes;
 
 	public PanelSelectNode(VistaAbstracta vp) {
 		super(vp);
@@ -60,11 +64,6 @@ public class PanelSelectNode extends AbstractPanel{
 		springLayout.putConstraint(SpringLayout.WEST, lblNodeList, 0, SpringLayout.WEST, lblNodeType);
 		this.add(lblNodeList);
 		
-		
-
-		
-
-		
 		JList<String> list = new JList<String>(relationsListModel);
 		JScrollPane sc = new JScrollPane();
 		sc.setViewportView(list);
@@ -73,7 +72,11 @@ public class PanelSelectNode extends AbstractPanel{
 		springLayout.putConstraint(SpringLayout.SOUTH, sc, -10, SpringLayout.NORTH, btnCancel);
 		springLayout.putConstraint(SpringLayout.EAST, sc, -10, SpringLayout.EAST, this);
 		this.add(sc);
+
+		//Adding usability to the list
+		searchTextField = new JTextField();
 		
+		//springLayout.putConstraint(SpringLayout.NORTH, searchTextField, 10, SpringLayout.SOUTH, lblNodeList);
 		
 		btnGetNode.addActionListener(
 				new ActionListener(){
@@ -108,10 +111,40 @@ public class PanelSelectNode extends AbstractPanel{
 		if(isAPaper){
 			initTypeComboBox();			
 			setNodesList(typeComboBox.getSelectedIndex());
+			searchTextField.addKeyListener(new KeyListener() {
+				public void keyTyped(KeyEvent e) {}
+				public void keyPressed(KeyEvent e) {}
+				public void keyReleased(KeyEvent e) {
+					relationsListModel.clear();
+					ArrayList<ArrayList<String>> nodes = cd.getCtrlGraph().getformattedNodesOfType((String) typeComboBox.getSelectedItem());
+					indexOfNodes = new ArrayList<Integer>();
+					System.gc();
+					for (int i = 0; i < nodes.size(); ++i) {
+						if (nodes.get(i).get(1).toLowerCase().contains(searchTextField.getText().toLowerCase())) {
+							relationsListModel.addElement(nodes.get(i).get(1));
+							indexOfNodes.add(Integer.parseInt(nodes.get(i).get(0)));
+						}
+					}
+				}});
 		}
 		else{
 			initTypeLabel();
 			drawList("Paper");
+			searchTextField.addKeyListener(new KeyListener() {
+				public void keyTyped(KeyEvent e) {}
+				public void keyPressed(KeyEvent e) {}
+				public void keyReleased(KeyEvent e) {
+					relationsListModel.clear();
+					ArrayList<ArrayList<String>> nodes = cd.getCtrlGraph().getformattedNodesOfType("Paper");
+					indexOfNodes = new ArrayList<Integer>();
+					System.gc();
+					for (int i = 0; i < nodes.size(); ++i) {
+						if (nodes.get(i).get(1).toLowerCase().contains(searchTextField.getText().toLowerCase())) {
+							relationsListModel.addElement(nodes.get(i).get(1));
+							indexOfNodes.add(Integer.parseInt(nodes.get(i).get(0)));
+						}
+					}
+				}});
 		}
 		nodeNeeder = daddy;
 	}
@@ -141,7 +174,8 @@ public class PanelSelectNode extends AbstractPanel{
 						setNodesList(typeComboBox.getSelectedIndex());
 					}
 				});
-	}
+
+	}	
 	
 	/**
 	 * 
