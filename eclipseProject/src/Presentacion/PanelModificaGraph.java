@@ -7,6 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -156,20 +158,33 @@ public class PanelModificaGraph extends AbstractPanel {
 		buttonAddNode.addActionListener( new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				aux.addVista(PanelEditNode.class, true); // Cambiar al panel que agrega nodos
+				System.out.println("buttonAddNode");
 			}
 		});
 		
-		buttonEditNode.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		
+		buttonEditNode.addMouseListener(new MouseListener() {
+			public void mouseClicked(MouseEvent e) {
 				aux.addVista(PanelEditNode.class, true);
-				System.out.println(indexOfNodes
-						.get(list.getSelectedIndex()) +" " +
-						(String) comboBoxTypeOfNode.getSelectedItem());
 				((PanelEditNode) aux.childs.get(0).getContentPane().getComponent(0))
 				.setNodeToEdit(indexOfNodes.get(list.getSelectedIndex()), 
 						(String) comboBoxTypeOfNode.getSelectedItem());
+
+				System.out.println("buttonEditNode");
 			}
+			public void mousePressed(MouseEvent e) {}public void mouseReleased(MouseEvent e) {}public void mouseEntered(MouseEvent e) {}public void mouseExited(MouseEvent e) {}
+			
 		});
+//		buttonEditNode.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				aux.addVista(PanelEditNode.class, true);
+//				((PanelEditNode) aux.childs.get(0).getContentPane().getComponent(0))
+//				.setNodeToEdit(indexOfNodes.get(list.getSelectedIndex()), 
+//						(String) comboBoxTypeOfNode.getSelectedItem());
+//
+//				System.out.println("buttonEditNode");
+//			}
+//		});
 	}
 
 	@Override
