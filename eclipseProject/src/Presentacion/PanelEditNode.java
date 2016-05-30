@@ -73,8 +73,12 @@ public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 			int result = VistaDialog.setDialog("Titulo", "�Estas seguro que quieres salir?\n"
 					+ "Todos los cambion no guardados seran perdidos",
 					buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
+			if(result == 0){
+				((PanelModificaGraph) ((VistaSecundaria) vp).parent).updateGraph();
+			}
 			return result;
 		}
+		((PanelModificaGraph) ((VistaSecundaria) vp).parent).updateGraph();
 		return 0;
 	}
 
