@@ -41,6 +41,7 @@ public class PanelModificaGraph extends AbstractPanel {
 	private JList<String> list;
 	private JTextField textField;
 	private ArrayList<Integer> indexOfNodes;
+	DefaultListModel<String> model;
 	
 	public PanelModificaGraph(VistaAbstracta vp) {
 		super(vp);
@@ -98,51 +99,55 @@ public class PanelModificaGraph extends AbstractPanel {
 	
 	private void createList() {
 		scrollPane = new JScrollPane();
-		DefaultListModel<String> model = new DefaultListModel<String>();
+		model = new DefaultListModel<String>();
 
 		list = new JList<String>(model);
 		scrollPane.setViewportView(list);
 		
 		textField = new JTextField();
 		
-		textField.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				DefaultListModel<String> model = new DefaultListModel<String>();
-				list.setModel(model);
-				ArrayList<ArrayList<String>> nodes = cd.getCtrlGraph().getformattedNodesOfType((String) comboBoxTypeOfNode.getSelectedItem());
-				indexOfNodes = new ArrayList<Integer>();
-				for (int i = 0; i < nodes.size(); ++i) {
-					if (nodes.get(i).get(1).toLowerCase().contains(textField.getText().toLowerCase())) {
-						model.addElement(nodes.get(i).get(1));
-						indexOfNodes.add(Integer.parseInt(nodes.get(i).get(0)));
-					}
-				}
-			}
-		});
+//		textField.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				DefaultListModel<String> model = new DefaultListModel<String>();
+//				list.setModel(model);
+//				ArrayList<ArrayList<String>> nodes = cd.getCtrlGraph().getformattedNodesOfType((String) comboBoxTypeOfNode.getSelectedItem());
+//				indexOfNodes = new ArrayList<Integer>();
+//				for (int i = 0; i < nodes.size(); ++i) {
+//					if (nodes.get(i).get(1).toLowerCase().contains(textField.getText().toLowerCase())) {
+//						model.addElement(nodes.get(i).get(1));
+//						indexOfNodes.add(Integer.parseInt(nodes.get(i).get(0)));
+//					}
+//				}
+//			}
+//		});
 		
 		textField.addKeyListener(new KeyListener() {
-			public void keyTyped(KeyEvent e) {
-				DefaultListModel<String> model = new DefaultListModel<String>();
-				list.setModel(model);
+			public void keyTyped(KeyEvent e) {}
+			public void keyPressed(KeyEvent e) {}
+			public void keyReleased(KeyEvent e) {
+				System.out.println("EEEREEEEEE esta aqui");
+				model.clear();
 				ArrayList<ArrayList<String>> nodes = cd.getCtrlGraph().getformattedNodesOfType((String) comboBoxTypeOfNode.getSelectedItem());
 				indexOfNodes = new ArrayList<Integer>();
+				System.gc();
 				for (int i = 0; i < nodes.size(); ++i) {
 					if (nodes.get(i).get(1).toLowerCase().contains(textField.getText().toLowerCase())) {
 						model.addElement(nodes.get(i).get(1));
 						indexOfNodes.add(Integer.parseInt(nodes.get(i).get(0)));
 					}
 				}
-				
-			}
-			public void keyPressed(KeyEvent e) {}public void keyReleased(KeyEvent e) {}
+			
+			System.out.println("HAACABADO esta aqui");}
 			
 		});
 		
 		comboBoxTypeOfNode.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				DefaultListModel<String> model = new DefaultListModel<String>();
-				list.setModel(model);
+				textField.setText("");
+//				DefaultListModel<String> model = new DefaultListModel<String>();
+				
+				model.clear();
 				ArrayList<ArrayList<String>> nodes = cd.getCtrlGraph().getformattedNodesOfType((String) comboBoxTypeOfNode.getSelectedItem());
 				indexOfNodes = new ArrayList<Integer>();
 				for (int i = 0; i < nodes.size(); ++i) {
@@ -157,22 +162,25 @@ public class PanelModificaGraph extends AbstractPanel {
 		PanelModificaGraph aux = this;
 		buttonAddNode.addActionListener( new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				aux.addVista(PanelEditNode.class, true); // Cambiar al panel que agrega nodos
+				aux.addVista(PanelEditNode.class, false); // Cambiar al panel que agrega nodos
 				System.out.println("buttonAddNode");
 			}
 		});
 		
 		
 		buttonEditNode.addMouseListener(new MouseListener() {
-			public void mouseClicked(MouseEvent e) {
-				aux.addVista(PanelEditNode.class, true);
+			public void mouseClicked(MouseEvent e) {}
+			public void mousePressed(MouseEvent e) {}
+			public void mouseReleased(MouseEvent e) {
+				aux.addVista(PanelEditNode.class, false);
 				((PanelEditNode) aux.childs.get(0).getContentPane().getComponent(0))
 				.setNodeToEdit(indexOfNodes.get(list.getSelectedIndex()), 
 						(String) comboBoxTypeOfNode.getSelectedItem());
 
 				System.out.println("buttonEditNode");
 			}
-			public void mousePressed(MouseEvent e) {}public void mouseReleased(MouseEvent e) {}public void mouseEntered(MouseEvent e) {}public void mouseExited(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {}
+			public void mouseExited(MouseEvent e) {}
 			
 		});
 //		buttonEditNode.addActionListener(new ActionListener() {
@@ -201,6 +209,7 @@ public class PanelModificaGraph extends AbstractPanel {
 	@Override
 	public void setEnabledEverything(Boolean b) {
 		buttonAddNode.setEnabled(b);
+		System.out.println("testestes");
 		try { // Solo para el test. Luego lo tengo que quitar cuando ya no sea una vista abstracta y sea una vista principal
 			VistaPrincipal v = (VistaPrincipal) vp;
 			v.setEnabledPrincipal(b);
