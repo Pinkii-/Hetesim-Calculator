@@ -65,18 +65,29 @@ public class MyResultTable extends JTable implements ListSelectionListener  {
 
         int[] selectedRow = getSelectedRows();
         int[] selectedColumns = getSelectedColumns();
-        
-        if (selectedColumns[0] == 4) {
-	        for (int i = 0; i < selectedRow.length; i++) {
-	          for (int j = 0; j < selectedColumns.length; j++) {
-	            selectedData =  (Float) getValueAt(selectedRow[i], selectedColumns[j]);
-	          }
+        if (selectedRow.length > 0 && selectedColumns.length >0) {
+	        if (selectedColumns[0] == 4) {
+		        for (int i = 0; i < selectedRow.length; i++) {
+		          for (int j = 0; j < selectedColumns.length; j++) {
+		            selectedData =  (Float) getValueAt(selectedRow[i], selectedColumns[j]);
+		          }
+		        }
+		        
+		        result.setOldValue(selectedRow[0], selectedData);
+		        this.repaint();
+		    
 	        }
-	        
-	        result.setOldValue(selectedRow[0], selectedData);
-	        this.repaint();
-	        //clearSelection();
-	    
         }
+	}
+
+	public void saveChanges() {
+		result.commitChanges();
+	}
+	
+	public void clearChanges() {
+		result.clearChanges();
+		mtm.clearListChanges();
+		
+		
 	}
 }

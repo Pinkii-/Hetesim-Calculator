@@ -41,6 +41,7 @@ class MyTableModel extends AbstractTableModel implements TableModelListener{
     	this.changes = changes;
     	data = result.getResultData();
     	dlm = (DefaultListModel<String>) changes.getModel();
+    	dlm.setSize(result.getNumberOfValues());
     	addTableModelListener(this);
     	
     }
@@ -87,10 +88,12 @@ class MyTableModel extends AbstractTableModel implements TableModelListener{
         data[row][col] = value;
         fireTableCellUpdated(row, col);
     }
-    private String obtainChange() {
-    	return "";
-    }
     
+	
+	public void clearListChanges() {
+		changes.removeAll();
+	}
+	
 	@Override
 	public void tableChanged(TableModelEvent e) {
 		Integer row = e.getFirstRow();
@@ -106,7 +109,7 @@ class MyTableModel extends AbstractTableModel implements TableModelListener{
     	Float newValue = result.getNewValue(row);
     	String ch = Integer.toString(nChange) +") [Old value: "+ oldValue +", New value: "+ newValue +"]";
     	
-    	dlm.addElement(ch);
+    	dlm.set(row, ch);
     	
         System.out.println("Change");
 		

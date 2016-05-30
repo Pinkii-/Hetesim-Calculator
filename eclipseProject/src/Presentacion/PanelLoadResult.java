@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JLabel;
@@ -25,6 +24,7 @@ import Dominio.Path;
 import Presentacion.FormattedResult;
 import Presentacion.VistaPrincipal.Panels;
 
+//origin and destination nodes (if exists)
 public class PanelLoadResult extends AbstractPanel{
 	/**
 	 * 
@@ -102,11 +102,8 @@ public class PanelLoadResult extends AbstractPanel{
 		actionsPanel.add(title);
 		title.setAlignmentX(CENTER_ALIGNMENT);
 		actionsPanel.add(resultResume);
-		//show.setAlignmentY(RIGHT_ALIGNMENT);
-		//actionsPanel.setAlignmentX(BOTTOM_ALIGNMENT);
 		actionsPanel.add(Box.createHorizontalGlue());
 		actionsPanel.add(show);
-		//actionsPanel.add(delete);
 		show.setAlignmentX(CENTER_ALIGNMENT);
 		delete.setAlignmentX(CENTER_ALIGNMENT);
 	}
@@ -190,14 +187,10 @@ public class PanelLoadResult extends AbstractPanel{
 		
 	}
 	
-	private void saveChanges() {
-	}
-	
 	@Override
 	public int closeIt() {
-		saveChanges();
 		String[] buttons = {"Salir", "Cancelar"};
-		int result = VistaDialog.setDialog("Titulo", "¿Estas seguro que quieres salir?\n (No se va a perder nada, no has hecho nada, vete.)", buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
+		int result = VistaDialog.setDialog("Titulo", "¿Estas seguro que quieres salir?\n ", buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
 		return result;
 	}
 	@Override

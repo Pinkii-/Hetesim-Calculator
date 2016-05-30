@@ -8,16 +8,6 @@ import Dominio.CtrlDominio;
 import Dominio.CtrlResults;
 import Dominio.Pair;
 
-
-/*
- * Funcion:
- * -Guarda los diferentes resultados formateados que necesita panelLoadResult
- * -Permite a panelLoadResults marcar los resultados a borrar, revertir luego si no se quieren borrar .
- * ------------------------------
- * -Permite a panelMostrarResultado mantener los cambios hechos, revertir algunos, y finalmente guardarlos
- * -Para guardarlos, de cada resultado modificado, sacar que linea tiene su valor Hetesim modificado
- * 
- * */
 	
 public class FormattedResult extends ArrayList<ArrayList<String>> {
 	
@@ -95,6 +85,10 @@ public class FormattedResult extends ArrayList<ArrayList<String>> {
 		return newValues.get(nValue);
 	}
 	
+	public void clearChanges() {
+		newValues.clear();
+		oldValues.clear();
+	}
 	
 	public String getIdResult() {
 		return idResult;
@@ -124,12 +118,11 @@ public class FormattedResult extends ArrayList<ArrayList<String>> {
 		return resultData;
 	}
 	//Insertar más getters innecesarios aquí.
-	public void commitChanges() {
-		
-		
-	}
 	
-	public void revertChanges() {
+	public void commitChanges() {
+		for (Integer index: newValues.keySet()) {
+			cr.modifyResult(idResult, index, newValues.get(index));
+		}
 		
 	}
 	

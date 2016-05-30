@@ -1,8 +1,6 @@
 package Presentacion;
 
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -11,24 +9,16 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
-import javax.swing.JTextArea;
-import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 
 import Dominio.CtrlResults;
-import Dominio.Graph;
-import Dominio.Node;
-import Dominio.Pair;
-import Dominio.Path;
-import Dominio.Result;
+import Presentacion.VistaPrincipal.Panels;
 
 public class PanelMostrarResultado extends AbstractPanel{
 	/**
@@ -44,13 +34,17 @@ public class PanelMostrarResultado extends AbstractPanel{
 	private JButton editar;
 	private JButton guardar;
 	private JButton cancelar;
+	private boolean changesnc;
 	private DefaultListModel<String> dlm;
 	private JList<String> changes;
 	private JScrollPane scrollChange;
 	private ArrayList<ArrayList<String>> showedResult;
+	private VistaPrincipal vp;
+	private String idResult;
 	
 	public PanelMostrarResultado (VistaPrincipal v)  {
 		super(v);
+		this.vp = v;
 		this.cr = cd.getCtrlResults();
 	}
 	
@@ -59,15 +53,29 @@ public class PanelMostrarResultado extends AbstractPanel{
 			public void actionPerformed(ActionEvent event) {
 				//rst.repaint();
 				rst.setEnabled(true);
+				guardar.setEnabled(true);
+				cancelar.setEnabled(true);
 				rst.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 				editar.setEnabled(false);
+				changesnc = true;
 			}
 		});
 		guardar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				rst.setEnabled(false);
 				editar.setEnabled(true);
-				
+				saveChanges();
+				editar.setEnabled(false);
+				guardar.setEnabled(false);
+				changesnc = false;
+			}
+		});
+		cancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				rst.setEnabled(false);
+				editar.setEnabled(true);
+				rst.clearChanges();
+				vp.changePanel(Panels.Test);
 			}
 		});
 	}
@@ -80,6 +88,7 @@ public class PanelMostrarResultado extends AbstractPanel{
 	
 	public void setShowedResult(ArrayList<ArrayList<String>> res) {
 		this.showedResult = res;
+		this.idResult = res.get(0).get(0);
 	}
 	
 	
@@ -94,9 +103,6 @@ public class PanelMostrarResultado extends AbstractPanel{
 	private void generateInfoPanel() {
 		
 		info.add(scrollChange);
-		//changes.setAlignmentY(TOP_ALIGNMENT);
-		//changes.setAlignmentX(RIGHT_ALIGNMENT);
-		//changes.setMinimumSize(new Dimension(250, 50));
 		info.add(Box.createHorizontalGlue());
 		info.setLayout(new BoxLayout(info,BoxLayout.PAGE_AXIS));
 	}
@@ -133,15 +139,7 @@ public class PanelMostrarResultado extends AbstractPanel{
 		generateInfoAndActionPanel();
 		
 	}
-	
-	private void editAndSave() {
-		/*Mirar si resultado esta modificado (por ser nueva busqueda o por editar)
-		 * Si esta modificado, hay que guardarlo para poder editar
-		 * Boton editar -> set edited y activa panel;
-		 * Boton editar pasa a ser guardar -> se guarda en disco (CtrlResult)
-		 */
-		
-	}
+
 	private void initComponents() {
 		
 		infoAndActions = new JPanel();
@@ -150,7 +148,9 @@ public class PanelMostrarResultado extends AbstractPanel{
 		splitpane = new JSplitPane();
 		editar = new JButton("Edit");
 		guardar = new JButton("Save");
+		guardar.setEnabled(false);
 		cancelar = new JButton("Cancel");
+		cancelar.setEnabled(false);
 		rst = new MyResultTable();
 		dlm = new DefaultListModel<String>();
 		changes = new JList<String>(dlm);
@@ -158,25 +158,32 @@ public class PanelMostrarResultado extends AbstractPanel{
 		
 		BoxLayout bl = new BoxLayout(this,BoxLayout.LINE_AXIS);
 		setLayout(bl);
-		editAndSave();
 		initSubPanels();
 		asignListeners();
-		//CtrlResults cr = cd.getCtrlResults();
-		//String res = cd.searchPathNodeNode("APA", 0, 3);
-		//cr.addLastResult();
 		
 	}
 	
 	private void saveChanges() {
-	
+		String[] buttons = {"Yes", "No xfabo"};
+		int result = VistaDialog.setDialog("Store", "¿Modifications will be saved. Are you sure?\n ", buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
+		if (result == 0) {
+			System.out.println("Si");
+			rst.saveChanges();
+			String[] ok = {"Ok"};
+			VistaDialog.setDialog("Store", "Modifications stored\n ", ok, VistaDialog.DialogType.QUESTION_MESSAGE);
+		}
 	}
 	
 	@Override
 	public int closeIt() {
-		saveChanges();
-		String[] buttons = {"Salir", "Cancelar"};
-		int result = VistaDialog.setDialog("Titulo", "¿Estas seguro que quieres salir?\n ", buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
-		return result;
+		
+		if (changesnc) {
+			String[] buttons = {"Quit", "Cancel"};
+			int result = VistaDialog.setDialog("Quit", "There are unsaved changes. Are you sure?\n ", buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
+			return result;
+		}
+		return 0;
+		
 	}
 	@Override
 	public void setEnabledEverything(Boolean b) {
