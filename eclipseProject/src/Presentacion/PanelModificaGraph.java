@@ -242,7 +242,24 @@ public class PanelModificaGraph extends AbstractPanel {
 	}
 	
 	void updateGraph() {
-		
+		model.clear();
+		ArrayList<ArrayList<String>> nodes = cd.getCtrlGraph().getformattedNodesOfType((String) comboBoxTypeOfNode.getSelectedItem());
+		indexOfNodes = new ArrayList<Integer>();
+		System.gc();
+		if (textField.getText().length() > 0) {
+			for (int i = 0; i < nodes.size(); ++i) {
+				if (nodes.get(i).get(1).toLowerCase().contains(textField.getText().toLowerCase())) {
+					model.addElement(nodes.get(i).get(1));
+					indexOfNodes.add(Integer.parseInt(nodes.get(i).get(0)));
+				}
+			}
+		}
+		else {
+			for (int i = 0; i < nodes.size(); ++i) {
+				model.addElement(nodes.get(i).get(1));
+				indexOfNodes.add(Integer.parseInt(nodes.get(i).get(0)));
+			}
+		}
 	}
 
 }
