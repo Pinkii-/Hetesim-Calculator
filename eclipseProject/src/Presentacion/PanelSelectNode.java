@@ -65,23 +65,29 @@ public class PanelSelectNode extends AbstractPanel{
 		this.add(lblNodeList);
 		
 		JList<String> list = new JList<String>(relationsListModel);
-		JScrollPane sc = new JScrollPane();
-		sc.setViewportView(list);
-		springLayout.putConstraint(SpringLayout.NORTH, sc, 10, SpringLayout.SOUTH, lblNodeList);
-		springLayout.putConstraint(SpringLayout.WEST, sc, 0, SpringLayout.WEST, lblNodeList);
-		springLayout.putConstraint(SpringLayout.SOUTH, sc, -10, SpringLayout.NORTH, btnCancel);
-		springLayout.putConstraint(SpringLayout.EAST, sc, -10, SpringLayout.EAST, this);
-		this.add(sc);
+		JScrollPane listScrollPane = new JScrollPane();
+		listScrollPane.setViewportView(list);
+		springLayout.putConstraint(SpringLayout.NORTH, listScrollPane, 10, SpringLayout.SOUTH, lblNodeList);
+		springLayout.putConstraint(SpringLayout.WEST, listScrollPane, 0, SpringLayout.WEST, lblNodeList);
+		springLayout.putConstraint(SpringLayout.SOUTH, listScrollPane, -10, SpringLayout.NORTH, btnCancel);
+		springLayout.putConstraint(SpringLayout.EAST, listScrollPane, -10, SpringLayout.EAST, this);
+		this.add(listScrollPane);
 
 		//Adding usability to the list
 		searchTextField = new JTextField();
 		
-		//springLayout.putConstraint(SpringLayout.NORTH, searchTextField, 10, SpringLayout.SOUTH, lblNodeList);
+		springLayout.putConstraint(SpringLayout.EAST, searchTextField, -10, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, searchTextField, -10, SpringLayout.NORTH, listScrollPane);
+		searchTextField.setColumns(16);
+		
+		this.add(searchTextField);
+		
 		
 		btnGetNode.addActionListener(
 				new ActionListener(){
 					public void actionPerformed(ActionEvent e){
-						ArrayList<String> node = nodesInfo.get(list.getSelectedIndex());
+						ArrayList<String> node = nodesInfo.get(indexOfNodes.get(list.getSelectedIndex()));
+						//System.out.println(node);
 						nodeNeeder.setNode(node);
 						close();
 					}
@@ -99,11 +105,18 @@ public class PanelSelectNode extends AbstractPanel{
 	private void drawList(String nodeType){
 		relationsListModel.clear();
 		nodesInfo = cd.getCtrlGraph().getformattedNodesOfType(nodeType);
-		for (int i = 0; i < nodesInfo.size(); i++) {
-			ArrayList<String> nodesInfoRow = nodesInfo.get(i);
-			String listString = new String();
-			listString = nodesInfoRow.get(1);
-			relationsListModel.addElement(listString);
+		//for (int i = 0; i < nodesInfo.size(); i++) {
+		//	ArrayList<String> nodesInfoRow = nodesInfo.get(i);
+		//	String listString = nodesInfoRow.get(1);
+		//	relationsListModel.addElement(listString);
+		//}
+		
+		indexOfNodes = new ArrayList<Integer>();
+		for (int i = 0; i < nodesInfo.size(); ++i) {
+			if (nodesInfo.get(i).get(1).toLowerCase().contains(searchTextField.getText().toLowerCase())) {
+				relationsListModel.addElement(nodesInfo.get(i).get(1));
+				indexOfNodes.add(Integer.parseInt(nodesInfo.get(i).get(0)));
+			}
 		}
 	}
 	
@@ -111,41 +124,25 @@ public class PanelSelectNode extends AbstractPanel{
 		if(isAPaper){
 			initTypeComboBox();			
 			setNodesList(typeComboBox.getSelectedIndex());
-			searchTextField.addKeyListener(new KeyListener() {
-				public void keyTyped(KeyEvent e) {}
-				public void keyPressed(KeyEvent e) {}
-				public void keyReleased(KeyEvent e) {
-					relationsListModel.clear();
-					ArrayList<ArrayList<String>> nodes = cd.getCtrlGraph().getformattedNodesOfType((String) typeComboBox.getSelectedItem());
-					indexOfNodes = new ArrayList<Integer>();
-					System.gc();
-					for (int i = 0; i < nodes.size(); ++i) {
-						if (nodes.get(i).get(1).toLowerCase().contains(searchTextField.getText().toLowerCase())) {
-							relationsListModel.addElement(nodes.get(i).get(1));
-							indexOfNodes.add(Integer.parseInt(nodes.get(i).get(0)));
-						}
-					}
-				}});
 		}
 		else{
 			initTypeLabel();
 			drawList("Paper");
-			searchTextField.addKeyListener(new KeyListener() {
-				public void keyTyped(KeyEvent e) {}
-				public void keyPressed(KeyEvent e) {}
-				public void keyReleased(KeyEvent e) {
-					relationsListModel.clear();
-					ArrayList<ArrayList<String>> nodes = cd.getCtrlGraph().getformattedNodesOfType("Paper");
-					indexOfNodes = new ArrayList<Integer>();
-					System.gc();
-					for (int i = 0; i < nodes.size(); ++i) {
-						if (nodes.get(i).get(1).toLowerCase().contains(searchTextField.getText().toLowerCase())) {
-							relationsListModel.addElement(nodes.get(i).get(1));
-							indexOfNodes.add(Integer.parseInt(nodes.get(i).get(0)));
-						}
-					}
-				}});
 		}
+		searchTextField.addKeyListener(new KeyListener() {
+			public void keyTyped(KeyEvent e) {}
+			public void keyPressed(KeyEvent e) {}
+			public void keyReleased(KeyEvent e) {
+				relationsListModel.clear();
+				indexOfNodes = new ArrayList<Integer>();
+				System.gc();
+				for (int i = 0; i < nodesInfo.size(); ++i) {
+					if (nodesInfo.get(i).get(1).toLowerCase().contains(searchTextField.getText().toLowerCase())) {
+						relationsListModel.addElement(nodesInfo.get(i).get(1));
+						indexOfNodes.add(Integer.parseInt(nodesInfo.get(i).get(0)));
+					}
+				}
+			}});
 		nodeNeeder = daddy;
 	}
 	
