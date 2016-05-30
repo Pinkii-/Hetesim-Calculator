@@ -2,22 +2,18 @@ package Presentacion;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
-import javax.sound.midi.MidiDevice.Info;
+
 import javax.swing.DefaultListModel;
 import javax.swing.JEditorPane;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
-import javax.swing.event.ListDataEvent;
-import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import Dominio.CtrlPaths;
 import Dominio.CtrlResults;
-import Presentacion.FormattedResultsManager.FormattedResult;
+import Presentacion.FormattedResult;
 
 //Custom JList which shows results or paths and is attached to a text area which shows a resume of a selected result.
 
@@ -112,11 +108,20 @@ public class MyResultsAndPathsList extends JList<String> implements ListSelectio
 	}
 
 	public FormattedResult getFormattedResult() {
-		return results.get(dlm.getElementAt(selectedIndex));
+		if (dlm.getSize() > 0)return results.get(dlm.getElementAt(selectedIndex));
+		else{
+			System.out.println("No Results");
+			return null;
+		}
 	}
 	
 	public ArrayList<String> getFormattedPath() {
-		return paths.get(dlm.getElementAt(selectedIndex));
+		if (dlm.getSize() > 0) return paths.get(dlm.getElementAt(selectedIndex));
+		else {
+			System.out.println("No paths");
+			return null;
+		}
+		
 	}
 	
 	
@@ -150,6 +155,9 @@ public class MyResultsAndPathsList extends JList<String> implements ListSelectio
 		return selectedIndex != null;
 	}
 	
+	public int getListSize() {
+		return dlm.getSize();
+	}
 	
 	public void valueChanged(ListSelectionEvent e) {
     	if (!e.getValueIsAdjusting()) {

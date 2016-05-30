@@ -1,14 +1,16 @@
 package Presentacion;
 
 
+import java.util.HashMap;
+
 import javax.swing.JTextArea;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
-
-import Presentacion.FormattedResultsManager.FormattedResult;
+import Dominio.CtrlResults;
+import Presentacion.FormattedResult;
 
 /**
  * @author Albert Lopez Alcacer
@@ -27,10 +29,13 @@ class MyTableModel extends AbstractTableModel implements TableModelListener{
 	private FormattedResult result;
 	private JTextArea changes;
     private Object[][] data;
+    private HashMap<Integer,Float> newValues;
+    private CtrlResults cr;
   
 
-    public MyTableModel(FormattedResult result) {
+    public MyTableModel(FormattedResult result, HashMap<Integer,Float> newValues) {
     	this.result = result;
+    	this.newValues = newValues;
     	data = result.getResultData();
     	addTableModelListener(this);
     	
@@ -74,15 +79,17 @@ class MyTableModel extends AbstractTableModel implements TableModelListener{
     private String obtainChange() {
     	return "";
     }
+    
 	@Override
 	public void tableChanged(TableModelEvent e) {
 		Integer row = e.getFirstRow();
         Integer column = e.getColumn();
+        
         System.out.println(Integer.toString(row)+" "+Integer.toString(column));
         TableModel model = (TableModel)e.getSource();
-        String columnName = model.getColumnName(column);
-        Object data = model.getValueAt(row, column);
-        //changes.append(obtainChange(row,oldValue,newValue));
+        
+        Float data = (Float) model.getValueAt(row, column);
+        newValues.put(row, data);
         System.out.println("Change");
 		
 	}

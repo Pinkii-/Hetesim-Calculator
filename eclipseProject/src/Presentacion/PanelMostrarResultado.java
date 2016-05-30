@@ -35,6 +35,7 @@ public class PanelMostrarResultado extends AbstractPanel{
 	 */
 	private static final long serialVersionUID = 1L;
 	private MyResultTable rst;
+	private CtrlResults cr;
 	private JPanel infoAndActions;
 	private JPanel actions;
 	private JPanel info;
@@ -45,8 +46,8 @@ public class PanelMostrarResultado extends AbstractPanel{
 	private ArrayList<ArrayList<String>> showedResult;
 	
 	public PanelMostrarResultado (VistaPrincipal v)  {
-		
 		super(v);
+		this.cr = cd.getCtrlResults();
 	}
 	
 	private void asignListeners() {
@@ -68,7 +69,7 @@ public class PanelMostrarResultado extends AbstractPanel{
 	}
 	
 	private void setMyResultTable(ArrayList<ArrayList<String>> res) {
-		rst = new MyResultTable(res);
+		rst = new MyResultTable(res,cr);
 	}
 	private void generateTable()  {
 		setMyResultTable(showedResult);
