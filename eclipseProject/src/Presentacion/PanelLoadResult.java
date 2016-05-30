@@ -58,9 +58,9 @@ public class PanelLoadResult extends AbstractPanel{
 			m.add(new Pair<Integer,Float>(i,i*0.1f));
 		}
 		Path p = new Path();
-		p.setContingut("AA");
-		p.setNom("AA"+Integer.toString(j));
-		p.setDescripcio("AA");
+		p.setContingut("APA");
+		p.setNom("nomPath"+Integer.toString(j));
+		p.setDescripcio("APA");
 		Node n1 = new Node();
 			n1.initialize(Node.Type.Autor, 25, "NodeOrigin");
 		Float f = 0.1f;
@@ -106,7 +106,7 @@ public class PanelLoadResult extends AbstractPanel{
 		//actionsPanel.setAlignmentX(BOTTOM_ALIGNMENT);
 		actionsPanel.add(Box.createHorizontalGlue());
 		actionsPanel.add(show);
-		actionsPanel.add(delete);
+		//actionsPanel.add(delete);
 		show.setAlignmentX(CENTER_ALIGNMENT);
 		delete.setAlignmentX(CENTER_ALIGNMENT);
 	}
@@ -146,7 +146,7 @@ public class PanelLoadResult extends AbstractPanel{
 				else { System.out.println("Selecciona un resultado");}
 			}
 		});
-		
+		/*
 		delete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				if (loadedResults.indexSelected()) {
@@ -160,7 +160,7 @@ public class PanelLoadResult extends AbstractPanel{
 				}
 				else System.out.println("Selecciona un resultado");
 			}
-		});
+		});*/
 	}
 	public void init() {
 		removeAll();
@@ -180,7 +180,7 @@ public class PanelLoadResult extends AbstractPanel{
 		delete = new JButton("Delete");
 		
 		cr = cd.getCtrlResults();
-		generateResults();
+		//generateResults();
 		loadedResults = new MyResultsAndPathsList(resultResume,cr);
 		
 		BoxLayout bl = new BoxLayout(this,BoxLayout.LINE_AXIS);

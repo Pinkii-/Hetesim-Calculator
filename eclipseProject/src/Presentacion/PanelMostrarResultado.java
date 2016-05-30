@@ -2,20 +2,24 @@ package Presentacion;
 
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
+import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 
@@ -28,10 +32,7 @@ import Dominio.Result;
 
 public class PanelMostrarResultado extends AbstractPanel{
 	/**
-	 * Cosas:
-	 * Guardar resultado antes de modificar.
-	 * Mostrar si el resultado esta guardado. (ya sea por busqueda recien realizada, o por que ha sido editado)
-	 * Set editable solo si esta guardado en memoria.
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private MyResultTable rst;
@@ -43,6 +44,9 @@ public class PanelMostrarResultado extends AbstractPanel{
 	private JButton editar;
 	private JButton guardar;
 	private JButton cancelar;
+	private DefaultListModel<String> dlm;
+	private JList<String> changes;
+	private JScrollPane scrollChange;
 	private ArrayList<ArrayList<String>> showedResult;
 	
 	public PanelMostrarResultado (VistaPrincipal v)  {
@@ -53,11 +57,21 @@ public class PanelMostrarResultado extends AbstractPanel{
 	private void asignListeners() {
 		editar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
+				//rst.repaint();
 				rst.setEnabled(true);
 				rst.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+				editar.setEnabled(false);
+			}
+		});
+		guardar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				rst.setEnabled(false);
+				editar.setEnabled(true);
+				
 			}
 		});
 	}
+
 	
 	public void init() {
 		removeAll();
@@ -68,23 +82,23 @@ public class PanelMostrarResultado extends AbstractPanel{
 		this.showedResult = res;
 	}
 	
-	private void setMyResultTable(ArrayList<ArrayList<String>> res) {
-		rst = new MyResultTable(res,cr);
-	}
+	
 	private void generateTable()  {
-		setMyResultTable(showedResult);
+		
+		rst = new MyResultTable(showedResult,cr,changes);
 		rst.setFillsViewportHeight(true);
 		rst.setEnabled(false);
 		splitpane.setLeftComponent(new JScrollPane(rst));
 		
 	}
 	private void generateInfoPanel() {
-		info.add(new JLabel("Registro Cambios.."));
+		
+		info.add(scrollChange);
+		//changes.setAlignmentY(TOP_ALIGNMENT);
+		//changes.setAlignmentX(RIGHT_ALIGNMENT);
+		//changes.setMinimumSize(new Dimension(250, 50));
 		info.add(Box.createHorizontalGlue());
 		info.setLayout(new BoxLayout(info,BoxLayout.PAGE_AXIS));
-		info.setAlignmentX(RIGHT_ALIGNMENT);
-		info.add(Box.createRigidArea(new Dimension(0,50)));
-	
 	}
 	private void generateActionPanel() {
 		actions.setLayout(new BoxLayout(actions,BoxLayout.LINE_AXIS));
@@ -112,7 +126,7 @@ public class PanelMostrarResultado extends AbstractPanel{
 		splitpane.setRightComponent(infoAndActions);
 		splitpane.resetToPreferredSizes();
 		add(splitpane);
-		splitpane.setDividerLocation(450);
+		splitpane.setDividerLocation(540);
 	}
 	private void initSubPanels() {
 		generateTable();
@@ -138,6 +152,9 @@ public class PanelMostrarResultado extends AbstractPanel{
 		guardar = new JButton("Save");
 		cancelar = new JButton("Cancel");
 		rst = new MyResultTable();
+		dlm = new DefaultListModel<String>();
+		changes = new JList<String>(dlm);
+		scrollChange = new JScrollPane(changes);
 		
 		BoxLayout bl = new BoxLayout(this,BoxLayout.LINE_AXIS);
 		setLayout(bl);

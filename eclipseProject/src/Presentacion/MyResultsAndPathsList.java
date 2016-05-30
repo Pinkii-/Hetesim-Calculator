@@ -78,7 +78,8 @@ public class MyResultsAndPathsList extends JList<String> implements ListSelectio
 		
 		for (int i = 0; i < resultIds.size(); ++i) {
 			//cambiar al nombre, que se mostrara.
-			FormattedResult aux = new FormattedResult(cr.getFormatted(resultIds.get(i)));
+			ArrayList<ArrayList<String>> auxs = cr.getFormatted(resultIds.get(i));
+			FormattedResult aux = new FormattedResult(auxs,cr);
 			dlm.addElement(aux.getAllInfo());
 			ret.put(aux.getAllInfo(), aux);
 		}
@@ -107,7 +108,7 @@ public class MyResultsAndPathsList extends JList<String> implements ListSelectio
 		}
 	}
 
-	public FormattedResult getFormattedResult() {
+	public ArrayList<ArrayList<String>> getFormattedResult() {
 		if (dlm.getSize() > 0)return results.get(dlm.getElementAt(selectedIndex));
 		else{
 			System.out.println("No Results");

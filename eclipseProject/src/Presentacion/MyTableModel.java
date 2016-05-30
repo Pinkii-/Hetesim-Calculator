@@ -3,6 +3,8 @@ package Presentacion;
 
 import java.util.HashMap;
 
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
 import javax.swing.JTextArea;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -27,17 +29,25 @@ class MyTableModel extends AbstractTableModel implements TableModelListener{
     };
 	private Class[] columns = new Class[]{String.class, String.class, String.class, String.class, Float.class};
 	private FormattedResult result;
-	private JTextArea changes;
     private Object[][] data;
-    private HashMap<Integer,Float> newValues;
+    private DefaultListModel<String> dlm;
+    private JList<String> changes;
     private CtrlResults cr;
+    Integer nChange = 0;
   
 
-    public MyTableModel(FormattedResult result, HashMap<Integer,Float> newValues) {
+    public MyTableModel(FormattedResult result, JList<String> changes) {
     	this.result = result;
-    	this.newValues = newValues;
+    	this.changes = changes;
     	data = result.getResultData();
+    	dlm = (DefaultListModel<String>) changes.getModel();
     	addTableModelListener(this);
+    	
+    }
+    
+    public MyTableModel(FormattedResult result) {
+    	this.result = result;
+    	data = result.getResultData();
     	
     }
 
@@ -60,7 +70,8 @@ class MyTableModel extends AbstractTableModel implements TableModelListener{
 
     public boolean isCellEditable(int row, int col) {
     	
-    	return col == 4; //Only HeteSim value
+    	return col == 4; 
+    	
     }
     
     /*Only correct data is accepted
@@ -84,12 +95,19 @@ class MyTableModel extends AbstractTableModel implements TableModelListener{
 	public void tableChanged(TableModelEvent e) {
 		Integer row = e.getFirstRow();
         Integer column = e.getColumn();
-        
         System.out.println(Integer.toString(row)+" "+Integer.toString(column));
         TableModel model = (TableModel)e.getSource();
-        
         Float data = (Float) model.getValueAt(row, column);
-        newValues.put(row, data);
+       
+        nChange = row;
+        
+        result.setNewValue(row, data);
+    	Float oldValue = result.getOldValue(row);
+    	Float newValue = result.getNewValue(row);
+    	String ch = Integer.toString(nChange) +") [Old value: "+ oldValue +", New value: "+ newValue +"]";
+    	
+    	dlm.addElement(ch);
+    	
         System.out.println("Change");
 		
 	}
