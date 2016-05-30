@@ -5,6 +5,7 @@ import javax.swing.SpringLayout;
 
 import Dominio.CtrlDominio;
 
+import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
 import javax.swing.JList;
+import javax.swing.JScrollPane;
 
 public class PanelSelectNode extends AbstractPanel{
 
@@ -62,13 +64,15 @@ public class PanelSelectNode extends AbstractPanel{
 
 		
 
-
+		
 		JList<String> list = new JList<String>(relationsListModel);
-		springLayout.putConstraint(SpringLayout.NORTH, list, 10, SpringLayout.SOUTH, lblNodeList);
-		springLayout.putConstraint(SpringLayout.WEST, list, 0, SpringLayout.WEST, lblNodeList);
-		springLayout.putConstraint(SpringLayout.SOUTH, list, -10, SpringLayout.NORTH, btnCancel);
-		springLayout.putConstraint(SpringLayout.EAST, list, -10, SpringLayout.EAST, this);
-		this.add(list);
+		JScrollPane sc = new JScrollPane();
+		sc.setViewportView(list);
+		springLayout.putConstraint(SpringLayout.NORTH, sc, 10, SpringLayout.SOUTH, lblNodeList);
+		springLayout.putConstraint(SpringLayout.WEST, sc, 0, SpringLayout.WEST, lblNodeList);
+		springLayout.putConstraint(SpringLayout.SOUTH, sc, -10, SpringLayout.NORTH, btnCancel);
+		springLayout.putConstraint(SpringLayout.EAST, sc, -10, SpringLayout.EAST, this);
+		this.add(sc);
 		
 		
 		btnGetNode.addActionListener(

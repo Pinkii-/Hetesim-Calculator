@@ -14,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListModel;
@@ -77,15 +78,17 @@ public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 			int result = VistaDialog.setDialog("Titulo", "�Estas seguro que quieres salir?\n"
 					+ "Todos los cambion no guardados seran perdidos",
 					buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
+			this.removeAll();
 			return result;
 		}
+		this.removeAll();
 		return 0;
 	}
 
 
 	//@Override
 	public void setEnabledEverything(Boolean b) {
-
+		
 	}
 
 	//public PanelEditNode(VistaAbstracta vp) {
@@ -169,12 +172,15 @@ public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 
 				}
 				);
+		
+		JScrollPane sc = new JScrollPane();
+		sc.setViewportView(relationsList);
 
-		sl_nodeRelationsPanel.putConstraint(SpringLayout.NORTH, relationsList, 20, SpringLayout.SOUTH, relationsLabel);
-		sl_nodeRelationsPanel.putConstraint(SpringLayout.WEST, relationsList, 0, SpringLayout.WEST, relationsLabel);
-		sl_nodeRelationsPanel.putConstraint(SpringLayout.SOUTH, relationsList, -10, SpringLayout.NORTH, addRelationButton);
-		sl_nodeRelationsPanel.putConstraint(SpringLayout.EAST, relationsList, -10, SpringLayout.EAST, nodeRelationsPanel);
-		nodeRelationsPanel.add(relationsList);
+		sl_nodeRelationsPanel.putConstraint(SpringLayout.NORTH, sc, 20, SpringLayout.SOUTH, relationsLabel);
+		sl_nodeRelationsPanel.putConstraint(SpringLayout.WEST, sc, 0, SpringLayout.WEST, relationsLabel);
+		sl_nodeRelationsPanel.putConstraint(SpringLayout.SOUTH, sc, -10, SpringLayout.NORTH, addRelationButton);
+		sl_nodeRelationsPanel.putConstraint(SpringLayout.EAST, sc, -10, SpringLayout.EAST, nodeRelationsPanel);
+		nodeRelationsPanel.add(sc);
 		System.out.println(CtrlDominio.getTypes());
 		//TODO erase!
 		//try {
@@ -182,7 +188,7 @@ public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 		//} catch (IOException e) {
 		//	e.printStackTrace();
 		//}
-		setNodeToEdit(0, "Paper");
+		//setNodeToEdit(0, "Paper");
 	}
 
 	private void initTypeInfo(){
