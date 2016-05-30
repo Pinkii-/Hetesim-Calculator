@@ -266,6 +266,8 @@ public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 					public void actionPerformed(ActionEvent e){
 						aux.addVista(PanelSelectNode.class, false);
 						PanelSelectNode aux2 = (PanelSelectNode) childs.get(0).getContentPane().getComponent(0);
+						unsavedChanges = true;
+						saveButton.setEnabled(true);
 						//If the node we are treating is a paper, we'll ask differently for a node, y'know?
 						if(nodeInfo.get(2).equals("Paper")){
 							aux2.setNeeder(aux, true);
@@ -278,6 +280,8 @@ public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 		eraseRelationButton.addActionListener(
 				new ActionListener(){
 					public void actionPerformed(ActionEvent e){
+						unsavedChanges = true;
+						saveButton.setEnabled(true);
 						ArrayList<String> erasedRelation = nodeRelationsData.get(relationsList.getSelectedIndex());
 						softEraseRelation(relationsList.getSelectedIndex(), erasedRelation);
 					}
