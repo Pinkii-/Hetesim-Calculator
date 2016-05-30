@@ -69,7 +69,7 @@ public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 	public int closeIt() {
 		if(unsavedChanges){
 			String[] buttons = {"Salir", "Cancelar"};
-			int result = VistaDialog.setDialog("Titulo", "¿Estas seguro que quieres salir?\n"
+			int result = VistaDialog.setDialog("Titulo", "ï¿½Estas seguro que quieres salir?\n"
 					+ "Todos los cambion no guardados seran perdidos",
 					buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
 			return result;

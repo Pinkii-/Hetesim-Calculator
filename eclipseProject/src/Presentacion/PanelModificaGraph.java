@@ -7,15 +7,20 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 import java.util.Collections;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 
 
 
@@ -23,11 +28,17 @@ import javax.swing.JPanel;
 public class PanelModificaGraph extends AbstractPanel {
 
 	private JButton buttonAddNode = new JButton("Add New Node");
+	private JButton buttonEditNode = new JButton("Edit Node");
 	
 	private JPanel displayNode;
 	private JComboBox<String> comboBoxTypeOfNode;
-	private MyComboBox findingNode; // JComboBox que te muestra solo los nodos posibles segun lo que has escrito.
+//	private MyComboBox findingNode; // JComboBox que te muestra solo los nodos posibles segun lo que has escrito.
 	Boolean changed = false;
+	
+	private JScrollPane scrollPane;
+	private JList<String> list;
+	private JTextField textField;
+	private ArrayList<Integer> indexOfNodes;
 	
 	public PanelModificaGraph(VistaAbstracta vp) {
 		super(vp);
@@ -42,20 +53,21 @@ public class PanelModificaGraph extends AbstractPanel {
 	private void initComponents() {
 		this.removeAll();
 		// DisplayNodes
-		comboBoxTypeOfNode = new JComboBox<String>(new String[]{"Paper","Autor","Conferencia","Term"});
+		comboBoxTypeOfNode = new JComboBox<String>(cd.getTypes().toArray(new String[cd.getTypes().size()]));
 		comboBoxTypeOfNode.setSelectedIndex(-1);
 		comboBoxTypeOfNode.setToolTipText("Select Type of node");
 		comboBoxTypeOfNode.setMaximumSize(buttonAddNode.getPreferredSize());
 		
-		findingNode = new MyComboBox();
-//		findingNode.linkToParentComboBox(comboBoxTypeOfNode);
-		findingNode.loadNodesToLists(cd);
-//		findingNode.linkToParentComboBox(comboBoxTypeOfNode);
+//		findingNode = new MyComboBox();
+////		findingNode.linkToParentComboBox(comboBoxTypeOfNode);
+//		findingNode.loadNodesToLists(cd);
+////		findingNode.linkToParentComboBox(comboBoxTypeOfNode);
+//		
+//			//equisde no se como hacer lo que quiero que haga
+//		findingNode.setMaximumSize(new Dimension(buttonAddNode.getMinimumSize().width*2, buttonAddNode.getMinimumSize().height));
+//		findingNode.setMinimumSize(new Dimension(buttonAddNode.getMinimumSize().width*2, buttonAddNode.getMinimumSize().height));
 		
-			//equisde no se como hacer lo que quiero que haga
-		findingNode.setMaximumSize(new Dimension(buttonAddNode.getMinimumSize().width*2, buttonAddNode.getMinimumSize().height));
-		findingNode.setMinimumSize(new Dimension(buttonAddNode.getMinimumSize().width*2, buttonAddNode.getMinimumSize().height));
-		
+		createList();
 		
 		
 		displayNode = new JPanel();
@@ -63,7 +75,7 @@ public class PanelModificaGraph extends AbstractPanel {
 		displayNode.add(Box.createHorizontalGlue());
 		displayNode.add(comboBoxTypeOfNode);
 		displayNode.add(Box.createRigidArea(new Dimension(5,0)));
-		displayNode.add(findingNode);
+		displayNode.add(textField);
 		displayNode.add(Box.createHorizontalGlue());
 		
 		// next
@@ -71,11 +83,66 @@ public class PanelModificaGraph extends AbstractPanel {
 //		JLabel l;
 		
 		
+		
+		
 		BoxLayout main = new BoxLayout(this, BoxLayout.Y_AXIS);
 		setLayout(main);
 		add(buttonAddNode);
 		add(Box.createRigidArea(new Dimension(0,5)));
 		add(displayNode);
+		add(scrollPane);
+		add(buttonEditNode);
+	}
+	
+	private void createList() {
+		scrollPane = new JScrollPane();
+		DefaultListModel<String> model = new DefaultListModel<String>();
+
+		list = new JList<String>(model);
+		scrollPane.setViewportView(list);
+		
+		textField = new JTextField();
+		
+		textField.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				DefaultListModel<String> model = new DefaultListModel<String>();
+				list.setModel(model);
+				ArrayList<ArrayList<String>> nodes = cd.getCtrlGraph().getformattedNodesOfType((String) comboBoxTypeOfNode.getSelectedItem());
+				for (int i = 0; i < nodes.size(); ++i) {
+					if (nodes.get(i).get(1).toLowerCase().contains(textField.getText().toLowerCase())) model.addElement(nodes.get(i).get(1));
+				}
+			}
+		});
+		
+		textField.addKeyListener(new KeyListener() {
+			public void keyTyped(KeyEvent e) {
+				DefaultListModel<String> model = new DefaultListModel<String>();
+				list.setModel(model);
+				ArrayList<ArrayList<String>> nodes = cd.getCtrlGraph().getformattedNodesOfType((String) comboBoxTypeOfNode.getSelectedItem());
+				indexOfNodes = new ArrayList<Integer>();
+				for (int i = 0; i < nodes.size(); ++i) {
+					if (nodes.get(i).get(1).toLowerCase().contains(textField.getText().toLowerCase())) {
+						model.addElement(nodes.get(i).get(1));
+						indexOfNodes.add(Integer.parseInt(nodes.get(i).get(0)));
+					}
+				}
+				
+			}
+			public void keyPressed(KeyEvent e) {}public void keyReleased(KeyEvent e) {}
+			
+		});
+		
+		comboBoxTypeOfNode.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				DefaultListModel<String> model = new DefaultListModel<String>();
+				list.setModel(model);
+				ArrayList<ArrayList<String>> nodes = cd.getCtrlGraph().getformattedNodesOfType((String) comboBoxTypeOfNode.getSelectedItem());
+				for (int i = 0; i < nodes.size(); ++i) {
+					model.addElement(nodes.get(i).get(1));
+				}
+			}
+		});
 	}
 	
 	private void asignListeners() {
@@ -85,27 +152,12 @@ public class PanelModificaGraph extends AbstractPanel {
 				aux.addVista(PanelEditNode.class, true); // Cambiar al panel que agrega nodos
 			}
 		});
-		comboBoxTypeOfNode.addActionListener(new ActionListener() {
-			@Override
+		
+		buttonEditNode.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				findingNode.setList(comboBoxTypeOfNode.getSelectedIndex());
-				findingNode.setEnabled(true);
+				aux.addVista(PanelEditNode.class, true);
+				((PanelEditNode) aux.childs.get(0).getContentPane().getComponent(0)).setNodeToEdit(indexOfNodes.get(list.getSelectedIndex()), (String) comboBoxTypeOfNode.getSelectedItem());;
 			}
-		});
-		findingNode.addKeyListener(new KeyListener() {
-			@Override
-			public void keyTyped(KeyEvent e){}
-			@Override
-			public void keyPressed(KeyEvent e) {}
-
-			@Override
-			public void keyReleased(KeyEvent e){
-				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					//findingNode.getLis
-					
-				}
-			}
-			
 		});
 	}
 

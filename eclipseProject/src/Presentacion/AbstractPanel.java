@@ -57,9 +57,9 @@ abstract public class AbstractPanel extends JPanel {
 	
 	void addVista(Class<?> clas, boolean bloqueante) {
 		VistaSecundaria newView = new VistaSecundaria(cd,this, bloqueante);
-		newView.setSize(600, 400);
+		newView.setSize(800, 600);
 		newView.setMinimumSize(newView.getSize());
-		newView.setResizable(false);
+//		newView.setResizable(false);
 		
 		newView.setLocationRelativeTo(null);
 		newView.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
