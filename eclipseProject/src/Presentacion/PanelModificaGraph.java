@@ -75,11 +75,11 @@ public class PanelModificaGraph extends AbstractPanel {
 		
 		displayNode = new JPanel();
 		displayNode.setLayout(new BoxLayout(displayNode, BoxLayout.X_AXIS));
-		displayNode.add(Box.createHorizontalGlue());
+		displayNode.add(Box.createRigidArea(new Dimension(5,0)));
 		displayNode.add(comboBoxTypeOfNode);
 		displayNode.add(Box.createRigidArea(new Dimension(5,0)));
 		displayNode.add(textField);
-		displayNode.add(Box.createHorizontalGlue());
+		displayNode.add(Box.createRigidArea(new Dimension(5,0)));
 		displayNode.setMaximumSize(new Dimension(99000,comboBoxTypeOfNode.getHeight()));
 		
 		// next
@@ -88,15 +88,21 @@ public class PanelModificaGraph extends AbstractPanel {
 		
 		JPanel btnPanel = new JPanel();
 		btnPanel.setLayout(new BoxLayout(btnPanel, BoxLayout.X_AXIS));
+		btnPanel.add(Box.createHorizontalGlue());
 		btnPanel.add(buttonEditNode);
+		btnPanel.add(Box.createRigidArea(new Dimension(5,0)));
 		btnPanel.add(buttonAddNode);
+		btnPanel.add(Box.createRigidArea(new Dimension(5,0)));
 		
 		BoxLayout main = new BoxLayout(this, BoxLayout.Y_AXIS);
 		setLayout(main);
 		add(Box.createRigidArea(new Dimension(0,5)));
 		add(displayNode);
+		add(Box.createRigidArea(new Dimension(0,5)));
 		add(scrollPane);
+		add(Box.createRigidArea(new Dimension(0,5)));
 		add(btnPanel);
+		add(Box.createRigidArea(new Dimension(0,5)));
 		
 		
 	}
@@ -134,8 +140,16 @@ public class PanelModificaGraph extends AbstractPanel {
 				ArrayList<ArrayList<String>> nodes = cd.getCtrlGraph().getformattedNodesOfType((String) comboBoxTypeOfNode.getSelectedItem());
 				indexOfNodes = new ArrayList<Integer>();
 				System.gc();
-				for (int i = 0; i < nodes.size(); ++i) {
-					if (nodes.get(i).get(1).toLowerCase().contains(textField.getText().toLowerCase())) {
+				if (textField.getText().length() > 0) {
+					for (int i = 0; i < nodes.size(); ++i) {
+						if (nodes.get(i).get(1).toLowerCase().contains(textField.getText().toLowerCase())) {
+							model.addElement(nodes.get(i).get(1));
+							indexOfNodes.add(Integer.parseInt(nodes.get(i).get(0)));
+						}
+					}
+				}
+				else {
+					for (int i = 0; i < nodes.size(); ++i) {
 						model.addElement(nodes.get(i).get(1));
 						indexOfNodes.add(Integer.parseInt(nodes.get(i).get(0)));
 					}
