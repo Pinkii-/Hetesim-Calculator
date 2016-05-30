@@ -61,7 +61,7 @@ public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 
 	ArrayList<String> nodeInfo;
 	ArrayList<String> newNodeInfo;
-	ArrayList<ArrayList<String>> nodeRelationsData;
+	ArrayList<ArrayList<String>> nodeRelationsData = new ArrayList<ArrayList<String>>();
 	ArrayList<ArrayList<String>> relationsToErase = new ArrayList<ArrayList<String>>();
 	ArrayList<ArrayList<String>> relationsToAdd = new ArrayList<ArrayList<String>>();
 	private static final long serialVersionUID = 1L;
@@ -295,6 +295,8 @@ public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 					public void actionPerformed(ActionEvent e){
 						if(unsavedChanges){
 							setNodeToEdit(Integer.valueOf(nodeInfo.get(0)), nodeInfo.get(2));
+							unsavedChanges = false;
+							saveButton.setEnabled(false);
 						}
 					}
 				});
