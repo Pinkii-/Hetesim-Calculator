@@ -23,6 +23,8 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 
 
@@ -160,6 +162,16 @@ public class PanelModificaGraph extends AbstractPanel {
 					model.addElement(nodes.get(i).get(1));
 					indexOfNodes.add(Integer.parseInt(nodes.get(i).get(0)));
 				}
+				buttonAddNode.setEnabled(true);
+				buttonEraseNode.setEnabled(false);
+				buttonEditNode.setEnabled(false);
+			}
+		});
+		list.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent e) {
+				buttonAddNode.setEnabled(true);
+				buttonEraseNode.setEnabled(true);
+				buttonEditNode.setEnabled(true);
 			}
 		});
 	}
