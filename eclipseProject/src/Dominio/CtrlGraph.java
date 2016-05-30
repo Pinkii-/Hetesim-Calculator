@@ -34,13 +34,13 @@ public class CtrlGraph {
 	public int addNode(String nodeType, String nodeName) {
 		isModified = true;
 		graph.id = (int) System.currentTimeMillis();
-		return graph.addNode(Utils.getNodeType(nodeType), nodeName);
+		return graph.addNode(Node.Type.valueOf(nodeType), nodeName);
 	}
 
 	public void modifyNode(Integer nodeIndex, String nodeType, String newName) {
 		isModified = true;
 		graph.id = (int) System.currentTimeMillis();
-		Node n = graph.getNode(nodeIndex, Utils.getNodeType(nodeType));
+		Node n = graph.getNode(nodeIndex, Node.Type.valueOf(nodeType));
 		Node.Label label = Utils.getNodeLabel(0);
 		n.setLabel(label);
 		n.setNom(newName);
@@ -49,31 +49,31 @@ public class CtrlGraph {
 	public void eraseNode(Integer nodeIndex, String nodeType) {
 		isModified = true;
 		graph.id = (int) System.currentTimeMillis();
-		Node n = graph.getNode(nodeIndex, Utils.getNodeType(nodeType));
+		Node n = graph.getNode(nodeIndex, Node.Type.valueOf(nodeType));
 		graph.deleteNode(n);
 	}
 
 	// PRE: node1 MUST be a paper
-	public void addNodeRelation(Integer node1Index, Integer node2Index, String node2Type) {
+	public void addNodeRelation(Integer node1IndexPaper, Integer node2Index, String node2Type) {
 		isModified = true;
 		graph.id = (int) System.currentTimeMillis();
 		Node n1 = null;
 		Node n2 = null;
 		try {
-			n1 = graph.getNode(node1Index, Node.Type.Paper);
+			n1 = graph.getNode(node1IndexPaper, Node.Type.Paper);
 		} catch (Exception e) {
 			System.out.println("Node 1 does not exist");
 			return;
 		}
 		try {
-			n2 = graph.getNode(node2Index, Utils.getNodeType(node2Type));
+			n2 = graph.getNode(node2Index, Node.Type.valueOf(node2Type));
 		} catch (Exception e) {
 			System.out.println("Node 2 does not exist");
 			return;
 		}
 		try {
-			if (!graph.existsArc(n1, n2)) {
-				graph.setArc(node1Index, node2Index, Utils.getNodeType(node2Type));
+			if (!graph.existsArc(n2, n1)) {
+				graph.setArc(node1IndexPaper, node2Index, Node.Type.valueOf(node2Type));
 			} else
 				System.out.println("Relation already exists");
 		} catch (Exception e) {
@@ -82,7 +82,7 @@ public class CtrlGraph {
 	}
 	
 	public void printNodesOfType(String t){		
-		Utils.printNodesOfType(graph, Utils.getNodeType(t));
+		Utils.printNodesOfType(graph, Node.Type.valueOf(t));
 	}
 	
 	public void printGraf(){
@@ -93,8 +93,8 @@ public class CtrlGraph {
 	public void eraseNodeRelation(Integer node1IndexPaper, Integer node2Index, String node2Type) {
 		isModified = true;
 		graph.id = (int) System.currentTimeMillis();
-		Node n1 = graph.getNode(node1IndexPaper, Node.Type.Paper);
-		Node n2 = graph.getNode(node2Index, Utils.getNodeType(node2Type));
+		Node n1 = graph.getNode(node2Index, Node.Type.valueOf(node2Type));
+		Node n2 = graph.getNode(node1IndexPaper, Node.Type.Paper);
 		try {
 			if (graph.existsArc(n1, n2)) {
 				graph.deleteArc(n1, n2);

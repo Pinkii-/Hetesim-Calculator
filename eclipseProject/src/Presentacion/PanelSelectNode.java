@@ -82,7 +82,14 @@ public class PanelSelectNode extends AbstractPanel{
 				);		
 	}
 	
-	private void setNodesList(String nodeType){
+	private void setNodesList(int comboBoxIndex){
+		int realIndex = comboBoxIndex >= CtrlDominio.getNodeTypeIndex("Paper") ?
+				comboBoxIndex + 1 :  comboBoxIndex;
+		String nodeType = CtrlDominio.getNodeTypeOfIndex(realIndex);
+		drawList(nodeType);
+	}
+	
+	private void drawList(String nodeType){
 		relationsListModel.clear();
 		nodesInfo = cd.getCtrlGraph().getformattedNodesOfType(nodeType);
 		for (int i = 0; i < nodesInfo.size(); i++) {
@@ -95,12 +102,12 @@ public class PanelSelectNode extends AbstractPanel{
 	
 	public void setNeeder(INodeNeeder daddy, boolean isAPaper){
 		if(isAPaper){
-			initTypeComboBox();
-			setNodesList(CtrlDominio.getNodeTypeOfIndex(typeComboBox.getSelectedIndex()));
+			initTypeComboBox();			
+			setNodesList(typeComboBox.getSelectedIndex());
 		}
 		else{
 			initTypeLabel();
-			setNodesList("Paper");
+			drawList("Paper");
 		}
 		nodeNeeder = daddy;
 	}
@@ -120,17 +127,16 @@ public class PanelSelectNode extends AbstractPanel{
 		String[] typeDataArray = typeData.toArray(new String[typeData.size()]); 
 		typeComboBox = new JComboBox<String>(typeDataArray);
 		typeComboBox.setEnabled(true);
-		
-		typeComboBox.addActionListener(				
-				new ActionListener(){
-					public void actionPerformed(ActionEvent e){
-						setNodesList(CtrlDominio.getNodeTypeOfIndex(typeComboBox.getSelectedIndex()));
-					}
-				});
 		springLayout.putConstraint(SpringLayout.NORTH, typeComboBox, 10, SpringLayout.SOUTH, lblSelectANode);
 		springLayout.putConstraint(SpringLayout.WEST, typeComboBox, 10, SpringLayout.EAST, lblNodeType);
 		this.add(typeComboBox);
-		
+		typeComboBox.setSelectedIndex(0);
+		typeComboBox.addActionListener(				
+				new ActionListener(){
+					public void actionPerformed(ActionEvent e){
+						setNodesList(typeComboBox.getSelectedIndex());
+					}
+				});
 	}
 	
 	/**

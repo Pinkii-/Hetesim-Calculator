@@ -2,6 +2,8 @@ package Presentacion;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -180,7 +182,7 @@ public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 		//} catch (IOException e) {
 		//	e.printStackTrace();
 		//}
-		//setNodeToEdit(0, "Paper");
+		setNodeToEdit(0, "Paper");
 	}
 
 	private void initTypeInfo(){
@@ -216,13 +218,37 @@ public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 
 	private void initButtons(){
 
-		saveButton.addActionListener(
-				new ActionListener(){
-					public void actionPerformed(ActionEvent e){
+		saveButton.addMouseListener(
+				new MouseListener(){
+					@Override
+					public void mouseClicked(MouseEvent arg0){
 						unsavedChanges = false;
+						saveAll();
 						saveButton.setEnabled(false);
-						nodeInfo.set(3, CtrlDominio.getNodeLabelOfIndex(labelComboBox.getSelectedIndex() + 1) );
-						nodeInfo.set(1, nameTextField.getText());
+					}
+
+					@Override
+					public void mouseEntered(MouseEvent arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void mouseExited(MouseEvent arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void mousePressed(MouseEvent arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void mouseReleased(MouseEvent arg0) {
+						// TODO Auto-generated method stub
+						
 					}
 				}
 				);
@@ -244,7 +270,8 @@ public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 						if(nodeInfo.get(2).equals("Paper")){
 							aux2.setNeeder(aux, true);
 						}
-						aux2.setNeeder(aux, false);
+						else
+							aux2.setNeeder(aux, false);
 					}
 				});
 		eraseRelationButton.setEnabled(false);
@@ -288,9 +315,11 @@ public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 
 	}
 
+	@SuppressWarnings("unchecked")
 	public void setNodeToEdit(Integer index, String nodeType){
 		nodeInfo = ctrlGraph.getNodeFormatted(index, nodeType);
-		newNodeInfo = nodeInfo;
+		
+		newNodeInfo = (ArrayList<String>) nodeInfo.clone();
 		updatePanel();
 	}
 
@@ -324,6 +353,26 @@ public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 	}
 	
 	private void saveAll(){
+		System.out.println(newNodeInfo.get(1) + " " + nodeInfo.get(1));
+		if(!newNodeInfo.get(1).equals(nodeInfo.get(1))){
+			ctrlGraph.modifyNode(Integer.valueOf(nodeInfo.get(0)), nodeInfo.get(2), newNodeInfo.get(1));
+		}
+		if(nodeInfo.get(2).equals("Paper")){
+			for(ArrayList<String> relation: relationsToErase){
+				ctrlGraph.eraseNodeRelation(Integer.valueOf(nodeInfo.get(0)), Integer.valueOf(relation.get(0)), relation.get(2));
+			}
+			for(ArrayList<String> relation: relationsToAdd){
+				ctrlGraph.addNodeRelation(Integer.valueOf(nodeInfo.get(0)), Integer.valueOf(relation.get(0)), relation.get(2));
+			}
+		}
+		else{
+			for(ArrayList<String> relation: relationsToErase){
+				ctrlGraph.eraseNodeRelation(Integer.valueOf(relation.get(0)), Integer.valueOf(nodeInfo.get(0)), nodeInfo.get(2));
+			}
+			for(ArrayList<String> relation: relationsToAdd){
+				ctrlGraph.addNodeRelation(Integer.valueOf(relation.get(0)), Integer.valueOf(nodeInfo.get(0)), nodeInfo.get(2));
+			}
+		}
 		
 	}
 
