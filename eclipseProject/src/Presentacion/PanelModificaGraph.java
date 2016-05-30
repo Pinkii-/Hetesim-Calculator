@@ -108,8 +108,12 @@ public class PanelModificaGraph extends AbstractPanel {
 				DefaultListModel<String> model = new DefaultListModel<String>();
 				list.setModel(model);
 				ArrayList<ArrayList<String>> nodes = cd.getCtrlGraph().getformattedNodesOfType((String) comboBoxTypeOfNode.getSelectedItem());
+				indexOfNodes = new ArrayList<Integer>();
 				for (int i = 0; i < nodes.size(); ++i) {
-					if (nodes.get(i).get(1).toLowerCase().contains(textField.getText().toLowerCase())) model.addElement(nodes.get(i).get(1));
+					if (nodes.get(i).get(1).toLowerCase().contains(textField.getText().toLowerCase())) {
+						model.addElement(nodes.get(i).get(1));
+						indexOfNodes.add(Integer.parseInt(nodes.get(i).get(0)));
+					}
 				}
 			}
 		});
@@ -138,8 +142,10 @@ public class PanelModificaGraph extends AbstractPanel {
 				DefaultListModel<String> model = new DefaultListModel<String>();
 				list.setModel(model);
 				ArrayList<ArrayList<String>> nodes = cd.getCtrlGraph().getformattedNodesOfType((String) comboBoxTypeOfNode.getSelectedItem());
+				indexOfNodes = new ArrayList<Integer>();
 				for (int i = 0; i < nodes.size(); ++i) {
 					model.addElement(nodes.get(i).get(1));
+					indexOfNodes.add(Integer.parseInt(nodes.get(i).get(0)));
 				}
 			}
 		});
@@ -156,7 +162,12 @@ public class PanelModificaGraph extends AbstractPanel {
 		buttonEditNode.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				aux.addVista(PanelEditNode.class, true);
-				((PanelEditNode) aux.childs.get(0).getContentPane().getComponent(0)).setNodeToEdit(indexOfNodes.get(list.getSelectedIndex()), (String) comboBoxTypeOfNode.getSelectedItem());;
+				System.out.println(indexOfNodes
+						.get(list.getSelectedIndex()) +" " +
+						(String) comboBoxTypeOfNode.getSelectedItem());
+				((PanelEditNode) aux.childs.get(0).getContentPane().getComponent(0))
+				.setNodeToEdit(indexOfNodes.get(list.getSelectedIndex()), 
+						(String) comboBoxTypeOfNode.getSelectedItem());
 			}
 		});
 	}
