@@ -2,11 +2,11 @@ package Presentacion;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
@@ -15,19 +15,14 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.ListModel;
 
 import Dominio.CtrlDominio;
 import Dominio.CtrlGraph;
-import Dominio.Node;
 
 import javax.swing.SpringLayout;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 import javax.swing.JList;
 
@@ -180,13 +175,6 @@ public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 		sl_nodeRelationsPanel.putConstraint(SpringLayout.EAST, sc, -10, SpringLayout.EAST, nodeRelationsPanel);
 		nodeRelationsPanel.add(sc);
 		System.out.println(CtrlDominio.getTypes());
-		//TODO erase!
-		//try {
-		//	cd.importGraph("C:/Users/Usuari/Desktop/PROP/GraphForTesting");
-		//} catch (IOException e) {
-		//	e.printStackTrace();
-		//}
-		//setNodeToEdit(0, "Paper");
 	}
 
 	private void initTypeInfo(){
@@ -232,28 +220,16 @@ public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 					}
 
 					@Override
-					public void mouseEntered(MouseEvent arg0) {
-						// TODO Auto-generated method stub
-						
-					}
+					public void mouseEntered(MouseEvent arg0) {}
 
 					@Override
-					public void mouseExited(MouseEvent arg0) {
-						// TODO Auto-generated method stub
-						
-					}
+					public void mouseExited(MouseEvent arg0) {}
 
 					@Override
-					public void mousePressed(MouseEvent arg0) {
-						// TODO Auto-generated method stub
-						
-					}
+					public void mousePressed(MouseEvent arg0) {}
 
 					@Override
-					public void mouseReleased(MouseEvent arg0) {
-						// TODO Auto-generated method stub
-						
-					}
+					public void mouseReleased(MouseEvent arg0) {}
 				}
 				);
 
@@ -310,17 +286,24 @@ public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 		initLabelInfo();			
 		initButtons();
 
-		nameTextField.addActionListener(
-				new ActionListener(){
-					public void actionPerformed(ActionEvent e){
+		nameTextField.addKeyListener(
+				new KeyListener(){
+					
+					@Override
+					public void keyReleased(KeyEvent arg0) {
 						String newText = nameTextField.getText();
 						if(!newText.equals(nodeInfo.get(1))){
 							newNodeInfo.set(1, newText);
 							unsavedChanges = true;
 							saveButton.setEnabled(true);
-						}
-
+						}						
 					}
+					
+					@Override
+					public void keyPressed(KeyEvent arg0) {}
+					
+					@Override
+					public void keyTyped(KeyEvent arg0) {}
 				}
 				);
 
