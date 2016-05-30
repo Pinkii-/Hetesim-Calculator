@@ -334,12 +334,12 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 				if (checkbox.isSelected()){
 					System.out.println("P threshold");
 					idResult = cd.searchPathThreshhold((float)((double)threshold.getValue()), path);
-					resultTable = new MyResultTable(cd.getCtrlResults().getLastResultFormatted());
+					resultTable = new MyResultTable(cd.getCtrlResults().getLastResultFormatted(),cd.getCtrlResults());
 				}
 				else {
 					System.out.println("P");
 					idResult = cd.searchPath(path);
-					resultTable = new MyResultTable(cd.getCtrlResults().getLastResultFormatted());
+					resultTable = new MyResultTable(cd.getCtrlResults().getLastResultFormatted(),cd.getCtrlResults());
 				}
 				System.out.println("Done");
 			}
@@ -348,7 +348,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 				if (checkbox.isSelected()){
 					System.out.println("PN1 threshold");
 					idResult = cd.searchPathNodeThreshhold((float)((double)threshold.getValue()), path, n1);
-					resultTable = new MyResultTable(cd.getCtrlResults().getLastResultFormatted());
+					resultTable = new MyResultTable(cd.getCtrlResults().getLastResultFormatted(),cd.getCtrlResults());
 				}
 				else {
 					System.out.println("PN1");
@@ -397,7 +397,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 			
 			if (cd.getCtrlResults().getLastResultFormatted() != null){
 				try {
-					resultTable = new MyResultTable(cd.getCtrlResults().getLastResultFormatted());
+					resultTable = new MyResultTable(cd.getCtrlResults().getLastResultFormatted(),cd.getCtrlResults());
 					resultTable.setPreferredSize(new Dimension(350,200));
 					resultTable.setBorder(BorderFactory.createLineBorder(Color.black));
 					threshold.setEnabled(true);
@@ -423,7 +423,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		else if (e.getSource().equals(saveResult)){
 			idResult = cd.getCtrlResults().addLastResult();
 			//cd.getCtrlResults().addLastResult();
-			resultTable = new MyResultTable(cd.getCtrlResults().getFormatted(idResult));
+			resultTable = new MyResultTable(cd.getCtrlResults().getFormatted(idResult),cd.getCtrlResults());
 			editResult.setEnabled(true);
 		}
 		else if (e.getSource().equals(editResult)){
