@@ -32,6 +32,7 @@ public class PanelModificaGraph extends AbstractPanel {
 	private JButton buttonAddNode = new JButton("Add New Node");
 	private JButton buttonEditNode = new JButton("Edit Node");
 	private JButton buttonSaveGraph = new JButton("Save Graph To File");
+	private JButton buttonEraseNode = new JButton("Erase Node");
 	
 	private JPanel displayNode;
 	private JComboBox<String> comboBoxTypeOfNode;
@@ -93,6 +94,8 @@ public class PanelModificaGraph extends AbstractPanel {
 		btnPanel.add(buttonEditNode);
 		btnPanel.add(Box.createRigidArea(new Dimension(5,0)));
 		btnPanel.add(buttonAddNode);
+		btnPanel.add(Box.createRigidArea(new Dimension(5,0)));
+		btnPanel.add(buttonEraseNode);
 		btnPanel.add(Box.createRigidArea(new Dimension(5,0)));
 		btnPanel.add(buttonSaveGraph);
 		btnPanel.add(Box.createRigidArea(new Dimension(5,0)));
@@ -167,7 +170,10 @@ public class PanelModificaGraph extends AbstractPanel {
 			public void actionPerformed(ActionEvent event) {
 				if (!buttonAddNode.isEnabled()) return;
 				aux.addVista(PanelEditNode.class, true); // Cambiar al panel que agrega nodos
-				
+				String nodeType = (String) comboBoxTypeOfNode.getSelectedItem();
+				int i = cd.getCtrlGraph().addNode(nodeType, "");
+				((PanelEditNode) aux.childs.get(0).getContentPane().getComponent(0))
+				.setNodeToEdit(i, nodeType);
 			}
 		});
 		
@@ -193,16 +199,13 @@ public class PanelModificaGraph extends AbstractPanel {
 				cd.saveGraph();
 			}
 		});
-//		buttonEditNode.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				aux.addVista(PanelEditNode.class, true);
-//				((PanelEditNode) aux.childs.get(0).getContentPane().getComponent(0))
-//				.setNodeToEdit(indexOfNodes.get(list.getSelectedIndex()), 
-//						(String) comboBoxTypeOfNode.getSelectedItem());
-//
-//				System.out.println("buttonEditNode");
-//			}
-//		});
+		buttonEraseNode.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (!buttonSaveGraph.isEnabled()) return;
+				cd.getCtrlGraph().eraseNode(indexOfNodes.get(list.getSelectedIndex()), 
+						(String) comboBoxTypeOfNode.getSelectedItem());
+			}
+		});
 	}
 
 	@Override
@@ -261,5 +264,6 @@ public class PanelModificaGraph extends AbstractPanel {
 			}
 		}
 	}
+	
 
 }
