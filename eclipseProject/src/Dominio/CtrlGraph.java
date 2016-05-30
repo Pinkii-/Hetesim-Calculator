@@ -140,9 +140,7 @@ public class CtrlGraph {
 	private ArrayList<ArrayList<String>> formatMatrixNodes(Matrix m, Node.Type t){
 		ArrayList<ArrayList<String>> ret = new ArrayList<ArrayList<String>>();
 		for (int i = 0; i < m.getNRows(); ++i) {
-			ArrayList<String> col = new ArrayList<String>();
-			col.addAll(formatNode(i, graph.getNode(i, t))); 
-			ret.add(col);
+			ret.add(formatNode(i, graph.getNode(i, t))); 
 		}
 		return ret;
 	}
@@ -151,9 +149,7 @@ public class CtrlGraph {
 		ArrayList<ArrayList<String>> ret = new ArrayList<ArrayList<String>>();
 		try{
 			for (int i = 0; i < m.getNCols(); ++i) {
-				ArrayList<String> col = new ArrayList<String>();
-				col.addAll(formatNode(i, graph.getNode(i, Node.Type.Paper))); 
-				ret.add(col);
+				ret.add(formatNode(i, graph.getNode(i, Node.Type.Paper)));
 			}
 		}catch(Exception e){
 			//If there isn't any papers in a given matrix, the program crashes

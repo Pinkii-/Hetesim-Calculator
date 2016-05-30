@@ -78,10 +78,8 @@ public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 			int result = VistaDialog.setDialog("Titulo", "�Estas seguro que quieres salir?\n"
 					+ "Todos los cambion no guardados seran perdidos",
 					buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
-			this.removeAll();
 			return result;
 		}
-		this.removeAll();
 		return 0;
 	}
 
@@ -295,7 +293,9 @@ public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 		resetValuesButton.addActionListener(
 				new ActionListener(){
 					public void actionPerformed(ActionEvent e){
-						//TODO
+						if(unsavedChanges){
+							setNodeToEdit(Integer.valueOf(nodeInfo.get(0)), nodeInfo.get(2));
+						}
 					}
 				});
 	}
@@ -327,6 +327,10 @@ public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 
 	@SuppressWarnings("unchecked")
 	public void setNodeToEdit(Integer index, String nodeType){
+		relationsToAdd.clear();
+		relationsToErase.clear();
+		nodeRelationsData.clear();
+		
 		nodeInfo = ctrlGraph.getNodeFormatted(index, nodeType);
 		
 		newNodeInfo = (ArrayList<String>) nodeInfo.clone();

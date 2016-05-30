@@ -199,7 +199,6 @@ public class Graph implements Serializable {
                 case Autor:
                     autorPaper.borraFila(i);
                     autors.set(i,null);
-                    System.out.println("haber estudiao" + autors.get(5625)+ "");
                     break;
                 case Conferencia:
                     confPaper.borraFila(i);

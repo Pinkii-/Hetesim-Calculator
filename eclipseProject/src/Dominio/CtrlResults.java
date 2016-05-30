@@ -43,7 +43,7 @@ public class CtrlResults {
 			results.get(resultId).modifLine(line, newHeteSimVal);
 		}
 		else {
-			System.out.println("Result not found - Set");
+			System.out.println("Result not found - ModifyResult");
 		}
 	}
 

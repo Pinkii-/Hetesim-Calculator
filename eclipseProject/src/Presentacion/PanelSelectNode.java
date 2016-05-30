@@ -1,11 +1,9 @@
 package Presentacion;
 
-import javax.swing.JFrame;
 import javax.swing.SpringLayout;
 
 import Dominio.CtrlDominio;
 
-import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -73,7 +71,6 @@ public class PanelSelectNode extends AbstractPanel{
 		springLayout.putConstraint(SpringLayout.EAST, listScrollPane, -10, SpringLayout.EAST, this);
 		this.add(listScrollPane);
 
-		//Adding usability to the list
 		searchTextField = new JTextField();
 		
 		springLayout.putConstraint(SpringLayout.EAST, searchTextField, -10, SpringLayout.EAST, this);
@@ -82,12 +79,23 @@ public class PanelSelectNode extends AbstractPanel{
 		
 		this.add(searchTextField);
 		
+		JLabel lblFilter = new JLabel("Filter: ");
+		
+		springLayout.putConstraint(SpringLayout.EAST, lblFilter, -10, SpringLayout.WEST, searchTextField);
+		springLayout.putConstraint(SpringLayout.SOUTH, lblFilter, -10, SpringLayout.NORTH, listScrollPane);
+		
+		this.add(lblFilter);
+		
+		
 		
 		btnGetNode.addActionListener(
 				new ActionListener(){
 					public void actionPerformed(ActionEvent e){
 						ArrayList<String> node = nodesInfo.get(indexOfNodes.get(list.getSelectedIndex()));
+						System.out.println(indexOfNodes.get(list.getSelectedIndex()) + " " + list.getSelectedIndex());
 						//System.out.println(node);
+						System.out.println(cd.getCtrlGraph().getNodeFormatted(indexOfNodes.get(list.getSelectedIndex()), "Paper"));
+						System.out.println(node);
 						nodeNeeder.setNode(node);
 						close();
 					}
@@ -104,18 +112,12 @@ public class PanelSelectNode extends AbstractPanel{
 	
 	private void drawList(String nodeType){
 		relationsListModel.clear();
-		nodesInfo = cd.getCtrlGraph().getformattedNodesOfType(nodeType);
-		//for (int i = 0; i < nodesInfo.size(); i++) {
-		//	ArrayList<String> nodesInfoRow = nodesInfo.get(i);
-		//	String listString = nodesInfoRow.get(1);
-		//	relationsListModel.addElement(listString);
-		//}
-		
+		nodesInfo = cd.getCtrlGraph().getformattedNodesOfType(nodeType);		
 		indexOfNodes = new ArrayList<Integer>();
 		for (int i = 0; i < nodesInfo.size(); ++i) {
 			if (nodesInfo.get(i).get(1).toLowerCase().contains(searchTextField.getText().toLowerCase())) {
 				relationsListModel.addElement(nodesInfo.get(i).get(1));
-				indexOfNodes.add(Integer.parseInt(nodesInfo.get(i).get(0)));
+				indexOfNodes.add(i);
 			}
 		}
 	}
@@ -124,25 +126,23 @@ public class PanelSelectNode extends AbstractPanel{
 		if(isAPaper){
 			initTypeComboBox();			
 			setNodesList(typeComboBox.getSelectedIndex());
+			searchTextField.addKeyListener(new KeyListener() {
+				public void keyTyped(KeyEvent e) {}
+				public void keyPressed(KeyEvent e) {}
+				public void keyReleased(KeyEvent e) {
+					setNodesList(typeComboBox.getSelectedIndex());
+				}});
 		}
 		else{
 			initTypeLabel();
-			drawList("Paper");
+			drawList("Paper");		
+			searchTextField.addKeyListener(new KeyListener() {
+				public void keyTyped(KeyEvent e) {}
+				public void keyPressed(KeyEvent e) {}
+				public void keyReleased(KeyEvent e) {
+					drawList("Paper");		
+				}});
 		}
-		searchTextField.addKeyListener(new KeyListener() {
-			public void keyTyped(KeyEvent e) {}
-			public void keyPressed(KeyEvent e) {}
-			public void keyReleased(KeyEvent e) {
-				relationsListModel.clear();
-				indexOfNodes = new ArrayList<Integer>();
-				System.gc();
-				for (int i = 0; i < nodesInfo.size(); ++i) {
-					if (nodesInfo.get(i).get(1).toLowerCase().contains(searchTextField.getText().toLowerCase())) {
-						relationsListModel.addElement(nodesInfo.get(i).get(1));
-						indexOfNodes.add(Integer.parseInt(nodesInfo.get(i).get(0)));
-					}
-				}
-			}});
 		nodeNeeder = daddy;
 	}
 	
