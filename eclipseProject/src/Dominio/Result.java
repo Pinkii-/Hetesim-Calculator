@@ -209,7 +209,7 @@ public class Result implements Cloneable, Serializable {
 	
 	//Get the result list
 	public ArrayList<NodePair> getResult(){ 
-		ArrayList<NodePair> retResult = resultList;
+		ArrayList<NodePair> retResult = new ArrayList<NodePair>();
 		int i = 0;
 		while (i < resultList.size() && resultList.get(i).getHetesim() > threshold && retResult.size() < 50){
 		    retResult.add(resultList.get(i));
