@@ -69,7 +69,7 @@ public class CtrlDataGraph {
 
         Graph g = null;
         try {
-            FileInputStream fileInputStream = new FileInputStream(filePath + ".ser");
+            FileInputStream fileInputStream = new FileInputStream(filePath);
             ObjectInputStream in = new ObjectInputStream(fileInputStream);
             g = (Graph) in.readObject();
             in.close();

@@ -184,7 +184,7 @@ public class VistaPrincipal extends VistaAbstracta{
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser f  = new JFileChooser();
 				f.setCurrentDirectory(new File(System.getProperty("user.dir")));
-				f.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+//				f.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 				f.showOpenDialog(f);
 				try {
 					String s = f.getSelectedFile().getAbsolutePath();

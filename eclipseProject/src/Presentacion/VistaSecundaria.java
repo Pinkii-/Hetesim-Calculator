@@ -29,6 +29,7 @@ public class VistaSecundaria extends VistaAbstracta {
 		System.out.println("continueAction");
 		parent.setEnabledEverything(true);
 		parent.childs.remove(this);
+		this.removeAll();
 		dispose();
 	}	
 
