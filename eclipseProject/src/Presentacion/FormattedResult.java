@@ -33,12 +33,7 @@ public class FormattedResult extends ArrayList<ArrayList<String>> {
 	private ArrayList<Boolean> modifiedResultValues;
 	
 	public FormattedResult(ArrayList<ArrayList<String>> res, CtrlResults cr) {
-		for (int i = 0; i < res.size(); ++i) {
-			for (int j = 0; j < res.get(i).size(); ++j) {
-				System.out.println(res.get(i).get(j));
-			}
-		}
-		System.out.println("Impreso");
+		
 		this.addAll(res);
 		System.out.println(get(0));
 		this.cr = cr;
@@ -70,19 +65,31 @@ public class FormattedResult extends ArrayList<ArrayList<String>> {
 	}
 	
 	public void setOldValue(int nValue, Float value) {
-		oldValues.put(nValue,value);
+		if (nValue >= 0 && nValue <= numberOfValues) oldValues.put(nValue,value);
+		else System.out.println("Intentas acceder a un valor inexistente");
 	}
 	
 	public Float getOldValue(int nValue) {
-		return oldValues.get(nValue);
+		if (oldValues.containsKey(nValue))
+			return oldValues.get(nValue);
+		else {
+			System.out.println("No existe el valor antiguo");
+			return null;
+		}
 	}
 	
 	public void setNewValue(int nValue, Float value) {
-		newValues.put(nValue, value);
+		if (nValue >= 0 && nValue <= numberOfValues) newValues.put(nValue,value);
+		else System.out.println("Intentas acceder a un indice de valor inexistente");
 	}
 	
 	public Float getNewValue(int nValue) {
-		return newValues.get(nValue);
+		if (newValues.containsKey(nValue))
+			return newValues.get(nValue);
+		else {
+			System.out.println("No existe el valor nuevo");
+			return null;
+		}
 	}
 	
 	public void clearChanges() {
@@ -117,7 +124,6 @@ public class FormattedResult extends ArrayList<ArrayList<String>> {
 	public Object[][] getResultData() {
 		return resultData;
 	}
-	//Insertar más getters innecesarios aquí.
 	
 	public void commitChanges() {
 		for (Integer index: newValues.keySet()) {

@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-import gnu.trove.map.hash.THashMap;
 
 /**
  * 
@@ -13,7 +12,8 @@ import gnu.trove.map.hash.THashMap;
  * 
  */
 
-public class SparseVector extends THashMap<Integer,Float> {
+	
+public class SparseVector extends HashMap<Integer,Float> {
 	/**
 	 * The multiplication of two vectors
 	 * @param sv1 SparseVector that is going to be multiplied for the other SparseVector
