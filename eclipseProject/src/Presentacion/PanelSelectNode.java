@@ -1,6 +1,8 @@
 package Presentacion;
 
 import javax.swing.SpringLayout;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import Dominio.CtrlDominio;
 
@@ -24,7 +26,7 @@ import javax.swing.JTextField;
  */
 public class PanelSelectNode extends AbstractPanel{
 
-	DefaultListModel<String> relationsListModel = new DefaultListModel<String>();
+	DefaultListModel<String> nodeSelectionModel = new DefaultListModel<String>();
 	JComboBox<String> typeComboBox = new JComboBox<String>();
 	SpringLayout springLayout = new SpringLayout();
 
@@ -61,6 +63,7 @@ public class PanelSelectNode extends AbstractPanel{
 		
 
 		this.add(btnGetNode);
+		btnGetNode.setEnabled(false);
 
 		springLayout.putConstraint(SpringLayout.NORTH, lblSelectANode, 10, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, lblSelectANode, 10, SpringLayout.WEST, this);
@@ -75,14 +78,24 @@ public class PanelSelectNode extends AbstractPanel{
 		springLayout.putConstraint(SpringLayout.WEST, lblNodeList, 0, SpringLayout.WEST, lblNodeType);
 		this.add(lblNodeList);
 		
-		JList<String> list = new JList<String>(relationsListModel);
+		JList<String> nodeSelectionList = new JList<String>(nodeSelectionModel);
 		JScrollPane listScrollPane = new JScrollPane();
-		listScrollPane.setViewportView(list);
+		listScrollPane.setViewportView(nodeSelectionList);
 		springLayout.putConstraint(SpringLayout.NORTH, listScrollPane, 10, SpringLayout.SOUTH, lblNodeList);
 		springLayout.putConstraint(SpringLayout.WEST, listScrollPane, 0, SpringLayout.WEST, lblNodeList);
 		springLayout.putConstraint(SpringLayout.SOUTH, listScrollPane, -10, SpringLayout.NORTH, btnCancel);
 		springLayout.putConstraint(SpringLayout.EAST, listScrollPane, -10, SpringLayout.EAST, this);
 		this.add(listScrollPane);
+		
+		nodeSelectionList.addListSelectionListener(
+				new ListSelectionListener(){
+					@Override
+					public void valueChanged(ListSelectionEvent arg0) {
+						btnGetNode.setEnabled(!nodeSelectionList.isSelectionEmpty());
+					}
+
+				}
+				);
 
 		searchTextField = new JTextField();
 		
@@ -104,10 +117,10 @@ public class PanelSelectNode extends AbstractPanel{
 		btnGetNode.addActionListener(
 				new ActionListener(){
 					public void actionPerformed(ActionEvent e){
-						ArrayList<String> node = nodesInfo.get(indexOfNodes.get(list.getSelectedIndex()));
-						System.out.println(indexOfNodes.get(list.getSelectedIndex()) + " " + list.getSelectedIndex());
+						ArrayList<String> node = nodesInfo.get(indexOfNodes.get(nodeSelectionList.getSelectedIndex()));
+						System.out.println(indexOfNodes.get(nodeSelectionList.getSelectedIndex()) + " " + nodeSelectionList.getSelectedIndex());
 						//System.out.println(node);
-						System.out.println(cd.getCtrlGraph().getNodeFormatted(indexOfNodes.get(list.getSelectedIndex()), "Paper"));
+						System.out.println(cd.getCtrlGraph().getNodeFormatted(indexOfNodes.get(nodeSelectionList.getSelectedIndex()), "Paper"));
 						System.out.println(node);
 						nodeNeeder.setNode(node);
 						close();
@@ -124,12 +137,12 @@ public class PanelSelectNode extends AbstractPanel{
 	}
 	
 	private void drawList(String nodeType){
-		relationsListModel.clear();
+		nodeSelectionModel.clear();
 		nodesInfo = cd.getCtrlGraph().getformattedNodesOfType(nodeType);		
 		indexOfNodes = new ArrayList<Integer>();
 		for (int i = 0; i < nodesInfo.size(); ++i) {
 			if (nodesInfo.get(i).get(1).toLowerCase().contains(searchTextField.getText().toLowerCase())) {
-				relationsListModel.addElement(nodesInfo.get(i).get(1));
+				nodeSelectionModel.addElement(nodesInfo.get(i).get(1));
 				indexOfNodes.add(i);
 			}
 		}

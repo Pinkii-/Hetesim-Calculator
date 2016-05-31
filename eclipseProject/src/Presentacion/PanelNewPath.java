@@ -106,7 +106,7 @@ public class PanelNewPath extends AbstractPanel { //Abstract
 		add(panelContent);
 		panelContent.setLayout(new GridLayout(5, 3, 0, 5));
 		
-		buttonAuthor = new JButton("Author");
+		buttonAuthor = new RoundButton("Author");
 		
 		buttonAuthor.setBackground(new Color(230, 230, 250));
 //			buttonAuthor.setBackground(bg);

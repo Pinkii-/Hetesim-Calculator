@@ -1,8 +1,6 @@
 package Presentacion;
 
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -10,15 +8,12 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
-import java.util.Collections;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -49,10 +44,9 @@ public class PanelModificaGraph extends AbstractPanel {
 	
 	public PanelModificaGraph(VistaAbstracta vp) {
 		super(vp);
-//		setBackground(Color.green);
 	}
 	
-	public void init() {
+	public void init() {		
 		initComponents();
 		asignListeners();
 	}
@@ -64,6 +58,8 @@ public class PanelModificaGraph extends AbstractPanel {
 		comboBoxTypeOfNode.setSelectedIndex(-1);
 		comboBoxTypeOfNode.setToolTipText("Select Type of node");
 		comboBoxTypeOfNode.setMaximumSize(buttonAddNode.getPreferredSize());
+		comboBoxTypeOfNode.setSelectedIndex(0);
+		
 		
 //		findingNode = new MyComboBox();
 ////		findingNode.linkToParentComboBox(comboBoxTypeOfNode);
@@ -113,7 +109,9 @@ public class PanelModificaGraph extends AbstractPanel {
 		add(btnPanel);
 		add(Box.createRigidArea(new Dimension(0,5)));
 		
-		
+		buttonAddNode.setEnabled(false);
+		buttonEraseNode.setEnabled(false);
+		buttonEditNode.setEnabled(false);
 	}
 	
 	private void createList() {
@@ -174,6 +172,7 @@ public class PanelModificaGraph extends AbstractPanel {
 				buttonEditNode.setEnabled(true);
 			}
 		});
+		updateGraph();
 	}
 	
 	private void asignListeners() {
@@ -183,7 +182,7 @@ public class PanelModificaGraph extends AbstractPanel {
 				if (!buttonAddNode.isEnabled()) return;
 				aux.addVista(PanelEditNode.class, true); // Cambiar al panel que agrega nodos
 				String nodeType = (String) comboBoxTypeOfNode.getSelectedItem();
-				int i = cd.getCtrlGraph().addNode(nodeType, "");
+				int i = cd.getCtrlGraph().addNode(nodeType, "New Node");
 				((PanelEditNode) aux.childs.get(0).getContentPane().getComponent(0))
 				.setNodeToEdit(i, nodeType);
 			}
@@ -216,6 +215,9 @@ public class PanelModificaGraph extends AbstractPanel {
 				if (!buttonSaveGraph.isEnabled()) return;
 				cd.getCtrlGraph().eraseNode(indexOfNodes.get(list.getSelectedIndex()), 
 						(String) comboBoxTypeOfNode.getSelectedItem());
+				int pos = list.getSelectedIndex();
+				model.remove(pos);
+				indexOfNodes.remove(pos);
 			}
 		});
 	}
@@ -275,6 +277,7 @@ public class PanelModificaGraph extends AbstractPanel {
 				indexOfNodes.add(Integer.parseInt(nodes.get(i).get(0)));
 			}
 		}
+		
 	}
 	
 
