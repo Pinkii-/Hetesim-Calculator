@@ -9,6 +9,7 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.TableCellEditor;
 
 import Dominio.CtrlResults;
 import Presentacion.FormattedResult;
@@ -42,6 +43,8 @@ public class MyResultTable extends JTable implements ListSelectionListener  {
 		setFillsViewportHeight(true);
 		setEnabled(false);
 		setCellSelectionEnabled(false);
+		TableCellEditor cve = new CorrectValueEditor();
+		this.setDefaultEditor(Float.class, cve);
 	}
 		
 	
