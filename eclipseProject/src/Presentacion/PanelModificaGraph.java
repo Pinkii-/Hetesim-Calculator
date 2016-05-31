@@ -209,7 +209,10 @@ public class PanelModificaGraph extends AbstractPanel {
 		buttonSaveGraph.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (!buttonSaveGraph.isEnabled()) return;
+				
 				cd.saveGraph();
+				VistaDialog.setDialog("Graph Saved", "Graph save correctly",
+						new String[] {"Continue"}, VistaDialog.DialogType.QUESTION_MESSAGE);
 			}
 		});
 		buttonEraseNode.addActionListener(new ActionListener() {
