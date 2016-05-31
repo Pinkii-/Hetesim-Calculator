@@ -95,9 +95,9 @@ public class CtrlResults {
 	}
 
 	public String addLastResult() {
-		String resultId = String.valueOf(System.currentTimeMillis());
-		addResult(resultId, lastResult);
-		return resultId;
+		//String resultId = String.valueOf(System.currentTimeMillis());
+		addResult(lastResult.getIdResult(), lastResult);
+		return lastResult.getIdResult();
 		//addResult(lastResult.getIdResult(), lastResult);
 		//return lastResult.getIdResult();
 	}
