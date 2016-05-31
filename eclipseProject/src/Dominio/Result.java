@@ -285,7 +285,7 @@ public class Result implements Cloneable, Serializable {
 	
 	
 	private void sortResult(){ //Sort the result list by hetesim value
-		System.out.println(resultList.size());
+		//System.out.println(resultList.size());
 		try {
 			Collections.sort(resultList,new NodePairComparator());
 		}
