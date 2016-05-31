@@ -85,7 +85,7 @@ public class Graph implements Serializable {
                 temaPaper.addNode();
                 break;
             default: 
-                System.out.println ("Tipo incorrecto");
+                //System.out.println ("Tipo incorrecto");
                 res = -1;
                 break;
         }
@@ -98,22 +98,30 @@ public class Graph implements Serializable {
             switch(tipus) {
                 case Autor: aux = autors.get(index);
                     if (aux != null) autors.get(index).setLabel(label);
-                    else System.out.println ("Nodo borrado");
+                    else {
+                    	//System.out.println ("Nodo borrado");                    	
+                    }
                     break; 
                 case Conferencia: aux = conferencies.get(index);
                     if (aux != null) conferencies.get(index).setLabel(label);
-                    else System.out.println ("Nodo borrado");
+                    else {
+                    	//System.out.println ("Nodo borrado");
+                    }
                     break;
                 case Paper: aux = papers.get(index);
                     if (aux != null) papers.get(index).setLabel(label);
-                    else System.out.println ("Nodo borrado");
+                    else {
+                    	//System.out.println ("Nodo borrado");
+                    }
                     break;
                 default: 
-                    System.out.println ("Tipo incorrecto");
+                    //System.out.println ("Tipo incorrecto");
                     break;
             }
         }
-        else System.out.println ("Label incorrecta");
+        else {
+        	//System.out.println ("Label incorrecta");
+        }
     }
     
     public Integer existsNode(Node n) {
@@ -149,7 +157,7 @@ public class Graph implements Serializable {
                 if (!trob) i = -1;
                 return i;
             default:
-                System.out.println ("Tipo incorrecto");
+                //System.out.println ("Tipo incorrecto");
                 return -1;            
         }
     }
@@ -165,7 +173,7 @@ public class Graph implements Serializable {
             case Terme: if (termes.get(index) != null) return termes.get(index);
                 else return null;
             default: 
-                System.out.println ("Tipo incorrecto");
+                //System.out.println ("Tipo incorrecto");
                 return null;
         }
     }
@@ -187,7 +195,7 @@ public class Graph implements Serializable {
                 if (i != -1 && j != -1) return temaPaper.existeixArc(i,j);
                 else throw new RuntimeException("Graph::existsArc() : No existe alguno de los nodos");
             default: 
-                System.out.println ("Tipo incorrecto");
+                //System.out.println ("Tipo incorrecto");
                 return false;
         }
     } 
@@ -215,7 +223,7 @@ public class Graph implements Serializable {
                     termes.set(i,null);
                     break;
                 default: 
-                    System.out.println ("Tipo incorrecto");
+                    //System.out.println ("Tipo incorrecto");
                     break;
             }
         }
@@ -228,20 +236,26 @@ public class Graph implements Serializable {
             case Autor: 
                 i = existsNode(a);
                 if (i != -1 && j != -1) autorPaper.esborrarArc(i,j);
-                else System.out.println ("No existeix el Node/s");
+                else {
+                	//System.out.println ("No existeix el Node/s");
+                }
                 break;
             case Conferencia: 
                 i = existsNode(a);
                 if (i != -1 && j != -1) confPaper.esborrarArc(i,j);
-                else System.out.println ("No existeix el Node/s");
+                else {
+                	//System.out.println ("No existeix el Node/s");
+                }
                 break;
             case Terme:
                 i = existsNode(a);
                 if (i != -1 && j != -1) temaPaper.esborrarArc(i,j);
-                else System.out.println ("No existeix el Node/s");
+                else {
+                	//System.out.println ("No existeix el Node/s");
+                }
                 break;
             default:
-                System.out.println ("Tipo incorrecto");
+                //System.out.println ("Tipo incorrecto");
                 break;
         }
     }
@@ -251,9 +265,11 @@ public class Graph implements Serializable {
         switch(a.getTipus()) {
             case Autor:
                 aux = existsNode(a);
-                System.out.println("ojo cuiao");
+                //System.out.println("ojo cuiao");
                 if (aux != -1) autors.get(aux).setNom(s);
-                else System.out.println("funca mal");
+                else {
+                	//System.out.println("funca mal");
+                }
                 break;
             case Conferencia:
                 aux = existsNode(a);
@@ -268,7 +284,7 @@ public class Graph implements Serializable {
                 if (aux != -1) termes.get(aux).setNom(s);
                 break;
             default: 
-                System.out.println ("Tipo incorrecto");
+                //System.out.println ("Tipo incorrecto");
                 break;
         }
     }
@@ -282,7 +298,7 @@ public class Graph implements Serializable {
             case Terme: temaPaper.afegirArc(index2, indexpaper);
                 break;
             default: 
-                System.out.println ("Tipo incorrecto");
+                //System.out.println ("Tipo incorrecto");
                 break;
         }
     }
@@ -319,30 +335,46 @@ public class Graph implements Serializable {
         switch(tipus) {
             case Autor: 
                 for (int i = 0; i < autors.size(); ++i) {
-                    if (autors.get(i) != null) System.out.println ("Autor " + i + ": " + autors.get(i).getNom() + "");
-                    else System.out.println ("Autor " + i + ": esborrat");
+                    if (autors.get(i) != null) {
+                    	//System.out.println ("Autor " + i + ": " + autors.get(i).getNom() + "");
+                    }
+                    else {
+                    	//System.out.println ("Autor " + i + ": esborrat");
+                    }
                 }
                 break;
             case Conferencia: 
                 for (int i = 0; i < conferencies.size(); ++i) { 
-                    if (conferencies.get(i) != null) System.out.println ("Conferencia " + i + ": " + conferencies.get(i).getNom() + ""); 
-                    else System.out.println ("Conferencia " + i + ": esborrada");
+                    if (conferencies.get(i) != null) {
+                    	//System.out.println ("Conferencia " + i + ": " + conferencies.get(i).getNom() + ""); 
+                    }
+                    else {
+                    	//System.out.println ("Conferencia " + i + ": esborrada");
+                    }
                 }
                 break;
             case Paper: 
                 for (int i = 0; i < papers.size(); ++i) {
-                    if (papers.get(i) != null) System.out.println ("Paper " + i + ": " + papers.get(i).getNom() + "");
-                    else System.out.println ("Paper " + i + ": esborrat");
+                    if (papers.get(i) != null) {
+                    	//System.out.println ("Paper " + i + ": " + papers.get(i).getNom() + "");
+                    }
+                    else {
+                    	//System.out.println ("Paper " + i + ": esborrat");
+                    }
                 }
                 break;
             case Terme: 
                 for (int i = 0; i < termes.size(); ++i) {
-                    if (termes.get(i) != null) System.out.println ("Terme " + i + ": " + termes.get(i).getNom() + "");
-                    else System.out.println ("Terme " + i + ": esborrat");
+                    if (termes.get(i) != null) {
+                    	//System.out.println ("Terme " + i + ": " + termes.get(i).getNom() + "");
+                    }
+                    else {
+                    	//System.out.println ("Terme " + i + ": esborrat");
+                    }
                 }
                 break;
             default: 
-                System.out.println ("Tipo incorrecto");
+                //System.out.println ("Tipo incorrecto");
                 break;
         }
     }

@@ -171,7 +171,7 @@ public class Result implements Cloneable, Serializable {
 		retStr = retStr + ("    Threshold: " + threshold + "\n");                              //Threshold: threshold
 		retStr = retStr + ("\n");                                                              //
 		int i = 0;
-		System.out.println(resultList.size());
+		//System.out.println(resultList.size());
 		while (i < resultList.size() && resultList.get(i).getHetesim() >= threshold){
 			retStr = retStr + "    " + resultList.get(i).toString() + "\n";                    //First node: <Node to string> Last node: <Node to string> Hetesim: valorHetesim
 			++i;
@@ -211,7 +211,7 @@ public class Result implements Cloneable, Serializable {
 	public ArrayList<NodePair> getResult(){ 
 		ArrayList<NodePair> retResult = new ArrayList<NodePair>();
 		int i = 0;
-		System.out.println(resultList.get(0).getHetesim());
+		//System.out.println(resultList.get(0).getHetesim());
 		while (i < resultList.size() && resultList.get(i).getHetesim() >= threshold && retResult.size() < 50){
 		    retResult.add(resultList.get(i));
 		    ++i;
@@ -298,7 +298,7 @@ public class Result implements Cloneable, Serializable {
 			Collections.sort(resultList,new NodePairComparator());
 		}
 		catch (IllegalArgumentException e){
-			System.out.println("Something went wrong when sorting the result");
+			//System.out.println("Something went wrong when sorting the result");
 		}
 	}
 }
