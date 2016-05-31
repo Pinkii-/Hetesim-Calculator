@@ -245,6 +245,13 @@ public class Result implements Cloneable, Serializable {
 		return resultType;
 	}
 	
+	public Float getThreshold(){
+		return threshold;
+	}
+	public void setThreshold(Float threshold){
+		this.threshold = threshold;
+	}
+	
 	/**
 	 * Modify the value of the HeteSim for the NodePair stored in line i
 	 * 
