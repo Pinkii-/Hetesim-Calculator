@@ -312,6 +312,7 @@ public class PanelNewPath extends AbstractPanel { //Abstract
 					String des = "The path needs a Description.\n";
 					String cont = "The path needs to be at least of leght 2 and nicely formated.\n";
 					if (hasName && hasDes && goodPath && !existName){
+						System.out.println(textField.getText() + " " + textFieldName.getText() + " " + textFieldDescription.getText());
 						cd.getCtrlPaths().addPath(textField.getText(), textFieldName.getText(), textFieldDescription.getText());
 						VistaDialog.setDialog("New Path", "The path was created correctly", null, VistaDialog.DialogType.INFORMATION_MESSAGE);
 						finished = true;

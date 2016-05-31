@@ -123,6 +123,7 @@ public class HeteSanic {
 		Pair<ArrayList<Node.Type>, ArrayList<Node.Type>> aux = p.getPath();
 		left = aux.first;
 		right = aux.second;
+		System.out.println(p.getContingut());
 		if (left.size() < 2 || right.size() < 2) throw new PathException("The path is too short");
 		Collections.reverse(right);
 		

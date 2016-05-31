@@ -82,9 +82,12 @@ public class CtrlPaths {
 	public void addPath(String pathContent, String pathName, String description) {
 		if (!paths.containsKey(pathName)) {
 			Path p = new Path();
+			System.out.println(pathContent);
 			p.setContingut(pathContent);
 			p.setNom(pathName);
 			p.setDescripcio(description);
+
+			System.out.println(p.getContingut() + " " + p.getStringPath());
 			paths.put(pathName, p);
 			modifiedPaths.put(pathName, true);
 		} else {
