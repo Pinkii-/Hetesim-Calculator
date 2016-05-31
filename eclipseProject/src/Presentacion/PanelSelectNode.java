@@ -18,6 +18,10 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
+/**
+ * @author Victor Alcazar Lopez
+ *
+ */
 public class PanelSelectNode extends AbstractPanel{
 
 	DefaultListModel<String> relationsListModel = new DefaultListModel<String>();

@@ -26,7 +26,11 @@ import javax.swing.event.ListSelectionListener;
 
 import javax.swing.JList;
 
-//public class PanelEditNode extends AbstractPanel{
+
+/**
+ * @author Victor Alcazar Lopez 
+ *
+ */
 public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 
 
@@ -63,14 +67,19 @@ public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 	CtrlGraph ctrlGraph;
 
 	private boolean unsavedChanges = false;
+	
+	private void setUnsavedChanges(boolean value){
+		unsavedChanges = value;
+		saveButton.setEnabled(value && nameTextField.getText().length() > 0);
+		resetValuesButton.setEnabled(value);
+	}
 
-	//private final JTextPane textPane = new JTextPane();
-
-	//@Override
+	@Override
 	public int closeIt() {
+		
 		if(unsavedChanges){
 			String[] buttons = {"Salir", "Cancelar"};
-			int result = VistaDialog.setDialog("Titulo", "�Estas seguro que quieres salir?\n"
+			int result = VistaDialog.setDialog("Titulo", "Estas seguro que quieres salir?\n"
 					+ "Todos los cambion no guardados seran perdidos",
 					buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
 			if(result == 0){
@@ -83,13 +92,11 @@ public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 	}
 
 
-	//@Override
+	@Override
 	public void setEnabledEverything(Boolean b) {
 		
 	}
 
-	//public PanelEditNode(VistaAbstracta vp) {
-	//	super(vp);
 	public PanelEditNode(VistaAbstracta vp){
 		super(vp);
 		ctrlGraph = cd.getCtrlGraph();
@@ -161,10 +168,7 @@ public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 				new ListSelectionListener(){
 					@Override
 					public void valueChanged(ListSelectionEvent arg0) {
-						if(!relationsList.isSelectionEmpty()){
-							eraseRelationButton.setEnabled(true);
-						}
-
+						eraseRelationButton.setEnabled(!relationsList.isSelectionEmpty());
 					}
 
 				}
@@ -201,11 +205,8 @@ public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 				new ActionListener(){
 					public void actionPerformed(ActionEvent e){
 						if(!(labelComboBox.getSelectedIndex() == (CtrlDominio.getIndexOfNodeLabel(nodeInfo.get(3)) + 1))){
-							//System.out.println(labelComboBox.getSelectedIndex());
-							//System.out.println(CtrlDominio.getIndexOfNodeLabel(nodeInfo.get(3)) + 1);
 							newNodeInfo.set(3, String.valueOf(labelComboBox.getSelectedIndex()));
-							unsavedChanges = true;
-							saveButton.setEnabled(true);
+							setUnsavedChanges(true);
 						}
 
 					}
@@ -218,9 +219,7 @@ public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 				new MouseListener(){
 					@Override
 					public void mouseClicked(MouseEvent arg0){
-						unsavedChanges = false;
 						saveAll();
-						saveButton.setEnabled(false);
 					}
 
 					@Override
@@ -250,8 +249,6 @@ public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 					public void actionPerformed(ActionEvent e){
 						aux.addVista(PanelSelectNode.class, false);
 						PanelSelectNode aux2 = (PanelSelectNode) childs.get(0).getContentPane().getComponent(0);
-						unsavedChanges = true;
-						saveButton.setEnabled(true);
 						//If the node we are treating is a paper, we'll ask differently for a node, y'know?
 						if(nodeInfo.get(2).equals("Paper")){
 							aux2.setNeeder(aux, true);
@@ -264,8 +261,6 @@ public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 		eraseRelationButton.addActionListener(
 				new ActionListener(){
 					public void actionPerformed(ActionEvent e){
-						unsavedChanges = true;
-						saveButton.setEnabled(true);
 						ArrayList<String> erasedRelation = nodeRelationsData.get(relationsList.getSelectedIndex());
 						softEraseRelation(relationsList.getSelectedIndex(), erasedRelation);
 					}
@@ -275,8 +270,7 @@ public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 					public void actionPerformed(ActionEvent e){
 						if(unsavedChanges){
 							setNodeToEdit(Integer.valueOf(nodeInfo.get(0)), nodeInfo.get(2));
-							unsavedChanges = false;
-							saveButton.setEnabled(false);
+							setUnsavedChanges(false);
 						}
 					}
 				});
@@ -285,27 +279,23 @@ public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 
 	private void initDefaultValues(){
 
-		saveButton.setEnabled(false);		
+		setUnsavedChanges(false);		
 		initTypeInfo();		
 		initLabelInfo();			
 		initButtons();
 
 		nameTextField.addKeyListener(
 				new KeyListener(){
-					
+
 					@Override
 					public void keyReleased(KeyEvent arg0) {
-						String newText = nameTextField.getText();
-						if(!newText.equals(nodeInfo.get(1))){
-							newNodeInfo.set(1, newText);
-							unsavedChanges = true;
-							saveButton.setEnabled(true);
-						}						
+						newNodeInfo.set(1, nameTextField.getText());
+						setUnsavedChanges(true);
 					}
-					
+
 					@Override
 					public void keyPressed(KeyEvent arg0) {}
-					
+
 					@Override
 					public void keyTyped(KeyEvent arg0) {}
 				}
@@ -318,10 +308,9 @@ public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 	public void setNodeToEdit(Integer index, String nodeType){
 		relationsToAdd.clear();
 		relationsToErase.clear();
-		nodeRelationsData.clear();
-		
+		nodeRelationsData.clear();	
+		setUnsavedChanges(false);
 		nodeInfo = ctrlGraph.getNodeFormatted(index, nodeType);
-		
 		newNodeInfo = (ArrayList<String>) nodeInfo.clone();
 		updatePanel();
 	}
@@ -343,6 +332,7 @@ public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 		nodeRelationsData.remove(index);
 		relationsListModel.remove(index);
 		relationsToErase.add(node);
+		setUnsavedChanges(true);
 	}
 	
 	private void softAddRelation(ArrayList<String> node){
@@ -353,10 +343,11 @@ public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 		int relationIndex = (modelSize - 1) < 0 ? 0 : modelSize;
 		relationsListModel.add(relationIndex, columnData);
 		relationsToAdd.add(node);
+		setUnsavedChanges(true);
 	}
 	
 	private void saveAll(){
-		System.out.println(newNodeInfo.get(1) + " " + nodeInfo.get(1));
+		setUnsavedChanges(false);
 		if(!newNodeInfo.get(1).equals(nodeInfo.get(1))){
 			ctrlGraph.modifyNode(Integer.valueOf(nodeInfo.get(0)), nodeInfo.get(2), newNodeInfo.get(1));
 		}
@@ -376,7 +367,8 @@ public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 				ctrlGraph.addNodeRelation(Integer.valueOf(relation.get(0)), Integer.valueOf(nodeInfo.get(0)), nodeInfo.get(2));
 			}
 		}
-		
+		relationsToAdd.clear();
+		relationsToErase.clear();
 	}
 
 	private void drawRelations(){
