@@ -43,8 +43,6 @@ public class MyResultTable extends JTable implements ListSelectionListener  {
 		setFillsViewportHeight(true);
 		setEnabled(false);
 		setCellSelectionEnabled(false);
-		TableCellEditor cve = new CorrectValueEditor();
-		this.setDefaultEditor(Float.class, cve);
 	}
 		
 	
