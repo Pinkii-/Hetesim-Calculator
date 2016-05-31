@@ -35,7 +35,12 @@ class MyTableModel extends AbstractTableModel implements TableModelListener{
     private CtrlResults cr;
     Integer nChange = 0;
   
-
+    /**
+     * Creadora por defecto del modelo. Permite usar una lista en la que irá registrando (información)
+     * los cambios que se realicen sobre el resultado result.
+     * @param result: FormattedResult sobre el que se realizan los cambios.
+     * @param changes: JList sobre la que se registran los cambios.
+     */
     public MyTableModel(FormattedResult result, JList<String> changes) {
     	this.result = result;
     	this.changes = changes;
@@ -49,54 +54,89 @@ class MyTableModel extends AbstractTableModel implements TableModelListener{
     	
     }
     
+    /**
+     * Creadora que permite solamente mostrar el resultado.
+     * @param result: FormattedResult mostrado
+     */
     public MyTableModel(FormattedResult result) {
     	this.result = result;
     	data = result.getResultData();
     	
     }
-
     
+    /**
+     * Método que permite el número de columnas de la tabla asociada
+     * @return int: Numero de columnas
+     */
     public int getColumnCount() {
         return columnNames.length;
     }
 
+    /**
+     * Método que permite obtener el número de filas de la tabla asociada
+     * @return int: Numero de filas
+     */
     public int getRowCount() {
         return data.length;
     }
-
+    
+    /**
+     * Método que permite devolver el nombre de una cierta columna
+     * @return String: Nombre de la columna.
+     */
     public String getColumnName(int col) {
         return columnNames[col];
     }
-
+    
+    /**
+     * Métdodo que permite obtener el Object de una cierta posición
+     * de la tabla.
+     * @return Object:Objeto de la posición.
+     */
     public Object getValueAt(int row, int col) {
         return data[row][col];
     }
-
+    
+    /**
+     * Método que permite saber si una celda es editable.
+     * @return boolean: Booleano que indica cierto si la celda es editable
+     * ,falso en caso contrario. Solo la columna que contiene el valor de 
+     * HeteSim será editable.
+     */
     public boolean isCellEditable(int row, int col) {
     	
     	return col == 4; 
     	
     }
     
-    /*Only correct data is accepted
+    /**
+     * Método que devuelve el tipo de objeto de una columna determinada
      */
-    
     @Override
     public Class getColumnClass(int column) {
 		return columns[column];
     	
     }
-   
+    
+    /**
+     * Función que permite establecer el valor de una posicion determinada
+     */
     public void setValueAt(Object value, int row, int col) {
         data[row][col] = value;
         fireTableCellUpdated(row, col);
     }
     
-	
+	/**
+	 * Función que permite borrar los cambios de la tabla
+	 */
 	public void clearListChanges() {
 		changes.removeAll();
 	}
 	
+	/**
+	 * Función que salta cuando detecta un cambio en la tabla, para 
+	 * añadir a la lista de cambios el registro correspondiente.	
+	 */
 	@Override
 	public void tableChanged(TableModelEvent e) {
 		Integer row = e.getFirstRow();

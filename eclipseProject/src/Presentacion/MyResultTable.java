@@ -29,10 +29,22 @@ public class MyResultTable extends JTable implements ListSelectionListener  {
 	private CtrlResults cr;
 	private JList changes;
 	
+	/**
+	 * Creadora por defecto de la tabla de resultados
+	 * @param cr: CtrlResults del dominio
+	 * @see CtrlDominio
+	 */
 	public MyResultTable(CtrlResults cr) {
 		this.cr = cr;
 	}
 	
+	/**
+	 * Constructora que permite especificar el resultado a mostrar en la tabla.
+	 * Así como el control de los resultados.
+	 * @param result: ArrayList  resultado a mostrar.
+	 * @param cr: CtrlResults
+	 * @see CtrlResults, CtrlDominio
+	 */
 	public MyResultTable (ArrayList<ArrayList<String>> result, CtrlResults cr) {
 		this.cr = cr;
 		this.result = new FormattedResult(result,cr);
@@ -46,7 +58,13 @@ public class MyResultTable extends JTable implements ListSelectionListener  {
 		setColumnSelectionAllowed(false);
 	}
 		
-	
+	/**
+	 * Constructora que permite especificar el resultado a mostrar y ademas la lista
+	 * que informará de los cambios realizados.
+	 * @param result: ArrayList resultado a mostrar.
+	 * @param cr : CtrlResults de dominio.
+	 * @param changes : JList que mostrará el registro de cambios realizados
+	 */
 	public MyResultTable (ArrayList<ArrayList<String>> result, CtrlResults cr, JList<String> changes) {
 		this.cr = cr;
 		this.result = new FormattedResult(result,cr);
@@ -60,6 +78,11 @@ public class MyResultTable extends JTable implements ListSelectionListener  {
 		setCellSelectionEnabled(true);
 	}
 	
+	/**
+	 * Función que permite definir el resultado a mostrar en la tabla.
+	 * @param result: ArrayList:resultado a mostrar.
+	 */
+	
 	public void generateTableContent(ArrayList<ArrayList<String>> result) {
 		this.result = new FormattedResult(result,cr);
 		mtm = new MyTableModel(this.result);
@@ -67,6 +90,10 @@ public class MyResultTable extends JTable implements ListSelectionListener  {
 		mtm.fireTableChanged(null);
 	}
 	
+	/**
+	 * Función que es lanzada cuando se realiza un cambio. Y
+	 * transmite el cambio al resultado (FormattedResult)
+	 */
 	public void valueChanged(ListSelectionEvent e) {
         Float selectedData = null;
 
@@ -86,11 +113,19 @@ public class MyResultTable extends JTable implements ListSelectionListener  {
 	        }
         }
 	}
-
+	
+	/**
+	 * Método que le dice al resultado de la tabla que conserve 
+	 * sus cambios
+	 */
 	public void saveChanges() {
 		result.commitChanges();
 	}
 	
+	/**
+	 * Método que permite borrar los cambios, que no se guardaran
+	 * definitivamente
+	 */
 	public void clearChanges() {
 		result.clearChanges();
 		mtm.clearListChanges();

@@ -46,12 +46,20 @@ public class PanelMostrarResultado extends AbstractPanel{
 	private VistaPrincipal vp;
 	private String idResult;
 	
+	/**
+	 * Creadora por defecto de PanelMostrarResultado
+	 * @param v : VistaPrincipal actual
+	 */
 	public PanelMostrarResultado (VistaPrincipal v)  {
 		super(v);
 		this.vp = v;
 		this.cr = cd.getCtrlResults();
 	}
 	
+	/**
+	 * Función privada que permite asignar los listeners a los distintos
+	 * botones.
+	 */
 	private void asignListeners() {
 		editar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
@@ -84,18 +92,25 @@ public class PanelMostrarResultado extends AbstractPanel{
 		});
 	}
 
-	
+	/**
+	 * Función usada para recargar una serie de elementos del panel,
+	 * de manera que puedan cambiarse posteriormente a ser instanciado.
+	 */
 	public void init() {
 		removeAll();
 		initComponents();
 	}
 	
+	/**
+	 * Función que permite definir el resultado que se mostrará en el panel.
+	 * @param res
+	 */
 	public void setShowedResult(ArrayList<ArrayList<String>> res) {
 		this.showedResult = res;
 		this.idResult = res.get(0).get(0);
 	}
 	
-	
+
 	private void generateTable()  {
 		
 		rst = new MyResultTable(showedResult,cr,changes);
@@ -104,6 +119,7 @@ public class PanelMostrarResultado extends AbstractPanel{
 		splitpane.setLeftComponent(new JScrollPane(rst));
 		
 	}
+	
 	private void generateInfoPanel() {
 		
 		info.add(scrollChange);

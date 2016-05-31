@@ -12,10 +12,17 @@ import Dominio.Pair;
  * @author Albert Lopez Alcacer
 **/
 
+/*
+ * Clase que permite extraer información de un resultado formateado (ArrayList<ArrayList<String>>)
+ * y permite guardar las modificaciones de este resultado de manera que, comunicándose con
+ * CtrlResults, puedan conservarse si así se desea.
+ * 
+ * Mediante los HashMaps: oldValues y newValues se mapean los posibles cambios al resultado.
+ */
+
 public class FormattedResult extends ArrayList<ArrayList<String>> {
 	
 	private static final long serialVersionUID = 1L;
-	//Insertar mas pairs innecesarios aqui
 	public static final Pair<Integer,Integer> resultIdPosition = new Pair<Integer,Integer>(0,0);
 	public static final Pair<Integer,Integer> resultTypePosition = new Pair<Integer,Integer>(0,1);
 	public static final Pair<Integer,Integer> searchPathPosition = new Pair<Integer,Integer>(0,2);
@@ -34,6 +41,13 @@ public class FormattedResult extends ArrayList<ArrayList<String>> {
 	private CtrlResults cr;
 	
 	private ArrayList<Boolean> modifiedResultValues;
+	
+	/**
+	 * Creadora por defecto que permite extraer la información relevante del resultado 
+	 * formateado pasado por parámetro (ArrayList).
+	 * @param res :  resultado
+	 * @param cr : CtrlResults
+	 */
 	
 	public FormattedResult(ArrayList<ArrayList<String>> res, CtrlResults cr) {
 		
@@ -54,6 +68,9 @@ public class FormattedResult extends ArrayList<ArrayList<String>> {
 		generateData();			
 	}
 	
+	/**
+	 * Función que permite extraer los valores correspondientes al resultado.
+	 */
 	private void generateData() {
 		
 		resultData = new Object[numberOfValues][numberOfColumns];
@@ -66,11 +83,25 @@ public class FormattedResult extends ArrayList<ArrayList<String>> {
 		}
 	}
 	
+	/**
+	 * Método que permite añadir a los oldValues (o valores actuales) el valor correspondiente
+	 * al número de valor nValue
+	 * 
+	 * @param nValue: Integer que indica el número de valor del resultado.
+	 * @param value: Valor actual
+	 */
 	public void setOldValue(int nValue, Float value) {
 		if (nValue >= 0 && nValue <= numberOfValues) oldValues.put(nValue,value);
 		else System.out.println("Intentas acceder a un valor inexistente");
 	}
 	
+	/**
+	 * Método que permite obtener de los oldValues (o valores actuales) el valor correspondiente
+	 * al número de valor nValue
+	 * 
+	 * @param nValue: Integer que indica el número de valor del resultado.
+	 * @param value: Valor actual
+	 */
 	public Float getOldValue(int nValue) {
 		if (oldValues.containsKey(nValue))
 			return oldValues.get(nValue);
@@ -80,11 +111,24 @@ public class FormattedResult extends ArrayList<ArrayList<String>> {
 		}
 	}
 	
+	/**
+	 * Método que permite establecer el nuevo valor de ese número de valor del resultado
+	 * (un cambio indicado por el usuario).
+	 * @param nValue: Número que hace referencia al numero de valor
+	 * @param value Nuevo valor
+	 */
 	public void setNewValue(int nValue, Float value) {
 		if (nValue >= 0 && nValue <= numberOfValues) newValues.put(nValue,value);
 		else System.out.println("Intentas acceder a un indice de valor inexistente");
 	}
 	
+	/**
+	 * Método que permite obtener de los newValues (o valores cambiados) el valor correspondiente
+	 * al número de valor nValue
+	 * 
+	 * @param nValue: Integer que indica el número de valor del resultado a modificar.
+	 * @param value: Valor nuevo
+	 */
 	public Float getNewValue(int nValue) {
 		if (newValues.containsKey(nValue))
 			return newValues.get(nValue);
@@ -94,39 +138,73 @@ public class FormattedResult extends ArrayList<ArrayList<String>> {
 		}
 	}
 	
+	/**
+	 * Método que permite borrar los cambios
+	 */
 	public void clearChanges() {
 		newValues.clear();
 		oldValues.clear();
 	}
 	
+	/**
+	 * Función que permite obtener el id asociado al Resultado
+	 * @return String: Id del resultado
+	 */
 	public String getIdResult() {
 		return idResult;
 	}
 	
+	/**
+	 * Método que permite obtener el tipo de resultado
+	 * @return String: Tipo de resultado
+	 */
 	public String getResultType() {
 		return resultType;
 	}
 	
+	/**
+	 * Función que permite obtener el path asociado al resultado
+	 * @return String: Path asociado al resultado
+	 */
 	public String getSearchPath() {
 		return searchPath;
 	}
 	
+	/**
+	 * Método que permite obtener el Id del grafo asociado al resultado
+	 * @return String: Id del grafo
+	 */
 	public String getSearchGraphId() {
 		return searchGraphId;
 	}
 	
+	/**
+	 * Método que te permite obtener el numero de valores del resultado
+	 * @return Integer: Numero de valores.
+	 */
 	public int getNumberOfValues() {
 		return numberOfValues;
 	}
 	
+	/**
+	 * Método que te permite obtener el número de columnas
+	 * @return Integer: Número de columnas
+	 */
 	public int getNumberOfColumns() {
 		return numberOfColumns;
 	}
 	
+	/**
+	 * Método que te permite obtener todos los valores del resultado
+	 * @return Object array: valores del resultado
+	 */
 	public Object[][] getResultData() {
 		return resultData;
 	}
 	
+	/**
+	 * Método que te permite guardar los cambios realizados en el resultado
+	 */
 	public void commitChanges() {
 		for (Integer index: newValues.keySet()) {
 			Float aux = newValues.get(index);
@@ -135,6 +213,7 @@ public class FormattedResult extends ArrayList<ArrayList<String>> {
 		
 	}
 	
+	@Deprecated
 	public String getAllInfo() {
 		listedResult = "Search Type: " + resultType + ", Search Path: ";
 	    listedResult += searchPath + ", Associated Graph: " + searchGraphId;

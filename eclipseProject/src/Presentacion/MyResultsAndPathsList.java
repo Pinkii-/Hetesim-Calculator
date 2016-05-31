@@ -40,10 +40,20 @@ public class MyResultsAndPathsList extends JList<String> implements ListSelectio
 	private String nvalues = "";
 	private String listMode = "";
 	
+	/**
+	 * Constructora por defecto de la lista
+	 */
+	
 	public MyResultsAndPathsList() {
 		super();
 		initListHandler();
 	}
+	
+	/**
+	 * Constructora que permite a la lista controlar Paths mediante parametro cp (CtrlPaths)
+	 * @param cp: CtrlPaths del controlador del dominio
+	 * @see CtrlDominio
+	 */
 	
 	public MyResultsAndPathsList(CtrlPaths cp) {
 		super();
@@ -58,6 +68,13 @@ public class MyResultsAndPathsList extends JList<String> implements ListSelectio
 		listMode = "Paths";
 	}
 	
+	/**
+	 * Constructora que permite a la lista controlar Results mediante la clase el cr (CtrlResults)
+	 * También permite llenar un JEditorPane con la información básica de un resultado en concreto.
+	 * @param resultResulme: JEditor Pane con información de un resultado.
+	 * @param cr : CtrlResults de dominio.
+	 * @see CtrlDominio
+	 */
 	public MyResultsAndPathsList(JEditorPane resultResulme, CtrlResults cr ) {
 		super();
 		toDelete = new HashMap<String,String>();
@@ -74,7 +91,12 @@ public class MyResultsAndPathsList extends JList<String> implements ListSelectio
 		listMode = "Results";
 	}
 	
-
+	/**
+	 * Método privada que permite obtener los resultados guardados de dominio/persistencia
+	 * y añadirlos a la lista.
+	 * @return HashMap: HashMap que permite guardar los resultados formateados
+	 * @see FormattedResult
+	 */
 	private HashMap<String,FormattedResult> getAndAddFormattedResults() {
 		
 		HashMap<String,FormattedResult> ret = new HashMap<String,FormattedResult>();
@@ -90,6 +112,11 @@ public class MyResultsAndPathsList extends JList<String> implements ListSelectio
 		return ret;
 	}
 	
+	/**
+	 * Método privada que permite obtener los paths guardados de dominio/persistencia
+	 * y añadirlos a la lista.
+	 * @return HashMap: HashMap que permite guardar los paths formateados
+	 */
 	private HashMap<String,ArrayList<String>> getAndAddFormattedPaths() {
 		
 		HashMap<String,ArrayList<String>> ret = new HashMap<String,ArrayList<String>>();
@@ -103,6 +130,7 @@ public class MyResultsAndPathsList extends JList<String> implements ListSelectio
 		return ret;
 	}
 	
+	@Deprecated
 	public void deleteResult() {
 		if (!toDelete.containsKey(dlm.getElementAt(selectedIndex))) {
 			String nameAux = dlm.getElementAt(selectedIndex);
@@ -111,7 +139,12 @@ public class MyResultsAndPathsList extends JList<String> implements ListSelectio
 			selectedIndex = 0;
 		}
 	}
-
+	
+	/**
+	 * Método que pérmite obtener el resultado formateado correspondiente al indice
+	 * seleccionado en ese momento.
+	 * @return ArrayList: Resultado formateado seleccionado
+	 */
 	public ArrayList<ArrayList<String>> getFormattedResult() {
 		if (dlm.getSize() > 0)return results.get(dlm.getElementAt(selectedIndex));
 		else{
@@ -120,6 +153,11 @@ public class MyResultsAndPathsList extends JList<String> implements ListSelectio
 		}
 	}
 	
+	/**
+	 * Método que pérmite obtener el path formateado correspondiente al indice
+	 * seleccionado en ese momento.
+	 * @return ArrayList: Path formateado seleccionado
+	 */
 	public ArrayList<String> getFormattedPath() {
 		if (dlm.getSize() > 0) return paths.get(dlm.getElementAt(selectedIndex));
 		else {
@@ -129,7 +167,9 @@ public class MyResultsAndPathsList extends JList<String> implements ListSelectio
 		
 	}
 	
-	
+	/**
+	 * Función privada que genera el resumen de un resultado
+	 */
 	private void generateInfo() {
 		
 		searchOriginNode = "";
@@ -150,22 +190,41 @@ public class MyResultsAndPathsList extends JList<String> implements ListSelectio
 	
 	}
 	
+	/**
+	 * Función privada que añade el listener de selección
+	 */
 	private void initListHandler() {
 		this.getSelectionModel().addListSelectionListener(this);		
 	}
 	
+	/**
+	 * Método que devuelve el indice seleccionado en ese momento
+	 * @return int: Indice seleccionado
+	 */
 	public int returnSelectedIndex() {
 			return selectedIndex;
 	}
 	
+	/**
+	 * Método que devuelve cierto si existe un índice seleccionado,
+	 * falso en caso contrario.
+	 * @return boolean: Booleano con el resultado
+	 */
 	public boolean indexSelected() {
 		return selectedIndex != null;
 	}
 	
+	/**
+	 * Método que devuelve el tamaño de la lista.
+	 * @return int: Tamaño de la lista.
+	 */
 	public int getListSize() {
 		return dlm.getSize();
 	}
 	
+	/**
+	 * Función que es lanzada cuando se detecta un cambio en la lista.
+	 */
 	public void valueChanged(ListSelectionEvent e) {
     	if (!e.getValueIsAdjusting()) {
     		ListSelectionModel lsm = (ListSelectionModel)e.getSource();
