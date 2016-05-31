@@ -13,7 +13,7 @@ import Dominio.Pair;
 **/
 
 /*
- * Clase que permite extraer información de un resultado formateado (ArrayList<ArrayList<String>>)
+ * Clase que permite extraer información de un resultado formateado (ArrayList)
  * y permite guardar las modificaciones de este resultado de manera que, comunicándose con
  * CtrlResults, puedan conservarse si así se desea.
  * 
