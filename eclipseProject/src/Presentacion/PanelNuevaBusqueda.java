@@ -480,6 +480,8 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 			//idResult = cd.getCtrlResults().addLastResult();
 			cd.getCtrlResults().addLastResult();
 			
+			cd.saveResults();
+			
 			editResult.setEnabled(true);
 			saveResult.setEnabled(false);
 			VistaDialog.setDialog("", "Se ha guardado el resultado", new String[]{"OK"}, DialogType.INFORMATION_MESSAGE);
