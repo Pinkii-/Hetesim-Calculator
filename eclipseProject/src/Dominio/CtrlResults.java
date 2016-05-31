@@ -132,6 +132,9 @@ public class CtrlResults {
 	 *		<li>The <b><i>result</i></b>'s Type</li>
 	 *		<li>The used path's name</li>
 	 *		<li>The used graph's Id</li>
+	 *		<li>If applicable, the first node used as search parameter</li>
+	 *		<li>If applicable, the second node used as search parameter</li>
+	 *		<li>The value of the threshold used as parameter for the search</li>
 	 * </ol>
 	 * <i>Multiple rows</i> containing all the info of the node pairs associated with the <b><i>result</i></b>
 	 * formatted like so:
@@ -161,8 +164,19 @@ public class CtrlResults {
 		firstCol.add(res.getResultType().toString());
 		firstCol.add(res.getUsedPath());
 		firstCol.add(res.getIdGraf());
-		ret.add(firstCol);
 		ArrayList<NodePair> nodes = res.getResult();
+		if(nodes.size() == 1){
+			NodePair firstNode = nodes.get(0);			
+			firstCol.add(firstNode.getFirstNode().getNom());
+			firstCol.add(firstNode.getSecondNode().getNom());
+		}
+		else{
+			firstCol.add("");
+			firstCol.add("");
+		}
+		firstCol.add(res.getThreshold().toString());
+		ret.add(firstCol);
+
 		for (NodePair np: nodes){
 			ArrayList<String> col = new ArrayList<String>();
 			col.add(np.pairN.first.getNom());
