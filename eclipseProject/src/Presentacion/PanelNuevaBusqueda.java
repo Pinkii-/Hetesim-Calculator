@@ -3,6 +3,7 @@ package Presentacion;
 
 import javax.swing.SpringLayout;
 
+import Presentacion.VistaDialog.DialogType;
 import Presentacion.VistaPrincipal.Panels;
 
 import java.awt.Color;
@@ -47,6 +48,8 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 	
 	private JButton calcHete, reuseSearch, saveResult, editResult;
 	
+	private SpringLayout sl;
+	
 	private VistaPrincipal vp;
 	private boolean hasResult = false;
 	private String idResult = "";
@@ -77,8 +80,8 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 	 */
 	public void initComponents() {
 		
-		SpringLayout springLayout = new SpringLayout();
-		setLayout(springLayout);
+		sl = new SpringLayout();
+		setLayout(sl);
 		
 		//Path
 		ArrayList<ArrayList<String>> pathsTemp = cd.getCtrlPaths().getFormattedPaths();
@@ -119,14 +122,9 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		add(pathLabel);
 		
 		//ResultList
-		//ArrayList<ArrayList<String>> temp = new ArrayList<ArrayList<String>>();
-		//	ArrayList<String> temp1 = new ArrayList<String>();
-		//		String temp2 = "";
-		//	temp1.add(temp2);
-		//temp.add(temp1);
 		resultTable = new MyResultTable();
-		//resultTable.setBorder(BorderFactory.createLineBorder(Color.gray));
-		//resultTable.setPreferredSize(new Dimension(350,200));
+		resultTable.setBorder(BorderFactory.createLineBorder(Color.gray));
+		resultTable.setPreferredSize(new Dimension(350,200));
 		add(resultTable);
 		
 		//resultList = new JList<String>();
@@ -212,10 +210,10 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		add(editResult);
 		
 		
-		putConstraints(springLayout);
+		putConstraints();
 	}
 	
-	private void putConstraints(SpringLayout sl){
+	private void putConstraints(){
 		//Path selection
 		sl.putConstraint(SpringLayout.NORTH, pathSelect, 20, SpringLayout.NORTH, this);
 		sl.putConstraint(SpringLayout.WEST, pathSelect, 20, SpringLayout.WEST, this);
@@ -405,15 +403,18 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 			
 			
 			try {
+				remove(resultTable);
 				resultTable = new MyResultTable(cd.getCtrlResults().getLastResultFormatted(),cd.getCtrlResults());
-				if (resultTable != null){
-					System.out.println("Not null");
-					System.out.println(resultTable.getRowCount() + " " + resultTable.getColumnCount());
-					resultTable.setPreferredSize(new Dimension(350,200));
-					resultTable.setBorder(BorderFactory.createLineBorder(Color.red));
-					resultTable.setEnabled(true);
-					resultTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-				}
+				System.out.println(resultTable.getRowCount() + " " + resultTable.getColumnCount());
+				resultTable.setPreferredSize(new Dimension(350,200));
+				resultTable.setBorder(BorderFactory.createLineBorder(Color.black));
+				resultTable.setEnabled(true);
+				resultTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+				resultTable.setFillsViewportHeight(false);
+				
+				add(resultTable);
+				putConstraints();
+				
 				threshold.setEnabled(true);
 				thresholdLabel.setForeground(Color.black);
 				saveResult.setEnabled(true);
@@ -435,6 +436,8 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 			//cd.getCtrlResults().addLastResult();
 			resultTable = new MyResultTable(cd.getCtrlResults().getFormatted(idResult),cd.getCtrlResults());
 			editResult.setEnabled(true);
+			saveResult.setEnabled(false);
+			VistaDialog.setDialog("", "Se ha guardado el resultado", new String[]{"OK"}, DialogType.INFORMATION_MESSAGE);
 		}
 		else if (e.getSource().equals(editResult)){
 			this.vp.panelMostrarResultado.setShowedResult(cd.getCtrlResults().getFormatted(idResult));
