@@ -14,6 +14,7 @@ import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -21,11 +22,17 @@ import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import Dominio.CtrlDominio;
+
 
 
 
 public class PanelModificaGraph extends AbstractPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JButton buttonAddNode = new JButton("Add New Node");
 	private JButton buttonEditNode = new JButton("Edit Node");
 	private JButton buttonSaveGraph = new JButton("Save Graph To File");
@@ -33,7 +40,6 @@ public class PanelModificaGraph extends AbstractPanel {
 	
 	private JPanel displayNode;
 	private JComboBox<String> comboBoxTypeOfNode;
-//	private MyComboBox findingNode; // JComboBox que te muestra solo los nodos posibles segun lo que has escrito.
 	Boolean changed = false;
 	
 	private JScrollPane scrollPane;
@@ -54,60 +60,52 @@ public class PanelModificaGraph extends AbstractPanel {
 	private void initComponents() {
 		this.removeAll();
 		// DisplayNodes
-		comboBoxTypeOfNode = new JComboBox<String>(cd.getTypes().toArray(new String[cd.getTypes().size()]));
+		comboBoxTypeOfNode = new JComboBox<String>(CtrlDominio.getTypes().toArray(new String[CtrlDominio.getTypes().size()]));
 		comboBoxTypeOfNode.setSelectedIndex(-1);
 		comboBoxTypeOfNode.setToolTipText("Select Type of node");
 		comboBoxTypeOfNode.setMaximumSize(buttonAddNode.getPreferredSize());
 		comboBoxTypeOfNode.setSelectedIndex(0);
 		
-		
-//		findingNode = new MyComboBox();
-////		findingNode.linkToParentComboBox(comboBoxTypeOfNode);
-//		findingNode.loadNodesToLists(cd);
-////		findingNode.linkToParentComboBox(comboBoxTypeOfNode);
-//		
-//			//equisde no se como hacer lo que quiero que haga
-//		findingNode.setMaximumSize(new Dimension(buttonAddNode.getMinimumSize().width*2, buttonAddNode.getMinimumSize().height));
-//		findingNode.setMinimumSize(new Dimension(buttonAddNode.getMinimumSize().width*2, buttonAddNode.getMinimumSize().height));
-		
-		createList();
-		
+		createList();	
 		
 		displayNode = new JPanel();
 		displayNode.setLayout(new BoxLayout(displayNode, BoxLayout.X_AXIS));
-		displayNode.add(Box.createRigidArea(new Dimension(5,0)));
+		displayNode.add(Box.createHorizontalStrut(5));
 		displayNode.add(comboBoxTypeOfNode);
-		displayNode.add(Box.createRigidArea(new Dimension(5,0)));
+		displayNode.add(Box.createHorizontalStrut(5));
+		JLabel filterLabel = new JLabel("Type text to filter: ");
+		displayNode.add(filterLabel);
+		displayNode.add(Box.createHorizontalStrut(5));
 		displayNode.add(textField);
-		displayNode.add(Box.createRigidArea(new Dimension(5,0)));
-		displayNode.setMaximumSize(new Dimension(99000,comboBoxTypeOfNode.getHeight()));
-		
-		// next
-		
-//		JLabel l;
+		displayNode.add(Box.createHorizontalStrut(5));
+		displayNode.setMaximumSize(new Dimension(1000, comboBoxTypeOfNode.getHeight()));
 		
 		JPanel btnPanel = new JPanel();
 		btnPanel.setLayout(new BoxLayout(btnPanel, BoxLayout.X_AXIS));
 		btnPanel.add(Box.createHorizontalGlue());
 		btnPanel.add(buttonEditNode);
-		btnPanel.add(Box.createRigidArea(new Dimension(5,0)));
+		btnPanel.add(Box.createHorizontalStrut(5));
 		btnPanel.add(buttonAddNode);
-		btnPanel.add(Box.createRigidArea(new Dimension(5,0)));
+		btnPanel.add(Box.createHorizontalStrut(5));
 		btnPanel.add(buttonEraseNode);
-		btnPanel.add(Box.createRigidArea(new Dimension(5,0)));
+		btnPanel.add(Box.createHorizontalStrut(5));
 		btnPanel.add(buttonSaveGraph);
-		btnPanel.add(Box.createRigidArea(new Dimension(5,0)));
+		btnPanel.add(Box.createHorizontalStrut(5));
 		
+		JPanel nodesInfoPanel = new JPanel();
+		nodesInfoPanel.setLayout(new BoxLayout(nodesInfoPanel, BoxLayout.X_AXIS));
+		nodesInfoPanel.add(Box.createHorizontalStrut(5));
+		nodesInfoPanel.add(scrollPane);
+		nodesInfoPanel.add(Box.createHorizontalStrut(5));
 		
-		BoxLayout main = new BoxLayout(this, BoxLayout.Y_AXIS);
-		setLayout(main);
-		add(Box.createRigidArea(new Dimension(0,5)));
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		add(Box.createVerticalStrut(5));
 		add(displayNode);
-		add(Box.createRigidArea(new Dimension(0,5)));
-		add(scrollPane);
-		add(Box.createRigidArea(new Dimension(0,5)));
+		add(Box.createVerticalStrut(5));
+		add(nodesInfoPanel);
+		//add(Box.createVerticalStrut(5));
 		add(btnPanel);
-		add(Box.createRigidArea(new Dimension(0,5)));
+		add(Box.createVerticalStrut(5));
 		
 		buttonAddNode.setEnabled(false);
 		buttonEraseNode.setEnabled(false);
