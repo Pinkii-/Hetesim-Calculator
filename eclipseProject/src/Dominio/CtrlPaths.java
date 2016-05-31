@@ -35,6 +35,10 @@ public class CtrlPaths {
 			System.out.println("Path not found");
 		return new Path();
 	}
+	
+	public boolean existsPath(String pathName){
+		return paths.containsKey(pathName);
+	}
 
 	public void setPath(String pathName, Path path) {
 		if (paths.containsKey(pathName)) {
