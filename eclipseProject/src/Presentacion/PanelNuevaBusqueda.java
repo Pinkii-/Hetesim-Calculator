@@ -303,7 +303,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 			
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-				if(resultTable.getSelectedColumns().length < 5){
+				if(resultTable.getSelectedColumns().length < 5 && resultTable.getSelectedRow() > -1){
 					resultTable.setColumnSelectionInterval(0, 4);
 				}
 				
@@ -319,10 +319,12 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		
 		pathSelect.addActionListener(this);
 		node1Select.addActionListener(this);
+		node2Select.addActionListener(this);
 		
 		calcHete.addActionListener(this);
 		saveResult.addActionListener(this);
 		editResult.addActionListener(this);
+		reuseSearch.addActionListener(this);
 		checkbox.addActionListener(this);
 		
 	}
@@ -354,6 +356,8 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e){
 		
+		calcHete.setEnabled(true);
+		
 		if (e.getSource().equals(calcHete)){
 			
 			String path = pathSelect.getSelectedItem().toString();
@@ -366,7 +370,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 				if (checkbox.isSelected()){
 					System.out.println("P threshold");
 					//idResult = cd.searchPathThreshhold((float)((double)threshold.getValue()), path);
-					cd.searchPathThreshhold((float)((double)threshold.getValue()), path);
+					cd.searchPathThreshhold(Float.valueOf(threshold.getValue().toString()), path);
 					//resultTable = new MyResultTable(cd.getCtrlResults().getLastResultFormatted(),cd.getCtrlResults());
 				}
 				else {
@@ -382,7 +386,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 				if (checkbox.isSelected()){
 					System.out.println("PN1 threshold");
 					//idResult = cd.searchPathNodeThreshhold((float)((double)threshold.getValue()), path, n1);
-					cd.searchPathNodeThreshhold((float)((double)threshold.getValue()), path, n1);
+					cd.searchPathNodeThreshhold(Float.valueOf(threshold.getValue().toString()), path, n1);
 					//resultTable = new MyResultTable(cd.getCtrlResults().getLastResultFormatted(),cd.getCtrlResults());
 				}
 				else {
@@ -418,7 +422,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 				if (checkbox.isSelected()){
 					System.out.println("PNN threshold");
 					//idResult = cd.searchPathNodeNodeThreshhold((float)((double)threshold.getValue()), path, n1, n2);
-					cd.searchPathNodeNodeThreshhold((float)((double)threshold.getValue()), path, n1, n2);
+					cd.searchPathNodeNodeThreshhold((Float.valueOf(threshold.getValue().toString())), path, n1, n2);
 				}
 				else {
 					System.out.println("PNN");
@@ -464,8 +468,13 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 			updateUI();
 		}
 		else if (e.getSource().equals(reuseSearch)){
-			node1Select.setSelectedItem(resultTable.getModel().getValueAt(resultTable.getSelectedRow(),0));
-			node2Select.setSelectedItem(resultTable.getModel().getValueAt(resultTable.getSelectedRow(),2));	
+			//node1Select.setSelectedItem(resultTable.getModel().getValueAt(resultTable.getSelectedRow(),0));
+			//node2Select.setSelectedItem(resultTable.getModel().getValueAt(resultTable.getSelectedRow(),2));
+			node1Select.setSelectedItem(resultTable.getValueAt(resultTable.getSelectedRow(), 0));
+			node2Select.setSelectedItem(resultTable.getValueAt(resultTable.getSelectedRow(), 2));
+			threshold.setValue(resultTable.getValueAt(resultTable.getSelectedRow(), 4));
+			checkbox.setSelected(true);
+			calcHete.setEnabled(true);
 		}
 		else if (e.getSource().equals(saveResult)){
 			//idResult = cd.getCtrlResults().addLastResult();
