@@ -4,6 +4,12 @@ import javax.swing.JFrame;
 
 import Dominio.CtrlDominio;
 
+/**
+ * 
+ * @author Gonzalo Diez
+ * 
+ */
+
 @SuppressWarnings("serial")
 abstract public class VistaAbstracta extends JFrame {
 	protected CtrlDominio cd;

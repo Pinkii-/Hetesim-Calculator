@@ -72,52 +72,28 @@ public class HeteSanic {
 		float res;
 		Float top;
 		float bot;
-//		long t = System.currentTimeMillis();
 		
 		float[] leftNorms = new float[result.getNRows()];
 		for (int i = 0; i < result.getNRows(); ++i) leftNorms[i] = left.getRow(i).norm();
-//		long t2 = System.currentTimeMillis();
-//		System.out.println(t2-t);
-//		t = System.currentTimeMillis();
+		
 		float[] rightNorms = new float[result.getNCols()];
 		for (int i = 0; i < result.getNCols(); ++i) rightNorms[i] = right.getRow(i).norm();
-//		t2 = System.currentTimeMillis();
-//		System.out.println(t2-t);
-		
-//		System.out.println(Arrays.toString(leftNorms));
-//		System.out.println(Arrays.toString(rightNorms));
-		
-//		long tt1 = 0, tt2 = 0;
+
 		
 		
 		
 		for (int i = 0; i < result.getNRows(); ++i) {
-//			if (leftNorms[i] == 0.f) continue;
 			for (int j = 0; j < result.getNCols(); ++j) {
-//				if (rightNorms[j] == 0.f) continue;
 				bot = leftNorms[i]*rightNorms[j];
-//				t = System.currentTimeMillis();
 				top = SparseVector.multiply(left.getRow(i),right.getRow(j));
-//				t2 = System.currentTimeMillis();
-//				tt1 += t2-t;
 				
-//				System.out.println(top + " " + bot + " " + top/bot);
-//				t = System.currentTimeMillis();
 				if (top != 0) {
-//					res = (top/bot);
-
-//					System.out.println(i + " " +j + " bug " + top + " " + bot);
 					result.setRelevance(i,j,(float)(Math.round((top/bot)*1e5)*0.00001));
 				}
-//				t2 = System.currentTimeMillis();
-//				tt2 += t2-t;
 				
 			}
 			left.getRow(i).clear();
-//			if (i % 500 == 0) System.out.println(i + "\t" + (System.currentTimeMillis() - t));
 		}
-//		System.out.println(tt1 + " " + tt2 +"\n done");
-//		System.err.println(System.currentTimeMillis() - t +" done");
 		return result;
 	}
 	

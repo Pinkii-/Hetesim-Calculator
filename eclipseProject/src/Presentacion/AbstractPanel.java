@@ -9,6 +9,11 @@ import javax.swing.JPanel;
 
 import Dominio.CtrlDominio;
 
+/**
+ * 
+ * @author Gonzalo Diez
+ * 
+ */
 abstract public class AbstractPanel extends JPanel {
 	
 	VistaAbstracta vp;

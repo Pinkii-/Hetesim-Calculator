@@ -11,6 +11,12 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+/**
+ * 
+ * @author Gonzalo Diez
+ * 
+ */
+
 public class VistaDialog {
 	
 	public enum DialogType {
