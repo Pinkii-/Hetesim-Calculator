@@ -15,6 +15,7 @@ public class CtrlGraph {
 
 	public CtrlGraph() {
 		graph = new Graph();
+		graph.id = (int) System.currentTimeMillis();
 	}
 
 	public CtrlGraph(Graph graph) {
