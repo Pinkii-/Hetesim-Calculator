@@ -151,7 +151,7 @@ public class PanelMostrarResultado extends AbstractPanel{
 		guardar.setEnabled(false);
 		cancelar = new JButton("Cancel");
 		cancelar.setEnabled(false);
-		rst = new MyResultTable();
+		rst = new MyResultTable(cr);
 		dlm = new DefaultListModel<String>();
 		changes = new JList<String>(dlm);
 		scrollChange = new JScrollPane(changes);
