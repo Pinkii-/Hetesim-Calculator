@@ -150,7 +150,8 @@ public class VistaPrincipal extends VistaAbstracta{
 						+ "You will lose all the change of the old graph if you didnt save it to file", new String[]{"Continue", "Cancel"}, VistaDialog.DialogType.QUESTION_MESSAGE);
 				if (0 == response) {
 					try {
-						cd.importGraph(System.getProperty("user.dir")+"/../DBLP_four_area/");
+						System.out.println(System.getProperty("user.dir"));
+						cd.importGraph(System.getProperty("user.dir")+"/DBLP_four_area/");
 						VistaDialog.setDialog("",  "            Grafo importado correctamente.\n Es posible que la accion actual se tenga que reiniciar. \n Si te pregunta, se recomienda aceptar, ya que puede llevar a estados incoherentes del programa", new String[] {"Continue"}, VistaDialog.DialogType.INFORMATION_MESSAGE);
 						if (currentPanel != null) p.changePanel(currentPanel);
 					}
@@ -238,7 +239,7 @@ public class VistaPrincipal extends VistaAbstracta{
 		try {
 			String path = System.getProperty("user.dir");
 			BufferedImage myPicture;
-			myPicture = ImageIO.read(new File(path+"/src/Hetesim.png"));
+			myPicture = ImageIO.read(new File(path+"/resources/Hetesim.png"));
 			JLabel picLabel = new JLabel(new ImageIcon(myPicture));
 			content.add(picLabel);
 		} catch (IOException e) {
