@@ -34,26 +34,26 @@ public class GraphImporter {
 		
 
 		importElements("paper.txt",papers,Node.Type.Paper);
-		System.out.println("Papers Done");
+		//System.out.println("Papers Done");
 		
 		importElements("author.txt",authors,Node.Type.Autor);
-		System.out.println("Authors Done");
+		//System.out.println("Authors Done");
 		importRelations("paper_author.txt",authors,Node.Type.Autor);
-		System.out.println("relaciones autor Done");
+		//System.out.println("relaciones autor Done");
 		
 		authors = null;
 		
 		importElements("conf.txt",confs,Node.Type.Conferencia);
-		System.out.println("Conferencias Done");
+		//System.out.println("Conferencias Done");
 		importRelations("paper_conf.txt",confs,Node.Type.Conferencia);
-		System.out.println("relaciones conf Done");
+		//System.out.println("relaciones conf Done");
 		
 		confs = null;
 		
 		importElements("term.txt",terms,Node.Type.Terme);
-		System.out.println("Terme Done");
+		//System.out.println("Terme Done");
 		importRelations("paper_term.txt",terms,Node.Type.Terme);
-		System.out.println("relaciones term Done");
+		//System.out.println("relaciones term Done");
 		
 		terms = null;
 		papers = null;
@@ -67,11 +67,11 @@ public class GraphImporter {
 				String[] sings = line.split("\\s+");
 				Integer paper = Integer.parseInt(sings[0]);
 				Integer other = Integer.parseInt(sings[1]);
-//				System.out.println(paper + " " + papers.get(paper) + " " + other + " " + map.get(other));
+//				//System.out.println(paper + " " + papers.get(paper) + " " + other + " " + map.get(other));
 				g.setArc(papers.get(paper), map.get(other), type);
 			}
 		} catch (IOException e) {
-			System.out.println("I'm so sorry, but I couldn't read your file :(");
+			//System.out.println("I'm so sorry, but I couldn't read your file :(");
 			e.printStackTrace();
 			System.exit(0);
 		}
@@ -88,7 +88,7 @@ public class GraphImporter {
 				map.put(id, g.addNode(type, name));
 			}
 		} catch (IOException e) {
-			System.out.println("I'm so sorry, but I couldn't read your file :( " + Paths.get(directoryPath).resolve(path));
+			//System.out.println("I'm so sorry, but I couldn't read your file :( " + Paths.get(directoryPath).resolve(path));
 			e.printStackTrace();
 			System.exit(0);
 		}
