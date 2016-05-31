@@ -300,12 +300,14 @@ public class PanelNewPath extends AbstractPanel { //Abstract
 			public void actionPerformed(ActionEvent e) {
 				if (!editing) {
 					boolean hasName = (textFieldName.getText().length()>0);
+					boolean existName = cd.getCtrlPaths().existsPath(textFieldName.getText());
 					boolean hasDes = (textFieldDescription.getText().length()>0);
 					boolean goodPath = isGoodPath() && textField.getText().length() >= 2;
-					String name = "The path needs a Name\n";
-					String des = "The path needs a Description\n";
-					String cont = "The path needs to be at least of leght 2 and good formated\n";
-					if (hasName && hasDes && goodPath){
+					String name = "The path needs a Name.\n";
+					String nameRepeated = "The Name of the panel can't be repeated.\n";
+					String des = "The path needs a Description.\n";
+					String cont = "The path needs to be at least of leght 2 and good formated.\n";
+					if (hasName && hasDes && goodPath && !existName){
 						cd.getCtrlPaths().addPath(textField.getText(), textFieldName.getText(), textFieldDescription.getText());
 						VistaDialog.setDialog("New Path", "The path was created correctly", null, VistaDialog.DialogType.INFORMATION_MESSAGE);
 						finished = true;
@@ -319,6 +321,7 @@ public class PanelNewPath extends AbstractPanel { //Abstract
 					else {
 						String response = "We have the next errors:\n";
 						if (!hasName) response += name;
+						if (existName) response += nameRepeated;
 						if (!hasDes) response += des;
 						if (!goodPath) response += cont;
 						VistaDialog.setDialog("New Path", response, null, VistaDialog.DialogType.ERROR_MESSAGE);
