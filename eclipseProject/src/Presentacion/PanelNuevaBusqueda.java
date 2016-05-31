@@ -25,7 +25,6 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JSpinner;
-import javax.swing.ListSelectionModel;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 
@@ -42,7 +41,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 	private JLabel pathLabel, node1Label, node2Label, thresholdLabel;
 	private JCheckBox checkbox;
 	
-	private JList resultList;
+	//private JList resultList;
 	private MyResultTable resultTable;
 	private JSpinner threshold;
 	
@@ -52,7 +51,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 	
 	private VistaPrincipal vp;
 	private boolean hasResult = false;
-	private String idResult = "";
+	//private String idResult = "";
 	private static final long serialVersionUID = 1L;
 	
 
@@ -122,7 +121,9 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		add(pathLabel);
 		
 		//ResultList
-		resultTable = new MyResultTable();
+		//ArrayList<ArrayList<String>> temp = new ArrayList<ArrayList<String>>();
+		resultTable = new MyResultTable();//temp,cd.getCtrlResults());
+		initResultTable();
 		resultTable.setBorder(BorderFactory.createLineBorder(Color.gray));
 		resultTable.setPreferredSize(new Dimension(350,200));
 		add(resultTable);
@@ -287,6 +288,16 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		
 		
 	}
+
+	private void initResultTable(){
+		resultTable.setPreferredSize(new Dimension(350,200));
+		resultTable.setBorder(BorderFactory.createLineBorder(Color.black));
+		resultTable.setEnabled(true);
+		
+		resultTable.setCellSelectionEnabled(false);
+		resultTable.setColumnSelectionAllowed(false);
+		resultTable.setRowSelectionAllowed(true);
+	}
 	
 	private void assignListeners(){
 		
@@ -329,8 +340,6 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		
 		if (e.getSource().equals(calcHete)){
 			
-			
-			
 			String path = pathSelect.getSelectedItem().toString();
 			int n1 = -1, n2 = -1;
 			if (!node1Select.getEditor().getItem().toString().equals(" - Select all -")) n1 = node1Select.getSelectedNodeIndex();
@@ -340,12 +349,14 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 				System.out.println("Searching");
 				if (checkbox.isSelected()){
 					System.out.println("P threshold");
-					idResult = cd.searchPathThreshhold((float)((double)threshold.getValue()), path);
+					//idResult = cd.searchPathThreshhold((float)((double)threshold.getValue()), path);
+					cd.searchPathThreshhold((float)((double)threshold.getValue()), path);
 					//resultTable = new MyResultTable(cd.getCtrlResults().getLastResultFormatted(),cd.getCtrlResults());
 				}
 				else {
 					System.out.println("P");
-					idResult = cd.searchPath(path);
+					//idResult = cd.searchPath(path);
+					cd.searchPath(path);
 					//resultTable = new MyResultTable(cd.getCtrlResults().getLastResultFormatted(),cd.getCtrlResults());
 				}
 				System.out.println("Done");
@@ -354,12 +365,14 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 				//One node
 				if (checkbox.isSelected()){
 					System.out.println("PN1 threshold");
-					idResult = cd.searchPathNodeThreshhold((float)((double)threshold.getValue()), path, n1);
+					//idResult = cd.searchPathNodeThreshhold((float)((double)threshold.getValue()), path, n1);
+					cd.searchPathNodeThreshhold((float)((double)threshold.getValue()), path, n1);
 					//resultTable = new MyResultTable(cd.getCtrlResults().getLastResultFormatted(),cd.getCtrlResults());
 				}
 				else {
 					System.out.println("PN1");
-					idResult = cd.searchPathNode(path,n1);
+					//idResult = cd.searchPathNode(path,n1);
+					cd.searchPathNode(path,n1);
 				}
 				System.out.println("Done");
 				
@@ -388,11 +401,13 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 				//Two
 				if (checkbox.isSelected()){
 					System.out.println("PNN threshold");
-					idResult = cd.searchPathNodeNodeThreshhold((float)((double)threshold.getValue()), path, n1, n2);
+					//idResult = cd.searchPathNodeNodeThreshhold((float)((double)threshold.getValue()), path, n1, n2);
+					cd.searchPathNodeNodeThreshhold((float)((double)threshold.getValue()), path, n1, n2);
 				}
 				else {
 					System.out.println("PNN");
-					idResult = cd.searchPathNodeNode(path,n1,n2);
+					//idResult = cd.searchPathNodeNode(path,n1,n2);
+					cd.searchPathNodeNode(path,n1,n2);
 				}
 				System.out.println("Done");
 			}
@@ -404,23 +419,27 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 			
 			try {
 				remove(resultTable);
+
+				
 				resultTable = new MyResultTable(cd.getCtrlResults().getLastResultFormatted(),cd.getCtrlResults());
+				initResultTable();
 				//System.out.println(resultTable.getRowCount() + " " + resultTable.getColumnCount());
-				resultTable.setPreferredSize(new Dimension(350,200));
-				resultTable.setBorder(BorderFactory.createLineBorder(Color.black));
-				resultTable.setEnabled(true);
-				resultTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+				//resultTable.setModel(cd.getCtrlResults().getLastResultFormatted());
+
 				//resultTable.setFillsViewportHeight(false);
 				
 				add(resultTable);
 				putConstraints();
-				
+
+				resultTable.setVisible(true);
+					
 				threshold.setEnabled(true);
 				thresholdLabel.setForeground(Color.black);
 				saveResult.setEnabled(true);
+				reuseSearch.setEnabled(true);
 				hasResult = true;
 				
-				calcHete.setEnabled(false);
+				
 			}
 			catch (NullPointerException p){
 				VistaDialog.setDialog("Error", "No se ha podido acceder al resultado\n", new String[]{"Continue"}, VistaDialog.DialogType.ERROR_MESSAGE);
@@ -434,14 +453,15 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 			}	
 		}
 		else if (e.getSource().equals(saveResult)){
-			idResult = cd.getCtrlResults().addLastResult();
+			//idResult = cd.getCtrlResults().addLastResult();
+			cd.getCtrlResults().addLastResult();
 			
 			editResult.setEnabled(true);
 			saveResult.setEnabled(false);
 			VistaDialog.setDialog("", "Se ha guardado el resultado", new String[]{"OK"}, DialogType.INFORMATION_MESSAGE);
 		}
 		else if (e.getSource().equals(editResult)){
-			this.vp.panelMostrarResultado.setShowedResult(cd.getCtrlResults().getFormatted(idResult));
+			this.vp.panelMostrarResultado.setShowedResult(cd.getCtrlResults().getLastResultFormatted());
 			this.vp.changePanel(Panels.PanelMostrarResultado);
 		}
 		else if (e.getSource().equals(checkbox)){
