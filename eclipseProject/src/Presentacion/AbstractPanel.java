@@ -35,7 +35,7 @@ abstract public class AbstractPanel extends JPanel {
 	public int close() {
 		int ret = 0;
 		int currentChild = 0;
-		System.out.println("Childs :" + childs.size());
+		//System.out.println("Childs :" + childs.size());
 		
 		while (0 == ret && currentChild < childs.size()) {
 			childs.get(currentChild).toFront();
@@ -72,7 +72,7 @@ abstract public class AbstractPanel extends JPanel {
 		//set the first contentPanel
 		JPanel contentPane = (JPanel) newView.getContentPane();
 		
-		System.out.println(clas);
+		//System.out.println(clas);
 		try {
 //			Class<?> clas = Class.forName(className);
 			Constructor<?> construct = clas.getConstructor(VistaAbstracta.class);

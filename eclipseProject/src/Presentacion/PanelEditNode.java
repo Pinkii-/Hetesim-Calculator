@@ -182,7 +182,7 @@ public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 		sl_nodeRelationsPanel.putConstraint(SpringLayout.SOUTH, sc, -10, SpringLayout.NORTH, addRelationButton);
 		sl_nodeRelationsPanel.putConstraint(SpringLayout.EAST, sc, -10, SpringLayout.EAST, nodeRelationsPanel);
 		nodeRelationsPanel.add(sc);
-		System.out.println(CtrlDominio.getTypes());
+		//System.out.println(CtrlDominio.getTypes());
 	}
 
 	private void initTypeInfo(){
@@ -378,7 +378,7 @@ public class PanelEditNode extends AbstractPanel implements INodeNeeder{
 		relationsListModel.clear();
 		int i = 0;
 		for(ArrayList<String> arr: nodeRelationsData){
-			System.out.println(i);
+			//System.out.println(i);
 			String columnData = new String();
 			columnData = arr.get(1) + " - " + arr.get(2);
 			relationsListModel.addElement(columnData);

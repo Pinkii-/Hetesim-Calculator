@@ -34,16 +34,16 @@ public class MatrixManager implements Serializable {
 			ObjectInputStream ois = new ObjectInputStream(bais);
 			return (Matrix)ois.readObject();
 		}catch (NotSerializableException theProblem) {
-			System.out.println("El objeto Matrix no es serializable");
+			//System.out.println("El objeto Matrix no es serializable");
 			return null;
 		} catch (IOException e) {
-			System.out.println("Se ha producido un problema con la operación de E/S");
+			//System.out.println("Se ha producido un problema con la operación de E/S");
 			return null;
 		} catch (ClassNotFoundException e) {
-			System.out.println("No hay definición para la clase especificada");
+			//System.out.println("No hay definición para la clase especificada");
 			return null;
 		} catch (Exception e) {
-			System.out.println("Ha habido algun problema con la funcion de deepCopy");
+			//System.out.println("Ha habido algun problema con la funcion de deepCopy");
 			return null;
 		}
 	}
@@ -57,7 +57,7 @@ public class MatrixManager implements Serializable {
 				f.mkdirs();
 			}
 			catch(SecurityException se) {
-				System.out.println("No existe y no se puede crear el directorio");
+				//System.out.println("No existe y no se puede crear el directorio");
 			}
 		}
 	}
@@ -85,8 +85,8 @@ public class MatrixManager implements Serializable {
 			ObjectOutput.close();
 		}
 		catch(FileNotFoundException fnfe){
-			System.out.println("Path absoluto fichero:"+fileDirectory.resolve(name+".matrix").toString());
-			System.out.println("No se puede guardar la Matriz");
+			//System.out.println("Path absoluto fichero:"+fileDirectory.resolve(name+".matrix").toString());
+			//System.out.println("No se puede guardar la Matriz");
 		}
 		
 	}
@@ -128,7 +128,7 @@ public class MatrixManager implements Serializable {
 	            }
 	            return matrices;
 	        } catch (IOException ex) {
-	        	System.out.println("No se puede iterar por las Matrices");
+	        	//System.out.println("No se puede iterar por las Matrices");
 	        	return null;
 	        }
 	}

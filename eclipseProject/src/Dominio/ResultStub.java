@@ -72,7 +72,7 @@ public class ResultStub implements Serializable {
 		retStr = retStr + ("    Threshold: " + threshold + "\n");
 		retStr = retStr + ("\n");
 		int i = 0;
-		System.out.println("Tamany resultat: "+resultList.size());
+		//System.out.println("Tamany resultat: "+resultList.size());
 		while (i < resultList.size()){
 			retStr = retStr + "    " + resultList.get(i).toString() + "\n";
 			++i;

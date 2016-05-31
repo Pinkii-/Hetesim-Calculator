@@ -33,7 +33,7 @@ public class CtrlResults {
 			return results.get(resultId);
 		}
 		else {
-			System.out.println("Result not found - Get");
+			//System.out.println("Result not found - Get");
 			return null;
 		}
 	}
@@ -51,7 +51,7 @@ public class CtrlResults {
 			modifiedResults.put(resultId,true);
 		}
 		else {
-			System.out.println("Result not found - ModifyResult");
+			//System.out.println("Result not found - ModifyResult");
 		}
 	}
 
@@ -60,7 +60,7 @@ public class CtrlResults {
 			results.replace(resultId, result);
 			modifiedResults.put(resultId, true);
 		} else {
-			System.out.println("Result not found - Set");
+			//System.out.println("Result not found - Set");
 		}
 	}
 
@@ -68,8 +68,9 @@ public class CtrlResults {
 		if (!results.containsKey(resultId)) {
 			results.put(resultId, result);
 			modifiedResults.put(resultId, true);
-		} else
-			System.out.println("Result already exists");
+		} else{
+			//System.out.println("Result already exists");
+		}
 	}
 
 	public String toString() {
@@ -193,16 +194,16 @@ public class CtrlResults {
 	public boolean isModified(String resultId){
 		if(modifiedResults.containsKey(resultId))
 			return modifiedResults.get(resultId);
-		System.out.println("Result does not exist!");
+		//System.out.println("Result does not exist!");
 		return false;
 	}
 	
 	public void printLastResult(){
-		System.out.println(lastResult.toString());
+		//System.out.println(lastResult.toString());
 	}
 
 	public void printResults() {
-		System.out.println(this.toString());
+		//System.out.println(this.toString());
 	}
 	
 	public void resultsStored(){

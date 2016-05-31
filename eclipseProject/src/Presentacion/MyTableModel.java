@@ -101,7 +101,7 @@ class MyTableModel extends AbstractTableModel implements TableModelListener{
 	public void tableChanged(TableModelEvent e) {
 		Integer row = e.getFirstRow();
         Integer column = e.getColumn();
-        System.out.println(Integer.toString(row)+" "+Integer.toString(column));
+        //System.out.println(Integer.toString(row)+" "+Integer.toString(column));
         TableModel model = (TableModel)e.getSource();
         Float data = (Float) model.getValueAt(row, column);
         
@@ -115,7 +115,7 @@ class MyTableModel extends AbstractTableModel implements TableModelListener{
 	    	
 	    	dlm.set(row, ch);
 	    	
-	        System.out.println("Change");
+	        //System.out.println("Change");
         }
         else {
         	String[] ok = {"Ok"};
