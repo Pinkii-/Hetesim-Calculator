@@ -43,6 +43,7 @@ public class MyResultTable extends JTable implements ListSelectionListener  {
 		setFillsViewportHeight(true);
 		setEnabled(false);
 		setCellSelectionEnabled(false);
+		setColumnSelectionAllowed(false);
 	}
 		
 	
@@ -59,7 +60,12 @@ public class MyResultTable extends JTable implements ListSelectionListener  {
 		setCellSelectionEnabled(true);
 	}
 	
-	
+	public void generateTableContent(ArrayList<ArrayList<String>> result) {
+		this.result = new FormattedResult(result,cr);
+		mtm = new MyTableModel(this.result);
+		setModel(mtm);
+		mtm.fireTableChanged(null);
+	}
 	
 	public void valueChanged(ListSelectionEvent e) {
         Float selectedData = null;
