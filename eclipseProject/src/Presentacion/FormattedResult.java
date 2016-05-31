@@ -8,7 +8,10 @@ import Dominio.CtrlDominio;
 import Dominio.CtrlResults;
 import Dominio.Pair;
 
-	
+/**
+ * @author Albert Lopez Alcacer
+**/
+
 public class FormattedResult extends ArrayList<ArrayList<String>> {
 	
 	private static final long serialVersionUID = 1L;
@@ -127,7 +130,8 @@ public class FormattedResult extends ArrayList<ArrayList<String>> {
 	
 	public void commitChanges() {
 		for (Integer index: newValues.keySet()) {
-			cr.modifyResult(idResult, index, newValues.get(index));
+			Float aux = newValues.get(index);
+			cr.modifyResult(idResult, index, aux);
 		}
 		
 	}

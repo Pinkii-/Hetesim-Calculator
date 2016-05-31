@@ -17,6 +17,10 @@ import Presentacion.FormattedResult;
 
 //Custom JList which shows results or paths and is attached to a text area which shows a resume of a selected result.
 
+/**
+ * @author Albert Lopez Alcacer
+**/
+
 public class MyResultsAndPathsList extends JList<String> implements ListSelectionListener{
 	
 	private static final long serialVersionUID = 1L;

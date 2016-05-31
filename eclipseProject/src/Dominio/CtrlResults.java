@@ -48,6 +48,7 @@ public class CtrlResults {
 	public void modifyResult(String resultId, int line, Float newHeteSimVal){
 		if (results.containsKey(resultId)) {
 			results.get(resultId).modifLine(line, newHeteSimVal);
+			modifiedResults.put(resultId,true);
 		}
 		else {
 			System.out.println("Result not found - ModifyResult");

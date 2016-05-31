@@ -24,6 +24,11 @@ import Dominio.Path;
 import Presentacion.FormattedResult;
 import Presentacion.VistaPrincipal.Panels;
 
+
+/**
+ * @author Albert Lopez Alcacer
+**/
+
 //origin and destination nodes (if exists)
 public class PanelLoadResult extends AbstractPanel{
 	/**

@@ -20,6 +20,10 @@ import javax.swing.SwingConstants;
 import Dominio.CtrlResults;
 import Presentacion.VistaPrincipal.Panels;
 
+/**
+ * @author Albert Lopez Alcacer
+**/
+
 public class PanelMostrarResultado extends AbstractPanel{
 	/**
 	 *
@@ -169,6 +173,7 @@ public class PanelMostrarResultado extends AbstractPanel{
 		if (result == 0) {
 			System.out.println("Si");
 			rst.saveChanges();
+			cd.saveResults();
 			String[] ok = {"Ok"};
 			VistaDialog.setDialog("Store", "Modifications stored\n ", ok, VistaDialog.DialogType.QUESTION_MESSAGE);
 		}
