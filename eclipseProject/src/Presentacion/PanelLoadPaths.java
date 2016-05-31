@@ -108,18 +108,22 @@ public class PanelLoadPaths extends AbstractPanel{
 					cs.precalculePath(fp.get(2));
 					System.out.println("hola");
 				}
-				else { System.out.println("Selecciona un resultado");
-					/*generar cosa o habilitar al seleccionar*/}
+				else { System.out.println("Selecciona un resultado");}
 			}
 		});
 		editar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				if (pathsList.indexSelected()) {
-					//vp.panelNewPath
+					ArrayList<String> formattedPath = pathsList.getFormattedPath();
+					String name, desc, content;
+					
+					name = formattedPath.get(0);
+					desc = formattedPath.get(1);
+					content = formattedPath.get(2);
+					
 					System.out.println("hola");
 				}
-				else { System.out.println("Selecciona un resultado");
-					/*generar cosa o habilitar al seleccionar*/}
+				else { System.out.println("Selecciona un resultado");}
 			}
 		});
 		
