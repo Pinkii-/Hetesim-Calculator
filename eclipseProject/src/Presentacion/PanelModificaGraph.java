@@ -100,13 +100,14 @@ public class PanelModificaGraph extends AbstractPanel {
 		nodesInfoPanel.add(Box.createHorizontalStrut(5));
 		nodesInfoPanel.add(scrollPane);
 		nodesInfoPanel.add(Box.createHorizontalStrut(5));
+		nodesInfoPanel.setPreferredSize(new Dimension(9000,9000));
 		
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		add(Box.createVerticalStrut(5));
 		add(displayNode);
 		add(Box.createVerticalStrut(5));
 		add(nodesInfoPanel);
-		//add(Box.createVerticalStrut(5));
+		add(Box.createVerticalStrut(5));
 		add(btnPanel);
 		add(Box.createVerticalStrut(5));
 		
