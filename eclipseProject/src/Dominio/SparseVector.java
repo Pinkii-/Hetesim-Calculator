@@ -1,9 +1,6 @@
 package Dominio;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 
 
 /**
@@ -14,6 +11,11 @@ import java.util.Set;
 
 	
 public class SparseVector extends HashMap<Integer,Float> {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * The multiplication of two vectors
 	 * @param sv1 SparseVector that is going to be multiplied for the other SparseVector

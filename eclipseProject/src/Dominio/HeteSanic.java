@@ -1,8 +1,6 @@
 package Dominio;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 
 /**
@@ -72,7 +70,6 @@ public class HeteSanic {
 		Matrix result = new Matrix();
 		result.setTamany(left.getNRows(),right.getNRows());
 		System.out.println(result.getNRows() + " " + result.getNCols());
-		float res;
 		Float top;
 		float bot;
 		
