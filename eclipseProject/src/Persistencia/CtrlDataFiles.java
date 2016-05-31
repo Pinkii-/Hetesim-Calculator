@@ -30,9 +30,6 @@ public class CtrlDataFiles {
      *
      * @param file
      * @return
-     * @throws FileNotFoundException: the file does not exist.
-     * @throws NumberFormatException: in the position of an integer there's another type.
-     * @throws IndexOutOfBoundsException: the number of elements of a line is incorrect.
      */
     public List<Pair<Integer, String>> getNodes(File file) throws FileNotFoundException {
         List<Pair<Integer, String>> node = new ArrayList<>();
@@ -52,9 +49,6 @@ public class CtrlDataFiles {
      *
      * @param file
      * @return
-     * @throws FileNotFoundException: the file does not exist.
-     * @throws NumberFormatException: in the position of an integer there's another type.
-     * @throws IndexOutOfBoundsException: the number of elements of a line is incorrect.
      */
     public List<Pair<Integer, Integer>> getRelations(File file) throws FileNotFoundException {
         return readIntIntFile(file);
@@ -65,9 +59,6 @@ public class CtrlDataFiles {
      *
      * @param file
      * @return
-     * @throws FileNotFoundException: the file does not exist.
-     * @throws NumberFormatException: in the position of an integer there's another type.
-     * @throws IndexOutOfBoundsException: the number of elements of a line is incorrect.
      */
     public List<Pair<Integer, Integer>> getLabels(File file) throws FileNotFoundException {
         return readIntIntFile(file);
@@ -78,9 +69,6 @@ public class CtrlDataFiles {
      * 
      * @param fileName
      * @return
-     * @throws FileNotFoundException: the file does not exist.
-     * @throws NumberFormatException: in the position of an integer there's another type.
-     * @throws IndexOutOfBoundsException: the number of elements of a line is incorrect.
      */
     private List<Pair<Integer, Integer>> readIntIntFile(File file) throws FileNotFoundException {
         List<Pair<Integer, Integer>> label = new ArrayList<>();

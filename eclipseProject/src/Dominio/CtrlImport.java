@@ -61,10 +61,6 @@ public class CtrlImport {
     /**
      * Load all the information on the graph
      *
-     * @throws IOException
-     * @throws FileNotFoundException: the file does not exist.
-     * @throws NumberFormatException: in the position of an integer there's another type.
-     * @throws IndexOutOfBoundsException: the number of elements of a line is incorrect.
      */
     public void loadGraphInfo() throws IOException {
         addNodes();
@@ -75,10 +71,6 @@ public class CtrlImport {
     /**
      * Add all the information of each node type
      *
-     * @throws IOException
-     * @throws FileNotFoundException: the file does not exist.
-     * @throws NumberFormatException: in the position of an integer there's another type.
-     * @throws IndexOutOfBoundsException: the number of elements of a line is incorrect.
      */
     private void addNodes() throws IOException {
         for (DataFile f : nodesFiles) {
@@ -98,10 +90,6 @@ public class CtrlImport {
      * If the nodes involved in the relation exist in the graph, then the the
      * information of the relation is added.
      * 
-     * @throws IOException
-     * @throws FileNotFoundException: the file does not exist.
-     * @throws NumberFormatException: in the position of an integer there's another type.
-     * @throws IndexOutOfBoundsException: the number of elements of a line is incorrect.
      */
     private void addRelations() throws IOException {
         for (DataFile f : relationsFiles) {
@@ -119,10 +107,6 @@ public class CtrlImport {
     /**
      * Add the node with its label, if previously exists in the graph
      * 
-     * @throws IOException
-     * @throws FileNotFoundException: the file does not exist.
-     * @throws NumberFormatException: in the position of an integer there's another type.
-     * @throws IndexOutOfBoundsException: the number of elements of a line is incorrect.
      */
     private void addLabelNodes() throws IOException {
         for (DataFile f : labelsFiles) {

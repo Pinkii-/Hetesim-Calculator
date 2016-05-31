@@ -32,7 +32,7 @@ public class CtrlPaths {
 		if (paths.containsKey(pathName))
 			return paths.get(pathName);
 		else
-			System.out.println("Path not found");
+			//System.out.println("Path not found");
 		return new Path();
 	}
 	
@@ -47,7 +47,7 @@ public class CtrlPaths {
 		}
 
 		else {
-			System.out.println("Path not found");
+			//System.out.println("Path not found");
 		}
 	}
 
@@ -61,7 +61,7 @@ public class CtrlPaths {
 			paths.replace(pathName, modifiedPath);
 			modifiedPaths.replace(pathName, true);
 		} else {
-			System.out.println("Path not found");
+			//System.out.println("Path not found");
 		}
 	}
 
@@ -75,7 +75,7 @@ public class CtrlPaths {
 			paths.replace(pathName, modifiedPath);
 			modifiedPaths.replace(pathName, true);
 		} else {
-			System.out.println("Path not found");
+			//System.out.println("Path not found");
 		}
 	}
 
@@ -88,7 +88,7 @@ public class CtrlPaths {
 			paths.put(pathName, p);
 			modifiedPaths.put(pathName, true);
 		} else {
-			System.out.println("Path already exists");
+			//System.out.println("Path already exists");
 		}
 	}
 
@@ -98,7 +98,7 @@ public class CtrlPaths {
 			paths.remove(pathName);
 			modifiedPaths.remove(pathName);
 		} else {
-			System.out.println("Path not found");
+			//System.out.println("Path not found");
 		}
 	}
 
@@ -131,15 +131,16 @@ public class CtrlPaths {
 	public void printPath(String pathName) {
 		if (paths.containsKey(pathName))
 			Utils.printPath(paths.get(pathName));
-		else
-			System.out.println("Path not found");
+		else{
+			//System.out.println("Path not found");
+			}
 	}
 
 	public String getPathsFirstType(String pathName) {
 		if (paths.containsKey(pathName)) {
 			return paths.get(pathName).getContingut().get(0).toString();
 		} else {
-			System.out.println("Path not found");
+			//System.out.println("Path not found");
 			return null;
 		}
 	}
@@ -149,7 +150,7 @@ public class CtrlPaths {
 			ArrayList<Node.Type> pathContent = paths.get(pathName).getContingut();
 			return pathContent.get(pathContent.size() - 1).toString();
 		} else {
-			System.out.println("Path not found");
+			//System.out.println("Path not found");
 			return null;
 		}
 	}
@@ -163,6 +164,7 @@ public class CtrlPaths {
 	 * 	 <li>Path's name</li>
 	 * 	 <li>Path's description</li>
 	 * 	 <li>Path's Content</li>
+	 * </ol>
 	 */
 	public ArrayList<ArrayList<String>> getFormattedPaths(){
 		ArrayList<ArrayList<String>> ret = new ArrayList<ArrayList<String>>();

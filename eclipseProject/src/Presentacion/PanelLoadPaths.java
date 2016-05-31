@@ -106,9 +106,11 @@ public class PanelLoadPaths extends AbstractPanel{
 					CtrlSearch cs = cd.getCtrlSearch();
 					ArrayList<String> fp = pathsList.getFormattedPath();
 					cs.precalculePath(fp.get(2));
-					System.out.println("hola");
+					//System.out.println("hola");
 				}
-				else { System.out.println("Selecciona un resultado");}
+				else {
+					//System.outtem.out.println("Selecciona un resultado");					
+				}
 			}
 		});
 		PanelLoadPaths aux = this;
@@ -136,9 +138,11 @@ public class PanelLoadPaths extends AbstractPanel{
 					pnp.enablePathButtons();
 					
 					
-					System.out.println("hola");
+					//System.out.println("hola");
 				}
-				else { System.out.println("Selecciona un resultado");}
+				else {
+					//System.outtem.out.println("Selecciona un resultado");
+				}
 			}
 		});
 		

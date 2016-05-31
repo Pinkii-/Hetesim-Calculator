@@ -66,10 +66,10 @@ public class HeteSanic {
 	 * @return Matrix of Hetesims
 	 */
 	private Matrix normaliceHeteSim(SparseMatrix left, SparseMatrix right) {
-		System.out.println("Normalizando");
+		//System.out.println("Normalizando");
 		Matrix result = new Matrix();
 		result.setTamany(left.getNRows(),right.getNRows());
-		System.out.println(result.getNRows() + " " + result.getNCols());
+		//System.out.println(result.getNRows() + " " + result.getNCols());
 		Float top;
 		float bot;
 		
@@ -188,7 +188,7 @@ public class HeteSanic {
 	// Private Metods
 	
 	private SparseMatrix arrayListToMatrix(SparseVector sparseVector) {
-//		System.out.println("SparseVector to matrix \n" + sparseVector + "\n");
+//		//System.out.println("SparseVector to matrix \n" + sparseVector + "\n");
 		SparseMatrix ret = new SparseMatrix(1, sparseVector.size());
 		for (int i : sparseVector.keySet()) {
 			ret.set(0,i,sparseVector.get(i));
@@ -197,13 +197,13 @@ public class HeteSanic {
 	}
 	
 	private SparseMatrix multiplyVectorMatrix(Node n, ArrayList<SparseMatrix> matrixesToMultiply) {
-		System.out.println("multiplying matrixes");
+		//System.out.println("multiplying matrixes");
 		if (matrixesToMultiply.size() < 1) {
-			System.out.println("BROKEN");// Throw Exception ("The path cant be this short dude, or maybe this whole shit is bugged. Dunno")
+			//System.out.println("BROKEN");// Throw Exception ("The path cant be this short dude, or maybe this whole shit is bugged. Dunno")
 		}
 		matrixesToMultiply.set(0,arrayListToMatrix(matrixesToMultiply.get(0).getRow(n.id)));
 		return mutiplyMatrixes(matrixesToMultiply);
-//		System.out.println(ret);
+//		//System.out.println(ret);
 //		for (int i = 1; i < matrixesToMultiply.size(); ++i) {
 //			ret = SparseMatrix.multiply(ret,matrixesToMultiply.get(i));
 //		}
@@ -212,7 +212,7 @@ public class HeteSanic {
 	
 	private SparseMatrix mutiplyMatrixes(ArrayList<SparseMatrix> matrixesToMultiply) {
 		if (matrixesToMultiply.size() < 1) {
-			System.out.println("BROKEN");// Throw Exception ("The path cant be this short dude, or maybe this whole shit is bugged. Dunno")
+			//System.out.println("BROKEN");// Throw Exception ("The path cant be this short dude, or maybe this whole shit is bugged. Dunno")
 		}
 //		return MatrixChainMultiplication.compute(matrixesToMultiply);
 		SparseMatrix ret = new SparseMatrix(matrixesToMultiply.get(0));
@@ -234,10 +234,10 @@ public class HeteSanic {
 	 */
 	
 	private ArrayList<SparseMatrix> getMatrixesToMultiply(ArrayList<Node.Type> path,ArrayList<Node.Type> aux) throws PathException {
-		System.out.println("Getting matrixes to multiply");
+		//System.out.println("Getting matrixes to multiply");
 		ArrayList<SparseMatrix> matrixesToMultiply = new ArrayList<SparseMatrix>();
 		ArrayList<WhatMatrix> whatMatrixes = getPairs(path, aux);
-		System.out.println(whatMatrixes);
+		//System.out.println(whatMatrixes);
 		for (int i = 0; i < whatMatrixes.size(); ++i) {
 			WhatMatrix w = whatMatrixes.get(i);
 			switch (w.pathType) {
@@ -246,7 +246,7 @@ public class HeteSanic {
 					this.author2paper = new SparseMatrix(graph.getMatrixAuthor());
 					this.paper2author = new SparseMatrix(this.author2paper);
 //
-//					System.out.println("finished paperAuthor");
+//					//System.out.println("finished paperAuthor");
 					
 					this.author2paper.normaliceRows();
 					this.paper2author.transpose();
@@ -334,7 +334,7 @@ public class HeteSanic {
 				break;
 			}
 		}
-//		System.out.println(matrixesToMultiply);
+//		//System.out.println(matrixesToMultiply);
 		return matrixesToMultiply;
 	}
 
@@ -358,9 +358,9 @@ public class HeteSanic {
 							break;
 						default:
 							/* Throw exception: The path is broken */
-							System.out.println("The path is broken. The Mid element is linking Paper with Paper or another MidElement :(");
-							System.out.println(path);
-							System.out.println(aux);
+							//System.out.println("The path is broken. The Mid element is linking Paper with Paper or another MidElement :(");
+							//System.out.println(path);
+							//System.out.println(aux);
 							throw new PathException("The path have a midElement linked to two papers or to another midElement");
 					}
 				}
@@ -377,9 +377,9 @@ public class HeteSanic {
 							break;
 						default:
 							/* Throw exception: The function is broken or the path is broken */
-							System.out.println("Maybe you dont know how to code, or maybe the path is broken. IoKze, no soi 100tifico :(");
-							System.out.println(path);
-							System.out.println(last);
+							//System.out.println("Maybe you dont know how to code, or maybe the path is broken. IoKze, no soi 100tifico :(");
+							//System.out.println(path);
+							//System.out.println(last);
 							throw new PathException("The path have a midElement linked to another midElement");
 					}
 				}
@@ -404,10 +404,10 @@ public class HeteSanic {
 						break;
 					default:
 						/* Throw exception: The function is broken or the path is broken */
-						System.out.println("Two papers together :(");
-						System.out.println(path);
-						System.out.println(current);
-						System.out.println(last);
+						//System.out.println("Two papers together :(");
+						//System.out.println(path);
+						//System.out.println(current);
+						//System.out.println(last);
 						throw new PathException("The path have two papers together");
 				}
 			}

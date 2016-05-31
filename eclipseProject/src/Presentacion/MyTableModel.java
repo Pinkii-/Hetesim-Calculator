@@ -21,10 +21,10 @@ import Presentacion.FormattedResult;
 class MyTableModel extends AbstractTableModel implements TableModelListener{
     
 	private static final long serialVersionUID = 1L;
-	private String[] columnNames = {"Entidad A",
-            "Tipo",
-            "Entidad B",
-            "Tipo",
+	private String[] columnNames = {"Entity A",
+            "Type",
+            "Entity B",
+            "Type",
             "Value",
     };
 	private Class[] columns = new Class[]{String.class, String.class, String.class, String.class, Float.class};
@@ -141,7 +141,7 @@ class MyTableModel extends AbstractTableModel implements TableModelListener{
 	public void tableChanged(TableModelEvent e) {
 		Integer row = e.getFirstRow();
         Integer column = e.getColumn();
-        System.out.println(Integer.toString(row)+" "+Integer.toString(column));
+        //System.out.println(Integer.toString(row)+" "+Integer.toString(column));
         TableModel model = (TableModel)e.getSource();
         Float data = (Float) model.getValueAt(row, column);
         
@@ -155,7 +155,7 @@ class MyTableModel extends AbstractTableModel implements TableModelListener{
 	    	
 	    	dlm.set(row, ch);
 	    	
-	        System.out.println("Change");
+	        //System.out.println("Change");
         }
         else {
         	String[] ok = {"Ok"};

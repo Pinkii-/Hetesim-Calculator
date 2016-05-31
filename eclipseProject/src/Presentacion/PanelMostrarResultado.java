@@ -184,14 +184,15 @@ public class PanelMostrarResultado extends AbstractPanel{
 	}
 	
 	private void saveChanges() {
-		String[] buttons = {"Yes", "No xfabo"};
-		int result = VistaDialog.setDialog("Store", "¿Modifications will be saved. Are you sure?\n ", buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
+		String[] buttons = {"Exit", "Cancel"};
+		int result = VistaDialog.setDialog("Overwrite changes", "All modifications will be saved?\n"
+				+ "Are you sure do you want to exit?", buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
 		if (result == 0) {
-			System.out.println("Si");
+			//System.out.println("Si");
 			rst.saveChanges();
 			cd.saveResults();
 			String[] ok = {"Ok"};
-			VistaDialog.setDialog("Store", "Modifications stored\n ", ok, VistaDialog.DialogType.QUESTION_MESSAGE);
+			VistaDialog.setDialog("Done", "Modifications stored\n ", ok, VistaDialog.DialogType.QUESTION_MESSAGE);
 		}
 	}
 	
@@ -199,8 +200,10 @@ public class PanelMostrarResultado extends AbstractPanel{
 	public int closeIt() {
 		
 		if (changesnc) {
-			String[] buttons = {"Quit", "Cancel"};
-			int result = VistaDialog.setDialog("Quit", "There are unsaved changes. Are you sure?\n ", buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
+			String[] buttons = {"Exit", "Cancel"};
+			int result = VistaDialog.setDialog("Unsaved changes", "Are you sure you want to exit?\n"
+					+ "All unsaved changes will be lost",
+					buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
 			return result;
 		}
 		return 0;

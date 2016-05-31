@@ -58,16 +58,16 @@ public class CtrlData {
 			ObjectInputStream ois = new ObjectInputStream(bais);
 			return ois.readObject();
 		}catch (NotSerializableException theProblem) {
-			System.out.println("El objeto no es serializable");
+			//System.out.println("El objeto no es serializable");
 			return null;
 		} catch (IOException e) {
-			System.out.println("Se ha producido un problema con la operación de E/S");
+			//System.out.println("Se ha producido un problema con la operación de E/S");
 			return null;
 		} catch (ClassNotFoundException e) {
-			System.out.println("No hay definición para la clase especificada");
+			//System.out.println("No hay definición para la clase especificada");
 			return null;
 		} catch (Exception e) {
-			System.out.println("Ha habido algun problema con la funcion de deepCopy");
+			//System.out.println("Ha habido algun problema con la funcion de deepCopy");
 			return null;
 		}
 	}
@@ -86,7 +86,7 @@ public class CtrlData {
 				f.mkdirs();
 			}
 			catch(SecurityException se) {
-				System.out.println("No se puede crear el directorio");
+				//System.out.println("No se puede crear el directorio");
 			}
 		}
 	}
@@ -107,7 +107,7 @@ public class CtrlData {
 				Pathsf.mkdirs();
 			}
 			catch(SecurityException se) {
-				System.out.println("No se puede crear el directorio con los Paths");
+				//System.out.println("No se puede crear el directorio con los Paths");
 			}
 		}
 		if (!GrafsAndResultsf.exists()) {
@@ -115,7 +115,7 @@ public class CtrlData {
 				GrafsAndResultsf.mkdirs();
 			}
 			catch(SecurityException se) {
-				System.out.println("No se puede crear el directorio GrafAndResults");
+				//System.out.println("No se puede crear el directorio GrafAndResults");
 			}
 		}
 		

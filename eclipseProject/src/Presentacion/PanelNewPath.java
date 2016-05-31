@@ -204,8 +204,8 @@ public class PanelNewPath extends AbstractPanel { //Abstract
 //	@Override
 	int closeIt() {
 		if (!finished) {
-			String[] buttons = {"Yes", "Cancel"};
-			int result = VistaDialog.setDialog("New Path", "Are you sure you want to exit without save?", buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
+			String[] buttons = {"Exit", "Cancel"};
+			int result = VistaDialog.setDialog("Exit without saving", "Are you sure do you want to exit without saving?", buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
 			return result;
 		}
 		return 0;
@@ -285,7 +285,7 @@ public class PanelNewPath extends AbstractPanel { //Abstract
 			public void keyReleased(KeyEvent e) {
 				boolean good = isGoodPath();
 				if (!good) {
-					textField.setToolTipText("The path is worng formated");
+					textField.setToolTipText("The path is badly formatted");
 					textField.setBackground(new Color(246,100,100));
 				}
 				else {
@@ -310,7 +310,7 @@ public class PanelNewPath extends AbstractPanel { //Abstract
 					String name = "The path needs a Name.\n";
 					String nameRepeated = "The Name of the panel can't be repeated.\n";
 					String des = "The path needs a Description.\n";
-					String cont = "The path needs to be at least of leght 2 and good formated.\n";
+					String cont = "The path needs to be at least of leght 2 and nicely formated.\n";
 					if (hasName && hasDes && goodPath && !existName){
 						cd.getCtrlPaths().addPath(textField.getText(), textFieldName.getText(), textFieldDescription.getText());
 						VistaDialog.setDialog("New Path", "The path was created correctly", null, VistaDialog.DialogType.INFORMATION_MESSAGE);
@@ -323,7 +323,7 @@ public class PanelNewPath extends AbstractPanel { //Abstract
 						}
 					}
 					else {
-						String response = "We have the next errors:\n";
+						String response = "Path can't be saved because of the following:\n";
 						if (!hasName) response += name;
 						if (existName) response += nameRepeated;
 						if (!hasDes) response += des;
@@ -347,7 +347,7 @@ public class PanelNewPath extends AbstractPanel { //Abstract
 						}
 					}
 					else {
-						String response = "We have the next errors:\n";
+						String response = "Path can't be saved because of the following:\n";
 						if (!goodPath) response += cont;
 						VistaDialog.setDialog("Edit Path", response, null, VistaDialog.DialogType.ERROR_MESSAGE);
 					}
@@ -391,7 +391,7 @@ public class PanelNewPath extends AbstractPanel { //Abstract
 	public void enablePathButtons() {
 		if (textField.getText().length() > 0) {
 			char s = textField.getText().charAt(textField.getText().length()-1);
-			System.out.println(s);
+			//System.out.println(s);
 			switch (s) {
 				case 'A':
 				case 'T':

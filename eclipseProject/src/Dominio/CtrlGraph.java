@@ -63,20 +63,21 @@ public class CtrlGraph {
 		try {
 			n1 = graph.getNode(node1IndexPaper, Node.Type.Paper);
 		} catch (Exception e) {
-			System.out.println("Node 1 does not exist");
+			//system.out.println("Node 1 does not exist");
 			return;
 		}
 		try {
 			n2 = graph.getNode(node2Index, Node.Type.valueOf(node2Type));
 		} catch (Exception e) {
-			System.out.println("Node 2 does not exist");
+			//system.out.println("Node 2 does not exist");
 			return;
 		}
 		try {
 			if (!graph.existsArc(n2, n1)) {
 				graph.setArc(node1IndexPaper, node2Index, Node.Type.valueOf(node2Type));
-			} else
-				System.out.println("Relation already exists");
+			} else{
+				//system.out.println("Relation already exists");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -100,7 +101,7 @@ public class CtrlGraph {
 			if (graph.existsArc(n1, n2)) {
 				graph.deleteArc(n1, n2);
 			} else {
-				System.out.println("Relation does not exist");
+				//system.out.println("Relation does not exist");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -187,7 +188,7 @@ public class CtrlGraph {
 		}else if(t == Node.Type.Paper){
 			ret = formatPaperNodes(mauthor);
 		}else{
-			System.out.println("Node type not found " + t);
+			//system.out.println("Node type not found " + t);
 			return null;
 		}
 		

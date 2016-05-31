@@ -13,7 +13,7 @@ import java.util.Map;
 
 /**
  *
- * @author Alejandro Ibañez
+ * @author Alejandro Ibanyez
  */
 public class Matrix implements Serializable {
     private ArrayList< HashMap<Integer,Float> > m = new ArrayList< HashMap<Integer,Float> >();

@@ -9,12 +9,8 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 
 import Dominio.CtrlDominio;
-
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 
 
 /**
@@ -86,7 +82,7 @@ public class VistaPrincipal extends VistaAbstracta{
 		this.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				System.out.println("windowClosing");
+				//System.out.println("windowClosing");
 				changePanel(Panels.Exit);
 			}
 		});
@@ -146,16 +142,22 @@ public class VistaPrincipal extends VistaAbstracta{
 		menuitemGraphImport.addActionListener
 		(new ActionListener() {
 			public void actionPerformed (ActionEvent event) {
-				int response = VistaDialog.setDialog("Hi!", "Are you sure that you want to import a new graph?\n"
-						+ "You will lose all the change of the old graph if you didnt save it to file", new String[]{"Continue", "Cancel"}, VistaDialog.DialogType.QUESTION_MESSAGE);
+				int response = VistaDialog.setDialog("Import a new Graph", "Are you sure that you want to import a new graph?\n"
+						+ "You will lose all unsaved changes made to the old graph", new String[]{"Continue", "Cancel"}, VistaDialog.DialogType.QUESTION_MESSAGE);
 				if (0 == response) {
 					try {
-						cd.importGraph(System.getProperty("user.dir")+"/../DBLP_four_area/");
-						VistaDialog.setDialog("",  "            Grafo importado correctamente.\n Es posible que la accion actual se tenga que reiniciar. \n Si te pregunta, se recomienda aceptar, ya que puede llevar a estados incoherentes del programa", new String[] {"Continue"}, VistaDialog.DialogType.INFORMATION_MESSAGE);
+						//System.out.println(System.getProperty("user.dir"));
+						cd.importGraph(System.getProperty("user.dir")+"/DBLP_four_area/");
+						VistaDialog.setDialog("Success",  "Graph imported correctly\n"
+								+ "The current panel may need to be reloaded for the changes to be committed\n"
+								+ "It is recommended to press the continue button, because not doing so may lead to "
+								+ "inconsistencies within the program.", new String[] {"Continue"}, VistaDialog.DialogType.INFORMATION_MESSAGE);
 						if (currentPanel != null) p.changePanel(currentPanel);
 					}
 					catch (Exception e) {
-						VistaDialog.setDialog("", "No se ha podido importar el grafo.\n(El diretorio de la base de datos no está en su sitio) ", new String[]{"Continue"}, VistaDialog.DialogType.ERROR_MESSAGE);
+						VistaDialog.setDialog("Error importing",
+								"Failed to load the Graph.\n"
+								+ "(Bad database directory file path) ", new String[]{"Continue"}, VistaDialog.DialogType.ERROR_MESSAGE);
 					}
 				}
 //				VistaDialog.setDialog("Titulo", "¿Estas seguro que quieres salir?\n (Se perderan todo los cambios no guardados)", buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
@@ -165,8 +167,8 @@ public class VistaPrincipal extends VistaAbstracta{
 		menuitemGraphImportPath.addActionListener
 		(new ActionListener() {
 			public void actionPerformed (ActionEvent event) {
-				int response = VistaDialog.setDialog("Hi!", "Are you sure that you want to import a new graph?\n"
-						+ "You will lose all the change of the old graph if you didnt save it to file", new String[]{"Continue", "Cancel"}, VistaDialog.DialogType.QUESTION_MESSAGE);
+				int response = VistaDialog.setDialog("Import a new Graph", "Are you sure that you want to import a new graph?\n"
+						+ "You will lose all unsaved changes made to the old graph", new String[]{"Continue", "Cancel"}, VistaDialog.DialogType.QUESTION_MESSAGE);
 				if (0 == response) {
 					try {
 						JFileChooser f  = new JFileChooser();
@@ -176,13 +178,16 @@ public class VistaPrincipal extends VistaAbstracta{
 						try {
 							String s = f.getSelectedFile().getAbsolutePath();
 							cd.importGraph(s);
-							VistaDialog.setDialog("", "            Grafo importado correctamente.\n Es posible que la accion actual se tenga que reiniciar. \n Si te pregunta, se recomienda aceptar, ya que puede llevar a estados incoherentes del programa", new String[] {"Continue"}, VistaDialog.DialogType.INFORMATION_MESSAGE);
+							VistaDialog.setDialog("Success",  "Graph imported correctly\n"
+									+ "The current panel may need to be reloaded for the changes to be committed\n"
+									+ "It is recommended to press the continue button, because not doing so may lead to "
+									+ "inconsistencies within the program.", new String[] {"Continue"}, VistaDialog.DialogType.INFORMATION_MESSAGE);
 							if (currentPanel != null) p.changePanel(currentPanel);
 						}
 						catch (NullPointerException exception) {}
 					}
 					catch (Exception e) {
-						VistaDialog.setDialog("", "No se ha detectado que sea un grafo.", new String[]{"Continue", "2", "3"}, VistaDialog.DialogType.ERROR_MESSAGE);
+						VistaDialog.setDialog("Error", "No graph detected", new String[]{"Continue"}, VistaDialog.DialogType.ERROR_MESSAGE);
 					}
 				}
 	//				VistaDialog.setDialog("Titulo", "¿Estas seguro que quieres salir?\n (Se perderan todo los cambios no guardados)", buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
@@ -192,15 +197,27 @@ public class VistaPrincipal extends VistaAbstracta{
 		menuitemGraphLoad.addActionListener
 		(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JFileChooser f  = new JFileChooser();
-				f.setCurrentDirectory(new File(System.getProperty("user.dir")));
-//				f.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-				f.showOpenDialog(f);
-				try {
-					String s = f.getSelectedFile().getAbsolutePath();
-					cd.loadGraph(s);
+				int response = VistaDialog.setDialog("Load a new Graph", "Are you sure that you want to load a new graph?\n"
+						+ "You will lose all unsaved changes made to the old graph", new String[]{"Continue", "Cancel"}, VistaDialog.DialogType.QUESTION_MESSAGE);
+				if (0 == response) {
+					JFileChooser f  = new JFileChooser();
+					f.setCurrentDirectory(new File(System.getProperty("user.dir")));
+					f.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+					f.showOpenDialog(f);
+					try {
+						String s = f.getSelectedFile().getAbsolutePath();
+						String[] parts = s.split("/");
+						cd.loadGraph(parts[parts.length-1]);
+						VistaDialog.setDialog("Success",  "Graph loaded correctly\n"
+								+ "The current panel may need to be reloaded for the changes to be committed\n"
+								+ "It is recommended to press the continue button, because not doing so may lead to "
+								+ "inconsistencies within the program.", new String[] {"Continue"}, VistaDialog.DialogType.INFORMATION_MESSAGE);
+						if (currentPanel != null) p.changePanel(currentPanel);
+					}
+					catch (Exception exception) {
+						VistaDialog.setDialog("Loading Graph", "There is no need to be upset. There is no graph at that directory", new String[]{"Continue"}, VistaDialog.DialogType.ERROR_MESSAGE);
+					}
 				}
-				catch (NullPointerException exception) {}
 			}
 		});
 		
@@ -208,11 +225,11 @@ public class VistaPrincipal extends VistaAbstracta{
 		(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int response = VistaDialog.setDialog("Hi!", "Are you sure that you want to create a new graph?\n"
-						+ "You will lose all the change of the old graph if you didnt save it to file", new String[]{"Continue", "Cancel"}, VistaDialog.DialogType.QUESTION_MESSAGE);
+				int response = VistaDialog.setDialog("Create a new Graph", "Are you sure that you want to create a new graph?\n"
+						+ "You will lose all unsaved changes made to the old graph", new String[]{"Continue", "Cancel"}, VistaDialog.DialogType.QUESTION_MESSAGE);
 				if (0 == response) {
 					cd.createGraph();
-					VistaDialog.setDialog("", "Nuevo grafo creado correctamente.", new String[]{"Continue"}, VistaDialog.DialogType.INFORMATION_MESSAGE);
+					VistaDialog.setDialog("Success", "Graph correctly created", new String[]{"Continue"}, VistaDialog.DialogType.INFORMATION_MESSAGE);
 				}
 			}
 		});
@@ -238,11 +255,11 @@ public class VistaPrincipal extends VistaAbstracta{
 		try {
 			String path = System.getProperty("user.dir");
 			BufferedImage myPicture;
-			myPicture = ImageIO.read(new File(path+"/src/Hetesim.png"));
+			myPicture = ImageIO.read(new File(path+"/resources/Hetesim.png"));
 			JLabel picLabel = new JLabel(new ImageIcon(myPicture));
 			content.add(picLabel);
 		} catch (IOException e) {
-			System.out.println("Couldn't load Hetesim image");
+			//System.out.println("Couldn't load Hetesim image");
 		}
 		
 		//set the first contentPanel
@@ -278,7 +295,7 @@ public class VistaPrincipal extends VistaAbstracta{
 	// Stuff
 	
 	void changePanel(Panels p) {
-		System.out.println("Cambiando a panel " + p.toString());
+		//System.out.println("Cambiando a panel " + p.toString());
 		nextPanel = p;
 		try {
 			AbstractPanel currentPanel = (AbstractPanel) this.getContentPane().getComponent(0);
@@ -332,7 +349,7 @@ public class VistaPrincipal extends VistaAbstracta{
 				dispose();
 				System.exit(0);
 			default:
-				throw new RuntimeException("Ese panel no existe h3h3h3h3h3h3h3h3h3h3h3h3h3h3h3");
+				throw new RuntimeException("Ese panel no existe");
 		}
 //		this.pack();
 		this.show();
@@ -340,7 +357,7 @@ public class VistaPrincipal extends VistaAbstracta{
 	}
 	
 	void setEnabledPrincipal(Boolean b) {
-		System.out.println("lalala");
+		//System.out.println("lalala");
 //		menuFile.setEnabled(b);
 //		menuEdit.setEnabled(b);
 	}

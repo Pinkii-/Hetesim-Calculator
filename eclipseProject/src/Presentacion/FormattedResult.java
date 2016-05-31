@@ -92,7 +92,9 @@ public class FormattedResult extends ArrayList<ArrayList<String>> {
 	 */
 	public void setOldValue(int nValue, Float value) {
 		if (nValue >= 0 && nValue <= numberOfValues) oldValues.put(nValue,value);
-		else System.out.println("Intentas acceder a un valor inexistente");
+		else {
+			//System.out.println("Intentas acceder a un valor inexistente");
+		}
 	}
 	
 	/**
@@ -106,7 +108,7 @@ public class FormattedResult extends ArrayList<ArrayList<String>> {
 		if (oldValues.containsKey(nValue))
 			return oldValues.get(nValue);
 		else {
-			System.out.println("No existe el valor antiguo");
+			//System.out.println("No existe el valor antiguo");
 			return null;
 		}
 	}
@@ -119,7 +121,9 @@ public class FormattedResult extends ArrayList<ArrayList<String>> {
 	 */
 	public void setNewValue(int nValue, Float value) {
 		if (nValue >= 0 && nValue <= numberOfValues) newValues.put(nValue,value);
-		else System.out.println("Intentas acceder a un indice de valor inexistente");
+		else {
+			//System.out.println("Intentas acceder a un indice de valor inexistente");
+		}
 	}
 	
 	/**
@@ -133,7 +137,7 @@ public class FormattedResult extends ArrayList<ArrayList<String>> {
 		if (newValues.containsKey(nValue))
 			return newValues.get(nValue);
 		else {
-			System.out.println("No existe el valor nuevo");
+			//System.out.println("No existe el valor nuevo");
 			return null;
 		}
 	}

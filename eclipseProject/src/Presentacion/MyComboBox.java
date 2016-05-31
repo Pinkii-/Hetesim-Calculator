@@ -207,7 +207,6 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 	/**
 	 * Add a new array of choices to the JComboBox
 	 * 
-	 * @param name - Name to identify the item
 	 * @param newItem - Array of strings to add
 	 */
 	public void addList(String[][] newItem){
@@ -233,7 +232,6 @@ public class MyComboBox extends JComboBox<String> implements ActionListener, Key
 	 * Add a new array of choices to the JComboBox.
 	 * 
 	 * @param newItem - ArrayList of strings to add
-	 * @see #addList(String[])
 	 */
 	public void addList(ArrayList<String[]> newItem){
 		String[][] thing = new String[2][newItem.size()];

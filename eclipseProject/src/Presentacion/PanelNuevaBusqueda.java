@@ -14,10 +14,14 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.Icon;
@@ -54,6 +58,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 	private SpringLayout sl;
 	
 	private VistaPrincipal vp;
+	private ArrayList<String> pathContents;
 	private boolean hasResult = false;
 	//private String idResult = "";
 	private static final long serialVersionUID = 1L;
@@ -85,12 +90,14 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		
 		sl = new SpringLayout();
 		setLayout(sl);
+		pathContents = new ArrayList<String>();
 		
 		//Path
 		ArrayList<ArrayList<String>> pathsTemp = cd.getCtrlPaths().getFormattedPaths();
 		ArrayList<String> paths = new ArrayList<String>();
 		for (int i = 0;i < pathsTemp.size(); ++i){
-			paths.add(pathsTemp.get(i).get(2));
+			paths.add(pathsTemp.get(i).get(0));
+			pathContents.add(pathsTemp.get(i).get(2));
 		}
 		pathSelect = new JComboBox<String>(arrayListToArray(paths));
 		pathSelect.setPreferredSize(new Dimension(100,20));
@@ -161,9 +168,9 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		//Hetesim button
 		Icon icon = null;
 		try {
-			icon = new ImageIcon(new URL("http://i.imgur.com/q9dfxIe.png"));
-		} catch (MalformedURLException e) {
-			
+			BufferedImage bi = ImageIO.read(new File(System.getProperty("user.dir")+"/resources/calcIcon.png"));
+			icon = new ImageIcon(bi);
+		} catch (IOException e) {
 		}
 		calcHete = new JButton("Calculate Hetesim", icon);
 		calcHete.setPreferredSize(new Dimension(200,50));
@@ -174,8 +181,9 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		
 		Icon icon4 = null;
 		try {
-			icon4 = new ImageIcon(new URL("http://i.imgur.com/q9dfxIe.png"));
-		} catch (MalformedURLException e) {
+			BufferedImage bi = ImageIO.read(new File(System.getProperty("user.dir")+"/resources/calcIcon.png"));
+			icon4 = new ImageIcon(bi);
+		} catch (IOException e) {
 			
 		}
 		reuseSearch = new JButton("Use fields", icon4);
@@ -188,9 +196,9 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		//Save result button
 		Icon icon2 = null;
 		try {
-			icon2 = new ImageIcon(new URL("http://i.imgur.com/RTzXRY4.png"));
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
+			BufferedImage bi = ImageIO.read(new File(System.getProperty("user.dir")+"/resources/saveIcon.png"));
+			icon2 = new ImageIcon(bi);
+		} catch (IOException e) {
 		}
 		saveResult = new JButton("Save", icon2);
 		saveResult.setPreferredSize(new Dimension(92,30));
@@ -202,9 +210,9 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		//Edit result button
 		Icon icon3 = null;
 		try {
-			icon3 = new ImageIcon(new URL("http://i.imgur.com/iA8cG7Q.jpg"));
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
+			BufferedImage bi = ImageIO.read(new File(System.getProperty("user.dir")+"/resources/editIcon.jpg"));
+			icon3 = new ImageIcon(bi);
+		} catch (IOException e) {
 		}
 		editResult = new JButton("Edit", icon3);
 		editResult.setPreferredSize(new Dimension(92,30));
@@ -338,8 +346,10 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 	@Override
 	public int closeIt() {
 		if (hasResult){
-			String[] buttons = {"Salir", "Cancelar"};
-			int result = VistaDialog.setDialog("Titulo", "¿Estas seguro que quieres salir?\n (Se perderan todos los cambios no guardados)", buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
+			String[] buttons = {"Exit", "Cancel"};
+			int result = VistaDialog.setDialog("Unsaved changes", "Are you sure you want to exit?\n"
+					+ "All unsaved changes will be lost",
+					buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
 			return result;
 		}
 		else {
@@ -360,41 +370,41 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		
 		if (e.getSource().equals(calcHete)){
 			
-			String path = pathSelect.getSelectedItem().toString();
+			String path = pathContents.get(pathSelect.getSelectedIndex());
 			int n1 = -1, n2 = -1;
 			if (!node1Select.getEditor().getItem().toString().equals(" - Select all -")) n1 = node1Select.getSelectedNodeIndex();
 			if (!node2Select.getEditor().getItem().toString().equals(" - Select all -") && node2Select.isEnabled()) n2 = node2Select.getSelectedNodeIndex();
 			if (n1 == -1 && n2 == -1){
 				//No nodes
-				System.out.println("Searching");
+				//System.out.println("Searching");
 				if (checkbox.isSelected()){
-					System.out.println("P threshold");
+					//System.out.println("P threshold");
 					//idResult = cd.searchPathThreshhold((float)((double)threshold.getValue()), path);
 					cd.searchPathThreshhold(Float.valueOf(threshold.getValue().toString()), path);
 					//resultTable = new MyResultTable(cd.getCtrlResults().getLastResultFormatted(),cd.getCtrlResults());
 				}
 				else {
-					System.out.println("P");
+					//System.out.println("P");
 					//idResult = cd.searchPath(path);
 					cd.searchPath(path);
 					//resultTable = new MyResultTable(cd.getCtrlResults().getLastResultFormatted(),cd.getCtrlResults());
 				}
-				System.out.println("Done");
+				//System.out.println("Done");
 			}
 			else if (n1 >= 0 && n2 == -1){
 				//One node
 				if (checkbox.isSelected()){
-					System.out.println("PN1 threshold");
+					//System.out.println("PN1 threshold");
 					//idResult = cd.searchPathNodeThreshhold((float)((double)threshold.getValue()), path, n1);
 					cd.searchPathNodeThreshhold(Float.valueOf(threshold.getValue().toString()), path, n1);
 					//resultTable = new MyResultTable(cd.getCtrlResults().getLastResultFormatted(),cd.getCtrlResults());
 				}
 				else {
-					System.out.println("PN1");
+					//System.out.println("PN1");
 					//idResult = cd.searchPathNode(path,n1);
 					cd.searchPathNode(path,n1);
 				}
-				System.out.println("Done");
+				//System.out.println("Done");
 				
 			}
 			/*
@@ -420,19 +430,19 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 			else if (n1 >= 0 && n2 >= 0){
 				//Two
 				if (checkbox.isSelected()){
-					System.out.println("PNN threshold");
+					//System.out.println("PNN threshold");
 					//idResult = cd.searchPathNodeNodeThreshhold((float)((double)threshold.getValue()), path, n1, n2);
 					cd.searchPathNodeNodeThreshhold((Float.valueOf(threshold.getValue().toString())), path, n1, n2);
 				}
 				else {
-					System.out.println("PNN");
+					//System.out.println("PNN");
 					//idResult = cd.searchPathNodeNode(path,n1,n2);
 					cd.searchPathNodeNode(path,n1,n2);
 				}
-				System.out.println("Done");
+				//System.out.println("Done");
 			}
 			else {
-				System.out.println("Either node is invalid");
+				//System.out.println("Either node is invalid");
 			}
 			
 			
@@ -462,7 +472,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 
 			}
 			catch (NullPointerException p){
-				VistaDialog.setDialog("Error", "No se ha podido acceder al resultado\n", new String[]{"Continue"}, VistaDialog.DialogType.ERROR_MESSAGE);
+				VistaDialog.setDialog("Error", "It hasn't been possible to access the result\n", new String[]{"Continue"}, VistaDialog.DialogType.ERROR_MESSAGE);
 			}
 			
 			updateUI();
@@ -484,7 +494,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 			
 			editResult.setEnabled(true);
 			saveResult.setEnabled(false);
-			VistaDialog.setDialog("", "Se ha guardado el resultado", new String[]{"OK"}, DialogType.INFORMATION_MESSAGE);
+			VistaDialog.setDialog("", "Result stored", new String[]{"OK"}, DialogType.INFORMATION_MESSAGE);
 		}
 		else if (e.getSource().equals(editResult)){
 			this.vp.panelMostrarResultado.setShowedResult(cd.getCtrlResults().getLastResultFormatted());
@@ -513,7 +523,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		else if (e.getSource().equals(pathSelect)){
 			calcHete.setEnabled(true);
 			checkbox.setEnabled(true);
-			String text = pathSelect.getItemAt(pathSelect.getSelectedIndex()).toString();
+			String text = pathContents.get(pathSelect.getSelectedIndex()).toString();
 			boolean n1 = false, n2 = false;
 			switch (text.charAt(0)){
 				case 'P':

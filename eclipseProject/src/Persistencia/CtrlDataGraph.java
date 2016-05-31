@@ -69,13 +69,13 @@ public class CtrlDataGraph {
 
         Graph g = null;
         try {
-            FileInputStream fileInputStream = new FileInputStream(filePath);
+            FileInputStream fileInputStream = new FileInputStream(filePath+".ser");
             ObjectInputStream in = new ObjectInputStream(fileInputStream);
             g = (Graph) in.readObject();
             in.close();
             fileInputStream.close();
         } catch (ClassNotFoundException c) {
-            System.out.println("Graph class not found");
+            //System.out.println("Graph class not found");
         }
         return g;
     }
