@@ -122,7 +122,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		
 		//ResultList
 		//ArrayList<ArrayList<String>> temp = new ArrayList<ArrayList<String>>();
-		resultTable = new MyResultTable();//temp,cd.getCtrlResults());
+		resultTable = new MyResultTable(cd.getCtrlResults());
 		initResultTable();
 		resultTable.setBorder(BorderFactory.createLineBorder(Color.gray));
 		resultTable.setPreferredSize(new Dimension(350,200));
@@ -295,8 +295,6 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		resultTable.setEnabled(true);
 		
 		resultTable.setCellSelectionEnabled(false);
-		resultTable.setColumnSelectionAllowed(false);
-		resultTable.setRowSelectionAllowed(true);
 	}
 	
 	private void assignListeners(){
@@ -421,13 +419,12 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 				remove(resultTable);
 
 				
-				resultTable = new MyResultTable(cd.getCtrlResults().getLastResultFormatted(),cd.getCtrlResults());
+				resultTable.generateTableContent(cd.getCtrlResults().getLastResultFormatted());
 				initResultTable();
 				//System.out.println(resultTable.getRowCount() + " " + resultTable.getColumnCount());
 				//resultTable.setModel(cd.getCtrlResults().getLastResultFormatted());
 
 				//resultTable.setFillsViewportHeight(false);
-				
 				add(resultTable);
 				putConstraints();
 
@@ -446,6 +443,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 				VistaDialog.setDialog("Error", "No se ha podido acceder al resultado\n", new String[]{"Continue"}, VistaDialog.DialogType.ERROR_MESSAGE);
 			}
 			
+			updateUI();
 		}
 		else if (e.getSource().equals(reuseSearch)){
 			if (resultTable.getSelectedRowCount() == 1){
