@@ -21,10 +21,10 @@ import Presentacion.FormattedResult;
 class MyTableModel extends AbstractTableModel implements TableModelListener{
     
 	private static final long serialVersionUID = 1L;
-	private String[] columnNames = {"Entidad A",
-            "Tipo",
-            "Entidad B",
-            "Tipo",
+	private String[] columnNames = {"Entity A",
+            "Type",
+            "Entity B",
+            "Type",
             "Value",
     };
 	private Class[] columns = new Class[]{String.class, String.class, String.class, String.class, Float.class};

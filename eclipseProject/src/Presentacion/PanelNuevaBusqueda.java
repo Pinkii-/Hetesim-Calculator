@@ -343,8 +343,10 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 	@Override
 	public int closeIt() {
 		if (hasResult){
-			String[] buttons = {"Salir", "Cancelar"};
-			int result = VistaDialog.setDialog("Titulo", "¿Estas seguro que quieres salir?\n (Se perderan todos los cambios no guardados)", buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
+			String[] buttons = {"Exit", "Cancel"};
+			int result = VistaDialog.setDialog("Unsaved changes", "Are you sure you want to exit?\n"
+					+ "All unsaved changes will be lost",
+					buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
 			return result;
 		}
 		else {
@@ -467,7 +469,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 
 			}
 			catch (NullPointerException p){
-				VistaDialog.setDialog("Error", "No se ha podido acceder al resultado\n", new String[]{"Continue"}, VistaDialog.DialogType.ERROR_MESSAGE);
+				VistaDialog.setDialog("Error", "It hasn't been possible to access the result\n", new String[]{"Continue"}, VistaDialog.DialogType.ERROR_MESSAGE);
 			}
 			
 			updateUI();
@@ -489,7 +491,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 			
 			editResult.setEnabled(true);
 			saveResult.setEnabled(false);
-			VistaDialog.setDialog("", "Se ha guardado el resultado", new String[]{"OK"}, DialogType.INFORMATION_MESSAGE);
+			VistaDialog.setDialog("", "Result stored", new String[]{"OK"}, DialogType.INFORMATION_MESSAGE);
 		}
 		else if (e.getSource().equals(editResult)){
 			this.vp.panelMostrarResultado.setShowedResult(cd.getCtrlResults().getLastResultFormatted());

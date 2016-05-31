@@ -228,8 +228,10 @@ public class PanelModificaGraph extends AbstractPanel {
 	public int closeIt() {
 		if (changed) {
 			// Preguntar si estas seguro de que te pueden cerrar desde un sitio externo
-			String[] buttons = {"Salir", "Cancelar"};
-			int result = VistaDialog.setDialog("Titulo", "¿Estas seguro que quieres salir?\n (Se perderan todo los cambios no guardados)", buttons, VistaDialog.DialogType.WARNING_MESSAGE);
+			String[] buttons = {"Exit", "Cancel"};
+			int result = VistaDialog.setDialog("Unsaved changes", "Are you sure you want to exit?\n"
+					+ "All unsaved changes will be lost",
+					buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
 			return result;
 		}
 		else return 0;
