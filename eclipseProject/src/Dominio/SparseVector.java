@@ -1,9 +1,6 @@
 package Dominio;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 
 
 /**
@@ -12,9 +9,19 @@ import java.util.Set;
  * 
  */
 
-public class SparseVector extends HashMap<Integer,Float> {
-
 	
+public class SparseVector extends HashMap<Integer,Float> {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * The multiplication of two vectors
+	 * @param sv1 SparseVector that is going to be multiplied for the other SparseVector
+	 * @param sv2 SparseVector that is going to be multiplied for the other SparseVector
+	 * @return The result of the multiplication of sv1 and sv2
+	 */
 	static Float multiply(SparseVector sv1, SparseVector sv2) {
 		Float ret = 0.f;
 		
@@ -26,27 +33,12 @@ public class SparseVector extends HashMap<Integer,Float> {
 		}
 		
 		return ret;
-	}
+	}	
 	
-	static Float multiply(SparseVector sv1, ArrayList<Float> sv2) {
-		Float ret = 0.f;
-		Set<Integer> aux = new HashSet<Integer>(sv1.keySet());
-		
-		try {
-			for (Integer k : aux) ret += sv1.get(k) * sv2.get(k);
-		}
-		catch (IndexOutOfBoundsException e) {
-			System.out.println("The vector cant be smaller than the sparseVector");
-			throw e;
-		}
-		return ret;
-	}
-	
-	static Float multiply(ArrayList<Float> v1, SparseVector sv2) {		
-		return SparseVector.multiply(sv2, v1);
-	}
-	
-	
+	/**
+	 * The norm of a vector
+	 * @return the norm of a vector
+	 */
 	float norm() {
 		double total = 0.0;
 		for (Integer i : keySet()) {

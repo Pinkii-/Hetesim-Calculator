@@ -1,7 +1,6 @@
 package Dominio;
 
 import java.util.ArrayList;
-import java.util.Set;
 
 /**
  * 
@@ -13,6 +12,10 @@ public class SparseMatrix {
 	ArrayList<SparseVector> rows = new ArrayList<SparseVector>();
 	ArrayList<SparseVector> cols = new ArrayList<SparseVector>();
 	
+	/**
+	 * Copy the Matrix to a SparseMatrix
+	 * @param matrix to be copied
+	 */
 	public SparseMatrix(Matrix matrix) { 
 		int nCols = matrix.getNCols();
 		int nRows = matrix.getNRows();
@@ -31,6 +34,11 @@ public class SparseMatrix {
 		
 	}
 	
+	/**
+	 * A SparseMatrix empty with number of rows equals nRows and numebr of cols equals nCols
+	 * @param nRows number of rows
+	 * @param nCols number of cols
+	 */
 	SparseMatrix(int nRows, int nCols) {
 		for (int i = 0; i < nRows; ++i) {
 			rows.add(new SparseVector());
@@ -39,13 +47,20 @@ public class SparseMatrix {
 			cols.add(new SparseVector());
 		}
 	}
-	
+	/**
+	 * A SparseMatrix empty only with rows
+	 * @param nRows number of rows
+	 */
 	SparseMatrix(int nRows) {
 		for (int i = 0; i < nRows; ++i) {
 			rows.add(new SparseVector());
 		}
 	}
 	
+	/**
+	 * Copy Constructor
+	 * @param sm
+	 */
 	SparseMatrix(SparseMatrix sm) {
 		ArrayList<SparseVector> rows = sm.getRows();
 		for (SparseVector sv : rows) {
@@ -65,15 +80,27 @@ public class SparseMatrix {
 			this.cols.add(col);
 		}
 	}
-	
+	/**
+	 * Getter of cols
+	 * @return cols
+	 */
 	private ArrayList<SparseVector> getCols() {
 		return cols;
 	}
-
+	/**
+	 * Getter of rows
+	 * @return rows
+	 */
 	private ArrayList<SparseVector> getRows() {
 		return rows;
 	}
 	
+	/**
+	 * Setting value at the position (row,col)
+	 * @param row number of row
+	 * @param col number of col
+	 * @param value to be setted
+	 */
 	void set(int row, int col, Float value) {
 		if (value == 0.f) {
 			try {
@@ -103,6 +130,12 @@ public class SparseMatrix {
 		}
 	}
 	
+	/**
+	 * Setting value at the position (row,col) only in the rows
+	 * @param row number of row
+	 * @param col number of col
+	 * @param value to be setted
+	 */
 	void setOnRow(int row, int col, Float value) {
 		if (value == 0.f) {
 			return;
@@ -117,33 +150,65 @@ public class SparseMatrix {
 		}
 	}
 	
+	/**
+	 * Getting the number of rows
+	 * @return the number of rows
+	 */
 	int getNRows() {
 		return rows.size();
 	}
 	
+	/**
+	 * Getting the number of cols
+	 * @return the number of cols
+	 */
 	int getNCols() {
 		return cols.size();
 	}
 	
+	/**
+	 * Getting the row i-th
+	 * @param i number of row
+	 * @return the row number i
+	 */
 	public SparseVector getRow(int i) {
 		return rows.get(i);
 	}
 	
+	/**
+	 * Getting the col j-th
+	 * @param j number of col
+	 * @return the col number j
+	 */
 	public SparseVector getCol(int j) {
 		return cols.get(j);
 	}
-	
+	/**
+	 * Getting the value at the position (i,j)
+	 * @param i number of row
+	 * @param j number of col
+	 * @return the value at the position (i,j)
+	 */
 	public Float getValue(int i, int j) {
 		if (i < rows.size() && rows.get(i).containsKey(j)) return rows.get(i).get(j);
 		else return 0.f;
 	}
 	
+	/**
+	 * Transposing the matrix
+	 */
 	public void transpose() {
 		ArrayList<SparseVector> aux = rows;
 		rows = cols;
 		cols = aux;
 	}
 	
+	/**
+	 * Multiplaying two matrixs
+	 * @param m1 left-side SparseMatrix
+	 * @param m2 right-side SparseMatrix
+	 * @return the result of the multiplication of two SparseMatrix
+	 */
 	static SparseMatrix multiply(SparseMatrix m1, SparseMatrix m2) {
 		SparseMatrix ret = new SparseMatrix(m1.getNRows(), m2.getNCols());
 		for (int i = 0; i < ret.getNRows(); ++i) {
@@ -162,7 +227,11 @@ public class SparseMatrix {
 	
 	/** 
 	 * This shit returns a SparseMatrix that do not have Cols.
-	 * THIS CANT BE MULTIPLIED ON THE RIGHT SIDE
+	 * <b>THIS CANT BE MULTIPLIED ON THE RIGHT SIDE</b>
+	 * 
+	 * @param m1 left-side SparseMatrix
+	 * @param m2 right-side SparseMatrix
+	 * @return the result of the multiplication of two SparseMatrix
 	 */
 	static SparseMatrix multiplyHalf(SparseMatrix m1, SparseMatrix m2) {
 		SparseMatrix ret = new SparseMatrix(m1.getNRows());
@@ -175,30 +244,9 @@ public class SparseMatrix {
 		return ret;
 	}
 	
-	
-//	static SparseMatrix multiply(Matrix m1, SparseMatrix m2) {
-//		if (m1.getNCols() != m2.getNRows()) throw new RuntimeException("Dimension 'm1' cols and 'm2' rows disagree");
-//		SparseMatrix ret = new SparseMatrix(m1.getNRows(), m2.getNCols());
-//		for (int i = 0; i < ret.getNRows(); ++i) {
-//			ArrayList<Float> v1 = m1.getRow(i);
-//			for (int j = 0; j < ret.getNCols(); ++j) {
-//				ret.set(i, j, SparseVector.multiply(v1, m2.getCol(j)));
-//			}
-//		}
-//		return ret;
-//	}
-	
-//	static SparseMatrix multiply(SparseMatrix m1, Matrix m2) {
-//		SparseMatrix ret = new SparseMatrix(m1.getNRows(), m2.getNCols());
-//		for (int i = 0; i < ret.getNRows(); ++i) {
-//			SparseVector v1 = m1.getRow(i);
-//			for (int j = 0; j < ret.getNCols(); ++j) {
-//				ret.set(i, j, SparseVector.multiply(v1, m2.getCol(j)));
-//			}
-//		}
-//		return ret;
-//	}
-	
+	/**
+	 * Normalicing by rows
+	 */
 	void normaliceRows() {
 		for (int i = 0; i < getNRows(); ++i) {
 			Double total = 0.0;
@@ -208,12 +256,14 @@ public class SparseMatrix {
 			total = Math.sqrt(total);
 			for (Integer j : rows.get(i).keySet()) {
 				set(i,j,(float) (getValue(i,j)/total));
-//				rows.get(i).put(j,(float) (rows.get(i).get(j)/total));
-				
 			}
 		}
 	}
 
+	/**
+	 * Getting number of not zeros
+	 * @return number of not zeros
+	 */
 	public int numberOfNotZeros() {
 		int total = 0;
 		
@@ -224,8 +274,11 @@ public class SparseMatrix {
 		return total;
 	}
 
+	/**
+	 * Translates SparseMatrix to Matrix
+	 * @return a Matrix with the same values than this
+	 */
 	public Matrix toMatrix() {
-		System.out.println("Starting to parseTo matrix");
 		Matrix ret = new Matrix();
 		ret.setNFiles(rows.size());
 		for (int i = 0; i < getNRows(); ++i) {
@@ -233,41 +286,21 @@ public class SparseMatrix {
 				ret.setRelevance(i, j, getValue(i,j));
 			}
 		}
-		
-		// Legacyda
-//		for (int i = 0; i < getNRows(); ++i) {
-//			for (Integer k : rows.get(i).keySet()){
-//				ret.getRow(i).put(k, getValue(i,k)); // bypassing the things and modifiying directly the 'm'
-//			}
-//		}
-		System.out.println("Done parseToMatrix");
 		return ret;
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
 	public String toString() {
 		String s = new String();
-//		for (int i = 0; i < getNRows(); ++i) {
-//			for (int j = 0; j < getNCols(); ++j) {
-//				s+=getValue(i, j) + " ";
-//			}
-//			s+= '\n';
-//		} 
 		
 		for (int i = 0; i < getNRows(); ++i) {
 			System.out.println(i + " " + rows.get(i));
 		}
 		System.out.print("Cols " + cols.size());
 		return s;
-	}
-	
-	
-	SparseMatrix(){}
-	
-	void addRow() {
-		rows.add(new SparseVector());
-	}
-	
-	void addCol() {
-		cols.add(new SparseVector());
 	}
 }
