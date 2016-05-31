@@ -52,7 +52,7 @@ public class Result implements Cloneable, Serializable {
 		if (resultHete == null) throw new RuntimeException("Null Matrix. Can't create result.");
 		
 		usedP = p;
-		idResult = new String(g.getNom() + " " + p.getNom());
+		idResult = new String(String.valueOf(System.currentTimeMillis()));
 		idGraph = String.valueOf(g.id);
 		modified = false;
 		this.threshold = threshold;
@@ -101,7 +101,7 @@ public class Result implements Cloneable, Serializable {
 		modified = false;
 		this.threshold = threshold;
 
-		idResult = new String(g.getNom() + " " + p.getNom() + " " + n1.getNom());
+		idResult = new String(String.valueOf(System.currentTimeMillis()));
 		idGraph = String.valueOf(g.id);
 
 		if (threshold == 0){
@@ -152,7 +152,7 @@ public class Result implements Cloneable, Serializable {
 			resultType = ResultType.PathNodeNodeThreshold;
 		}
 
-		idResult = new String(g.getNom() + " " + p.getNom() + " " + n1.getNom() + " " + n2.getNom());
+		idResult = new String(String.valueOf(System.currentTimeMillis()));
 		idGraph = String.valueOf(g.id);
 		
 		resultList = new ArrayList<NodePair>();
