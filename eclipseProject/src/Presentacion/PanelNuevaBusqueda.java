@@ -2,6 +2,9 @@ package Presentacion;
 
 
 import javax.swing.SpringLayout;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableColumnModel;
 
 import Presentacion.VistaDialog.DialogType;
 import Presentacion.VistaPrincipal.Panels;
@@ -16,6 +19,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
+import javax.swing.DefaultListSelectionModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -292,8 +296,21 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 	private void initResultTable(){
 		resultTable.setPreferredSize(new Dimension(350,200));
 		resultTable.setBorder(BorderFactory.createLineBorder(Color.black));
-		resultTable.setEnabled(false);
-		
+		resultTable.setEnabled(true);
+		//resultTable.setSelectionModel(new DefaultListSelectionModel());
+		//resultTable.setColumnModel(new DefaultTableColumnModel());
+		ListSelectionListener lsl = new ListSelectionListener() {
+			
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				if(resultTable.getSelectedColumns().length < 5){
+					resultTable.setColumnSelectionInterval(0, 4);
+				}
+				
+			}
+		};
+		resultTable.getSelectionModel().addListSelectionListener(lsl);
+		resultTable.getColumnModel().getSelectionModel().addListSelectionListener(lsl);
 		
 		resultTable.setCellSelectionEnabled(true);
 	}
