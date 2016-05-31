@@ -13,22 +13,10 @@ import gnu.trove.map.hash.THashMap;
  * 
  */
 
-@SuppressWarnings("serial")
 public class SparseVector extends THashMap<Integer,Float> {
-	
-//	float total = 0;
-	
-//	public Float put(Integer key, Float value) {
-//		total += Math.pow(value, 2);
-//		return super.put(key, value);
-//	}
 	
 	static Float multiply(SparseVector sv1, SparseVector sv2) {
 		Float ret = 0.f;
-//		Set<Integer> aux = new HashSet<Integer>(sv1.keySet());
-//		System.out.println("first " + sv1.keySet() + " " + sv2.keySet());
-//		aux.retainAll(sv2.keySet());
-//		System.out.println(aux);
 		
 		if (sv1.keySet().size() < sv2.keySet().size()) {		
 			for (Integer k : sv1.keySet()) if (sv2.containsKey(k)) ret += sv1.get(k) * sv2.get(k);

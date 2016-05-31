@@ -16,6 +16,13 @@ import Dominio.CtrlDominio;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 
+
+/**
+ * 
+ * @author Gonzalo Diez
+ * 
+ */
+
 public class VistaPrincipal extends VistaAbstracta{
 	
 	private String APPLICATION_NAME = "ola k ase lol";

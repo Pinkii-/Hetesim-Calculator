@@ -24,8 +24,11 @@ import javax.swing.event.ListSelectionListener;
 
 import Dominio.CtrlDominio;
 
-
-
+/**
+ * 
+ * @author Gonzalo Diez
+ * 
+ */
 
 public class PanelModificaGraph extends AbstractPanel {
 
