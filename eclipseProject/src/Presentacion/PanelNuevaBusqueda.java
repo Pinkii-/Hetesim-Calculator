@@ -419,7 +419,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 				thresholdLabel.setForeground(Color.black);
 				saveResult.setEnabled(true);
 				hasResult = true;
-				
+				System.out.println("EVENTO");
 				calcHete.setEnabled(false);
 			}
 			catch (NullPointerException p){

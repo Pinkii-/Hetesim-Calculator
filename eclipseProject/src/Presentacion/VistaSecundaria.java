@@ -5,6 +5,12 @@ import java.awt.event.WindowEvent;
 
 import Dominio.CtrlDominio;
 
+/**
+ * 
+ * @author Gonzalo Diez
+ * 
+ */
+
 public class VistaSecundaria extends VistaAbstracta {
 
 	AbstractPanel parent;

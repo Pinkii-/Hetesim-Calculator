@@ -24,7 +24,11 @@ import javax.swing.text.DocumentFilter;
 
 import Presentacion.VistaPrincipal.Panels;
 
-
+/**
+ * 
+ * @author Gonzalo Diez
+ * 
+ */
 
 public class PanelNewPath extends AbstractPanel { //Abstract
 //	public PanelNewPath() {

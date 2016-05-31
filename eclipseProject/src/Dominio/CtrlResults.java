@@ -37,7 +37,14 @@ public class CtrlResults {
 			return null;
 		}
 	}
-
+/*
+	private boolean existsResultWithID(String idResult){
+		
+		for (Result r: results.values()) {
+			if (r.getIdResult() == idResult) return true;
+		}
+	}
+	*/
 	public void modifyResult(String resultId, int line, Float newHeteSimVal){
 		if (results.containsKey(resultId)) {
 			results.get(resultId).modifLine(line, newHeteSimVal);
