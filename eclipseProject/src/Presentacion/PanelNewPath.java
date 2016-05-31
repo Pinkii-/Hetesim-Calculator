@@ -1,10 +1,8 @@
 package Presentacion;
 
-import java.awt.AWTException;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridLayout;
-import java.awt.Robot;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -19,8 +17,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.event.CaretEvent;
-import javax.swing.event.CaretListener;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
@@ -34,9 +30,9 @@ public class PanelNewPath extends AbstractPanel { //Abstract
 //	public PanelNewPath() {
 //	}
 
-	private JTextField textFieldName;
-	private JTextField textFieldDescription;
-	private JTextField textField;
+	JTextField textFieldName;
+	JTextField textFieldDescription;
+	JTextField textField;
 	
 	JButton buttonConf;
 	JButton buttonAuthor;
@@ -45,9 +41,12 @@ public class PanelNewPath extends AbstractPanel { //Abstract
 	JButton btnSave;
 	JButton btnCancel;
 	
-	boolean finished;
+	JLabel tittleLabel;
 	
-	PanelNewPath(VistaAbstracta vp) {
+	boolean finished;
+	boolean editing = false;
+	
+	public PanelNewPath(VistaAbstracta vp) {
 		super(vp);
 	}
 	
@@ -61,7 +60,7 @@ public class PanelNewPath extends AbstractPanel { //Abstract
 		Component verticalStrut = Box.createVerticalStrut(20);
 		add(verticalStrut);
 		
-		JLabel tittleLabel = new JLabel("New Path");
+		tittleLabel = new JLabel("New Path");
 		tittleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		tittleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		add(tittleLabel);
@@ -299,29 +298,52 @@ public class PanelNewPath extends AbstractPanel { //Abstract
 		
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				boolean hasName = (textFieldName.getText().length()>0);
-				boolean hasDes = (textFieldDescription.getText().length()>0);
-				boolean goodPath = isGoodPath() && textField.getText().length() >= 2;
-				String name = "The path needs a Name\n";
-				String des = "The path needs a Description\n";
-				String cont = "The path needs to be at least of leght 2 and good formated\n";
-				if (hasName && hasDes && goodPath){
-					cd.getCtrlPaths().addPath(textField.getText(), textFieldName.getText(), textFieldDescription.getText());
-					VistaDialog.setDialog("New Path", "The path was created correctly", null, VistaDialog.DialogType.INFORMATION_MESSAGE);
-					finished = true;
-					try {
-						((VistaPrincipal)vp).changePanel(Panels.LoadPaths);
+				if (!editing) {
+					boolean hasName = (textFieldName.getText().length()>0);
+					boolean hasDes = (textFieldDescription.getText().length()>0);
+					boolean goodPath = isGoodPath() && textField.getText().length() >= 2;
+					String name = "The path needs a Name\n";
+					String des = "The path needs a Description\n";
+					String cont = "The path needs to be at least of leght 2 and good formated\n";
+					if (hasName && hasDes && goodPath){
+						cd.getCtrlPaths().addPath(textField.getText(), textFieldName.getText(), textFieldDescription.getText());
+						VistaDialog.setDialog("New Path", "The path was created correctly", null, VistaDialog.DialogType.INFORMATION_MESSAGE);
+						finished = true;
+						try {
+							((VistaPrincipal)vp).changePanel(Panels.LoadPaths);
+						}
+						catch(Exception ex) {
+							vp.dispose();
+						}
 					}
-					catch(Exception ex) {
-						vp.dispose();
+					else {
+						String response = "We have the next errors:\n";
+						if (!hasName) response += name;
+						if (!hasDes) response += des;
+						if (!goodPath) response += cont;
+						VistaDialog.setDialog("New Path", response, null, VistaDialog.DialogType.ERROR_MESSAGE);
 					}
 				}
 				else {
-					String response = "We have the next errors:\n";
-					if (!hasName) response += name;
-					if (!hasDes) response += des;
-					if (!goodPath) response += cont;
-					VistaDialog.setDialog("New Path", response, null, VistaDialog.DialogType.ERROR_MESSAGE);
+					boolean goodPath = isGoodPath() && textField.getText().length() >= 2;
+					String cont = "The path needs to be at least of leght 2 and good formated\n";
+					if (goodPath){
+						cd.getCtrlPaths().modifyPath(textFieldName.getText(),textField.getText());
+						VistaDialog.setDialog("Edit Path", "The path was modified correctly", null, VistaDialog.DialogType.INFORMATION_MESSAGE);
+						finished = true;
+						try {
+							((VistaPrincipal)vp).changePanel(Panels.LoadPaths);
+						}
+						catch(Exception ex) {
+							((VistaPrincipal)((VistaSecundaria)vp).parent.vp).changePanel(Panels.LoadPaths);
+							vp.dispose();
+						}
+					}
+					else {
+						String response = "We have the next errors:\n";
+						if (!goodPath) response += cont;
+						VistaDialog.setDialog("Edit Path", response, null, VistaDialog.DialogType.ERROR_MESSAGE);
+					}
 				}
 			}
 		});

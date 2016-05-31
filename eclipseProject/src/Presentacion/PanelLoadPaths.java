@@ -111,6 +111,7 @@ public class PanelLoadPaths extends AbstractPanel{
 				else { System.out.println("Selecciona un resultado");}
 			}
 		});
+		PanelLoadPaths aux = this;
 		editar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				if (pathsList.indexSelected()) {
@@ -120,6 +121,20 @@ public class PanelLoadPaths extends AbstractPanel{
 					name = formattedPath.get(0);
 					desc = formattedPath.get(1);
 					content = formattedPath.get(2);
+					
+					aux.addVista(PanelNewPath.class, true);
+					
+					PanelNewPath pnp = (PanelNewPath) (aux.childs.get(0).getContentPane().getComponent(0));
+					pnp.init();
+					pnp.textFieldName.setText(name);
+					pnp.textFieldName.setEnabled(false);
+					pnp.textFieldDescription.setText(desc);
+					pnp.textFieldDescription.setEnabled(false);
+					pnp.textField.setText(content);
+					pnp.tittleLabel.setText("Edit Path");
+					pnp.editing = true;
+					pnp.enablePathButtons();
+					
 					
 					System.out.println("hola");
 				}
@@ -142,9 +157,7 @@ public class PanelLoadPaths extends AbstractPanel{
 	@Override
 	int closeIt() {
 		// TODO Auto-generated method stub
-		String[] buttons = {"Salir", "Cancelar"};
-		int result = VistaDialog.setDialog("Titulo", "¿Estas seguro que quieres salir?\n ", buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
-		return result;
+		return 0;
 	}
 
 	@Override
