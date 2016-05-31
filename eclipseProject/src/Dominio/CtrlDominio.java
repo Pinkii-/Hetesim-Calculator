@@ -4,6 +4,7 @@
 
 package Dominio;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -68,18 +69,19 @@ public class CtrlDominio {
 	 * Overwrites the graph loaded in Domain with the graph stored in the file path <b>filePath</b>.
 	 * Can only be used after giving CtrlDominio a valid file path via <b>importGraph</b>.
 	 * @param idGraph The id of the graph to be loaded.
+	 * @throws IOException 
+	 * @throws FileNotFoundException 
+	 * @throws ClassNotFoundException 
 	 * @see #importGraph(String)
 	 */
-	public void loadGraph(String idGraph) {
+	public void loadGraph(String idGraph) throws ClassNotFoundException, FileNotFoundException, IOException {
 		Pair<Graph, ArrayList<Result>> auxPair;
-		try {
+		
 			auxPair = ctrlData.loadgraphAndResults(idGraph);
 			ctrlGraph = new CtrlGraph(auxPair.first);
 			ctrlSearch.setGraph(ctrlGraph.getGraph());
 			ctrlResults = new CtrlResults(auxPair.second);
-		} catch (ClassNotFoundException | IOException e) {
-			e.printStackTrace();
-		}
+		
 
 	}
 

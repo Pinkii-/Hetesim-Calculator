@@ -183,7 +183,7 @@ public class VistaPrincipal extends VistaAbstracta{
 						catch (NullPointerException exception) {}
 					}
 					catch (Exception e) {
-						VistaDialog.setDialog("", "No se ha detectado que sea un grafo.", new String[]{"Continue", "2", "3"}, VistaDialog.DialogType.ERROR_MESSAGE);
+						VistaDialog.setDialog("", "No se ha detectado que sea un grafo.", new String[]{"Continue"}, VistaDialog.DialogType.ERROR_MESSAGE);
 					}
 				}
 	//				VistaDialog.setDialog("Titulo", "¿Estas seguro que quieres salir?\n (Se perderan todo los cambios no guardados)", buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
@@ -193,15 +193,24 @@ public class VistaPrincipal extends VistaAbstracta{
 		menuitemGraphLoad.addActionListener
 		(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JFileChooser f  = new JFileChooser();
-				f.setCurrentDirectory(new File(System.getProperty("user.dir")));
-//				f.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-				f.showOpenDialog(f);
-				try {
-					String s = f.getSelectedFile().getAbsolutePath();
-					cd.loadGraph(s);
+				int response = VistaDialog.setDialog("Hi!", "Are you sure that you want to load a new graph?\n"
+						+ "You will lose all the change of the old graph if you didnt save it to file", new String[]{"Continue", "Cancel"}, VistaDialog.DialogType.QUESTION_MESSAGE);
+				if (0 == response) {
+					JFileChooser f  = new JFileChooser();
+					f.setCurrentDirectory(new File(System.getProperty("user.dir")));
+					f.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+					f.showOpenDialog(f);
+					try {
+						String s = f.getSelectedFile().getAbsolutePath();
+						String[] parts = s.split("/");
+						cd.loadGraph(parts[parts.length-1]);
+						VistaDialog.setDialog("Loading Graph", "            Grafo importado correctamente.\n Es posible que la accion actual se tenga que reiniciar. \n Si te pregunta, se recomienda aceptar, ya que puede llevar a estados incoherentes del programa", new String[] {"Continue"}, VistaDialog.DialogType.INFORMATION_MESSAGE);
+						if (currentPanel != null) p.changePanel(currentPanel);
+					}
+					catch (Exception exception) {
+						VistaDialog.setDialog("Loading Graph", "There is no need to be upset. There is no graph at that directory", new String[]{"Continue"}, VistaDialog.DialogType.ERROR_MESSAGE);
+					}
 				}
-				catch (NullPointerException exception) {}
 			}
 		});
 		
