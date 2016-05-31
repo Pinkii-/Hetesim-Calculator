@@ -9,12 +9,8 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 
 import Dominio.CtrlDominio;
-
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 
 
 /**
