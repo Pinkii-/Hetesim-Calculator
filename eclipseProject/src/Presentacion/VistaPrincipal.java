@@ -2,8 +2,11 @@ package Presentacion;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -224,6 +227,16 @@ public class VistaPrincipal extends VistaAbstracta{
 		
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		
+		try {
+			String path = System.getProperty("user.dir");
+			BufferedImage myPicture;
+			myPicture = ImageIO.read(new File(path+"/src/Hetesim.png"));
+			JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+			content.add(picLabel);
+		} catch (IOException e) {
+			System.out.println("Couldn't load Hetesim image");
+		}
 		
 		//set the first contentPanel
 		JPanel contentPane = (JPanel) this.getContentPane();
