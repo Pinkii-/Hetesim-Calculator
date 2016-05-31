@@ -50,39 +50,15 @@ public class PanelLoadResult extends AbstractPanel{
 	private JLabel title;
 	ArrayList<FormattedResult> formattedResults;
 	
+	/**
+	 * Creadora por defecto del PanelLoadResults
+	 * @param vp
+	 */
 	public PanelLoadResult (VistaPrincipal vp)   {
 		super(vp);
 		this.vp = vp;
 	}
-	
-	
-	private Result generateResult(int j)  {
-		Graph g = new Graph();
-		ArrayList<Pair<Integer,Float>> m = new ArrayList<>();
-		for (int i = 0; i < 10; ++i){
-			m.add(new Pair<Integer,Float>(i,i*0.1f));
-		}
-		Path p = new Path();
-		p.setContingut("APA");
-		p.setNom("nomPath"+Integer.toString(j));
-		p.setDescripcio("APA");
-		Node n1 = new Node();
-			n1.initialize(Node.Type.Autor, 25, "NodeOrigin");
-		Float f = 0.1f;
-		Result rs;
-		rs = new Result(g,f,f,p,n1,n1);
-		return rs;
-	}
-	
-	private void generateResults() {
-		for (int i = 0; i < 5; i++) {
-			Result r = generateResult(i);
-			cr.addResult(r.getIdResult(),r);
-		}
-		
-	}
-	
-	
+
 	
 	private void generateResultsPanel(){
 		resultsPanel.setLayout(new BoxLayout(resultsPanel, BoxLayout.PAGE_AXIS));
@@ -194,9 +170,7 @@ public class PanelLoadResult extends AbstractPanel{
 	
 	@Override
 	public int closeIt() {
-		String[] buttons = {"Salir", "Cancelar"};
-		int result = VistaDialog.setDialog("Titulo", "¿Estas seguro que quieres salir?\n ", buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
-		return result;
+		return 0;
 	}
 	@Override
 	public void setEnabledEverything(Boolean b) {

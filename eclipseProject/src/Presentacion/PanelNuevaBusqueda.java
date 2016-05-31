@@ -81,7 +81,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 	 * <b>node1Select</b>: Dropdown list to pick the first node. Only the nodes that belong to the selected NodeType in node1SelectType will be displayed <p>
 	 * <b>node2Select</b>: Dropdown list to pick the last node. Only the nodes that belong to the selected NodeType in node2SelectType will be displayed
 	 */
-	public void initComponents() {
+	private void initComponents() {
 		
 		sl = new SpringLayout();
 		setLayout(sl);
