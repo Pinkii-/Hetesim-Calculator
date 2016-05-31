@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-import gnu.trove.map.hash.THashMap;
 
 /**
  * 
@@ -14,7 +13,7 @@ import gnu.trove.map.hash.THashMap;
  */
 
 @SuppressWarnings("serial")
-public class SparseVector extends THashMap<Integer,Float> {
+public class SparseVector extends HashMap<Integer,Float> {
 	
 //	float total = 0;
 	
