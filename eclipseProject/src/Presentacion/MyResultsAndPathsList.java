@@ -115,7 +115,7 @@ public class MyResultsAndPathsList extends JList<String> implements ListSelectio
 	public ArrayList<ArrayList<String>> getFormattedResult() {
 		if (dlm.getSize() > 0)return results.get(dlm.getElementAt(selectedIndex));
 		else{
-			System.out.println("No Results");
+			//System.out.println("No Results");
 			return null;
 		}
 	}
@@ -123,7 +123,7 @@ public class MyResultsAndPathsList extends JList<String> implements ListSelectio
 	public ArrayList<String> getFormattedPath() {
 		if (dlm.getSize() > 0) return paths.get(dlm.getElementAt(selectedIndex));
 		else {
-			System.out.println("No paths");
+			//System.out.println("No paths");
 			return null;
 		}
 		

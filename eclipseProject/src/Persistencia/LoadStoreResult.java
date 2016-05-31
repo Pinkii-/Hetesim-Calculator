@@ -52,8 +52,8 @@ public class LoadStoreResult implements Serializable{
 			ObjectOutput.close();
 		}
 		catch(FileNotFoundException fnfe){
-			System.out.println("Path absoluto fichero:"+fileDirectory.resolve(r.getIdResult()+".Result").toString());
-			System.out.println("No se puede guardar el Resultado");
+			//System.out.println("Path absoluto fichero:"+fileDirectory.resolve(r.getIdResult()+".Result").toString());
+			//System.out.println("No se puede guardar el Resultado");
 		}
 		
 	}
@@ -69,8 +69,8 @@ public class LoadStoreResult implements Serializable{
 		
 		catch(FileNotFoundException fnfe){
 			if (Files.notExists(fileDirectory.resolve(idResult+".Result"))) {
-				System.out.println("Path absoluto fichero: "+ fileDirectory.resolve(idResult+".Result").toString());
-				System.out.println("No se puede cargar el Resultado");
+				//System.out.println("Path absoluto fichero: "+ fileDirectory.resolve(idResult+".Result").toString());
+				//System.out.println("No se puede cargar el Resultado");
 			}
 			return null;
 		}
@@ -95,7 +95,7 @@ public class LoadStoreResult implements Serializable{
 	            }
 	            return Results;
 	        } catch (IOException ex) {
-	        	System.out.println("No se puede iterar por los Results");
+	        	//System.out.println("No se puede iterar por los Results");
 	        	return null;
 	        }
 	}

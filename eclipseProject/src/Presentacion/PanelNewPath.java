@@ -391,7 +391,7 @@ public class PanelNewPath extends AbstractPanel { //Abstract
 	public void enablePathButtons() {
 		if (textField.getText().length() > 0) {
 			char s = textField.getText().charAt(textField.getText().length()-1);
-			System.out.println(s);
+			//System.out.println(s);
 			switch (s) {
 				case 'A':
 				case 'T':

@@ -118,10 +118,10 @@ public class PanelSelectNode extends AbstractPanel{
 				new ActionListener(){
 					public void actionPerformed(ActionEvent e){
 						ArrayList<String> node = nodesInfo.get(indexOfNodes.get(nodeSelectionList.getSelectedIndex()));
-						System.out.println(indexOfNodes.get(nodeSelectionList.getSelectedIndex()) + " " + nodeSelectionList.getSelectedIndex());
+						//System.out.println(indexOfNodes.get(nodeSelectionList.getSelectedIndex()) + " " + nodeSelectionList.getSelectedIndex());
 						//System.out.println(node);
-						System.out.println(cd.getCtrlGraph().getNodeFormatted(indexOfNodes.get(nodeSelectionList.getSelectedIndex()), "Paper"));
-						System.out.println(node);
+						//System.out.println(cd.getCtrlGraph().getNodeFormatted(indexOfNodes.get(nodeSelectionList.getSelectedIndex()), "Paper"));
+						//System.out.println(node);
 						nodeNeeder.setNode(node);
 						close();
 					}

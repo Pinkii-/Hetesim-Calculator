@@ -121,7 +121,9 @@ public class PanelLoadResult extends AbstractPanel{
 					vp.panelMostrarResultado.setShowedResult(loadedResults.getFormattedResult());
 					vp.changePanel(Panels.PanelMostrarResultado);
 				}
-				else { System.out.println("Selecciona un resultado");}
+				else { 
+					//System.out.println("Selecciona un resultado");
+				}
 			}
 		});
 		/*

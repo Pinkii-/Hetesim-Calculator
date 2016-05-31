@@ -82,7 +82,7 @@ public class VistaPrincipal extends VistaAbstracta{
 		this.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				System.out.println("windowClosing");
+				//System.out.println("windowClosing");
 				changePanel(Panels.Exit);
 			}
 		});
@@ -146,7 +146,7 @@ public class VistaPrincipal extends VistaAbstracta{
 						+ "You will lose all the change of the old graph if you didnt save it to file", new String[]{"Continue", "Cancel"}, VistaDialog.DialogType.QUESTION_MESSAGE);
 				if (0 == response) {
 					try {
-						System.out.println(System.getProperty("user.dir"));
+						//System.out.println(System.getProperty("user.dir"));
 						cd.importGraph(System.getProperty("user.dir")+"/DBLP_four_area/");
 						VistaDialog.setDialog("",  "            Grafo importado correctamente.\n Es posible que la accion actual se tenga que reiniciar. \n Si te pregunta, se recomienda aceptar, ya que puede llevar a estados incoherentes del programa", new String[] {"Continue"}, VistaDialog.DialogType.INFORMATION_MESSAGE);
 						if (currentPanel != null) p.changePanel(currentPanel);
@@ -248,7 +248,7 @@ public class VistaPrincipal extends VistaAbstracta{
 			JLabel picLabel = new JLabel(new ImageIcon(myPicture));
 			content.add(picLabel);
 		} catch (IOException e) {
-			System.out.println("Couldn't load Hetesim image");
+			//System.out.println("Couldn't load Hetesim image");
 		}
 		
 		//set the first contentPanel
@@ -284,7 +284,7 @@ public class VistaPrincipal extends VistaAbstracta{
 	// Stuff
 	
 	void changePanel(Panels p) {
-		System.out.println("Cambiando a panel " + p.toString());
+		//System.out.println("Cambiando a panel " + p.toString());
 		nextPanel = p;
 		try {
 			AbstractPanel currentPanel = (AbstractPanel) this.getContentPane().getComponent(0);
@@ -346,7 +346,7 @@ public class VistaPrincipal extends VistaAbstracta{
 	}
 	
 	void setEnabledPrincipal(Boolean b) {
-		System.out.println("lalala");
+		//System.out.println("lalala");
 //		menuFile.setEnabled(b);
 //		menuEdit.setEnabled(b);
 	}

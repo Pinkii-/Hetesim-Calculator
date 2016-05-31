@@ -171,7 +171,7 @@ public class PanelMostrarResultado extends AbstractPanel{
 		String[] buttons = {"Yes", "No xfabo"};
 		int result = VistaDialog.setDialog("Store", "¿Modifications will be saved. Are you sure?\n ", buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
 		if (result == 0) {
-			System.out.println("Si");
+			//System.out.println("Si");
 			rst.saveChanges();
 			cd.saveResults();
 			String[] ok = {"Ok"};

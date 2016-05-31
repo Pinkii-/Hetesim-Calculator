@@ -250,7 +250,7 @@ public class PanelModificaGraph extends AbstractPanel {
 		textField.setEnabled(b);
 		
 		
-		System.out.println("testestes");
+		//System.out.println("testestes");
 		try { // Solo para el test. Luego lo tengo que quitar cuando ya no sea una vista abstracta y sea una vista principal
 			VistaPrincipal v = (VistaPrincipal) vp;
 			v.setEnabledPrincipal(b);

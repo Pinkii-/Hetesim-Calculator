@@ -23,7 +23,7 @@ public class VistaSecundaria extends VistaAbstracta {
 		this.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				System.out.println("windowClosing");
+				//System.out.println("windowClosing");
 				AbstractPanel currentPanel = (AbstractPanel) vs.getContentPane().getComponent(0);
 				if (0 == currentPanel.close()) continueAction();
 			}
@@ -32,7 +32,7 @@ public class VistaSecundaria extends VistaAbstracta {
 	
 	@Override
 	void continueAction() {
-		System.out.println("continueAction");
+		//System.out.println("continueAction");
 		parent.setEnabledEverything(true);
 		parent.childs.remove(this);
 		this.removeAll();
