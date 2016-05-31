@@ -13,7 +13,7 @@ import java.util.Collections;
 
 public class HeteSanic {
 
-	class WhatMatrix {
+	private class WhatMatrix {
 		boolean transposeMatrix;
 		PathTypes pathType;
 		WhatMatrix(boolean trans, PathTypes t) {
@@ -53,6 +53,9 @@ public class HeteSanic {
 		Term2Mid, Paper2MidTerm
 	}
 	
+	/**
+	 * Creadora
+	 */
 	public HeteSanic() {
 		graph = null;
 		paperAuthor = paperConf = paperTerm = authorMid = confMid = termMid = false;
@@ -99,6 +102,10 @@ public class HeteSanic {
 	
 	// POST ESPECIALIZATION
 	
+	/**
+	 * Setting the new graph to use it to calcule the hetesims results
+	 * @param g new graph
+	 */
 	public void setGraph(Graph g) {
 		graph = g;
 		paperAuthor = paperConf = paperTerm = authorMid = confMid = termMid = false;
@@ -107,6 +114,12 @@ public class HeteSanic {
 	}
 	
 	// pre: no puede haber un paper que no este conectado a un autor, una conferencia y un tema como minimo
+	/**
+	 * 
+	 * @param p Path to be used to calcule the hetesim
+	 * @return Matrix with the result
+	 * @throws PathException
+	 */
 	public Matrix getHeteSim(Path p) throws PathException {
 		long t = System.currentTimeMillis();
 		ArrayList<Node.Type> left, right;
@@ -128,6 +141,13 @@ public class HeteSanic {
 	}
 	
 	// pre: no puede haber un paper que no este conectado a un autor, una conferencia y un tema como minimo
+	/**
+	 * 
+	 * @param p Path to be used to calcule the hetesim
+	 * @param n the node that is the start of the path
+	 * @return An array of pairs with the index of the node of type (end of path) and his hetesim result.
+	 * @throws PathException
+	 */
 	public ArrayList<Pair<Integer,Float>> getHeteSim(Path p, Node n) throws PathException {
 		ArrayList<Node.Type> left, right;
 		Pair<ArrayList<Node.Type>, ArrayList<Node.Type>> aux = p.getPath();
@@ -148,6 +168,14 @@ public class HeteSanic {
 	}
 	
 	// pre: no puede haber un paper que no este conectado a un autor, una conferencia y un tema como minimo
+	/**
+	 * 
+	 * @param p Path to be used to calcule the hetesim
+	 * @param n1 the node that is the start of the path
+	 * @param n2 the node that is the end of the path
+	 * @return the hetesim result of (n1,n2) with the path p
+	 * @throws PathException
+	 */
 	public Float getHeteSim(Path p, Node n1, Node n2) throws PathException {		
 		ArrayList<Node.Type> left, right;
 		Pair<ArrayList<Node.Type>, ArrayList<Node.Type>> aux = p.getPath();
