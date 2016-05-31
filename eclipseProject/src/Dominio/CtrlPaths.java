@@ -163,6 +163,7 @@ public class CtrlPaths {
 	 * 	 <li>Path's name</li>
 	 * 	 <li>Path's description</li>
 	 * 	 <li>Path's Content</li>
+	 * </ol>
 	 */
 	public ArrayList<ArrayList<String>> getFormattedPaths(){
 		ArrayList<ArrayList<String>> ret = new ArrayList<ArrayList<String>>();
