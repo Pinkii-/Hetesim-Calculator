@@ -104,17 +104,23 @@ class MyTableModel extends AbstractTableModel implements TableModelListener{
         System.out.println(Integer.toString(row)+" "+Integer.toString(column));
         TableModel model = (TableModel)e.getSource();
         Float data = (Float) model.getValueAt(row, column);
-       
-        nChange = row;
         
-        result.setNewValue(row, data);
-    	Float oldValue = result.getOldValue(row);
-    	Float newValue = result.getNewValue(row);
-    	String ch = dlm.getElementAt(row)+" [Old value: "+ oldValue +", New value: "+ newValue +"]";
-    	
-    	dlm.set(row, ch);
-    	
-        System.out.println("Change");
+        if (data >= 0 && data <= 1) {
+	        nChange = row;
+	        
+	        result.setNewValue(row, data);
+	    	Float oldValue = result.getOldValue(row);
+	    	Float newValue = result.getNewValue(row);
+	    	String ch = row+")"+" [Old value: "+ oldValue +", New value: "+ newValue +"]";
+	    	
+	    	dlm.set(row, ch);
+	    	
+	        System.out.println("Change");
+        }
+        else {
+        	String[] ok = {"Ok"};
+			VistaDialog.setDialog("Change", "Only values between 0 and 1 are accepted\n ", ok, VistaDialog.DialogType.ERROR_MESSAGE);
+        }
 		
 	}
 
