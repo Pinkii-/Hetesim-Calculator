@@ -38,7 +38,6 @@ public class FormattedResult extends ArrayList<ArrayList<String>> {
 	public FormattedResult(ArrayList<ArrayList<String>> res, CtrlResults cr) {
 		
 		this.addAll(res);
-		System.out.println(get(0));
 		this.cr = cr;
 		resultType = get(resultTypePosition.first).get(resultTypePosition.second);
 		searchPath = get(searchPathPosition.first).get(searchPathPosition.second);

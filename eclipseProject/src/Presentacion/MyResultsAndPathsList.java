@@ -84,8 +84,8 @@ public class MyResultsAndPathsList extends JList<String> implements ListSelectio
 			//cambiar al nombre, que se mostrara.
 			ArrayList<ArrayList<String>> auxs = cr.getFormatted(resultIds.get(i));
 			FormattedResult aux = new FormattedResult(auxs,cr);
-			dlm.addElement(aux.getAllInfo());
-			ret.put(aux.getAllInfo(), aux);
+			dlm.addElement(aux.getIdResult());
+			ret.put(aux.getIdResult(), aux);
 		}
 		return ret;
 	}
@@ -134,6 +134,8 @@ public class MyResultsAndPathsList extends JList<String> implements ListSelectio
 		
 		searchOriginNode = "";
 		searchDestinationNode = "";
+		FormattedResult aux = results.get(dlm.getElementAt(selectedIndex));
+		String aux2 = aux.getResultType();
 		searchType = results.get(dlm.getElementAt(selectedIndex)).getResultType();
 		searchPath = results.get(dlm.getElementAt(selectedIndex)).getSearchPath();
 		//threshold = results.get(selectedIndex).get
