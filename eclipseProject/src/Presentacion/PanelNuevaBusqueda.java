@@ -58,6 +58,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 	private SpringLayout sl;
 	
 	private VistaPrincipal vp;
+	private ArrayList<String> pathContents;
 	private boolean hasResult = false;
 	//private String idResult = "";
 	private static final long serialVersionUID = 1L;
@@ -89,12 +90,14 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		
 		sl = new SpringLayout();
 		setLayout(sl);
+		pathContents = new ArrayList<String>();
 		
 		//Path
 		ArrayList<ArrayList<String>> pathsTemp = cd.getCtrlPaths().getFormattedPaths();
 		ArrayList<String> paths = new ArrayList<String>();
 		for (int i = 0;i < pathsTemp.size(); ++i){
-			paths.add(pathsTemp.get(i).get(2));
+			paths.add(pathsTemp.get(i).get(0));
+			pathContents.add(pathsTemp.get(i).get(2));
 		}
 		pathSelect = new JComboBox<String>(arrayListToArray(paths));
 		pathSelect.setPreferredSize(new Dimension(100,20));
@@ -207,7 +210,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		//Edit result button
 		Icon icon3 = null;
 		try {
-			BufferedImage bi = ImageIO.read(new File(System.getProperty("user.dir")+"/resources/editIcon.png"));
+			BufferedImage bi = ImageIO.read(new File(System.getProperty("user.dir")+"/resources/editIcon.jpg"));
 			icon3 = new ImageIcon(bi);
 		} catch (IOException e) {
 		}
@@ -367,7 +370,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		
 		if (e.getSource().equals(calcHete)){
 			
-			String path = pathSelect.getSelectedItem().toString();
+			String path = pathContents.get(pathSelect.getSelectedIndex());
 			int n1 = -1, n2 = -1;
 			if (!node1Select.getEditor().getItem().toString().equals(" - Select all -")) n1 = node1Select.getSelectedNodeIndex();
 			if (!node2Select.getEditor().getItem().toString().equals(" - Select all -") && node2Select.isEnabled()) n2 = node2Select.getSelectedNodeIndex();
@@ -520,7 +523,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		else if (e.getSource().equals(pathSelect)){
 			calcHete.setEnabled(true);
 			checkbox.setEnabled(true);
-			String text = pathSelect.getItemAt(pathSelect.getSelectedIndex()).toString();
+			String text = pathContents.get(pathSelect.getSelectedIndex()).toString();
 			boolean n1 = false, n2 = false;
 			switch (text.charAt(0)){
 				case 'P':
