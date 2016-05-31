@@ -18,6 +18,10 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
+/**
+ * @author Victor Alcazar Lopez
+ *
+ */
 public class PanelSelectNode extends AbstractPanel{
 
 	DefaultListModel<String> relationsListModel = new DefaultListModel<String>();
@@ -40,6 +44,15 @@ public class PanelSelectNode extends AbstractPanel{
 		JButton btnCancel = new JButton("Cancel");
 		springLayout.putConstraint(SpringLayout.SOUTH, btnCancel, -10, SpringLayout.SOUTH, this);
 		springLayout.putConstraint(SpringLayout.EAST, btnCancel, -10, SpringLayout.EAST, this);
+
+		btnCancel.addActionListener(
+				new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent arg0) {
+						close();
+					}
+				});
+
 		this.add(btnCancel);
 
 		JButton btnGetNode = new JButton("Get node");

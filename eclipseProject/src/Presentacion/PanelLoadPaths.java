@@ -115,8 +115,7 @@ public class PanelLoadPaths extends AbstractPanel{
 		editar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				if (pathsList.indexSelected()) {
-					//int index = pathsList.getSelectedIndex();
-					//Llamar a panelEditPath
+					//vp.panelNewPath
 					System.out.println("hola");
 				}
 				else { System.out.println("Selecciona un resultado");
