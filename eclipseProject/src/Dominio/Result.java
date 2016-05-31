@@ -65,9 +65,9 @@ public class Result implements Cloneable, Serializable {
 		}
 		
 		resultList = new ArrayList<NodePair>();
-		for (Integer i = 0; i < resultHete.getNRows() && resultList.size() < 50; ++i){
+		for (Integer i = 0; i < resultHete.getNRows(); ++i){
 			for (Integer j : resultHete.getRow(i).keySet()) {
-				if (resultHete.getValue(i,j) != 0.f && resultList.size() < 50){
+				if (resultHete.getValue(i,j) != 0.f){
 					Node n1 = g.getNode(i, p.getContingut().get(0)); //Get first node
 					Node n2 = g.getNode(j, p.getContingut().get(p.getLength()-1)); //Get second node
 					Float hetesimVal = resultHete.getValue(i,j); //Get hetesim value
@@ -112,7 +112,7 @@ public class Result implements Cloneable, Serializable {
 		}
 		
 		resultList = new ArrayList<NodePair>();
-		for(Integer i = 0; i < resultHete.size() && resultList.size() < 50; ++i){
+		for(Integer i = 0; i < resultHete.size(); ++i){
 			Node n2 = g.getNode(resultHete.get(i).first, p.getContingut().get(p.getLength()-1)); //Get second node (we already have the first)
 			float hetesimVal = resultHete.get(i).second; //Get hetesim value
 			resultList.add(new NodePair(n1,n2,hetesimVal)); //Add NodePair to result list
@@ -209,7 +209,7 @@ public class Result implements Cloneable, Serializable {
 	
 	//Get the result list
 	public ArrayList<NodePair> getResult(){ 
-		ArrayList<NodePair> retResult = resultList;
+		ArrayList<NodePair> retResult = new ArrayList<NodePair>();
 		int i = 0;
 		while (i < resultList.size() && resultList.get(i).getHetesim() > threshold && retResult.size() < 50){
 		    retResult.add(resultList.get(i));

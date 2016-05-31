@@ -27,17 +27,20 @@ public class CtrlGraph {
 
 	public void setGraph(Graph graph) {
 		isModified = true;
+		graph.id = (int) System.currentTimeMillis();
 		this.graph = graph;
 	}
 
 	public int addNode(String nodeType, String nodeName) {
 		isModified = true;
-		return graph.addNode(Utils.getNodeType(nodeType), nodeName);
+		graph.id = (int) System.currentTimeMillis();
+		return graph.addNode(Node.Type.valueOf(nodeType), nodeName);
 	}
 
 	public void modifyNode(Integer nodeIndex, String nodeType, String newName) {
 		isModified = true;
-		Node n = graph.getNode(nodeIndex, Utils.getNodeType(nodeType));
+		graph.id = (int) System.currentTimeMillis();
+		Node n = graph.getNode(nodeIndex, Node.Type.valueOf(nodeType));
 		Node.Label label = Utils.getNodeLabel(0);
 		n.setLabel(label);
 		n.setNom(newName);
@@ -45,30 +48,32 @@ public class CtrlGraph {
 
 	public void eraseNode(Integer nodeIndex, String nodeType) {
 		isModified = true;
-		Node n = graph.getNode(nodeIndex, Utils.getNodeType(nodeType));
+		graph.id = (int) System.currentTimeMillis();
+		Node n = graph.getNode(nodeIndex, Node.Type.valueOf(nodeType));
 		graph.deleteNode(n);
 	}
 
 	// PRE: node1 MUST be a paper
-	public void addNodeRelation(Integer node1Index, Integer node2Index, String node2Type) {
+	public void addNodeRelation(Integer node1IndexPaper, Integer node2Index, String node2Type) {
 		isModified = true;
+		graph.id = (int) System.currentTimeMillis();
 		Node n1 = null;
 		Node n2 = null;
 		try {
-			n1 = graph.getNode(node1Index, Node.Type.Paper);
+			n1 = graph.getNode(node1IndexPaper, Node.Type.Paper);
 		} catch (Exception e) {
 			System.out.println("Node 1 does not exist");
 			return;
 		}
 		try {
-			n2 = graph.getNode(node2Index, Utils.getNodeType(node2Type));
+			n2 = graph.getNode(node2Index, Node.Type.valueOf(node2Type));
 		} catch (Exception e) {
 			System.out.println("Node 2 does not exist");
 			return;
 		}
 		try {
-			if (!graph.existsArc(n1, n2)) {
-				graph.setArc(node1Index, node2Index, Utils.getNodeType(node2Type));
+			if (!graph.existsArc(n2, n1)) {
+				graph.setArc(node1IndexPaper, node2Index, Node.Type.valueOf(node2Type));
 			} else
 				System.out.println("Relation already exists");
 		} catch (Exception e) {
@@ -77,7 +82,7 @@ public class CtrlGraph {
 	}
 	
 	public void printNodesOfType(String t){		
-		Utils.printNodesOfType(graph, Utils.getNodeType(t));
+		Utils.printNodesOfType(graph, Node.Type.valueOf(t));
 	}
 	
 	public void printGraf(){
@@ -87,8 +92,9 @@ public class CtrlGraph {
 	// PRE: node1 MUST be a paper
 	public void eraseNodeRelation(Integer node1IndexPaper, Integer node2Index, String node2Type) {
 		isModified = true;
-		Node n1 = graph.getNode(node1IndexPaper, Node.Type.Paper);
-		Node n2 = graph.getNode(node2Index, Utils.getNodeType(node2Type));
+		graph.id = (int) System.currentTimeMillis();
+		Node n1 = graph.getNode(node2Index, Node.Type.valueOf(node2Type));
+		Node n2 = graph.getNode(node1IndexPaper, Node.Type.Paper);
 		try {
 			if (graph.existsArc(n1, n2)) {
 				graph.deleteArc(n1, n2);
@@ -134,9 +140,8 @@ public class CtrlGraph {
 	private ArrayList<ArrayList<String>> formatMatrixNodes(Matrix m, Node.Type t){
 		ArrayList<ArrayList<String>> ret = new ArrayList<ArrayList<String>>();
 		for (int i = 0; i < m.getNRows(); ++i) {
-			ArrayList<String> col = new ArrayList<String>();
-			col.addAll(formatNode(i, graph.getNode(i, t))); 
-			ret.add(col);
+			Node n = graph.getNode(i, t);
+			if (n != null) ret.add(formatNode(i, n)); 
 		}
 		return ret;
 	}
@@ -145,9 +150,8 @@ public class CtrlGraph {
 		ArrayList<ArrayList<String>> ret = new ArrayList<ArrayList<String>>();
 		try{
 			for (int i = 0; i < m.getNCols(); ++i) {
-				ArrayList<String> col = new ArrayList<String>();
-				col.addAll(formatNode(i, graph.getNode(i, Node.Type.Paper))); 
-				ret.add(col);
+				Node n = graph.getNode(i, Node.Type.Paper);
+				if (n != null) ret.add(formatNode(i, n));
 			}
 		}catch(Exception e){
 			//If there isn't any papers in a given matrix, the program crashes

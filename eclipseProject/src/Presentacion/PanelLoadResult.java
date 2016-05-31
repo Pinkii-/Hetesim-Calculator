@@ -21,9 +21,10 @@ import Dominio.Graph;
 import Dominio.Node;
 import Dominio.Pair;
 import Dominio.Path;
-import Presentacion.FormattedResultsManager.FormattedResult;
+import Presentacion.FormattedResult;
 import Presentacion.VistaPrincipal.Panels;
 
+//origin and destination nodes (if exists)
 public class PanelLoadResult extends AbstractPanel{
 	/**
 	 * 
@@ -42,7 +43,6 @@ public class PanelLoadResult extends AbstractPanel{
 	private JButton show;
 	private JButton delete;
 	private JLabel title;
-	private FormattedResultsManager frm;
 	ArrayList<FormattedResult> formattedResults;
 	
 	public PanelLoadResult (VistaPrincipal vp)   {
@@ -58,9 +58,9 @@ public class PanelLoadResult extends AbstractPanel{
 			m.add(new Pair<Integer,Float>(i,i*0.1f));
 		}
 		Path p = new Path();
-		p.setContingut("AA");
-		p.setNom("AA"+Integer.toString(j));
-		p.setDescripcio("AA");
+		p.setContingut("APA");
+		p.setNom("nomPath"+Integer.toString(j));
+		p.setDescripcio("APA");
 		Node n1 = new Node();
 			n1.initialize(Node.Type.Autor, 25, "NodeOrigin");
 		Float f = 0.1f;
@@ -102,11 +102,10 @@ public class PanelLoadResult extends AbstractPanel{
 		actionsPanel.add(title);
 		title.setAlignmentX(CENTER_ALIGNMENT);
 		actionsPanel.add(resultResume);
-		//show.setAlignmentY(RIGHT_ALIGNMENT);
-		//actionsPanel.setAlignmentX(BOTTOM_ALIGNMENT);
 		actionsPanel.add(Box.createHorizontalGlue());
 		actionsPanel.add(show);
 		show.setAlignmentX(CENTER_ALIGNMENT);
+		delete.setAlignmentX(CENTER_ALIGNMENT);
 	}
 	
 	private void generateSearchAndActionsPanel() {
@@ -134,32 +133,31 @@ public class PanelLoadResult extends AbstractPanel{
 	}
 	
 	private void assignListeners() {
+		
 		show.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				if (loadedResults.indexSelected()) {
-					int index = loadedResults.getSelectedIndex();
-					vp.panelMostrarResultado.setShowedResult(formattedResults.get(index));
+					vp.panelMostrarResultado.setShowedResult(loadedResults.getFormattedResult());
 					vp.changePanel(Panels.PanelMostrarResultado);
-					System.out.println("hola");
 				}
-				else { System.out.println("Selecciona un resultado");
-					/*generar cosa o habilitar al seleccionar*/}
+				else { System.out.println("Selecciona un resultado");}
 			}
 		});
-		
+		/*
 		delete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				if (loadedResults.indexSelected()) {
-					
-					String[] buttons = {"Salir", "Cancelar"};
-					int result = VistaDialog.setDialog("Titulo", "¿Estas seguro que quieres borrar) \n", buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
-					
-					int index = loadedResults.getSelectedIndex();
-					frm.addToDelete(index);
-					loadedResults.remove(index);
+					String[] buttons = {"Si", "Cancelar"};
+					int result = VistaDialog.setDialog("Titulo", "¿Estas seguro que quieres borrar? \n", buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
+					if (result == 0) loadedResults.deleteResult();
+					if (loadedResults.getListSize() == 0)  {
+						delete.setEnabled(false);
+						show.setEnabled(false);
+					}
 				}
+				else System.out.println("Selecciona un resultado");
 			}
-		});
+		});*/
 	}
 	public void init() {
 		removeAll();
@@ -179,10 +177,8 @@ public class PanelLoadResult extends AbstractPanel{
 		delete = new JButton("Delete");
 		
 		cr = cd.getCtrlResults();
-		frm = new FormattedResultsManager(cd);
-		generateResults();
-		formattedResults = frm.getFormattedResults();
-		loadedResults = new MyResultsAndPathsList(resultResume,formattedResults);
+		//generateResults();
+		loadedResults = new MyResultsAndPathsList(resultResume,cr);
 		
 		BoxLayout bl = new BoxLayout(this,BoxLayout.LINE_AXIS);
 		setLayout(bl);
@@ -190,18 +186,11 @@ public class PanelLoadResult extends AbstractPanel{
 		assignListeners();
 		
 	}
-	private void deleteResults() {
-		frm.commitDeletions();
-	}
-	private void saveChanges() {
-		deleteResults();
-	}
 	
 	@Override
 	public int closeIt() {
-		saveChanges();
 		String[] buttons = {"Salir", "Cancelar"};
-		int result = VistaDialog.setDialog("Titulo", "¿Estas seguro que quieres salir?\n (No se va a perder nada, no has hecho nada, vete.)", buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
+		int result = VistaDialog.setDialog("Titulo", "¿Estas seguro que quieres salir?\n ", buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
 		return result;
 	}
 	@Override

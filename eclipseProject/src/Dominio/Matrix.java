@@ -5,6 +5,7 @@
  */
 package Dominio;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -12,12 +13,14 @@ import java.util.Map;
 
 /**
  *
- * @author Alejandro IbaÃ±ez
+ * @author Alejandro Ibañez
  */
-public class Matrix {
+public class Matrix implements Serializable {
     private ArrayList< HashMap<Integer,Float> > m = new ArrayList< HashMap<Integer,Float> >();
     private final float valArc = 1.0f;
     private int nPapers = 0;
+    private static final long serialVersionUID = 1L;
+    
     
     public void afegirArc(int id1,int id2) {
         m.get(id1).put(id2, valArc);
@@ -45,7 +48,7 @@ public class Matrix {
         return m.get(index).size();
     }
 
-    public int getNRows(){
+    public Integer getNRows(){
         return m.size();
     }
 
@@ -100,5 +103,9 @@ public class Matrix {
     public void setTamany(int fils,int cols) {
     	setNFiles(fils);
     	setNCols(cols);
+    }
+    
+    public ArrayList<HashMap<Integer,Float> > retornarM() {
+    	return m;
     }
 }

@@ -218,6 +218,7 @@ public class PanelNewPath extends AbstractPanel { //Abstract
 		buttonAuthor.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				if (!buttonAuthor.isEnabled()) return;
 				DocumentFilter aux = ((AbstractDocument) textField.getDocument()).getDocumentFilter();
 				((AbstractDocument) textField.getDocument()).setDocumentFilter(new DocumentFilter());
 				textField.setText(textField.getText()+'A');
@@ -232,6 +233,7 @@ public class PanelNewPath extends AbstractPanel { //Abstract
 		buttonConf.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				if (!buttonConf.isEnabled()) return;
 				DocumentFilter aux = ((AbstractDocument) textField.getDocument()).getDocumentFilter();
 				((AbstractDocument) textField.getDocument()).setDocumentFilter(new DocumentFilter());
 				textField.setText(textField.getText()+'C');
@@ -246,6 +248,7 @@ public class PanelNewPath extends AbstractPanel { //Abstract
 		buttonPaper.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				if (!buttonPaper.isEnabled()) return;
 				DocumentFilter aux = ((AbstractDocument) textField.getDocument()).getDocumentFilter();
 				((AbstractDocument) textField.getDocument()).setDocumentFilter(new DocumentFilter());
 				textField.setText(textField.getText()+'P');
@@ -261,6 +264,7 @@ public class PanelNewPath extends AbstractPanel { //Abstract
 		buttonTerm.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				if (!buttonTerm.isEnabled()) return;
 				DocumentFilter aux = ((AbstractDocument) textField.getDocument()).getDocumentFilter();
 				((AbstractDocument) textField.getDocument()).setDocumentFilter(new DocumentFilter());
 				textField.setText(textField.getText()+'T');
@@ -285,6 +289,7 @@ public class PanelNewPath extends AbstractPanel { //Abstract
 					textField.setToolTipText("");
 					textField.setBackground(Color.white);
 				}
+				enablePathButtons();
 				
 			}
 			public void keyTyped(KeyEvent e) {}
@@ -352,6 +357,41 @@ public class PanelNewPath extends AbstractPanel { //Abstract
 			if (!good) break;
 		}
 		return good;
+	}
+	
+	public void enablePathButtons() {
+		if (textField.getText().length() > 0) {
+			char s = textField.getText().charAt(textField.getText().length()-1);
+			System.out.println(s);
+			switch (s) {
+				case 'A':
+				case 'T':
+				case 'C':
+					buttonConf.setEnabled(false);
+					buttonAuthor.setEnabled(false);
+					buttonTerm.setEnabled(false);
+					buttonPaper.setEnabled(true);
+					break;
+				case 'P':
+					buttonConf.setEnabled(true);
+					buttonAuthor.setEnabled(true);
+					buttonTerm.setEnabled(true);
+					buttonPaper.setEnabled(false);
+					break;
+				default:
+					buttonConf.setEnabled(false);
+					buttonAuthor.setEnabled(false);
+					buttonTerm.setEnabled(false);
+					buttonPaper.setEnabled(false);
+					break;
+			}
+		}
+		else {
+			buttonConf.setEnabled(true);
+			buttonAuthor.setEnabled(true);
+			buttonTerm.setEnabled(true);
+			buttonPaper.setEnabled(true);
+		}
 	}
 
 }

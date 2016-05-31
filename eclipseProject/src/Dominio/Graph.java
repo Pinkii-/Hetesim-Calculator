@@ -1,5 +1,6 @@
 package Dominio;
 
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -48,7 +49,7 @@ public class Graph implements Serializable {
     public String getNom() {
         return nom;
     }
-    
+     
     public void setNom(String s) {
         this.nom = s;
     }
@@ -73,6 +74,9 @@ public class Graph implements Serializable {
                 res = papers.size();
                 aux.initialize(tipus,res,nom);
                 papers.add(aux);
+                autorPaper.addPapers();
+                confPaper.addPapers();
+                temaPaper.addPapers();
                 break;
             case Terme:
                 res = termes.size();
@@ -112,8 +116,8 @@ public class Graph implements Serializable {
         else System.out.println ("Label incorrecta");
     }
     
-    public int existsNode(Node n) {
-        int i = 0;
+    public Integer existsNode(Node n) {
+    	Integer i = 0;
         boolean trob = false;
         switch(n.getTipus()) {
             case Autor:         
@@ -124,7 +128,7 @@ public class Graph implements Serializable {
                 if (!trob) i = -1;
                 return i;
             case Conferencia:
-                while (i < conferencies.size() && !trob) {
+                while (i < conferencies.size() && !trob) { 
                     if (conferencies.get(i) != null) trob = (conferencies.get(i).equals(n));
                     if (!trob) ++i;
                 }
@@ -243,11 +247,13 @@ public class Graph implements Serializable {
     }
     
     public void setNode(Node a, String s) {
-        int aux;
+        Integer aux;
         switch(a.getTipus()) {
             case Autor:
                 aux = existsNode(a);
+                System.out.println("ojo cuiao");
                 if (aux != -1) autors.get(aux).setNom(s);
+                else System.out.println("funca mal");
                 break;
             case Conferencia:
                 aux = existsNode(a);
@@ -339,6 +345,10 @@ public class Graph implements Serializable {
                 System.out.println ("Tipo incorrecto");
                 break;
         }
+    }
+        
+    public int numPapers() {
+    	return papers.size();
     }
 }
   

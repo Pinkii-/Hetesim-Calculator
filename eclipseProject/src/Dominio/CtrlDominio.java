@@ -212,6 +212,10 @@ public class CtrlDominio {
 	public CtrlPaths getCtrlPaths() {
 		return ctrlPaths;
 	}
+	
+	public CtrlSearch getCtrlSearch() {
+		return ctrlSearch;
+	}
 
 	public CtrlResults getCtrlResults() {
 		return ctrlResults;
@@ -299,5 +303,10 @@ public class CtrlDominio {
 	static public String getNodeLabelOfIndex(int index){
 		return Node.Label.values()[index].toString();
 	}
-
+	
+	static public String getNodeTypeOfIndex(int index){
+		if(index >= Node.Type.MidElement.ordinal())
+			++index;
+		return Node.Type.values()[index].toString();
+	}
 }

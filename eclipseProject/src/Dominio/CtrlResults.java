@@ -38,6 +38,15 @@ public class CtrlResults {
 		}
 	}
 
+	public void modifyResult(String resultId, int line, Float newHeteSimVal){
+		if (results.containsKey(resultId)) {
+			results.get(resultId).modifLine(line, newHeteSimVal);
+		}
+		else {
+			System.out.println("Result not found - ModifyResult");
+		}
+	}
+
 	public void setResult(String resultId, Result result) {
 		if (results.containsKey(resultId)) {
 			results.replace(resultId, result);

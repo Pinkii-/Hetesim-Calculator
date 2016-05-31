@@ -1,14 +1,18 @@
 package Presentacion;
 
 
+import java.util.HashMap;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
 import javax.swing.JTextArea;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
-
-import Presentacion.FormattedResultsManager.FormattedResult;
+import Dominio.CtrlResults;
+import Presentacion.FormattedResult;
 
 /**
  * @author Albert Lopez Alcacer
@@ -25,14 +29,26 @@ class MyTableModel extends AbstractTableModel implements TableModelListener{
     };
 	private Class[] columns = new Class[]{String.class, String.class, String.class, String.class, Float.class};
 	private FormattedResult result;
-	private JTextArea changes;
     private Object[][] data;
+    private DefaultListModel<String> dlm;
+    private JList<String> changes;
+    private CtrlResults cr;
+    Integer nChange = 0;
   
 
+    public MyTableModel(FormattedResult result, JList<String> changes) {
+    	this.result = result;
+    	this.changes = changes;
+    	data = result.getResultData();
+    	dlm = (DefaultListModel<String>) changes.getModel();
+    	dlm.setSize(result.getNumberOfValues());
+    	addTableModelListener(this);
+    	
+    }
+    
     public MyTableModel(FormattedResult result) {
     	this.result = result;
     	data = result.getResultData();
-    	addTableModelListener(this);
     	
     }
 
@@ -55,7 +71,8 @@ class MyTableModel extends AbstractTableModel implements TableModelListener{
 
     public boolean isCellEditable(int row, int col) {
     	
-    	return col == 4; //Only HeteSim value
+    	return col == 4; 
+    	
     }
     
     /*Only correct data is accepted
@@ -71,18 +88,29 @@ class MyTableModel extends AbstractTableModel implements TableModelListener{
         data[row][col] = value;
         fireTableCellUpdated(row, col);
     }
-    private String obtainChange() {
-    	return "";
-    }
+    
+	
+	public void clearListChanges() {
+		changes.removeAll();
+	}
+	
 	@Override
 	public void tableChanged(TableModelEvent e) {
 		Integer row = e.getFirstRow();
         Integer column = e.getColumn();
         System.out.println(Integer.toString(row)+" "+Integer.toString(column));
         TableModel model = (TableModel)e.getSource();
-        String columnName = model.getColumnName(column);
-        Object data = model.getValueAt(row, column);
-        //changes.append(obtainChange(row,oldValue,newValue));
+        Float data = (Float) model.getValueAt(row, column);
+       
+        nChange = row;
+        
+        result.setNewValue(row, data);
+    	Float oldValue = result.getOldValue(row);
+    	Float newValue = result.getNewValue(row);
+    	String ch = Integer.toString(nChange) +") [Old value: "+ oldValue +", New value: "+ newValue +"]";
+    	
+    	dlm.set(row, ch);
+    	
         System.out.println("Change");
 		
 	}
