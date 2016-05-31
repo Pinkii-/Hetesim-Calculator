@@ -438,8 +438,9 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 				saveResult.setEnabled(true);
 				reuseSearch.setEnabled(true);
 				hasResult = true;
-				
-				
+
+				calcHete.setEnabled(false);
+
 			}
 			catch (NullPointerException p){
 				VistaDialog.setDialog("Error", "No se ha podido acceder al resultado\n", new String[]{"Continue"}, VistaDialog.DialogType.ERROR_MESSAGE);
