@@ -41,6 +41,7 @@ public class CtrlDominio {
 	 */
 	public void createGraph() {
 		ctrlGraph.setGraph(new Graph());
+		ctrlResults = new CtrlResults();
 		ctrlSearch.setGraph(ctrlGraph.getGraph());
 	}
 
