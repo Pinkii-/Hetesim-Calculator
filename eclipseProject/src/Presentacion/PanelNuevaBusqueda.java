@@ -80,7 +80,12 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		setLayout(springLayout);
 		
 		//Path
-		pathSelect = new JComboBox<String>(arrayListToArray(cd.getCtrlPaths().getPathNames()));
+		ArrayList<ArrayList<String>> pathsTemp = cd.getCtrlPaths().getFormattedPaths();
+		ArrayList<String> paths = new ArrayList<String>();
+		for (int i = 0;i < pathsTemp.size(); ++i){
+			paths.add(pathsTemp.get(i).get(2));
+		}
+		pathSelect = new JComboBox<String>(arrayListToArray(paths));
 		pathSelect.setPreferredSize(new Dimension(100,20));
 		pathSelect.setSelectedIndex(-1);
 		add(pathSelect);
@@ -393,8 +398,6 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 				System.out.println("Either node is invalid");
 			}
 			
-			//System.out.println(idResult);
-			
 			if (cd.getCtrlResults().getLastResultFormatted() != null){
 				try {
 					resultTable = new MyResultTable(cd.getCtrlResults().getLastResultFormatted(),cd.getCtrlResults());
@@ -406,13 +409,9 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 					hasResult = true;
 				}
 				catch (NullPointerException p){
-					System.out.println("ARASDF");
-					VistaDialog.setDialog("Error", "No se ha podido acceder al resultado\n"
-											     + "@Victor fix your shit", new String[]{"Continue"}, VistaDialog.DialogType.ERROR_MESSAGE);
+					VistaDialog.setDialog("Error", "No se ha podido acceder al resultado\n", new String[]{"Continue"}, VistaDialog.DialogType.ERROR_MESSAGE);
 				}
 			}
-			
-			//}
 		}
 		else if (e.getSource().equals(reuseSearch)){
 			if (resultTable.getSelectedRowCount() == 1){
