@@ -14,10 +14,14 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.Icon;
@@ -161,9 +165,9 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		//Hetesim button
 		Icon icon = null;
 		try {
-			icon = new ImageIcon(new URL("http://i.imgur.com/q9dfxIe.png"));
-		} catch (MalformedURLException e) {
-			
+			BufferedImage bi = ImageIO.read(new File(System.getProperty("user.dir")+"/resources/calcIcon.png"));
+			icon = new ImageIcon(bi);
+		} catch (IOException e) {
 		}
 		calcHete = new JButton("Calculate Hetesim", icon);
 		calcHete.setPreferredSize(new Dimension(200,50));
@@ -174,8 +178,9 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		
 		Icon icon4 = null;
 		try {
-			icon4 = new ImageIcon(new URL("http://i.imgur.com/q9dfxIe.png"));
-		} catch (MalformedURLException e) {
+			BufferedImage bi = ImageIO.read(new File(System.getProperty("user.dir")+"/resources/calcIcon.png"));
+			icon4 = new ImageIcon(bi);
+		} catch (IOException e) {
 			
 		}
 		reuseSearch = new JButton("Use fields", icon4);
@@ -188,9 +193,9 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		//Save result button
 		Icon icon2 = null;
 		try {
-			icon2 = new ImageIcon(new URL("http://i.imgur.com/RTzXRY4.png"));
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
+			BufferedImage bi = ImageIO.read(new File(System.getProperty("user.dir")+"/resources/saveIcon.png"));
+			icon2 = new ImageIcon(bi);
+		} catch (IOException e) {
 		}
 		saveResult = new JButton("Save", icon2);
 		saveResult.setPreferredSize(new Dimension(92,30));
@@ -202,9 +207,9 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		//Edit result button
 		Icon icon3 = null;
 		try {
-			icon3 = new ImageIcon(new URL("http://i.imgur.com/iA8cG7Q.jpg"));
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
+			BufferedImage bi = ImageIO.read(new File(System.getProperty("user.dir")+"/resources/editIcon.png"));
+			icon3 = new ImageIcon(bi);
+		} catch (IOException e) {
 		}
 		editResult = new JButton("Edit", icon3);
 		editResult.setPreferredSize(new Dimension(92,30));
