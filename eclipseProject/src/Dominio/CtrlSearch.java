@@ -39,7 +39,7 @@ public class CtrlSearch {
 			}
 		}catch (ClassNotFoundException | IOException e) {
 //			e.printStackTrace(); // Debug hasta saber que funciona
-			System.out.println("DEBUG: no ha podido cargar la matrix y la va a generar");
+			//System.out.println("DEBUG: no ha podido cargar la matrix y la va a generar");
 			matrix = het.getHeteSim(p);
 		}
 		return new Result(this.g, threshold, matrix, p);
@@ -66,7 +66,7 @@ public class CtrlSearch {
 			}
 		}catch (ClassNotFoundException | IOException e) {
 //			e.printStackTrace(); // Debug hasta saber que funciona
-			System.out.println("DEBUG: no ha podido cargar la matrix y la va a generar");
+			//System.out.println("DEBUG: no ha podido cargar la matrix y la va a generar");
 			result = het.getHeteSim(p, n);
 		}
 

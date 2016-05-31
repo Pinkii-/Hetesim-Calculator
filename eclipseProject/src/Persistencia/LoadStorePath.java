@@ -53,8 +53,8 @@ public class LoadStorePath implements Serializable{
 			ObjectOutput.close();
 		}
 		catch(FileNotFoundException fnfe){
-			System.out.println("Path absoluto del path:"+pathsDirectory.resolve(p.getNom()+".ser").toString());
-			System.out.println("No se puede guardar el Path");
+			//System.out.println("Path absoluto del path:"+pathsDirectory.resolve(p.getNom()+".ser").toString());
+			//System.out.println("No se puede guardar el Path");
 		}
 
 	}
@@ -62,8 +62,9 @@ public class LoadStorePath implements Serializable{
 	public void deletePath(String nomPath) throws ClassNotFoundException, IOException {
 		File file = new File(pathsDirectory.resolve(nomPath+".ser").toString());
 		if(!file.exists()) throw new FileNotFoundException("No existe el Path con ese nombre");
-		if(!file.delete())
-			System.out.println("No se ha podido borrar el Path");
+		if(!file.delete()){
+			//System.out.println("No se ha podido borrar el Path");
+			}
 	}
 
 	public Dominio.Path loadPath(String nomPath) throws IOException, ClassNotFoundException {
@@ -76,8 +77,8 @@ public class LoadStorePath implements Serializable{
 		}
 		catch(FileNotFoundException fnfe){
 			if (Files.notExists(pathsDirectory.resolve(nomPath+".ser"))) {
-				System.out.println("Path absoluto del Path: "+pathsDirectory.resolve(nomPath+".ser").toString());
-				System.out.println("No se ha podido cargar el Path");
+				//System.out.println("Path absoluto del Path: "+pathsDirectory.resolve(nomPath+".ser").toString());
+				//System.out.println("No se ha podido cargar el Path");
 			}
 			return null;
 		}
@@ -97,8 +98,8 @@ public class LoadStorePath implements Serializable{
 	            return Paths;
 	    } 
 		catch (IOException ex) {
-			System.out.println(ex.getMessage());
-			System.out.println("No se puede iterar por los Paths");
+			//System.out.println(ex.getMessage());
+			//System.out.println("No se puede iterar por los Paths");
 			return null;
 		}
 	}

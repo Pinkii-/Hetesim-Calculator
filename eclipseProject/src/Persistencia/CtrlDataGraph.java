@@ -75,7 +75,7 @@ public class CtrlDataGraph {
             in.close();
             fileInputStream.close();
         } catch (ClassNotFoundException c) {
-            System.out.println("Graph class not found");
+            //System.out.println("Graph class not found");
         }
         return g;
     }

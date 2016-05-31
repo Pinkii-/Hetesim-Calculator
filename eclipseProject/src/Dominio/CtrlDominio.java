@@ -41,6 +41,7 @@ public class CtrlDominio {
 	 */
 	public void createGraph() {
 		ctrlGraph.setGraph(new Graph());
+		ctrlResults = new CtrlResults();
 		ctrlSearch.setGraph(ctrlGraph.getGraph());
 	}
 
@@ -133,14 +134,14 @@ public class CtrlDominio {
 	 * @see #saveLastSearchResult()
 	 */
 	public void searchPath(String pathName) {
-		System.out.println(ctrlPaths.getPath(pathName).getContingut());
+		//system.out.println(ctrlPaths.getPath(pathName).getContingut());
 		if (ctrlGraph.isModified)
 			ctrlSearch.setGraph(ctrlGraph.getGraph());
 		try {
 			Result r = ctrlSearch.searchPath(ctrlPaths.getPath(pathName));
 			ctrlResults.setLastResult(r);
 		} catch (PathException e) {
-			System.out.println("Path exception generated");
+			//system.out.println("Path exception generated");
 			e.printStackTrace();
 		}
 	}
@@ -312,7 +313,7 @@ public class CtrlDominio {
 			try {
 				ctrlData.storePath(p);
 			} catch (CloneNotSupportedException | IOException e) {
-				System.out.println("Error saving path");
+				//system.out.println("Error saving path");
 				e.printStackTrace();
 			}
 		}
@@ -329,7 +330,7 @@ public class CtrlDominio {
 			try {
 				ctrlData.storeResult(r);
 			} catch (CloneNotSupportedException | IOException e) {
-				System.out.println("Error saving result");
+				//system.out.println("Error saving result");
 				e.printStackTrace();
 			}
 		}

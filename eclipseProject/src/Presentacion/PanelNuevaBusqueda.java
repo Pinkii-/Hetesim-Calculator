@@ -346,8 +346,10 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 	@Override
 	public int closeIt() {
 		if (hasResult){
-			String[] buttons = {"Salir", "Cancelar"};
-			int result = VistaDialog.setDialog("Titulo", "¿Estas seguro que quieres salir?\n (Se perderan todos los cambios no guardados)", buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
+			String[] buttons = {"Exit", "Cancel"};
+			int result = VistaDialog.setDialog("Unsaved changes", "Are you sure you want to exit?\n"
+					+ "All unsaved changes will be lost",
+					buttons, VistaDialog.DialogType.QUESTION_MESSAGE);
 			return result;
 		}
 		else {
@@ -374,35 +376,35 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 			if (!node2Select.getEditor().getItem().toString().equals(" - Select all -") && node2Select.isEnabled()) n2 = node2Select.getSelectedNodeIndex();
 			if (n1 == -1 && n2 == -1){
 				//No nodes
-				System.out.println("Searching");
+				//System.out.println("Searching");
 				if (checkbox.isSelected()){
-					System.out.println("P threshold");
+					//System.out.println("P threshold");
 					//idResult = cd.searchPathThreshhold((float)((double)threshold.getValue()), path);
 					cd.searchPathThreshhold(Float.valueOf(threshold.getValue().toString()), path);
 					//resultTable = new MyResultTable(cd.getCtrlResults().getLastResultFormatted(),cd.getCtrlResults());
 				}
 				else {
-					System.out.println("P");
+					//System.out.println("P");
 					//idResult = cd.searchPath(path);
 					cd.searchPath(path);
 					//resultTable = new MyResultTable(cd.getCtrlResults().getLastResultFormatted(),cd.getCtrlResults());
 				}
-				System.out.println("Done");
+				//System.out.println("Done");
 			}
 			else if (n1 >= 0 && n2 == -1){
 				//One node
 				if (checkbox.isSelected()){
-					System.out.println("PN1 threshold");
+					//System.out.println("PN1 threshold");
 					//idResult = cd.searchPathNodeThreshhold((float)((double)threshold.getValue()), path, n1);
 					cd.searchPathNodeThreshhold(Float.valueOf(threshold.getValue().toString()), path, n1);
 					//resultTable = new MyResultTable(cd.getCtrlResults().getLastResultFormatted(),cd.getCtrlResults());
 				}
 				else {
-					System.out.println("PN1");
+					//System.out.println("PN1");
 					//idResult = cd.searchPathNode(path,n1);
 					cd.searchPathNode(path,n1);
 				}
-				System.out.println("Done");
+				//System.out.println("Done");
 				
 			}
 			/*
@@ -428,19 +430,19 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 			else if (n1 >= 0 && n2 >= 0){
 				//Two
 				if (checkbox.isSelected()){
-					System.out.println("PNN threshold");
+					//System.out.println("PNN threshold");
 					//idResult = cd.searchPathNodeNodeThreshhold((float)((double)threshold.getValue()), path, n1, n2);
 					cd.searchPathNodeNodeThreshhold((Float.valueOf(threshold.getValue().toString())), path, n1, n2);
 				}
 				else {
-					System.out.println("PNN");
+					//System.out.println("PNN");
 					//idResult = cd.searchPathNodeNode(path,n1,n2);
 					cd.searchPathNodeNode(path,n1,n2);
 				}
-				System.out.println("Done");
+				//System.out.println("Done");
 			}
 			else {
-				System.out.println("Either node is invalid");
+				//System.out.println("Either node is invalid");
 			}
 			
 			
@@ -470,7 +472,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 
 			}
 			catch (NullPointerException p){
-				VistaDialog.setDialog("Error", "No se ha podido acceder al resultado\n", new String[]{"Continue"}, VistaDialog.DialogType.ERROR_MESSAGE);
+				VistaDialog.setDialog("Error", "It hasn't been possible to access the result\n", new String[]{"Continue"}, VistaDialog.DialogType.ERROR_MESSAGE);
 			}
 			
 			updateUI();
@@ -492,7 +494,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 			
 			editResult.setEnabled(true);
 			saveResult.setEnabled(false);
-			VistaDialog.setDialog("", "Se ha guardado el resultado", new String[]{"OK"}, DialogType.INFORMATION_MESSAGE);
+			VistaDialog.setDialog("", "Result stored", new String[]{"OK"}, DialogType.INFORMATION_MESSAGE);
 		}
 		else if (e.getSource().equals(editResult)){
 			this.vp.panelMostrarResultado.setShowedResult(cd.getCtrlResults().getLastResultFormatted());

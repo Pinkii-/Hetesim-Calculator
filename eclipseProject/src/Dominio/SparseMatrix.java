@@ -110,7 +110,7 @@ public class SparseMatrix {
 				}
 			}
 			catch (IndexOutOfBoundsException e) {
-				System.out.println("Trying to set a position of the matrix that is outside the matrix");
+				//System.out.println("Trying to set a position of the matrix that is outside the matrix");
 				throw e;
 			}
 			return;
@@ -298,9 +298,9 @@ public class SparseMatrix {
 		String s = new String();
 		
 		for (int i = 0; i < getNRows(); ++i) {
-			System.out.println(i + " " + rows.get(i));
+			//System.out.println(i + " " + rows.get(i));
 		}
-		System.out.print("Cols " + cols.size());
+		//System.out.print("Cols " + cols.size());
 		return s;
 	}
 }
