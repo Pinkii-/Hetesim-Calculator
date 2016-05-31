@@ -29,8 +29,8 @@ public class MyResultTable extends JTable implements ListSelectionListener  {
 	private CtrlResults cr;
 	private JList changes;
 	
-	public MyResultTable() {
-		
+	public MyResultTable(CtrlResults cr) {
+		this.cr = cr;
 	}
 	
 	public MyResultTable (ArrayList<ArrayList<String>> result, CtrlResults cr) {
