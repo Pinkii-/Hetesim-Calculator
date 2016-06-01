@@ -91,6 +91,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		sl = new SpringLayout();
 		setLayout(sl);
 		pathContents = new ArrayList<String>();
+		String slash = (System.getProperty("os.name").toLowerCase().contains("windows") ? "\\" : "/");
 		
 		//Path
 		ArrayList<ArrayList<String>> pathsTemp = cd.getCtrlPaths().getFormattedPaths();
@@ -168,7 +169,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		//Hetesim button
 		Icon icon = null;
 		try {
-			BufferedImage bi = ImageIO.read(new File(System.getProperty("user.dir")+"/resources/calcIcon.png"));
+			BufferedImage bi = ImageIO.read(new File(System.getProperty("user.dir")+slash+"resources"+slash+"calcIcon.png"));
 			icon = new ImageIcon(bi);
 		} catch (IOException e) {
 		}
@@ -181,7 +182,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		
 		Icon icon4 = null;
 		try {
-			BufferedImage bi = ImageIO.read(new File(System.getProperty("user.dir")+"/resources/calcIcon.png"));
+			BufferedImage bi = ImageIO.read(new File(System.getProperty("user.dir")+slash+"resources"+slash+"calcIcon.png"));
 			icon4 = new ImageIcon(bi);
 		} catch (IOException e) {
 			
@@ -196,7 +197,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		//Save result button
 		Icon icon2 = null;
 		try {
-			BufferedImage bi = ImageIO.read(new File(System.getProperty("user.dir")+"/resources/saveIcon.png"));
+			BufferedImage bi = ImageIO.read(new File(System.getProperty("user.dir")+slash+"resources"+slash+"saveIcon.png"));
 			icon2 = new ImageIcon(bi);
 		} catch (IOException e) {
 		}
@@ -210,7 +211,7 @@ public class PanelNuevaBusqueda extends AbstractPanel implements ActionListener{
 		//Edit result button
 		Icon icon3 = null;
 		try {
-			BufferedImage bi = ImageIO.read(new File(System.getProperty("user.dir")+"/resources/editIcon.jpg"));
+			BufferedImage bi = ImageIO.read(new File(System.getProperty("user.dir")+slash+"resources"+slash+"editIcon.jpg"));
 			icon3 = new ImageIcon(bi);
 		} catch (IOException e) {
 		}

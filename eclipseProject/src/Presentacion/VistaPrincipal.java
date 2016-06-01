@@ -147,7 +147,8 @@ public class VistaPrincipal extends VistaAbstracta{
 				if (0 == response) {
 					try {
 						//System.out.println(System.getProperty("user.dir"));
-						cd.importGraph(System.getProperty("user.dir")+"/DBLP_four_area/");
+						String slash = (System.getProperty("os.name").toLowerCase().contains("windows") ? "\\" : "/");
+						cd.importGraph(System.getProperty("user.dir")+slash+"DBLP_four_area"+slash);
 						VistaDialog.setDialog("Success",  "Graph imported correctly\n"
 								+ "The current panel may need to be reloaded for the changes to be committed\n"
 								+ "It is recommended to press the continue button, because not doing so may lead to "
@@ -254,8 +255,9 @@ public class VistaPrincipal extends VistaAbstracta{
 		
 		try {
 			String path = System.getProperty("user.dir");
+			String slash = (System.getProperty("os.name").toLowerCase().contains("windows") ? "\\" : "/");
 			BufferedImage myPicture;
-			myPicture = ImageIO.read(new File(path+"/resources/Hetesim.png"));
+			myPicture = ImageIO.read(new File(path+slash + "resources" + slash + "Hetesim.png"));
 			JLabel picLabel = new JLabel(new ImageIcon(myPicture));
 			content.add(picLabel);
 		} catch (IOException e) {
