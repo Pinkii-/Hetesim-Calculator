@@ -27,12 +27,18 @@ public class FormattedResult extends ArrayList<ArrayList<String>> {
 	public static final Pair<Integer,Integer> resultTypePosition = new Pair<Integer,Integer>(0,1);
 	public static final Pair<Integer,Integer> searchPathPosition = new Pair<Integer,Integer>(0,2);
 	public static final Pair<Integer,Integer> searchGraphIdPosition = new Pair<Integer,Integer>(0,3);
+	public static final Pair<Integer,Integer> searchOriginNodePosition = new Pair<Integer, Integer>(0, 4);
+	public static final Pair<Integer,Integer> searchDestinationNodePosition = new Pair<Integer, Integer>(0, 5);
+	public static final Pair<Integer,Integer> searchTrhresholdPosition = new Pair<Integer, Integer>(0, 6);
 	
 	private String listedResult;
 	private String idResult;
 	private String resultType;
 	private String searchPath;
 	private String searchGraphId;
+	private String resultThreshold;
+	private String originNode;
+	private String destinationNode;
 	private Integer numberOfValues;
 	private Integer numberOfColumns;
 	private Object[][] resultData;
@@ -57,6 +63,9 @@ public class FormattedResult extends ArrayList<ArrayList<String>> {
 		searchPath = get(searchPathPosition.first).get(searchPathPosition.second);
 		searchGraphId = get(searchGraphIdPosition.first).get(searchGraphIdPosition.second);
 		idResult = get(resultIdPosition.first).get(resultIdPosition.second);
+		resultThreshold = get(searchTrhresholdPosition.first).get(searchTrhresholdPosition.second);
+		originNode = get(searchOriginNodePosition.first).get(searchOriginNodePosition.second);
+		destinationNode = get(searchDestinationNodePosition.first).get(searchDestinationNodePosition.second);
 		numberOfValues = size()-1;
 		numberOfColumns = get(1).size();
 		oldValues = new HashMap<Integer,Float>();
@@ -180,6 +189,30 @@ public class FormattedResult extends ArrayList<ArrayList<String>> {
 	 */
 	public String getSearchGraphId() {
 		return searchGraphId;
+	}
+	
+	/**
+	 * Método que permite obtener el threshold asociado al resultado
+	 * @return String: Valor Threshold
+	 */
+	public String getResultThreshold() {
+		return resultThreshold;
+	}
+	
+	/**
+	 * Método que permite obtener nodo origen asociado al resultado
+	 * @return String: Nombre nodo
+	 */
+	public String getResultOriginNode() {
+		return originNode;
+	}
+	
+	/**
+	 * Método que permite obtener nodo destino asociado al resultado
+	 * @return String: Nombre nodo
+	 */
+	public String getResultDestinationNode() {
+		return destinationNode;
 	}
 	
 	/**

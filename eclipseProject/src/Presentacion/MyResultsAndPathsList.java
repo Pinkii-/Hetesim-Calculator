@@ -172,8 +172,9 @@ public class MyResultsAndPathsList extends JList<String> implements ListSelectio
 	 */
 	private void generateInfo() {
 		
-		searchOriginNode = "";
-		searchDestinationNode = "";
+		searchOriginNode = results.get(dlm.getElementAt(selectedIndex)).getResultOriginNode();
+		searchDestinationNode = results.get(dlm.getElementAt(selectedIndex)).getResultDestinationNode();
+		threshold = results.get(dlm.getElementAt(selectedIndex)).getResultThreshold();
 		FormattedResult aux = results.get(dlm.getElementAt(selectedIndex));
 		String aux2 = aux.getResultType();
 		searchType = results.get(dlm.getElementAt(selectedIndex)).getResultType();
